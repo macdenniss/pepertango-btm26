@@ -826,6 +826,119 @@
     ============================================================ */
     #bru-form .form-label { background: var(--surface); }
     #bru-form #b_body { padding: 36px 32px; }
+
+    /* ============================================================
+       MTP — REGISTRAZIONI CHIUSE
+    ============================================================ */
+    .mtp-closed-banner {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px; padding: 48px 40px;
+      display: flex; align-items: center; gap: 32px;
+      margin-top: 40px;
+    }
+    .mtp-closed-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(255,255,255,.06);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; color: rgba(255,255,255,.3);
+      flex-shrink: 0;
+    }
+    .mtp-closed-title {
+      font-size: 1.5rem; font-weight: 900; letter-spacing: -0.02em;
+      text-transform: uppercase; color: #fff; margin-bottom: 6px;
+    }
+    .mtp-closed-text {
+      font-size: .95rem; font-weight: 300; color: rgba(255,255,255,.45);
+      line-height: 1.65;
+    }
+    .mtp-closed-text a { color: var(--fire); text-decoration: underline; }
+    .pkg-btn-closed {
+      margin-top: 1.8rem; cursor: not-allowed;
+      background: rgba(255,255,255,.1); color: rgba(255,255,255,.35);
+      padding: 10px 20px; border-radius: 100px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; border: none; font-family: inherit;
+      display: inline-block;
+    }
+
+    /* ============================================================
+       BRUTIA — NUOVE CARD STANZA + PACCHETTO
+    ============================================================ */
+    /* Step header */
+    .bru-step-hd {
+      background: var(--ink); padding: 18px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .bru-step-name {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.3em;
+      text-transform: uppercase; color: #fff;
+    }
+    .bru-step-counter {
+      font-size: 11px; color: rgba(255,255,255,.35); letter-spacing: 0.15em;
+    }
+
+    /* Room cards */
+    .room-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 14px; margin-bottom: 24px;
+    }
+    .room-card {
+      border: 2px solid rgba(26,24,20,.1); border-radius: 18px;
+      padding: 28px 16px; text-align: center; cursor: pointer;
+      background: var(--surface); transition: all 0.22s;
+      display: block;
+    }
+    .room-card input { display: none; }
+    .room-card:hover { border-color: var(--fire); background: rgba(242,135,10,.04); }
+    .room-card.sel { border-color: var(--pepper); background: rgba(230,52,18,.05); }
+    .room-card-icon {
+      font-size: 1.6rem; margin-bottom: 12px;
+      color: rgba(26,24,20,.2); transition: color 0.22s;
+    }
+    .room-card.sel .room-card-icon { color: var(--pepper); }
+    .room-card-name {
+      font-size: 15px; font-weight: 900; text-transform: uppercase;
+      letter-spacing: -0.01em; margin-bottom: 6px;
+    }
+    .room-card-desc {
+      font-size: 11px; color: var(--muted); line-height: 1.5;
+    }
+
+    /* Package cards */
+    .pkg-cards {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 14px; margin-bottom: 24px;
+    }
+    .pkg-card {
+      border: 2px solid rgba(26,24,20,.1); border-radius: 18px;
+      padding: 24px 20px; cursor: pointer; background: var(--surface);
+      transition: all 0.22s; display: block; position: relative;
+    }
+    .pkg-card input { display: none; }
+    .pkg-card:hover { border-color: var(--fire); background: rgba(242,135,10,.04); }
+    .pkg-card.sel { border-color: var(--pepper); background: rgba(230,52,18,.05); }
+    .pkg-card-letter {
+      font-size: 3.2rem; font-weight: 900; line-height: 1;
+      color: rgba(26,24,20,.1); transition: color 0.22s; margin-bottom: 8px;
+    }
+    .pkg-card.sel .pkg-card-letter { color: var(--pepper); }
+    .pkg-card-name {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--muted); margin-bottom: 6px;
+    }
+    .pkg-card-info { font-size: 13px; font-weight: 600; color: var(--ink); }
+    /* Optional fields toggle */
+    .opt-toggle {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+      cursor: pointer; margin-bottom: 1.2rem; display: block;
+      user-select: none;
+    }
+    .opt-toggle:hover { color: var(--pepper); }
+    details > summary { list-style: none; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] .opt-toggle { color: var(--pepper); }
   </style>
 </head>
 <body>
@@ -935,7 +1048,7 @@
         <div class="pkg-date">Gio 10 &rarr; Lun 14 Giu</div>
         <div class="pkg-price">&euro;300</div>
         <div class="pkg-anticipo">Anticipo &euro;150 &middot; Saldo &euro;150</div>
-        <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'mtp27');scrollToForm('mtp-form')">Seleziona</button>
+        <button class="pkg-btn-closed" disabled>Iscrizioni chiuse</button>
       </div>
       <div class="pkg-item reveal d1" data-pkg="Fiumicello" onclick="selectPkg(this,'mtp27')">
         <span class="pkg-big-num">3</span><span class="pkg-notti-lbl">notti</span>
@@ -943,7 +1056,7 @@
         <div class="pkg-date">Gio 10 &rarr; Dom 13 Giu</div>
         <div class="pkg-price">&euro;225</div>
         <div class="pkg-anticipo">Anticipo &euro;150 &middot; Saldo &euro;75</div>
-        <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'mtp27');scrollToForm('mtp-form')">Seleziona</button>
+        <button class="pkg-btn-closed" disabled>Iscrizioni chiuse</button>
       </div>
       <div class="pkg-item reveal d2" data-pkg="Spiaggia Nera" onclick="selectPkg(this,'mtp27')">
         <span class="pkg-big-num">3</span><span class="pkg-notti-lbl">notti</span>
@@ -951,7 +1064,7 @@
         <div class="pkg-date">Ven 11 &rarr; Lun 14 Giu</div>
         <div class="pkg-price">&euro;225</div>
         <div class="pkg-anticipo">Anticipo &euro;150 &middot; Saldo &euro;75</div>
-        <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'mtp27');scrollToForm('mtp-form')">Seleziona</button>
+        <button class="pkg-btn-closed" disabled>Iscrizioni chiuse</button>
       </div>
       <div class="pkg-item reveal d3" data-pkg="Porto di Maratea" onclick="selectPkg(this,'mtp27')">
         <span class="pkg-big-num">2</span><span class="pkg-notti-lbl">notti</span>
@@ -959,100 +1072,18 @@
         <div class="pkg-date">Ven 11 &rarr; Dom 13 Giu</div>
         <div class="pkg-price">&euro;150</div>
         <div class="pkg-anticipo">Anticipo &euro;150 &middot; Saldo &euro;0</div>
-        <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'mtp27');scrollToForm('mtp-form')">Seleziona</button>
+        <button class="pkg-btn-closed" disabled>Iscrizioni chiuse</button>
       </div>
     </div>
 
-    <!-- FORM MTP27 -->
-    <div class="form-section" id="mtp-form">
-      <p class="form-label">Iscrizione &middot; Maratona Tango Piccante 2027</p>
-      <div class="form-prog-wrap"><div class="form-prog-bar" id="m_prog" style="width:25%"></div></div>
-      <div class="form-layout">
-        <div class="form-sidebar-ed">
-          <div class="fsn">
-            <div class="fsn-item active" id="m_ss1"><div class="fsn-num">1</div><div class="fsn-lbl">Pacchetto</div></div>
-            <div class="fsn-item" id="m_ss2"><div class="fsn-num">2</div><div class="fsn-lbl">Dati</div></div>
-            <div class="fsn-item" id="m_ss3"><div class="fsn-num">3</div><div class="fsn-lbl">Stanza</div></div>
-            <div class="fsn-item" id="m_ss4"><div class="fsn-num">4</div><div class="fsn-lbl">Riepilogo</div></div>
-          </div>
-        </div>
-        <div id="m_body">
-          <div class="form-step-ed active" id="m_fs1">
-            <h3 class="fs-title">Pacchetto<br>&amp; ruolo</h3>
-            <p class="fs-sub">Scegli il pacchetto e come balli</p>
-            <div class="pkg-radio-grid">
-              <label class="r-opt-ed" onclick="syncRadio(this,'m_pkg')"><input type="radio" name="m_pkg" value="Cala Jannita"><div class="r-name">Cala Jannita</div><div class="r-info">4 notti &middot; &euro;300</div></label>
-              <label class="r-opt-ed" onclick="syncRadio(this,'m_pkg')"><input type="radio" name="m_pkg" value="Fiumicello"><div class="r-name">Fiumicello</div><div class="r-info">3 notti &middot; &euro;225</div></label>
-              <label class="r-opt-ed" onclick="syncRadio(this,'m_pkg')"><input type="radio" name="m_pkg" value="Spiaggia Nera"><div class="r-name">Spiaggia Nera</div><div class="r-info">3 notti &middot; &euro;225</div></label>
-              <label class="r-opt-ed" onclick="syncRadio(this,'m_pkg')"><input type="radio" name="m_pkg" value="Porto di Maratea"><div class="r-name">Porto di Maratea</div><div class="r-info">2 notti &middot; &euro;150</div></label>
-            </div>
-            <span class="mini-label">Ruolo di ballo</span>
-            <div class="ruolo-grid">
-              <label class="r-opt-ed" onclick="syncRadio(this,'m_ruolo')"><input type="radio" name="m_ruolo" value="Leader"><div class="r-name">Leader</div></label>
-              <label class="r-opt-ed" onclick="syncRadio(this,'m_ruolo')"><input type="radio" name="m_ruolo" value="Follower"><div class="r-name">Follower</div></label>
-              <label class="r-opt-ed" onclick="syncRadio(this,'m_ruolo')"><input type="radio" name="m_ruolo" value="Entrambi"><div class="r-name">Entrambi</div></label>
-            </div>
-            <div class="form-nav-ed">
-              <span></span>
-              <span class="step-count">1 di 4</span>
-              <button class="btn-next-ed" onclick="mtp.next()">Avanti &rarr;</button>
-            </div>
-          </div>
-          <div class="form-step-ed" id="m_fs2">
-            <h3 class="fs-title">Dati<br>personali</h3>
-            <p class="fs-sub">Le tue informazioni di contatto</p>
-            <div class="f-row-ed">
-              <div class="fg-ed"><label>Nome *</label><input type="text" class="fi-ed" id="m_nome" placeholder="Andrea"></div>
-              <div class="fg-ed"><label>Cognome *</label><input type="text" class="fi-ed" id="m_cognome" placeholder="Rossi"></div>
-            </div>
-            <div class="fg-ed"><label>Email *</label><input type="email" class="fi-ed" id="m_email" placeholder="andrea@email.com"></div>
-            <div class="f-row-ed">
-              <div class="fg-ed"><label>Telefono</label><input type="tel" class="fi-ed" id="m_tel" placeholder="+39 333 000 0000"></div>
-              <div class="fg-ed"><label>Citt&agrave;</label><input type="text" class="fi-ed" id="m_citta" placeholder="Roma"></div>
-            </div>
-            <div class="fg-ed"><label>Compagno/a di ballo</label><input type="text" class="fi-ed" id="m_compagno_ballo" placeholder="Nome e cognome"></div>
-            <div class="form-nav-ed">
-              <button class="btn-prev-ed" onclick="mtp.prev()">&larr; Indietro</button>
-              <span class="step-count">2 di 4</span>
-              <button class="btn-next-ed" onclick="mtp.next()">Avanti &rarr;</button>
-            </div>
-          </div>
-          <div class="form-step-ed" id="m_fs3">
-            <h3 class="fs-title">Tipo<br>stanza</h3>
-            <p class="fs-sub">Scegli la tua sistemazione</p>
-            <div class="stanza-grid">
-              <label class="stanza-opt" onclick="mtp.updateCompagni(0,this)"><input type="radio" name="m_stanza" value="Singola"><div class="s-ico"><i class="fa-solid fa-bed"></i></div><div class="s-name">Singola</div></label>
-              <label class="stanza-opt" onclick="mtp.updateCompagni(1,this)"><input type="radio" name="m_stanza" value="Doppia"><div class="s-ico"><i class="fa-solid fa-bed"></i><i class="fa-solid fa-bed"></i></div><div class="s-name">Doppia</div></label>
-              <label class="stanza-opt" onclick="mtp.updateCompagni(2,this)"><input type="radio" name="m_stanza" value="Tripla"><div class="s-ico"><i class="fa-solid fa-users"></i></div><div class="s-name">Tripla</div></label>
-              <label class="stanza-opt" onclick="mtp.updateCompagni(3,this)"><input type="radio" name="m_stanza" value="Quadrupla"><div class="s-ico"><i class="fa-solid fa-users-rectangle"></i></div><div class="s-name">Quadrupla</div></label>
-            </div>
-            <div id="m_compagniContainer" class="compagni-dyn" style="display:none"><div id="m_compagniFields"></div></div>
-            <div class="fg-ed" style="margin-top:2rem"><label>Note</label><textarea class="fi-ed" id="m_note" placeholder="Richieste o informazioni aggiuntive..."></textarea></div>
-            <div class="form-nav-ed">
-              <button class="btn-prev-ed" onclick="mtp.prev()">&larr; Indietro</button>
-              <span class="step-count">3 di 4</span>
-              <button class="btn-next-ed" onclick="mtp.next()">Avanti &rarr;</button>
-            </div>
-          </div>
-          <div class="form-step-ed" id="m_fs4">
-            <h3 class="fs-title">Riepilogo<br>iscrizione</h3>
-            <p class="fs-sub">Controlla e conferma</p>
-            <div class="riepilogo-ed" id="m_riepilogo"></div>
-            <div class="anticipo-box">
-              <div class="anticipo-lbl">Anticipo da versare</div>
-              <div class="anticipo-val" id="m_anticipo">&euro;150</div>
-              <div class="anticipo-note">Riceverai il link di pagamento via email dopo l'accettazione.</div>
-            </div>
-            <div class="form-nav-ed">
-              <button class="btn-prev-ed" onclick="mtp.prev()">&larr; Modifica</button>
-              <span class="step-count">4 di 4</span>
-              <button class="btn-next-ed" onclick="mtp.send()">Invia iscrizione &rarr;</button>
-            </div>
-          </div>
-          <div class="form-sending-ed" id="m_sending"><div class="spinner-ed"></div><p class="sending-lbl">Invio in corso...</p></div>
-          <div class="form-ok-ed" id="m_ok"><h3>Richiesta<br>inviata.</h3><p>Controlla la tua email. Ti contatteremo a breve per confermare l'iscrizione.</p></div>
-          <div class="form-error-ed" id="m_error"><p id="m_errMsg">Si &egrave; verificato un errore. Riprova.</p><button class="btn-retry-ed" onclick="mtp.resetError()">Riprova</button></div>
-        </div>
+    <div class="mtp-closed-banner">
+      <div class="mtp-closed-icon"><i class="fa-solid fa-lock"></i></div>
+      <div>
+        <div class="mtp-closed-title">Registrazioni chiuse</div>
+        <p class="mtp-closed-text">
+          Le iscrizioni alla Maratona Tango Piccante 2027 sono ufficialmente chiuse.<br>
+          Per informazioni scrivi a <a href="mailto:info@pepertango.it">info@pepertango.it</a> &mdash; ti avviseremo per la prossima edizione.
+        </p>
       </div>
     </div>
   </section>
@@ -1100,87 +1131,182 @@
       </div>
     </div>
 
-    <!-- FORM BRUTIA -->
-    <div class="form-section" id="bru-form">
-      <p class="form-label">Iscrizione &middot; Brutia Tango Festival</p>
-      <div class="bru-prog">
-        <div class="bru-pd active" id="b_ss1"><div class="bru-dot">1</div><div class="bru-dot-lbl">Dati</div></div>
-        <div class="bru-line"></div>
-        <div class="bru-pd" id="b_ss2"><div class="bru-dot">2</div><div class="bru-dot-lbl">Stanza</div></div>
-        <div class="bru-line"></div>
-        <div class="bru-pd" id="b_ss3"><div class="bru-dot">3</div><div class="bru-dot-lbl">Pacchetto</div></div>
+    <div class="form-section" id="bru-form" style="margin-top:40px">
+
+      <!-- Intestazione form -->
+      <div style="background:var(--ink);padding:22px 32px;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#fff">Iscrizione Brutia Tango Festival</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.12em" id="bru-step-lbl">Passo 1 di 3</span>
       </div>
-      <div id="b_body">
+
+      <!-- Progress dots -->
+      <div class="bru-prog" style="padding:18px 32px;border-bottom:1px solid rgba(26,24,20,.07)">
+        <div class="bru-pd active" id="b_ss1">
+          <div class="bru-dot">1</div>
+          <div class="bru-dot-lbl">Chi sei</div>
+        </div>
+        <div class="bru-line"></div>
+        <div class="bru-pd" id="b_ss2">
+          <div class="bru-dot">2</div>
+          <div class="bru-dot-lbl">La stanza</div>
+        </div>
+        <div class="bru-line"></div>
+        <div class="bru-pd" id="b_ss3">
+          <div class="bru-dot">3</div>
+          <div class="bru-dot-lbl">Il pacchetto</div>
+        </div>
+      </div>
+
+      <div id="b_body" style="padding:36px 32px">
+
+        <!-- ====== STEP 1: Chi sei ====== -->
         <div class="form-step-ed active" id="b_fs1">
-          <h3 class="fs-title">Dati<br>personali</h3>
-          <p class="fs-sub">Le tue informazioni di contatto</p>
+          <h3 class="fs-title" style="margin-bottom:.4rem">Chi sei?</h3>
+          <p class="fs-sub">Solo i dati essenziali — compila in meno di un minuto</p>
+
           <div class="f-row-ed">
-            <div class="fg-ed"><label>Cognome *</label><input type="text" class="fi-ed" id="b_cognome" placeholder="Rossi"></div>
-            <div class="fg-ed"><label>Nome *</label><input type="text" class="fi-ed" id="b_nome" placeholder="Andrea"></div>
+            <div class="fg-ed">
+              <label>Cognome *</label>
+              <input type="text" class="fi-ed" id="b_cognome" placeholder="Rossi">
+            </div>
+            <div class="fg-ed">
+              <label>Nome *</label>
+              <input type="text" class="fi-ed" id="b_nome" placeholder="Andrea">
+            </div>
           </div>
-          <div class="fg-ed"><label>Email *</label><input type="email" class="fi-ed" id="b_email" placeholder="andrea@email.com"></div>
-          <div class="f-row-ed">
-            <div class="fg-ed"><label>Telefono</label><input type="tel" class="fi-ed" id="b_tel" placeholder="+39 333 000 0000"></div>
-            <div class="fg-ed"><label>Citt&agrave;</label><input type="text" class="fi-ed" id="b_citta" placeholder="Roma"></div>
+          <div class="fg-ed">
+            <label>Email *</label>
+            <input type="email" class="fi-ed" id="b_email" placeholder="andrea@email.com">
           </div>
-          <span class="mini-label">Ruolo di ballo *</span>
-          <div class="ruolo-grid" style="margin-bottom:2rem">
-            <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')"><input type="radio" name="b_ruolo" value="Leader"><div class="r-name">Leader</div></label>
-            <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')"><input type="radio" name="b_ruolo" value="Follower"><div class="r-name">Follower</div></label>
-            <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')"><input type="radio" name="b_ruolo" value="Entrambi"><div class="r-name">Entrambi</div></label>
+
+          <span class="mini-label" style="margin-top:1.2rem">Come balli? *</span>
+          <div class="ruolo-grid" style="margin-bottom:1.5rem">
+            <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')">
+              <input type="radio" name="b_ruolo" value="Leader">
+              <div class="r-name">Leader</div>
+            </label>
+            <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')">
+              <input type="radio" name="b_ruolo" value="Follower">
+              <div class="r-name">Follower</div>
+            </label>
+            <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')">
+              <input type="radio" name="b_ruolo" value="Entrambi">
+              <div class="r-name">Entrambi</div>
+            </label>
           </div>
-          <div class="fg-ed"><label>Compagno/a di ballo</label><input type="text" class="fi-ed" id="b_compagno_ballo" placeholder="Nome e cognome del partner di ballo"></div>
+
+          <!-- Campi facoltativi nascosti -->
+          <details>
+            <summary class="opt-toggle">+ Aggiungi telefono, citt&agrave; e compagno di ballo (facoltativo)</summary>
+            <div style="margin-top:1rem">
+              <div class="f-row-ed">
+                <div class="fg-ed"><label>Telefono</label><input type="tel" class="fi-ed" id="b_tel" placeholder="+39 333 000 0000"></div>
+                <div class="fg-ed"><label>Citt&agrave;</label><input type="text" class="fi-ed" id="b_citta" placeholder="Roma"></div>
+              </div>
+              <div class="fg-ed"><label>Compagno/a di ballo</label><input type="text" class="fi-ed" id="b_compagno_ballo" placeholder="Nome e cognome del partner di ballo"></div>
+            </div>
+          </details>
+
           <div class="form-nav-ed">
             <span></span>
-            <span class="step-count">1 di 3</span>
-            <button class="btn-next-ed" onclick="bru.next()">Avanti &rarr;</button>
+            <button class="btn-next-ed" style="padding:14px 36px;font-size:11px" onclick="bru.next()">Continua &rarr;</button>
           </div>
         </div>
+
+        <!-- ====== STEP 2: La stanza ====== -->
         <div class="form-step-ed" id="b_fs2">
-          <h3 class="fs-title">Sistemazione<br>in stanza</h3>
-          <p class="fs-sub">Scegli il tipo di stanza e indica i tuoi compagni</p>
-          <div class="stanza-grid" style="grid-template-columns:repeat(3,1fr)">
-            <label class="stanza-opt" onclick="bruUpdateCompagni(1,this)"><input type="radio" name="b_stanza" value="Doppia"><div class="s-ico"><i class="fa-solid fa-bed"></i><i class="fa-solid fa-bed"></i></div><div class="s-name">Doppia</div><div class="s-sub">2 letti singoli</div></label>
-            <label class="stanza-opt" onclick="bruUpdateCompagni(1,this)"><input type="radio" name="b_stanza" value="Matrimoniale"><div class="s-ico"><i class="fa-solid fa-bed"></i></div><div class="s-name">Matrimoniale</div><div class="s-sub">1 letto grande</div></label>
-            <label class="stanza-opt" onclick="bruUpdateCompagni(2,this)"><input type="radio" name="b_stanza" value="Tripla"><div class="s-ico"><i class="fa-solid fa-users"></i></div><div class="s-name">Tripla</div><div class="s-sub">3 persone</div></label>
+          <h3 class="fs-title" style="margin-bottom:.4rem">La tua stanza</h3>
+          <p class="fs-sub">Scegli il tipo di sistemazione che preferisci</p>
+
+          <div class="room-grid">
+            <label class="room-card stanza-opt" onclick="bruUpdateCompagni(1,this)">
+              <input type="radio" name="b_stanza" value="Doppia">
+              <div class="room-card-icon">
+                <i class="fa-solid fa-bed"></i><i class="fa-solid fa-bed" style="font-size:1rem;opacity:.5;margin-left:2px"></i>
+              </div>
+              <div class="room-card-name">Doppia</div>
+              <div class="room-card-desc">2 letti singoli<br>ognuno nel proprio spazio</div>
+            </label>
+            <label class="room-card stanza-opt" onclick="bruUpdateCompagni(1,this)">
+              <input type="radio" name="b_stanza" value="Matrimoniale">
+              <div class="room-card-icon"><i class="fa-solid fa-bed" style="font-size:1.8rem"></i></div>
+              <div class="room-card-name">Matrimoniale</div>
+              <div class="room-card-desc">1 letto grande<br>ideale per coppie</div>
+            </label>
+            <label class="room-card stanza-opt" onclick="bruUpdateCompagni(2,this)">
+              <input type="radio" name="b_stanza" value="Tripla">
+              <div class="room-card-icon"><i class="fa-solid fa-users"></i></div>
+              <div class="room-card-name">Tripla</div>
+              <div class="room-card-desc">Fino a 3 persone<br>nella stessa stanza</div>
+            </label>
           </div>
-          <div id="b_compagniContainer" class="compagni-dyn" style="display:none;margin-top:1.6rem">
-            <p class="mini-label" style="margin-bottom:.8rem">Compagni di stanza</p>
+
+          <div id="b_compagniContainer" class="compagni-dyn" style="display:none;margin-top:1.2rem">
+            <p class="mini-label" style="margin-bottom:.8rem">Con chi condividi la stanza?</p>
             <div id="b_compagniFields"></div>
           </div>
+
           <div class="form-nav-ed">
             <button class="btn-prev-ed" onclick="bru.prev()">&larr; Indietro</button>
-            <span class="step-count">2 di 3</span>
-            <button class="btn-next-ed" onclick="bru.next()">Avanti &rarr;</button>
+            <button class="btn-next-ed" style="padding:14px 36px;font-size:11px" onclick="bru.next()">Continua &rarr;</button>
           </div>
         </div>
+
+        <!-- ====== STEP 3: Il pacchetto ====== -->
         <div class="form-step-ed" id="b_fs3">
-          <h3 class="fs-title">Pacchetto<br>&amp; conferma</h3>
-          <p class="fs-sub">Scegli il pacchetto, aggiungi note e invia</p>
-          <div class="pkg-radio-grid" style="margin-bottom:2rem">
-            <label class="r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)"><input type="radio" name="b_pkg" value="Pacchetto A"><div class="r-name">Pacchetto A</div><div class="r-info">3 notti &middot; &euro;&mdash;</div></label>
-            <label class="r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)"><input type="radio" name="b_pkg" value="Pacchetto B"><div class="r-name">Pacchetto B</div><div class="r-info">2 notti &middot; &euro;&mdash;</div></label>
-            <label class="r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)"><input type="radio" name="b_pkg" value="Pacchetto C"><div class="r-name">Pacchetto C</div><div class="r-info">1 notte &middot; &euro;&mdash;</div></label>
+          <h3 class="fs-title" style="margin-bottom:.4rem">Il pacchetto</h3>
+          <p class="fs-sub">Scegli il pacchetto e invia la tua iscrizione</p>
+
+          <div class="pkg-cards">
+            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)">
+              <input type="radio" name="b_pkg" value="Pacchetto A">
+              <div class="pkg-card-letter">A</div>
+              <div class="pkg-card-name">Pacchetto A</div>
+              <div class="pkg-card-info">3 notti &middot; &euro;&mdash;</div>
+            </label>
+            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)">
+              <input type="radio" name="b_pkg" value="Pacchetto B">
+              <div class="pkg-card-letter">B</div>
+              <div class="pkg-card-name">Pacchetto B</div>
+              <div class="pkg-card-info">2 notti &middot; &euro;&mdash;</div>
+            </label>
+            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)">
+              <input type="radio" name="b_pkg" value="Pacchetto C">
+              <div class="pkg-card-letter">C</div>
+              <div class="pkg-card-name">Pacchetto C</div>
+              <div class="pkg-card-info">1 notte &middot; &euro;&mdash;</div>
+            </label>
           </div>
-          <div class="fg-ed" style="margin-bottom:2.2rem">
-            <label>Note o richieste particolari</label>
-            <textarea class="fi-ed" id="b_note" placeholder="Allergie, esigenze speciali, informazioni aggiuntive..."></textarea>
+
+          <div class="fg-ed">
+            <label>Note o richieste (facoltativo)</label>
+            <textarea class="fi-ed" id="b_note" placeholder="Allergie, esigenze particolari, altro..."></textarea>
           </div>
-          <div class="riepilogo-ed" id="b_riepilogo"></div>
+
+          <div class="riepilogo-ed" id="b_riepilogo" style="margin-top:1.5rem"></div>
+
           <div class="anticipo-box">
-            <div class="anticipo-lbl">Anticipo da versare</div>
+            <div class="anticipo-lbl">Anticipo richiesto</div>
             <div class="anticipo-val" id="b_anticipo">Da definire</div>
-            <div class="anticipo-note">Riceverai il link di pagamento via email dopo la conferma.</div>
+            <div class="anticipo-note">Riceverai le istruzioni di pagamento via email dopo la conferma.</div>
           </div>
+
           <div class="form-nav-ed">
-            <button class="btn-prev-ed" onclick="bru.prev()">&larr; Modifica</button>
-            <span class="step-count">3 di 3</span>
-            <button class="btn-next-ed" onclick="bru.next()">Invia iscrizione &rarr;</button>
+            <button class="btn-prev-ed" onclick="bru.prev()">&larr; Indietro</button>
+            <button class="btn-next-ed" style="padding:14px 36px;font-size:11px;background:var(--pepper)" onclick="bru.next()">Invia iscrizione &rarr;</button>
           </div>
         </div>
+
         <div class="form-sending-ed" id="b_sending"><div class="spinner-ed"></div><p class="sending-lbl">Invio in corso...</p></div>
-        <div class="form-ok-ed" id="b_ok"><h3>Richiesta<br>inviata.</h3><p>Controlla la tua email. Ti contatteremo appena i dettagli del Brutia Tango Festival saranno disponibili.</p></div>
-        <div class="form-error-ed" id="b_error"><p id="b_errMsg">Si &egrave; verificato un errore. Riprova.</p><button class="btn-retry-ed" onclick="bru.resetError()">Riprova</button></div>
+        <div class="form-ok-ed" id="b_ok">
+          <h3>Iscrizione<br>inviata!</h3>
+          <p>Controlla la tua email. Ti risponderemo appena i dettagli del Brutia Tango Festival saranno disponibili.</p>
+        </div>
+        <div class="form-error-ed" id="b_error">
+          <p id="b_errMsg">Si &egrave; verificato un errore. Riprova.</p>
+          <button class="btn-retry-ed" onclick="bru.resetError()">Riprova</button>
+        </div>
+
       </div>
     </div>
   </section>

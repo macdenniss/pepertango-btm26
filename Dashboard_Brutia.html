@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Brutia Tango Festival</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #f4f5fb;
+      --surface: #ffffff;
+      --ink:     #1a1640;
+      --accent:  #4f46e5;
+      --accent2: #ede9fe;
+      --border:  rgba(79,70,229,0.12);
+      --muted:   rgba(26,22,64,0.45);
+      --danger:  #dc2626;
+      --warn:    #d97706;
+      --ok:      #059669;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); font-size: 14px; }
+
+    /* LOGIN */
+    #loginScreen {
+      position: fixed; inset: 0;
+      background: linear-gradient(135deg, #312e81 0%, #4f46e5 60%, #7c3aed 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; z-index: 999;
+    }
+    .login-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4.5rem; font-weight: 400; letter-spacing: 0.06em;
+      color: #fff; margin-bottom: 0; line-height: 0.95;
+    }
+    .login-sub {
+      font-size: 12px; font-weight: 400; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(255,255,255,0.5);
+      margin-bottom: 3rem; margin-top: 0.6rem;
+    }
+    .login-box {
+      background: rgba(255,255,255,0.95); border-radius: 20px;
+      padding: 2.5rem; width: 340px;
+      box-shadow: 0 20px 60px rgba(49,46,129,0.35);
+    }
+    .login-box label {
+      display: block; font-size: 12px; font-weight: 600;
+      color: var(--muted); margin-bottom: 0.6rem;
+    }
+    .login-box input {
+      width: 100%; padding: 11px 14px; border-radius: 10px;
+      border: 1px solid var(--border); font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; outline: none; margin-bottom: 1.2rem;
+      transition: border-color 0.2s;
+    }
+    .login-box input:focus { border-color: var(--accent); }
+    .login-box button {
+      width: 100%; padding: 12px;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 10px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 600; transition: opacity 0.2s;
+    }
+    .login-box button:hover { opacity: 0.85; }
+    .login-err {
+      color: var(--danger); font-size: 12px;
+      margin-top: 0.8rem; text-align: center; min-height: 18px;
+    }
+
+    /* MAIN LAYOUT */
+    #app { display: none; }
+
+    header {
+      height: 64px; background: var(--accent);
+      border-bottom: none;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; position: sticky; top: 0; z-index: 100;
+    }
+    .header-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem; font-weight: 400; letter-spacing: 0.08em;
+      color: #fff; line-height: 1;
+    }
+    .header-brand em {
+      font-size: 10px; font-family: 'DM Sans', sans-serif;
+      font-style: normal; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5); display: block; margin-top: 1px;
+    }
+    .header-right { display: flex; align-items: center; gap: 1rem; }
+    .btn-refresh {
+      padding: 7px 16px; border-radius: 6px;
+      background: rgba(255,255,255,0.2); color: #fff;
+      border: 1px solid rgba(255,255,255,0.3); cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+      transition: background 0.2s;
+    }
+    .btn-refresh:hover { background: rgba(255,255,255,0.3); }
+    .btn-logout {
+      padding: 7px 16px; border-radius: 6px;
+      background: transparent; color: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.2); cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.02em;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-logout:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+    .last-update { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+    /* TABS */
+    .tab-bar {
+      display: flex; gap: 8px; border-bottom: 1px solid var(--border);
+      background: var(--surface); padding: 12px 2rem 0;
+    }
+    .tab-btn {
+      padding: 9px 18px; border: none; background: none; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 500; color: var(--muted);
+      border-radius: 8px 8px 0 0;
+      border-bottom: 3px solid transparent; margin-bottom: -1px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--accent2); }
+    .tab-btn:hover { color: var(--ink); background: var(--bg); }
+
+    /* CONTENT */
+    .tab-content { display: none; padding: 2rem; }
+    .tab-content.active { display: block; }
+
+    /* STATS CARDS */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--surface); border-radius: 16px;
+      padding: 1.5rem; border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(79,70,229,0.06);
+    }
+    .stat-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+      color: var(--muted); margin-bottom: 0.5rem;
+    }
+    .stat-val {
+      font-size: 2.5rem; font-weight: 400; letter-spacing: -0.02em;
+      line-height: 1; font-family: 'DM Mono', monospace;
+    }
+    .stat-sub {
+      font-size: 11px; color: var(--muted); margin-top: 0.3rem;
+    }
+    .stat-card.green { border-left: 3px solid var(--ok); }
+    .stat-card.orange { border-left: 3px solid var(--warn); }
+    .stat-card.red { border-left: 3px solid var(--danger); }
+    .stat-card.blue { border-left: 3px solid #1565c0; }
+
+    /* MINI STATS */
+    .mini-stats {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .mini-card {
+      background: var(--surface); border-radius: 10px;
+      padding: 1.2rem 1.4rem; border: 1px solid var(--border);
+    }
+    .mini-card-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem;
+    }
+    .cat-row {
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 6px 0;
+      border-bottom: 1px solid var(--border); font-size: 12px;
+    }
+    .cat-row:last-child { border-bottom: none; }
+    .cat-name { font-weight: 600; }
+    .cat-badge {
+      font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 10px;
+      background: var(--accent2); color: var(--accent);
+    }
+
+    /* RECENTI */
+    .section-card {
+      background: var(--surface); border-radius: 12px;
+      border: 1px solid var(--border); overflow: hidden;
+    }
+    .section-card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-card-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    /* TABLE */
+    .tbl-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 10px 16px; text-align: left;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+      color: var(--muted);
+      background: var(--bg); border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+    tbody tr:hover { background: var(--bg); }
+    tbody tr:last-child { border-bottom: none; }
+    td {
+      padding: 11px 16px; font-size: 13px; vertical-align: middle;
+      white-space: nowrap;
+    }
+    td.wrap { white-space: normal; min-width: 140px; }
+
+    /* BADGES */
+    .badge {
+      display: inline-block; padding: 3px 10px; border-radius: 20px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .badge-wait   { background: #fff3e0; color: #e65100; }
+    .badge-ok { background: #e3f2fd; color: #1565c0; }; }
+    .badge-rif    { background: #ffebee; color: #c62828; }
+    .badge-ant    { background: #e3f2fd; color: #1565c0; }
+    .badge-saldo  { background: #e8f5e9; color: #1b5e20; }
+    .badge-cam    { background: #f3e5f5; color: #6a1b9a; }
+
+    /* ACTION BUTTONS */
+    .action-group { display: flex; gap: 6px; flex-wrap: wrap; }
+    .btn-sm {
+      padding: 5px 12px; border-radius: 6px; border: none; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .btn-sm:hover { opacity: 0.8; }
+    .btn-accetta  { background: var(--accent); color: #fff; }
+    .btn-rifiuta  { background: var(--danger); color: #fff; }
+    .btn-ant      { background: #1565c0; color: #fff; }
+    .btn-saldo    { background: #6a1b9a; color: #fff; }
+    .btn-cam      { background: #37474f; color: #fff; }
+    .btn-del      { background: #b71c1c; color: #fff; }
+
+    /* FILTERS */
+    .filters {
+      display: flex; gap: 0.8rem; align-items: center;
+      padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .filter-select {
+      padding: 6px 10px; border-radius: 6px;
+      border: 1px solid var(--border);
+      font-family: 'DM Sans', sans-serif; font-size: 12px;
+      background: var(--surface); outline: none;
+    }
+    .filter-input {
+      padding: 6px 10px; border-radius: 6px;
+      border: 1px solid var(--border);
+      font-family: 'DM Sans', sans-serif; font-size: 12px;
+      outline: none; width: 180px;
+    }
+    .filter-input:focus { border-color: var(--accent); }
+
+    /* CAMERE */
+    .camere-legend {
+      display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+    }
+    .leg-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 500;
+    }
+    .leg-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+    }
+    .leg-dot.libera   { background: #e0e0e0; }
+    .leg-dot.occupata { background: var(--accent); }
+    .leg-dot.parziale { background: var(--warn); }
+
+    .cat-section { margin-bottom: 2.5rem; }
+    .cat-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 1rem; padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .camere-flex { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .cam-chip {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      width: 80px; height: 60px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface);
+      cursor: pointer; transition: all 0.2s;
+      font-size: 10px; font-weight: 700;
+    }
+    .cam-chip.occupata { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .cam-chip.parziale { background: #fff8e1; border-color: var(--warn); color: var(--warn); }
+    .cam-num { font-size: 13px; font-weight: 900; }
+    .cam-tipo { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; }
+
+    /* CONTABILITA */
+    .cont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+    .cont-card {
+      background: var(--surface); border-radius: 12px;
+      padding: 1.5rem; border: 1px solid var(--border);
+    }
+    .cont-card-lbl {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;
+    }
+    .cont-card-val {
+      font-size: 2rem; font-weight: 400; letter-spacing: -0.01em;
+      font-family: 'DM Mono', monospace;
+    }
+    .cont-card-val.green { color: var(--ok); }
+    .cont-card-val.orange { color: var(--warn); }
+
+    /* TOAST */
+    #toast {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--ink); color: #fff;
+      padding: 12px 20px; border-radius: 8px;
+      font-size: 12px; font-weight: 500; letter-spacing: 0.05em;
+      opacity: 0; transition: opacity 0.3s;
+      pointer-events: none; z-index: 999;
+    }
+    #toast.show { opacity: 1; }
+
+    /* MODAL camera */
+    .modal-bg {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); z-index: 500;
+      align-items: center; justify-content: center;
+    }
+    .modal-bg.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 12px;
+      padding: 2rem; width: 380px; max-width: 90vw;
+    }
+    .modal h3 {
+      font-size: 1.3rem; font-weight: 900; letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    .modal label {
+      display: block; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.5rem;
+    }
+    .modal input, .modal select {
+      width: 100%; padding: 9px 12px; border-radius: 6px;
+      border: 1px solid var(--border);
+      font-family: 'DM Sans', sans-serif; font-size: 13px;
+      margin-bottom: 1.2rem; outline: none;
+    }
+    .modal-btns { display: flex; gap: 0.8rem; justify-content: flex-end; }
+    .btn-modal-cancel {
+      padding: 9px 20px; border-radius: 6px;
+      border: 1px solid var(--border); background: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; cursor: pointer;
+    }
+    .btn-modal-ok {
+      padding: 9px 20px; border-radius: 6px;
+      background: var(--accent); color: #fff; border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; cursor: pointer;
+    }
+
+    .empty-state {
+      text-align: center; padding: 60px 20px;
+      color: var(--muted);
+    }
+    .empty-state p { font-size: 1rem; font-weight: 300; }
+
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .mini-stats  { grid-template-columns: 1fr; }
+      .cont-grid   { grid-template-columns: 1fr; }
+      .tab-btn { padding: 12px 10px; font-size: 9px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="loginScreen">
+  <div class="login-logo">Brutia<br>Tango Festival</div>
+  <div class="login-sub">Dashboard amministrativo</div>
+  <div class="login-box">
+    <label>Password</label>
+    <input type="password" id="loginPwd" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">Accedi</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+  <header>
+    <div>
+      <span class="header-brand">Brutia Tango Festival<em>Dashboard amministrativo</em></span>
+    </div>
+    <div class="header-right">
+      <span class="last-update" id="lastUpdate"></span>
+      <button class="btn-refresh" onclick="loadAll()">&#8635; Aggiorna</button>
+      <button class="btn-logout" onclick="logout()">Esci</button>
+    </div>
+  </header>
+
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('overview',this)">Overview</button>
+    <button class="tab-btn" onclick="switchTab('iscritti',this)">Iscritti</button>
+    <button class="tab-btn" onclick="switchTab('camere',this)">Camere</button>
+    <button class="tab-btn" onclick="switchTab('contabilita',this)">Contabilit&agrave;</button>
+  </div>
+
+  <!-- TAB: OVERVIEW -->
+  <div class="tab-content active" id="tab-overview">
+    <div class="stats-grid">
+      <div class="stat-card orange">
+        <div class="stat-label">In attesa</div>
+        <div class="stat-val" id="ov-attesa">—</div>
+        <div class="stat-sub">richieste da approvare</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-label">Accettati</div>
+        <div class="stat-val" id="ov-accettati">—</div>
+        <div class="stat-sub">iscrizioni confermate</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-label">Anticipi versati</div>
+        <div class="stat-val" id="ov-anticipi">—</div>
+        <div class="stat-sub">pagamenti ricevuti</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-label">Incasso anticipo</div>
+        <div class="stat-val" id="ov-incasso">—</div>
+        <div class="stat-sub">euro ricevuti</div>
+      </div>
+    </div>
+
+    <div class="mini-stats">
+      <div class="mini-card">
+        <div class="mini-card-title">Distribuzione pacchetti</div>
+        <div id="ov-pacchetti"><div class="empty-state"><p>Caricamento...</p></div></div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-title">Camere per categoria</div>
+        <div id="ov-camere">
+          <div class="cat-row"><span class="cat-name">Deluxe (#1–50)</span><span class="cat-badge" id="ov-deluxe">—</span></div>
+          <div class="cat-row"><span class="cat-name">Standard (#51–90)</span><span class="cat-badge" id="ov-standard">—</span></div>
+          <div class="cat-row"><span class="cat-name">Economy (#91–120)</span><span class="cat-badge" id="ov-economy">—</span></div>
+        </div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-title">Stato pagamenti</div>
+        <div id="ov-pagamenti"><div class="empty-state"><p>Caricamento...</p></div></div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-card-header">
+        <div class="section-card-title">Ultimi 5 iscritti</div>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>Nome</th><th>Pacchetto</th><th>Ruolo</th><th>Stato</th><th>Pagamento</th><th>Data</th>
+          </tr></thead>
+          <tbody id="ov-recenti"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: ISCRITTI -->
+  <div class="tab-content" id="tab-iscritti">
+    <div class="section-card">
+      <div class="filters">
+        <span class="filter-label">Filtra:</span>
+        <input type="text" class="filter-input" id="f-nome" placeholder="Cerca per nome..." oninput="renderIscritti()">
+        <select class="filter-select" id="f-stato" onchange="renderIscritti()">
+          <option value="">Tutti gli stati</option>
+          <option>In attesa</option>
+          <option>Accettato</option>
+          <option>Rifiutato</option>
+        </select>
+        <select class="filter-select" id="f-pkg" onchange="renderIscritti()">
+          <option value="">Tutti i pacchetti</option>
+          <option>Pacchetto A</option>
+          <option>Pacchetto B</option>
+          <option>Pacchetto C</option>
+          
+        </select>
+        <select class="filter-select" id="f-pag" onchange="renderIscritti()">
+          <option value="">Tutti i pagamenti</option>
+          <option>Non pagato</option>
+          <option>Anticipo versato</option>
+          <option>Saldato</option>
+        </select>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>Nome</th><th>Email</th><th>Pacchetto</th>
+            <th>Ruolo</th><th>Stato</th><th>Pagamento</th>
+            <th>Camera</th><th>Data</th><th>Azioni</th>
+          </tr></thead>
+          <tbody id="tb-iscritti"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: CAMERE -->
+  <div class="tab-content" id="tab-camere">
+    <div id="camere-body"><div class="empty-state"><p>Caricamento camere...</p></div></div>
+  </div>
+
+  <!-- TAB: CONTABILITA -->
+  <div class="tab-content" id="tab-contabilita">
+    <div class="cont-grid">
+      <div class="cont-card">
+        <div class="cont-card-lbl">Incasso anticipi</div>
+        <div class="cont-card-val green" id="c-anticipi">€—</div>
+      </div>
+      <div class="cont-card">
+        <div class="cont-card-lbl">Saldi versati</div>
+        <div class="cont-card-val green" id="c-saldi">€—</div>
+      </div>
+      <div class="cont-card">
+        <div class="cont-card-lbl">Da incassare (saldi)</div>
+        <div class="cont-card-val orange" id="c-daincassare">€—</div>
+      </div>
+      <div class="cont-card">
+        <div class="cont-card-lbl">Totale previsto</div>
+        <div class="cont-card-val" id="c-previsto">€—</div>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="section-card-header"><div class="section-card-title">Dettaglio per iscritto</div></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>Nome</th><th>Pacchetto</th>
+            <th>Prezzo</th><th>Anticipo</th><th>Saldo</th><th>Pagamento</th>
+          </tr></thead>
+          <tbody id="tb-cont"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL camera -->
+<div class="modal-bg" id="modalCam">
+  <div class="modal">
+    <h3>Assegna Camera</h3>
+    <input type="hidden" id="modal-id">
+    <label>Numero Camera</label>
+    <input type="text" id="modal-cam" placeholder="es. 101">
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeModal()">Annulla</button>
+      <button class="btn-modal-ok" onclick="salvaCamera()">Salva</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  /* ============================================================
+     CONFIG
+  ============================================================ */
+  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5lnoBRqshl1YVly5MyjSC3nJUp5sRlo8Wy7QGv8vy34J9XmdPZk2vIDSd_cX2ka17/exec';
+  var EVENTO  = 'Brutia';
+  var PWD     = 'pepertango2026';
+  var allData = [];
+
+  var PREZZI = {
+    'Pacchetto A': { prezzo:0, anticipo:0, saldo:0 },
+    'Pacchetto B': { prezzo:0, anticipo:0, saldo:0 },
+    'Pacchetto C': { prezzo:0, anticipo:0, saldo:0 }
+  };
+
+  /* ============================================================
+     LOGIN
+  ============================================================ */
+  function doLogin() {
+    var v = document.getElementById('loginPwd').value;
+    if (v === PWD) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      loadAll();
+    } else {
+      document.getElementById('loginErr').textContent = 'Password errata.';
+    }
+  }
+  function logout() {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('loginPwd').value = '';
+    document.getElementById('loginErr').textContent = '';
+  }
+
+  /* ============================================================
+     TABS
+  ============================================================ */
+  function switchTab(name, btn) {
+    document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  /* ============================================================
+     DATA LOAD
+  ============================================================ */
+  function loadAll() {
+    var url = APPS_SCRIPT_URL + '?action=getIscritti&evento=' + EVENTO;
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        allData = Array.isArray(data) ? data : (data.data || data.iscritti || []);
+        renderOverview();
+        renderIscritti();
+        renderCamere();
+        renderContabilita();
+        document.getElementById('lastUpdate').textContent = 'Aggiornato: ' + new Date().toLocaleTimeString('it-IT');
+      })
+      .catch(function(e) {
+        console.error(e);
+        toast('Errore caricamento dati. Controlla la connessione.');
+      });
+  }
+
+  /* ============================================================
+     OVERVIEW
+  ============================================================ */
+  function renderOverview() {
+    var attesa = 0, accettati = 0, anticipi = 0, incasso = 0;
+    var pkgCount = {}, pagCount = {};
+    var numProgr = 0, deluxe = 0, std = 0, eco = 0;
+
+    allData.forEach(function(r) {
+      var stato = (r.stato || '').toLowerCase();
+      var pag   = (r.pagamento || '').toLowerCase();
+      if (stato === 'in attesa')  attesa++;
+      if (stato === 'accettato')  accettati++;
+      if (pag.includes('anticipo')) { anticipi++; incasso += 150; }
+      if (pag.includes('saldato'))  { anticipi++; }
+      pkgCount[r.pacchetto] = (pkgCount[r.pacchetto] || 0) + 1;
+      pagCount[r.pagamento] = (pagCount[r.pagamento] || 0) + 1;
+      var n = parseInt(r.numero_progressivo) || 0;
+      if (n >= 1 && n <= 50)  deluxe++;
+      if (n >= 51 && n <= 90) std++;
+      if (n >= 91)            eco++;
+    });
+
+    document.getElementById('ov-attesa').textContent    = attesa;
+    document.getElementById('ov-accettati').textContent = accettati;
+    document.getElementById('ov-anticipi').textContent  = anticipi;
+    document.getElementById('ov-incasso').textContent   = '€' + incasso;
+    document.getElementById('ov-deluxe').textContent    = deluxe + '/50';
+    document.getElementById('ov-standard').textContent  = std + '/40';
+    document.getElementById('ov-economy').textContent   = eco + '/30';
+
+    var pkgHtml = Object.keys(pkgCount).map(function(k) {
+      return '<div class="cat-row"><span class="cat-name">' + k + '</span><span class="cat-badge">' + pkgCount[k] + '</span></div>';
+    }).join('') || '<div class="cat-row"><span style="color:var(--muted)">Nessun dato</span></div>';
+    document.getElementById('ov-pacchetti').innerHTML = pkgHtml;
+
+    var pagHtml = Object.keys(pagCount).map(function(k) {
+      return '<div class="cat-row"><span class="cat-name">' + k + '</span><span class="cat-badge">' + pagCount[k] + '</span></div>';
+    }).join('') || '<div class="cat-row"><span style="color:var(--muted)">Nessun dato</span></div>';
+    document.getElementById('ov-pagamenti').innerHTML = pagHtml;
+
+    /* Ultimi 5 */
+    var last5 = allData.slice(-5).reverse();
+    document.getElementById('ov-recenti').innerHTML = last5.map(function(r) {
+      return '<tr><td>' + (r.numero_progressivo||'—') + '</td>'
+        + '<td><strong>' + (r.nome||'—') + '</strong></td>'
+        + '<td>' + (r.pacchetto||'—') + '</td>'
+        + '<td>' + (r.ruolo||'—') + '</td>'
+        + '<td>' + badgeStato(r.stato) + '</td>'
+        + '<td>' + badgePag(r.pagamento) + '</td>'
+        + '<td>' + formatDate(r.data_iscrizione) + '</td></tr>';
+    }).join('') || '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">Nessun iscritto</td></tr>';
+  }
+
+  /* ============================================================
+     ISCRITTI TABLE
+  ============================================================ */
+  function renderIscritti() {
+    var fNome  = (document.getElementById('f-nome').value  || '').toLowerCase();
+    var fStato = document.getElementById('f-stato').value  || '';
+    var fPkg   = document.getElementById('f-pkg').value    || '';
+    var fPag   = document.getElementById('f-pag').value    || '';
+
+    var filtered = allData.filter(function(r) {
+      if (fNome  && !(r.nome||'').toLowerCase().includes(fNome)) return false;
+      if (fStato && (r.stato||'') !== fStato) return false;
+      if (fPkg   && (r.pacchetto||'') !== fPkg) return false;
+      if (fPag   && (r.pagamento||'') !== fPag) return false;
+      return true;
+    });
+
+    document.getElementById('tb-iscritti').innerHTML = filtered.map(function(r) {
+      var id = r.id || r.numero_progressivo;
+      return '<tr>'
+        + '<td>' + (r.numero_progressivo||'—') + '</td>'
+        + '<td class="wrap"><strong>' + (r.nome||'—') + '</strong>'
+          + (r.email ? '<br><small style="color:var(--muted)">' + r.email + '</small>' : '') + '</td>'
+        + '<td>' + (r.email||'—') + '</td>'
+        + '<td>' + (r.pacchetto||'—') + '</td>'
+        + '<td>' + (r.ruolo||'—') + '</td>'
+        + '<td>' + badgeStato(r.stato) + '</td>'
+        + '<td>' + badgePag(r.pagamento) + '</td>'
+        + '<td>' + (r.camera || '<span style="color:var(--muted)">—</span>') + '</td>'
+        + '<td>' + formatDate(r.data_iscrizione) + '</td>'
+        + '<td><div class="action-group">'
+          + (r.stato !== 'Accettato' && r.stato !== 'Rifiutato' ? '<button class="btn-sm btn-accetta" onclick="aggiornaStato(\'' + id + '\',\'Accettato\')">Accetta</button>' : '')
+          + (r.stato !== 'Rifiutato' ? '<button class="btn-sm btn-rifiuta" onclick="aggiornaStato(\'' + id + '\',\'Rifiutato\')">Rifiuta</button>' : '')
+          + (r.stato === 'Accettato' && (!r.pagamento || r.pagamento === 'Non pagato') ? '<button class="btn-sm btn-ant" onclick="aggiornaPag(\'' + id + '\',\'Anticipo versato\')">Anticipo &check;</button>' : '')
+          + (r.pagamento === 'Anticipo versato' ? '<button class="btn-sm btn-saldo" onclick="aggiornaPag(\'' + id + '\',\'Saldato\')">Saldo &check;</button>' : '')
+          + '<button class="btn-sm btn-cam" onclick="openModal(\'' + id + '\')">Camera</button>'
+          + '<button class="btn-sm btn-del" onclick="elimina(\'' + id + '\')">&#215;</button>'
+        + '</div></td>'
+        + '</tr>';
+    }).join('') || '<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--muted)">Nessun risultato</td></tr>';
+  }
+
+  /* ============================================================
+     CAMERE
+  ============================================================ */
+  function renderCamere() {
+    /* Brutia non ha categorie camera: mostra semplice lista degli assegnati */
+    var assegnati = allData.filter(function(r) { return r.camera; });
+
+    if (assegnati.length === 0) {
+      document.getElementById('camere-body').innerHTML =
+        '<div class="empty-state"><p>Nessuna camera assegnata</p></div>';
+      return;
+    }
+
+    var righe = assegnati.map(function(r) {
+      return '<tr>'
+        + '<td><strong>' + r.camera + '</strong></td>'
+        + '<td>' + (r.nome || '—') + '</td>'
+        + '<td>' + (r.pacchetto || '—') + '</td>'
+        + '<td>' + badgeStato(r.stato) + '</td>'
+        + '<td><button class="btn-sm btn-cam" onclick="openModal(\'' + (r.id||r.numero_progressivo) + '\')">'
+        + 'Modifica</button></td>'
+        + '</tr>';
+    }).join('');
+
+    document.getElementById('camere-body').innerHTML =
+      '<div class="section-card"><div class="tbl-wrap"><table>'
+      + '<thead><tr><th>Camera</th><th>Iscritto</th><th>Pacchetto</th><th>Stato</th><th>Azioni</th></tr></thead>'
+      + '<tbody>' + righe + '</tbody>'
+      + '</table></div></div>';
+  }
+
+  /* ============================================================
+     CONTABILITA
+  ============================================================ */
+  function renderContabilita() {
+    var totAnticipo = 0, totSaldi = 0, totPrevisto = 0, daIncassare = 0;
+
+    var rows = allData.map(function(r) {
+      var info = PREZZI[r.pacchetto] || { prezzo:0, anticipo:0, saldo:0 };
+      var pag  = (r.pagamento || '');
+      var antVersato  = pag.includes('Anticipo') || pag.includes('Saldato') ? info.anticipo : 0;
+      var saldoVersato = pag.includes('Saldato') ? info.saldo : 0;
+      totAnticipo += antVersato;
+      totSaldi    += saldoVersato;
+      totPrevisto += info.prezzo;
+      if (pag.includes('Anticipo') && !pag.includes('Saldato')) daIncassare += info.saldo;
+
+      return '<tr><td>' + (r.numero_progressivo||'—') + '</td>'
+        + '<td><strong>' + (r.nome||'—') + '</strong></td>'
+        + '<td>' + (r.pacchetto||'—') + '</td>'
+        + '<td>&euro;' + info.prezzo + '</td>'
+        + '<td>' + (antVersato ? '<span style="color:var(--ok)">&euro;' + antVersato + '</span>' : '<span style="color:var(--muted)">—</span>') + '</td>'
+        + '<td>' + (saldoVersato ? '<span style="color:var(--ok)">&euro;' + saldoVersato + '</span>' : (info.saldo ? '<span style="color:var(--muted)">&euro;' + info.saldo + '</span>' : '—')) + '</td>'
+        + '<td>' + badgePag(r.pagamento) + '</td>'
+        + '</tr>';
+    }).join('') || '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted)">Nessun dato</td></tr>';
+
+    document.getElementById('c-anticipi').textContent    = '€' + totAnticipo;
+    document.getElementById('c-saldi').textContent       = '€' + totSaldi;
+    document.getElementById('c-daincassare').textContent = '€' + daIncassare;
+    document.getElementById('c-previsto').textContent    = '€' + totPrevisto;
+    document.getElementById('tb-cont').innerHTML = rows;
+  }
+
+  /* ============================================================
+     ACTIONS
+  ============================================================ */
+  function callAction(params, cb) {
+    var url = APPS_SCRIPT_URL + '?' + Object.keys(params).map(function(k) {
+      return k + '=' + encodeURIComponent(params[k]);
+    }).join('&');
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(d) { if (cb) cb(d); loadAll(); })
+      .catch(function(e) { toast('Errore: ' + e.message); });
+  }
+
+  function aggiornaStato(id, stato) {
+    if (!confirm('Impostare stato "' + stato + '" per #' + id + '?')) return;
+    callAction({ action:'aggiornaStato', id:id, stato:stato, evento:EVENTO });
+    toast('Stato aggiornato.');
+  }
+  function aggiornaPag(id, pag) {
+    if (!confirm('Impostare pagamento "' + pag + '" per #' + id + '?')) return;
+    callAction({ action:'aggiornaPagamento', id:id, pagamento:pag, evento:EVENTO });
+    toast('Pagamento aggiornato.');
+  }
+  function elimina(id) {
+    if (!confirm('Eliminare definitivamente l\'iscrizione #' + id + '?')) return;
+    callAction({ action:'eliminaIscrizione', id:id, evento:EVENTO });
+    toast('Iscrizione eliminata.');
+  }
+
+  /* Camera modal */
+  function openModal(id) {
+    document.getElementById('modal-id').value = id;
+    document.getElementById('modal-cam').value = '';
+    document.getElementById('modalCam').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('modalCam').classList.remove('open');
+  }
+  function salvaCamera() {
+    var id   = document.getElementById('modal-id').value;
+    var cam  = document.getElementById('modal-cam').value.trim();
+    var tipo = '';
+    if (!cam) { alert('Inserisci il numero camera.'); return; }
+    closeModal();
+    callAction({ action:'assegnaCameraManuale', id:id, camera:cam, tipoCamera:tipo, evento:EVENTO });
+    toast('Camera assegnata.');
+  }
+
+  /* ============================================================
+     HELPERS
+  ============================================================ */
+  function badgeStato(s) {
+    var m = { 'In attesa':'badge-wait', 'Accettato':'badge-ok', 'Rifiutato':'badge-rif' };
+    return '<span class="badge ' + (m[s]||'badge-wait') + '">' + (s||'In attesa') + '</span>';
+  }
+  function badgePag(p) {
+    var m = { 'Non pagato':'badge-wait', 'Anticipo versato':'badge-ant', 'Saldato':'badge-saldo' };
+    return '<span class="badge ' + (m[p]||'badge-wait') + '">' + (p||'Non pagato') + '</span>';
+  }
+  function formatDate(d) {
+    if (!d) return '—';
+    try { return new Date(d).toLocaleDateString('it-IT'); } catch(e) { return d; }
+  }
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 3000);
+  }
+</script>
+</body>
+</html>

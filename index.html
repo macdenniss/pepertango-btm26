@@ -5,17 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PeperTango — Maratona Tango Piccante &amp; Brutia Tango Festival</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;300;400;500;700;900&family=Playfair+Display:ital,wght@0,400;1,300;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     /* ============================================================
        TOKENS
     ============================================================ */
     :root {
-      --base:    #fdf8f3;
-      --surface: #f5f0eb;
-      --ink:     #262626;
-      --rose:    #d62b0f;
+      --pepper:  #E63412;
+      --fire:    #F2870A;
+      --sun:     #F5C027;
+      --ink:     #1A1814;
+      --base:    #FFFBF4;
+      --surface: #FFF3E0;
+      --warm:    #F7EDD8;
+      --muted:   rgba(26,24,20,.55);
       --ease:    cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -31,870 +35,926 @@
       overflow-x: hidden;
     }
     a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
 
     /* ============================================================
        NAV
     ============================================================ */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      height: 80px;
+      height: 72px;
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 5%;
-      background: rgba(253, 248, 243, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(38, 38, 38, 0.05);
+      background: var(--ink);
+      border-bottom: 1px solid rgba(255,255,255,.06);
     }
     .nav-brand {
-      font-size: 1.25rem; font-weight: 900;
+      font-size: 1.1rem; font-weight: 900;
       letter-spacing: -0.02em; text-transform: uppercase;
+      color: var(--pepper);
     }
+    .nav-brand span { color: rgba(255,255,255,.9); }
     .nav-links {
       display: flex; gap: 2.5rem; list-style: none;
     }
     .nav-links a {
       font-size: 10px; font-weight: 700;
       letter-spacing: 0.2em; text-transform: uppercase;
-      transition: color 0.3s;
+      color: rgba(255,255,255,.55);
+      transition: color 0.25s;
     }
-    .nav-links a:hover { color: var(--rose); }
+    .nav-links a:hover { color: var(--fire); }
     .nav-cta {
-      background: var(--rose); color: var(--ink);
-      padding: 10px 26px; border-radius: 100px;
+      background: var(--pepper); color: #fff;
+      padding: 9px 24px; border-radius: 100px;
       font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
       text-transform: uppercase;
-      transition: opacity 0.3s;
+      transition: background 0.25s;
     }
-    .nav-cta:hover { opacity: 0.75; }
+    .nav-cta:hover { background: var(--fire); }
 
     /* ============================================================
        HERO
     ============================================================ */
     .hero {
-      min-height: 100vh; padding-top: 80px;
-      display: grid; grid-template-columns: 7fr 5fr;
-      align-items: center; gap: 5%;
+      min-height: 100vh; padding-top: 72px;
+      background: var(--ink);
+      display: flex; flex-direction: column; justify-content: center;
       padding-left: 5%; padding-right: 5%;
+      position: relative; overflow: hidden;
     }
-    .hero-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.4em;
-      text-transform: uppercase; color: var(--rose); margin-bottom: 2rem;
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(242,135,10,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.45em;
+      text-transform: uppercase; color: var(--fire);
+      margin-bottom: 2rem;
     }
     .hero-hl {
-      font-size: 15vw; font-weight: 900; line-height: 0.8;
-      letter-spacing: -0.05em; text-transform: uppercase;
+      font-size: clamp(4rem, 12vw, 11rem);
+      font-weight: 900; line-height: 0.82;
+      letter-spacing: -0.04em; text-transform: uppercase;
+      color: #fff; position: relative; z-index: 1;
     }
     .hero-hl em {
-      font-style: italic; font-weight: 100;
-      color: var(--rose); text-transform: lowercase;
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-weight: 300;
+      color: var(--pepper); text-transform: lowercase;
     }
-    .hero-body {
-      margin-top: 2.5rem; font-size: 1.25rem; font-weight: 300;
-      line-height: 1.65; color: rgba(38,38,38,.7); max-width: 440px;
+    .hero-sub {
+      margin-top: 2.5rem;
+      font-size: 1.1rem; font-weight: 300; line-height: 1.7;
+      color: rgba(255,255,255,.5);
+      max-width: 500px;
     }
-    .hero-link {
-      display: inline-block; margin-top: 2rem;
+    .hero-actions {
+      display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap;
+    }
+    .hero-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; border-radius: 100px;
       font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
-      text-transform: uppercase;
-      border-bottom: 2px solid var(--rose); padding-bottom: 4px;
-      transition: color 0.3s;
+      text-transform: uppercase; transition: all 0.25s;
     }
-    .hero-link:hover { color: var(--rose); }
-    .hero-right { position: relative; }
-    .hero-card {
-      aspect-ratio: 4/5; border-radius: 24px;
-      overflow: hidden; position: relative;
+    .hero-btn.primary { background: var(--pepper); color: #fff; }
+    .hero-btn.primary:hover { background: var(--fire); }
+    .hero-btn.outline { border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.7); }
+    .hero-btn.outline:hover { border-color: var(--fire); color: var(--fire); }
+    .hero-scroll {
+      position: absolute; bottom: 3rem; left: 5%;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.35em;
+      text-transform: uppercase; color: rgba(255,255,255,.25);
+      display: flex; align-items: center; gap: 10px;
     }
-    .hero-card img {
-      width: 100%; height: 100%; object-fit: cover;
-      filter: grayscale(100%);
-      transition: filter 1s var(--ease), transform 1s var(--ease);
-      display: block;
+    .hero-scroll::after {
+      content: ''; display: block; width: 50px; height: 1px;
+      background: rgba(255,255,255,.15);
     }
-    .hero-card:hover img { filter: grayscale(0%); transform: scale(1.08); }
-    .hero-badge {
-      position: absolute; bottom: -40px; left: -50px;
-      width: 160px; height: 160px; border-radius: 50%;
-      background: var(--rose);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      animation: bounce-slow 4s ease-in-out infinite;
-      z-index: 2;
+    /* Floating pills */
+    .hero-pills {
+      position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 16px;
     }
-    .hero-badge-num {
-      font-size: 2.8rem; font-style: italic; font-weight: 700;
-      color: var(--ink); line-height: 1;
+    .h-pill {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px; padding: 20px 24px; min-width: 220px;
+      transition: border-color 0.3s, background 0.3s;
+      cursor: pointer;
     }
-    .hero-badge-lbl {
-      font-size: 8px; font-weight: 900; letter-spacing: 0.4em;
-      text-transform: uppercase; color: var(--ink); margin-top: 4px;
+    .h-pill:hover { background: rgba(242,135,10,.08); border-color: rgba(242,135,10,.4); }
+    .h-pill-num { font-size: 10px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--fire); margin-bottom: 8px; }
+    .h-pill-name { font-size: 1.1rem; font-weight: 900; text-transform: uppercase; color: #fff; letter-spacing: -0.02em; line-height: 1; margin-bottom: 6px; }
+    .h-pill-date { font-size: 11px; color: rgba(255,255,255,.35); font-weight: 400; }
+    .h-pill-arrow { font-size: 10px; color: var(--fire); margin-top: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+
+    /* ============================================================
+       SECTION SHARED
+    ============================================================ */
+    .section-tag {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.4em;
+      text-transform: uppercase; color: var(--pepper);
+      margin-bottom: 1.2rem; display: block;
     }
-    @keyframes bounce-slow {
-      0%,100% { transform: translateY(-5%); }
-      50%      { transform: translateY(5%); }
+    .section-hl {
+      font-size: clamp(2.5rem, 7vw, 6rem);
+      font-weight: 900; letter-spacing: -0.04em;
+      line-height: 0.87; text-transform: uppercase;
+    }
+    .section-hl em {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-weight: 300;
+      color: var(--pepper); text-transform: lowercase;
     }
 
     /* ============================================================
-       EVENTS INTRO (alternating bg)
+       EVENTS INTRO
     ============================================================ */
     .events-intro {
-      background: var(--surface);
-      padding: 130px 5% 110px;
+      background: var(--base);
+      padding: 120px 5% 100px;
     }
     .events-intro-head {
-      display: grid; grid-template-columns: 7fr 5fr;
-      gap: 5%; align-items: flex-end; margin-bottom: 80px;
+      display: grid; grid-template-columns: 6fr 6fr;
+      gap: 5%; align-items: flex-end; margin-bottom: 70px;
     }
-    .section-hl {
-      font-size: 8vw; font-weight: 900; letter-spacing: -0.05em;
-      line-height: 0.85; text-transform: uppercase;
-    }
-    .section-hl em { font-style: italic; font-weight: 100; color: var(--rose); }
-    .section-sub {
-      font-size: 1rem; font-weight: 300;
-      line-height: 1.7; color: rgba(38,38,38,.65);
+    .events-intro-sub {
+      font-size: 1rem; font-weight: 300; line-height: 1.75;
+      color: var(--muted);
     }
     .events-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
     }
     .ev-card {
-      padding: 56px 50px;
-      border: 1px solid rgba(38,38,38,.1);
-      background: var(--base); cursor: pointer;
-      transition: background 0.8s var(--ease);
+      border-radius: 20px; padding: 44px 40px;
+      border: 1px solid rgba(26,24,20,.08);
+      background: var(--warm);
+      cursor: pointer; position: relative; overflow: hidden;
+      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
     }
-    .ev-card:hover { background: var(--rose); }
+    .ev-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--pepper);
+      transform: translateY(101%);
+      transition: transform 0.6s var(--ease);
+      z-index: 0;
+    }
+    .ev-card:hover { transform: translateY(-4px); box-shadow: 0 24px 60px rgba(26,24,20,.12); }
+    .ev-card:hover::before { transform: translateY(0); }
+    .ev-card > * { position: relative; z-index: 1; }
     .ev-card-num {
       font-size: 10px; font-weight: 700; letter-spacing: 0.4em;
-      text-transform: uppercase; color: var(--rose);
-      margin-bottom: 2rem;
-      transition: color 0.4s;
+      text-transform: uppercase; color: var(--pepper);
+      margin-bottom: 1.5rem;
+      transition: color 0.3s;
     }
-    .ev-card:hover .ev-card-num { color: var(--ink); }
+    .ev-card:hover .ev-card-num { color: rgba(255,255,255,.65); }
     .ev-card-title {
-      font-size: 2.8rem; font-weight: 900; letter-spacing: -0.03em;
-      text-transform: uppercase; line-height: 0.9; margin-bottom: 1.5rem;
+      font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 900;
+      letter-spacing: -0.03em; text-transform: uppercase;
+      line-height: 0.9; margin-bottom: 1.2rem;
+      transition: color 0.3s;
     }
+    .ev-card:hover .ev-card-title { color: #fff; }
     .ev-card-desc {
-      font-size: 1rem; font-weight: 300; line-height: 1.7;
-      color: rgba(38,38,38,.65); max-width: 380px;
-      transition: color 0.4s;
+      font-size: .95rem; font-weight: 300; line-height: 1.7;
+      color: rgba(26,24,20,.6); max-width: 360px;
+      transition: color 0.3s;
     }
-    .ev-card:hover .ev-card-desc { color: var(--ink); }
+    .ev-card:hover .ev-card-desc { color: rgba(255,255,255,.75); }
     .ev-card-cta {
       display: inline-block; margin-top: 2rem;
       font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
       text-transform: uppercase;
-      border-bottom: 1px solid currentColor; padding-bottom: 3px;
+      border-bottom: 1.5px solid currentColor; padding-bottom: 3px;
+      transition: color 0.3s;
     }
+    .ev-card:hover .ev-card-cta { color: #fff; }
 
     /* ============================================================
-       EVENT SECTION (shared)
+       EVENT SECTION (MTP / BRUTIA)
     ============================================================ */
-    .event-section { padding: 140px 5% 100px; }
-    .event-section.surface { background: var(--surface); }
+    .event-section { padding: 130px 5% 90px; }
+    .event-section.dark { background: var(--ink); color: #fff; }
+    .event-section.light { background: var(--base); }
+    .event-section.warm-bg { background: var(--surface); }
 
-    .ev-section-head {
-      display: grid; grid-template-columns: 7fr 5fr;
-      gap: 5%; margin-bottom: 100px; align-items: flex-end;
+    .ev-head {
+      display: grid; grid-template-columns: 6fr 6fr;
+      gap: 5%; margin-bottom: 80px; align-items: flex-end;
     }
-    .ev-section-hl {
-      font-size: 10vw; font-weight: 900; letter-spacing: -0.05em;
-      line-height: 0.8; text-transform: uppercase;
+    .ev-head-hl {
+      font-size: clamp(3rem, 8vw, 7.5rem);
+      font-weight: 900; letter-spacing: -0.05em;
+      line-height: 0.82; text-transform: uppercase;
     }
-    .ev-section-hl em { font-style: italic; font-weight: 100; color: var(--rose); }
-    .ev-section-tag {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.4em;
-      text-transform: uppercase; color: var(--rose); margin-bottom: 1.2rem;
+    .ev-head-hl em {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-weight: 300;
+      color: var(--pepper); text-transform: lowercase;
     }
-    .ev-section-body {
-      font-size: 1.05rem; font-weight: 300;
-      line-height: 1.75; color: rgba(38,38,38,.65);
+    .event-section.dark .ev-head-hl { color: #fff; }
+    .ev-head-body { font-size: 1rem; font-weight: 300; line-height: 1.75; color: var(--muted); }
+    .event-section.dark .ev-head-body { color: rgba(255,255,255,.5); }
+    .ev-head-body .section-tag { margin-bottom: 0.8rem; }
+    .ev-photo {
+      border-radius: 18px; overflow: hidden;
+      aspect-ratio: 21/8; margin-bottom: 70px;
     }
+    .ev-photo img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(100%);
+      transition: filter 1.2s var(--ease), transform 1.2s var(--ease);
+    }
+    .ev-photo:hover img { filter: grayscale(0%); transform: scale(1.04); }
 
     /* ============================================================
        PACKAGES GRID
     ============================================================ */
     .pkg-label {
       font-size: 10px; font-weight: 700; letter-spacing: 0.4em;
-      text-transform: uppercase; color: var(--rose); margin-bottom: 2.5rem;
+      text-transform: uppercase; color: var(--pepper); margin-bottom: 24px;
+      display: block;
     }
     .pkg-grid {
-      display: grid; gap: 0;
-      border: 1px solid rgba(38,38,38,.1);
-      margin-bottom: 0;
+      display: grid; gap: 16px; margin-bottom: 70px;
     }
     .pkg-grid-4 { grid-template-columns: repeat(4,1fr); }
     .pkg-grid-3 { grid-template-columns: repeat(3,1fr); }
 
     .pkg-item {
-      padding: 40px; border: 1px solid rgba(38,38,38,.08);
-      background: var(--base); cursor: pointer;
-      transition: background 0.8s var(--ease);
-      position: relative;
+      border-radius: 18px; padding: 32px 28px;
+      border: 1.5px solid rgba(26,24,20,.08);
+      background: var(--warm); cursor: pointer; position: relative;
+      transition: all 0.35s var(--ease);
     }
-    .event-section.surface .pkg-item { background: var(--surface); }
-    .pkg-item:hover, .pkg-item.selected { background: var(--rose); }
-
+    .event-section.dark .pkg-item { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.1); }
+    .pkg-item:hover, .pkg-item.selected {
+      background: var(--pepper); border-color: var(--pepper);
+      transform: translateY(-3px); box-shadow: 0 16px 48px rgba(230,52,18,.25);
+    }
     .pkg-big-num {
-      font-size: 5.5rem; font-weight: 100; line-height: 1;
-      color: var(--rose); letter-spacing: -0.04em;
-      transition: color 0.4s;
+      font-size: 4.5rem; font-weight: 100; line-height: 1;
+      color: var(--pepper); letter-spacing: -0.04em;
+      transition: color 0.3s;
     }
-    .pkg-item:hover .pkg-big-num,
-    .pkg-item.selected .pkg-big-num { color: var(--ink); }
+    .pkg-item:hover .pkg-big-num, .pkg-item.selected .pkg-big-num { color: rgba(255,255,255,.5); }
     .pkg-notti-lbl {
       font-size: 10px; font-weight: 700; letter-spacing: 0.3em;
-      text-transform: uppercase; color: rgba(38,38,38,.35);
-      display: block; margin-bottom: 1.5rem;
-      transition: color 0.4s;
+      text-transform: uppercase; color: rgba(26,24,20,.3);
+      display: block; margin-bottom: 1.2rem; transition: color 0.3s;
     }
-    .pkg-item:hover .pkg-notti-lbl,
-    .pkg-item.selected .pkg-notti-lbl { color: rgba(38,38,38,.6); }
+    .pkg-item:hover .pkg-notti-lbl, .pkg-item.selected .pkg-notti-lbl { color: rgba(255,255,255,.55); }
     .pkg-name {
+      font-size: 1.25rem; font-weight: 900; letter-spacing: -0.02em;
+      text-transform: uppercase; margin-bottom: 0.3rem;
+      transition: color 0.3s;
+    }
+    .pkg-item:hover .pkg-name, .pkg-item.selected .pkg-name { color: #fff; }
+    .pkg-date {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(26,24,20,.35);
+      margin-bottom: 1.2rem; transition: color 0.3s;
+    }
+    .pkg-item:hover .pkg-date, .pkg-item.selected .pkg-date { color: rgba(255,255,255,.6); }
+    .pkg-price {
+      font-size: 2rem; font-weight: 900; letter-spacing: -0.03em;
+      transition: color 0.3s;
+    }
+    .pkg-item:hover .pkg-price, .pkg-item.selected .pkg-price { color: #fff; }
+    .pkg-anticipo {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.08em;
+      color: rgba(26,24,20,.35); margin-top: 0.25rem; transition: color 0.3s;
+    }
+    .pkg-item:hover .pkg-anticipo, .pkg-item.selected .pkg-anticipo { color: rgba(255,255,255,.6); }
+    .pkg-btn {
+      margin-top: 1.8rem;
+      background: var(--ink); color: #fff;
+      padding: 10px 20px; border-radius: 100px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; border: none; cursor: pointer;
+      font-family: inherit; transition: all 0.25s;
+      display: inline-block;
+    }
+    .pkg-item:hover .pkg-btn, .pkg-item.selected .pkg-btn { background: #fff; color: var(--pepper); }
+
+    /* ============================================================
+       FORM WRAPPER
+    ============================================================ */
+    .form-section {
+      margin-top: 40px;
+      background: #fff;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(26,24,20,.08);
+      box-shadow: 0 8px 48px rgba(26,24,20,.07);
+    }
+    .form-label {
+      padding: 18px 32px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.35em;
+      text-transform: uppercase; color: rgba(26,24,20,.4);
+      background: var(--warm);
+      border-bottom: 1px solid rgba(26,24,20,.07);
+    }
+    .form-layout {
+      display: grid; grid-template-columns: 220px 1fr;
+    }
+    /* SIDEBAR */
+    .form-sidebar-ed {
+      border-right: 1px solid rgba(26,24,20,.07);
+      padding: 32px 24px; background: var(--surface);
+    }
+    .fsn { display: flex; flex-direction: column; gap: 6px; }
+    .fsn-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px; border-radius: 12px;
+      cursor: default; transition: background 0.25s;
+    }
+    .fsn-item.active { background: #fff; box-shadow: 0 2px 12px rgba(26,24,20,.06); }
+    .fsn-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      background: rgba(26,24,20,.08); color: rgba(26,24,20,.4);
+      flex-shrink: 0; transition: all 0.25s;
+    }
+    .fsn-item.active .fsn-num { background: var(--pepper); color: #fff; }
+    .fsn-item.done .fsn-num { background: var(--ink); color: #fff; }
+    .fsn-lbl {
+      font-size: 12px; font-weight: 600; color: rgba(26,24,20,.35);
+      text-transform: uppercase; letter-spacing: 0.1em;
+      transition: color 0.25s;
+    }
+    .fsn-item.active .fsn-lbl { color: var(--ink); }
+    .fsn-item.done .fsn-lbl { color: rgba(26,24,20,.55); }
+    /* Progress bar */
+    .form-prog-wrap {
+      height: 3px; background: rgba(26,24,20,.07); position: relative;
+    }
+    .form-prog-bar {
+      height: 100%; background: var(--pepper);
+      transition: width 0.5s var(--ease);
+    }
+
+    /* ============================================================
+       BRUTIA HORIZONTAL PROGRESS
+    ============================================================ */
+    .bru-prog {
+      display: flex; align-items: flex-start; padding: 24px 32px;
+      border-bottom: 1px solid rgba(26,24,20,.07);
+      background: var(--surface);
+    }
+    .bru-pd {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      flex: 0 0 auto;
+    }
+    .bru-dot {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1.5px solid rgba(26,24,20,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: rgba(26,24,20,.35);
+      transition: all 0.3s;
+    }
+    .bru-dot-lbl {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(26,24,20,.35);
+      transition: color 0.3s; white-space: nowrap;
+    }
+    .bru-pd.active .bru-dot { background: var(--pepper); border-color: var(--pepper); color: #fff; }
+    .bru-pd.active .bru-dot-lbl { color: var(--ink); }
+    .bru-pd.done .bru-dot { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .bru-pd.done .bru-dot-lbl { color: rgba(26,24,20,.55); }
+    .bru-line {
+      flex: 1; height: 1px; background: rgba(26,24,20,.12);
+      margin: 16px 10px 22px;
+    }
+    .bru-pd.done + .bru-line { background: var(--ink); }
+
+    /* ============================================================
+       FORM STEPS (shared)
+    ============================================================ */
+    #m_body, #b_body {
+      padding: 36px 32px;
+    }
+    .form-step-ed { display: none; }
+    .form-step-ed.active { display: block; }
+    .fs-title {
+      font-size: 2rem; font-weight: 900; letter-spacing: -0.03em;
+      line-height: 0.9; text-transform: uppercase; margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    .fs-sub {
+      font-size: .9rem; font-weight: 300; color: var(--muted);
+      margin-bottom: 2rem; line-height: 1.5;
+    }
+    .f-row-ed { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .fg-ed { margin-bottom: 18px; }
+    .fg-ed label {
+      display: block; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(26,24,20,.45); margin-bottom: 6px;
+    }
+    .fi-ed {
+      width: 100%; height: 44px;
+      border: none; border-bottom: 1.5px solid rgba(26,24,20,.15);
+      background: transparent; padding: 0 4px;
+      font-family: inherit; font-size: 15px; font-weight: 400;
+      color: var(--ink); outline: none; transition: border-color 0.2s;
+    }
+    .fi-ed:focus { border-bottom-color: var(--pepper); }
+    .fi-ed::placeholder { color: rgba(26,24,20,.2); }
+    textarea.fi-ed {
+      height: 90px; resize: vertical; padding: 10px;
+      border: 1px solid rgba(26,24,20,.12); border-radius: 8px;
+    }
+    textarea.fi-ed:focus { border-color: var(--pepper); outline: none; }
+    .mini-label {
+      display: block; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(26,24,20,.4); margin-bottom: 10px; margin-top: 4px;
+    }
+
+    /* Radio options */
+    .pkg-radio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.8rem; }
+    .ruolo-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.8rem; }
+    .r-opt-ed {
+      display: block; padding: 14px 16px; border-radius: 12px;
+      border: 1.5px solid rgba(26,24,20,.1); cursor: pointer;
+      background: var(--surface); transition: all 0.2s;
+    }
+    .r-opt-ed:hover { border-color: var(--fire); }
+    .r-opt-ed.sel { border-color: var(--pepper); background: rgba(230,52,18,.05); }
+    .r-opt-ed input { display: none; }
+    .r-name { font-size: 13px; font-weight: 700; color: var(--ink); }
+    .r-info { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .r-opt-ed.sel .r-info { color: var(--pepper); }
+
+    /* Stanza options */
+    .stanza-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 1.8rem; }
+    .stanza-opt {
+      display: block; padding: 18px 12px; border-radius: 12px; text-align: center;
+      border: 1.5px solid rgba(26,24,20,.1); cursor: pointer;
+      background: var(--surface); transition: all 0.2s;
+    }
+    .stanza-opt:hover { border-color: var(--fire); }
+    .stanza-opt.sel { border-color: var(--pepper); background: rgba(230,52,18,.05); }
+    .stanza-opt input { display: none; }
+    .s-ico { font-size: 1.4rem; color: rgba(26,24,20,.3); margin-bottom: 8px; transition: color 0.2s; }
+    .stanza-opt.sel .s-ico { color: var(--pepper); }
+    .s-name { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); }
+    .s-sub { font-size: 10px; color: rgba(26,24,20,.4); margin-top: 3px; }
+    .compagni-dyn { margin-top: 1.5rem; }
+
+    /* Form nav */
+    .form-nav-ed {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 2.5rem; padding-top: 1.5rem;
+      border-top: 1px solid rgba(26,24,20,.07);
+    }
+    .btn-next-ed {
+      background: var(--pepper); color: #fff;
+      border: none; border-radius: 100px;
+      padding: 12px 28px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; cursor: pointer; font-family: inherit;
+      transition: background 0.25s;
+    }
+    .btn-next-ed:hover { background: var(--fire); }
+    .btn-prev-ed {
+      background: none; border: none; cursor: pointer;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: rgba(26,24,20,.35);
+      font-family: inherit; transition: color 0.2s;
+    }
+    .btn-prev-ed:hover { color: var(--ink); }
+    .step-count { font-size: 11px; color: rgba(26,24,20,.3); font-weight: 500; }
+
+    /* Riepilogo */
+    .riepilogo-ed {
+      border: 1px solid rgba(26,24,20,.08); border-radius: 12px;
+      overflow: hidden; margin-bottom: 20px;
+    }
+    .rr {
+      display: flex; justify-content: space-between;
+      padding: 11px 16px; border-bottom: 1px solid rgba(26,24,20,.06);
+    }
+    .rr:last-child { border-bottom: none; }
+    .rl { font-size: 12px; color: rgba(26,24,20,.45); }
+    .rv { font-size: 12px; font-weight: 600; color: var(--ink); }
+    .rv.rose { color: var(--pepper); font-weight: 900; }
+
+    /* Anticipo box */
+    .anticipo-box {
+      background: rgba(230,52,18,.05);
+      border-left: 3px solid var(--pepper);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 16px; margin-bottom: 20px;
+    }
+    .anticipo-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(26,24,20,.45); }
+    .anticipo-val { font-size: 1.8rem; font-weight: 900; color: var(--pepper); line-height: 1.1; }
+    .anticipo-note { font-size: 11px; color: rgba(26,24,20,.4); margin-top: 4px; }
+
+    /* Sending / OK / Error */
+    .form-sending-ed, .form-ok-ed, .form-error-ed { display: none; padding: 60px 32px; text-align: center; }
+    .form-sending-ed.active, .form-ok-ed.active, .form-error-ed.active { display: block; }
+    .spinner-ed {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 3px solid rgba(26,24,20,.1); border-top-color: var(--pepper);
+      animation: spin 0.8s linear infinite; margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .sending-lbl { font-size: 12px; color: rgba(26,24,20,.4); letter-spacing: 0.2em; text-transform: uppercase; }
+    .form-ok-ed h3 { font-size: 2.5rem; font-weight: 900; letter-spacing: -0.03em; text-transform: uppercase; margin-bottom: 1rem; }
+    .form-ok-ed p { font-size: .95rem; font-weight: 300; color: var(--muted); line-height: 1.7; max-width: 380px; margin: 0 auto; }
+    .form-error-ed p { color: #e03131; font-size: .95rem; margin-bottom: 1rem; }
+    .btn-retry-ed {
+      background: var(--pepper); color: #fff; border: none;
+      padding: 10px 24px; border-radius: 100px; cursor: pointer;
+      font-family: inherit; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+    }
+
+    /* ============================================================
+       SHOP SECTION
+    ============================================================ */
+    .shop-section {
+      padding: 130px 5% 100px;
+      background: var(--ink);
+    }
+    .shop-head {
+      display: grid; grid-template-columns: 6fr 6fr;
+      gap: 5%; align-items: flex-end; margin-bottom: 60px;
+    }
+    .shop-head .section-hl { color: #fff; }
+    .shop-head .section-tag { color: var(--fire); }
+    .shop-head-body { font-size: 1rem; font-weight: 300; line-height: 1.75; color: rgba(255,255,255,.45); }
+    .shop-cats {
+      display: flex; gap: 10px; margin-bottom: 40px; flex-wrap: wrap;
+    }
+    .shop-cat {
+      padding: 8px 20px; border-radius: 100px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; cursor: pointer; transition: all 0.25s;
+      border: 1px solid rgba(255,255,255,.15);
+      color: rgba(255,255,255,.5); background: transparent;
+    }
+    .shop-cat.active, .shop-cat:hover { background: var(--fire); border-color: var(--fire); color: #fff; }
+    .shop-grid {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 20px;
+    }
+    .shop-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px; overflow: hidden;
+      transition: transform 0.35s var(--ease), border-color 0.35s;
+      cursor: pointer;
+    }
+    .shop-card:hover { transform: translateY(-5px); border-color: rgba(242,135,10,.4); }
+    .shop-img {
+      aspect-ratio: 1; background: rgba(255,255,255,.06);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; color: rgba(255,255,255,.15);
+      position: relative; overflow: hidden;
+    }
+    .shop-img-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--pepper); color: #fff;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 100px;
+    }
+    .shop-body { padding: 18px 18px 20px; }
+    .shop-cat-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--fire); margin-bottom: 6px;
+    }
+    .shop-name { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; letter-spacing: -0.01em; }
+    .shop-desc { font-size: 11px; color: rgba(255,255,255,.35); margin-bottom: 14px; line-height: 1.5; }
+    .shop-footer { display: flex; align-items: center; justify-content: space-between; }
+    .shop-price { font-size: 1.2rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; }
+    .shop-add {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--pepper); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1rem;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .shop-add:hover { background: var(--fire); transform: scale(1.1); }
+    .shop-note {
+      margin-top: 40px; text-align: center;
+      font-size: 12px; color: rgba(255,255,255,.25); letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .shop-note a { color: var(--fire); text-decoration: underline; }
+
+    /* ============================================================
+       GALLERY
+    ============================================================ */
+    .gallery-section {
+      padding: 120px 5% 100px;
+      background: var(--surface);
+    }
+    .gallery-head {
+      display: flex; justify-content: space-between;
+      align-items: flex-end; margin-bottom: 60px;
+    }
+    .gallery-sub { font-size: .95rem; font-weight: 300; color: var(--muted); max-width: 280px; line-height: 1.7; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-auto-rows: 200px;
+      gap: 12px;
+    }
+    .gallery-item { border-radius: 14px; overflow: hidden; position: relative; }
+    .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    .gallery-item:nth-child(5) { grid-column: span 2; }
+    .gallery-item:nth-child(8) { grid-column: span 2; grid-row: span 2; }
+    .gallery-img-wrap { width: 100%; height: 100%; position: relative; }
+    .gallery-img-wrap img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(80%); transition: filter 0.8s var(--ease), transform 0.8s var(--ease); }
+    .gallery-item:hover .gallery-img-wrap img { filter: grayscale(0%); transform: scale(1.06); }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: rgba(26,24,20,0); transition: background 0.4s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .gallery-item:hover .gallery-overlay { background: rgba(26,24,20,.25); }
+    .gallery-circle {
+      width: 70px; height: 70px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,.8);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.25em;
+      text-transform: uppercase; color: #fff;
+      opacity: 0; transform: scale(0.6);
+      transition: opacity 0.4s, transform 0.4s var(--ease);
+    }
+    .gallery-item:hover .gallery-circle { opacity: 1; transform: scale(1); }
+
+    /* ============================================================
+       CONTATTI
+    ============================================================ */
+    .contatti-section {
+      padding: 130px 5% 110px;
+      background: var(--base);
+    }
+    .contatti-grid {
+      display: grid; grid-template-columns: 6fr 6fr; gap: 8%;
+      align-items: start;
+    }
+    .contatti-head .section-hl { margin-bottom: 1.5rem; }
+    .contatti-body {
+      font-size: 1rem; font-weight: 300; line-height: 1.75;
+      color: var(--muted); margin-bottom: 2.5rem;
+    }
+    .contatti-links { display: flex; flex-direction: column; gap: 14px; }
+    .contatti-link {
+      display: flex; align-items: center; gap: 14px;
+      font-size: 14px; font-weight: 500; color: var(--ink);
+      padding: 14px 0; border-bottom: 1px solid rgba(26,24,20,.07);
+      transition: color 0.2s;
+    }
+    .contatti-link:hover { color: var(--pepper); }
+    .contatti-link i { font-size: 1rem; color: var(--pepper); width: 20px; }
+    .contatti-form-wrap {
+      background: var(--warm); border-radius: 20px; padding: 36px 32px;
+      border: 1px solid rgba(26,24,20,.08);
+    }
+    .contatti-form-wrap h3 {
       font-size: 1.5rem; font-weight: 900; letter-spacing: -0.02em;
       text-transform: uppercase; margin-bottom: 0.4rem;
     }
-    .pkg-date {
-      font-size: 10px; font-weight: 500; letter-spacing: 0.15em;
-      text-transform: uppercase; color: rgba(38,38,38,.4);
-      margin-bottom: 1.5rem; transition: color 0.4s;
+    .contatti-form-wrap p {
+      font-size: .9rem; color: var(--muted); margin-bottom: 24px; font-weight: 300;
     }
-    .pkg-item:hover .pkg-date,
-    .pkg-item.selected .pkg-date { color: rgba(38,38,38,.7); }
-    .pkg-price {
-      font-size: 2.2rem; font-weight: 900; letter-spacing: -0.03em;
+    .c-field { margin-bottom: 16px; }
+    .c-field label {
+      display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; color: rgba(26,24,20,.45); margin-bottom: 6px;
     }
-    .pkg-anticipo {
-      font-size: 10px; font-weight: 500; letter-spacing: 0.08em;
-      color: rgba(38,38,38,.4); margin-top: 0.3rem;
-      transition: color 0.4s;
+    .c-input {
+      width: 100%; height: 44px; padding: 0 14px;
+      border: 1px solid rgba(26,24,20,.12); border-radius: 10px;
+      background: #fff; font-family: inherit; font-size: 14px; color: var(--ink);
+      outline: none; transition: border-color 0.2s;
     }
-    .pkg-item:hover .pkg-anticipo,
-    .pkg-item.selected .pkg-anticipo { color: rgba(38,38,38,.7); }
-    .pkg-btn {
-      margin-top: 2rem;
-      background: var(--ink); color: var(--base);
-      padding: 11px 22px; border-radius: 100px;
-      font-family: 'League Spartan', sans-serif;
-      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
-      text-transform: uppercase; border: none; cursor: pointer;
-      transition: background 0.3s, color 0.3s;
-      display: inline-block;
+    .c-input:focus { border-color: var(--pepper); }
+    .c-textarea {
+      width: 100%; height: 100px; padding: 12px 14px;
+      border: 1px solid rgba(26,24,20,.12); border-radius: 10px;
+      background: #fff; font-family: inherit; font-size: 14px; color: var(--ink);
+      outline: none; resize: none; transition: border-color 0.2s;
     }
-    .pkg-item:hover .pkg-btn,
-    .pkg-item.selected .pkg-btn { background: var(--ink); color: var(--rose); }
-
-    /* ============================================================
-       EDITORIAL FORM
-    ============================================================ */
-    .form-section {
-      margin-top: 90px;
-      border-top: 1px solid rgba(38,38,38,.1);
-      padding-top: 80px;
+    .c-textarea:focus { border-color: var(--pepper); }
+    .c-submit {
+      width: 100%; padding: 13px;
+      background: var(--pepper); color: #fff; border: none;
+      border-radius: 100px; cursor: pointer;
+      font-family: inherit; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      margin-top: 8px; transition: background 0.25s;
     }
-    .form-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.4em;
-      text-transform: uppercase; color: var(--rose); margin-bottom: 3rem;
-    }
-    .form-prog-wrap {
-      height: 1px; background: rgba(38,38,38,.1); margin-bottom: 4rem;
-    }
-    .form-prog-bar {
-      height: 100%; background: var(--rose);
-      transition: width 0.6s var(--ease);
-    }
-    .form-layout {
-      display: grid; grid-template-columns: 280px 1fr; gap: 8%;
-    }
-
-    /* Sidebar steps */
-    .form-sidebar-ed { position: sticky; top: 100px; align-self: start; }
-    .fsn { display: flex; flex-direction: column; gap: 0; }
-    .fsn-item {
-      display: flex; align-items: center; gap: 14px;
-      padding: 16px 0; border-bottom: 1px solid rgba(38,38,38,.1);
-      opacity: 0.3; transition: opacity 0.4s;
-    }
-    .fsn-item.active { opacity: 1; }
-    .fsn-item.done { opacity: 0.55; }
-    .fsn-num {
-      width: 28px; height: 28px; border-radius: 50%;
-      border: 1px solid rgba(38,38,38,.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px; font-weight: 700; flex-shrink: 0;
-      transition: background 0.3s, border-color 0.3s, color 0.3s;
-    }
-    .fsn-item.active .fsn-num { background: var(--rose); border-color: var(--rose); }
-    .fsn-item.done .fsn-num  { background: var(--ink); border-color: var(--ink); color: var(--base); }
-    .fsn-lbl {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    /* Steps */
-    .form-step-ed { display: none; }
-    .form-step-ed.active { display: block; }
-
-    .fs-title {
-      font-size: 3.2rem; font-weight: 900; letter-spacing: -0.03em;
-      line-height: 0.88; text-transform: uppercase; margin-bottom: 0.5rem;
-    }
-    .fs-sub {
-      font-size: 10px; font-weight: 500; letter-spacing: 0.2em;
-      text-transform: uppercase; color: rgba(38,38,38,.35);
-      margin-bottom: 3rem;
-    }
-
-    /* Radio grids */
-    .pkg-radio-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
-      margin-bottom: 2.5rem;
-    }
-    .ruolo-grid {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    .r-opt-ed {
-      padding: 18px 20px; border: 1px solid rgba(38,38,38,.15);
-      cursor: pointer; transition: border-color 0.3s, background 0.3s;
-    }
-    .r-opt-ed input { display: none; }
-    .r-opt-ed:hover { border-color: var(--rose); }
-    .r-opt-ed.sel { border-color: var(--ink); background: rgba(38,38,38,.03); }
-    .r-name {
-      font-size: 1rem; font-weight: 700; letter-spacing: -0.01em;
-      text-transform: uppercase; margin-bottom: 2px;
-    }
-    .r-info {
-      font-size: 10px; font-weight: 500; letter-spacing: 0.1em;
-      text-transform: uppercase; color: rgba(38,38,38,.4);
-      transition: color 0.3s;
-    }
-    .r-opt-ed.sel .r-info { color: var(--rose); }
-
-    /* Ruolo label */
-    .mini-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
-      text-transform: uppercase; color: rgba(38,38,38,.35);
-      margin-bottom: 1rem; display: block;
-    }
-
-    /* Fields */
-    .fg-ed { margin-bottom: 2rem; }
-    .fg-ed label {
-      display: block; font-size: 10px; font-weight: 700;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: rgba(38,38,38,.4); margin-bottom: 0.7rem;
-    }
-    .fi-ed {
-      width: 100%; background: transparent;
-      border: none; border-bottom: 1px solid rgba(38,38,38,.18);
-      padding: 10px 0;
-      font-family: 'League Spartan', sans-serif;
-      font-size: 1.1rem; font-weight: 400; color: var(--ink);
-      outline: none; transition: border-color 0.3s;
-    }
-    .fi-ed:focus { border-bottom-color: var(--ink); }
-    .fi-ed::placeholder { color: rgba(38,38,38,.2); }
-    textarea.fi-ed {
-      border: 1px solid rgba(38,38,38,.15);
-      padding: 12px; resize: vertical; min-height: 80px;
-      font-size: 1rem;
-    }
-    textarea.fi-ed:focus { border-color: var(--ink); }
-    .f-row-ed { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-
-    /* Tipologia stanza */
-    .stanza-grid {
-      display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    .stanza-opt {
-      padding: 20px 10px; border: 1px solid rgba(38,38,38,.15);
-      text-align: center; cursor: pointer;
-      transition: border-color 0.3s, background 0.3s;
-    }
-    .stanza-opt input { display: none; }
-    .stanza-opt:hover { border-color: var(--rose); }
-    .stanza-opt.sel { border-color: var(--ink); background: rgba(38,38,38,.03); }
-    .stanza-opt .s-ico {
-      font-size: 1.4rem; color: var(--rose);
-      margin-bottom: 0.5rem; transition: color 0.3s;
-    }
-    .stanza-opt.sel .s-ico { color: var(--ink); }
-    .stanza-opt .s-name {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.15em; text-transform: uppercase;
-    }
-    .compagni-dyn { margin-top: 1.5rem; }
-
-    /* Riepilogo */
-    .riepilogo-ed { border: 1px solid rgba(38,38,38,.1); }
-    .rr {
-      display: flex; justify-content: space-between; align-items: baseline;
-      padding: 15px 22px; border-bottom: 1px solid rgba(38,38,38,.06);
-    }
-    .rr:last-child { border-bottom: none; }
-    .rl { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(38,38,38,.38); }
-    .rv { font-size: 1rem; font-weight: 600; }
-    .rv.rose { color: var(--rose); font-size: 1.3rem; font-weight: 900; }
-
-    .anticipo-box {
-      margin-top: 2rem; background: var(--rose); padding: 26px 28px;
-    }
-    .anticipo-lbl {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.3em;
-      text-transform: uppercase; color: var(--ink); margin-bottom: 0.3rem;
-    }
-    .anticipo-val {
-      font-size: 2.8rem; font-weight: 900; letter-spacing: -0.04em; color: var(--ink);
-    }
-    .anticipo-note {
-      font-size: 10px; font-weight: 400; color: rgba(38,38,38,.55);
-      margin-top: 0.3rem; letter-spacing: 0.08em;
-    }
-
-    /* Form navigation */
-    .form-nav-ed {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-top: 4rem; padding-top: 2rem;
-      border-top: 1px solid rgba(38,38,38,.08);
-    }
-    .btn-prev-ed {
-      font-family: 'League Spartan', sans-serif;
-      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
-      text-transform: uppercase; background: none; border: none;
-      cursor: pointer; color: rgba(38,38,38,.35);
-      transition: color 0.3s; padding: 0;
-    }
-    .btn-prev-ed:hover { color: var(--ink); }
-    .btn-next-ed {
-      background: var(--ink); color: var(--base);
-      padding: 13px 34px; border-radius: 100px;
-      font-family: 'League Spartan', sans-serif;
-      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
-      text-transform: uppercase; border: none; cursor: pointer;
-      transition: background 0.3s, color 0.3s;
-    }
-    .btn-next-ed:hover { background: var(--rose); color: var(--ink); }
-    .step-count {
-      font-size: 10px; font-weight: 500; letter-spacing: 0.2em;
-      color: rgba(38,38,38,.25);
-    }
-
-    /* Form states */
-    .form-sending-ed, .form-ok-ed, .form-error-ed { display: none; }
-    .form-sending-ed.active, .form-ok-ed.active, .form-error-ed.active { display: block; }
-
-    .form-sending-ed { padding: 80px 0; text-align: center; }
-    .spinner-ed {
-      width: 36px; height: 36px;
-      border: 2px solid rgba(38,38,38,.1); border-top-color: var(--rose);
-      border-radius: 50%; animation: spin 0.8s linear infinite;
-      margin: 0 auto 1.5rem;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .sending-lbl {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.3em;
-      text-transform: uppercase; color: rgba(38,38,38,.35);
-    }
-
-    .form-ok-ed { padding: 80px 0; }
-    .form-ok-ed h3 {
-      font-size: 4rem; font-weight: 900; letter-spacing: -0.04em;
-      text-transform: uppercase; line-height: 0.88; margin-bottom: 1.5rem;
-    }
-    .form-ok-ed p {
-      font-size: 1rem; font-weight: 300; line-height: 1.7;
-      color: rgba(38,38,38,.6); max-width: 480px;
-    }
-
-    .form-error-ed { padding: 40px 0; }
-    .form-error-ed p { color: #b94040; font-size: 0.95rem; margin-bottom: 1rem; }
-    .btn-retry-ed {
-      font-family: 'League Spartan', sans-serif;
-      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
-      text-transform: uppercase; background: none; border: none;
-      cursor: pointer; color: var(--rose); text-decoration: underline;
-    }
+    .c-submit:hover { background: var(--fire); }
 
     /* ============================================================
        FOOTER
     ============================================================ */
     footer {
-      background: var(--surface);
-      padding: 100px 5% 0;
+      background: var(--ink); color: rgba(255,255,255,.6);
+      padding: 70px 5% 32px;
     }
     .footer-grid {
-      display: grid; grid-template-columns: 5fr 7fr;
-      gap: 5%; padding-bottom: 80px;
+      display: grid; grid-template-columns: 4fr 8fr;
+      gap: 8%; padding-bottom: 50px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
     }
     .footer-brand {
-      font-size: 4.5vw; font-weight: 900; letter-spacing: -0.04em;
-      text-transform: uppercase; line-height: 0.83; margin-bottom: 2rem;
+      font-size: 2rem; font-weight: 900;
+      letter-spacing: -0.04em; text-transform: uppercase;
+      line-height: 0.85; margin-bottom: 1.2rem;
+      color: #fff;
     }
+    .footer-brand span { color: var(--pepper); }
     .footer-mission {
-      font-size: 1rem; font-weight: 300; line-height: 1.75;
-      color: rgba(38,38,38,.6); max-width: 300px;
+      font-size: .9rem; font-weight: 300; line-height: 1.7;
+      color: rgba(255,255,255,.35); max-width: 260px;
+      margin-bottom: 1.8rem;
     }
+    .footer-social { display: flex; gap: 12px; }
+    .f-social-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.12);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.4); font-size: .85rem;
+      transition: all 0.25s;
+    }
+    .f-social-btn:hover { background: var(--pepper); border-color: var(--pepper); color: #fff; }
     .footer-cols {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 32px;
     }
+    .fc-col { display: flex; flex-direction: column; gap: 10px; }
     .fc-title {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--rose);
-      border-bottom: 1px solid var(--rose); padding-bottom: 8px;
-      margin-bottom: 1.5rem;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.3em;
+      text-transform: uppercase; color: rgba(255,255,255,.25);
+      margin-bottom: 6px;
     }
     .fc-col a {
-      display: block; font-size: 0.9rem; font-weight: 300;
-      color: rgba(38,38,38,.65); margin-bottom: 0.7rem;
-      transition: color 0.3s;
+      font-size: 13px; color: rgba(255,255,255,.5);
+      transition: color 0.2s;
     }
-    .fc-col a:hover { color: var(--ink); }
+    .fc-col a:hover { color: var(--fire); }
     .footer-bottom {
-      border-top: 1px solid rgba(38,38,38,.1);
-      padding: 24px 0;
-      font-size: 9px; letter-spacing: 0.1em;
-      text-transform: uppercase; color: rgba(38,38,38,.28);
+      padding-top: 24px; text-align: center;
+      font-size: 11px; color: rgba(255,255,255,.2);
+      letter-spacing: 0.15em;
     }
 
     /* ============================================================
-       GALLERY (staggered 2-col)
-    ============================================================ */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-    .gallery-item { position: relative; }
-    .gallery-item.offset { margin-top: 100px; }
-    .gallery-img-wrap {
-      position: relative; overflow: hidden;
-      border-radius: 16px;
-      aspect-ratio: 3/4;
-    }
-    .gallery-img-wrap img {
-      width: 100%; height: 100%; object-fit: cover;
-      display: block;
-      filter: grayscale(100%);
-      transition: filter 1s var(--ease), transform 1s var(--ease);
-    }
-    .gallery-img-wrap:hover img {
-      filter: grayscale(0%);
-      transform: scale(1.08);
-    }
-    .gallery-overlay {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0;
-      transition: opacity 0.5s var(--ease);
-    }
-    .gallery-img-wrap:hover .gallery-overlay { opacity: 1; }
-    .gallery-circle {
-      width: 96px; height: 96px; border-radius: 50%;
-      background: var(--ink);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px; font-weight: 900; letter-spacing: 0.2em;
-      text-transform: uppercase; color: #fff;
-      text-align: center;
-    }
-
-    @media (max-width: 680px) {
-      .gallery-grid { grid-template-columns: 1fr; }
-      .gallery-item.offset { margin-top: 0; }
-    }
-
-    /* ============================================================
-       REVEAL
+       REVEAL ANIMATION
     ============================================================ */
     .reveal {
-      opacity: 0; transform: translateY(40px);
-      transition: opacity 1s var(--ease), transform 1s var(--ease);
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
     }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal.d1 { transition-delay: 0.1s; }
     .reveal.d2 { transition-delay: 0.2s; }
     .reveal.d3 { transition-delay: 0.3s; }
-    .reveal.d4 { transition-delay: 0.4s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* ============================================================
-       RESPONSIVE
+       BRUTIA FORM OVERRIDES (light context)
     ============================================================ */
-    @media (max-width: 960px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-right { display: none; }
-      .hero-hl { font-size: 18vw; }
-      .ev-section-hl { font-size: 14vw; }
-      .section-hl { font-size: 12vw; }
-      .events-intro-head { grid-template-columns: 1fr; gap: 2rem; }
-      .events-grid { grid-template-columns: 1fr; }
-      .ev-section-head { grid-template-columns: 1fr; gap: 2rem; }
-      .form-layout { grid-template-columns: 1fr; }
-      .form-sidebar-ed { position: static; }
-      .fsn { flex-direction: row; flex-wrap: wrap; gap: 0.5rem; }
-      .fsn-item { border-bottom: none; padding: 8px 14px; border: 1px solid rgba(38,38,38,.1); }
-      .pkg-grid-4 { grid-template-columns: 1fr 1fr; }
-      .pkg-grid-3 { grid-template-columns: 1fr 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .footer-brand { font-size: 10vw; }
-      .nav-links { display: none; }
-    }
-    @media (max-width: 580px) {
-      .pkg-grid-4, .pkg-grid-3 { grid-template-columns: 1fr; }
-      .f-row-ed { grid-template-columns: 1fr; }
-      .stanza-grid { grid-template-columns: 1fr 1fr; }
-      .ruolo-grid { grid-template-columns: 1fr 1fr; }
-      .pkg-radio-grid { grid-template-columns: 1fr; }
-      .footer-cols { grid-template-columns: 1fr 1fr; }
-      .fs-title { font-size: 2.5rem; }
-    }
-
-    /* ============================================================
-       BRUTIA FORM — palette vivace indigo/viola
-    ============================================================ */
-    #bru-form {
-      background: linear-gradient(145deg, #1e1b4b 0%, #3730a3 45%, #5b21b6 100%);
-      border-radius: 24px;
-      padding: 70px 8%;
-      margin-top: 80px;
-      border-top: none;
-    }
-    #bru-form .form-label { color: #c4b5fd; }
-    #bru-form .form-prog-wrap { background: rgba(255,255,255,0.12); height: 2px; }
-    #bru-form .form-prog-bar { background: #a78bfa; }
-
-    #bru-form .fsn-item { border-bottom-color: rgba(255,255,255,0.08); }
-    #bru-form .fsn-num  { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.35); }
-    #bru-form .fsn-lbl  { color: rgba(255,255,255,0.35); }
-    #bru-form .fsn-item.active .fsn-num { background: #7c3aed; border-color: #7c3aed; color: #fff; }
-    #bru-form .fsn-item.done  .fsn-num  { background: rgba(167,139,250,0.25); border-color: #a78bfa; color: #a78bfa; }
-
-    #bru-form .fs-title   { color: #fff; }
-    #bru-form .fs-sub     { color: rgba(255,255,255,0.5); }
-    #bru-form label       { color: rgba(255,255,255,0.6); }
-    #bru-form .mini-label { color: rgba(255,255,255,0.45); }
-
-    #bru-form .fi-ed { border-bottom-color: rgba(255,255,255,0.22); color: #fff; }
-    #bru-form .fi-ed:focus { border-bottom-color: #a78bfa; }
-    #bru-form .fi-ed::placeholder { color: rgba(255,255,255,0.2); }
-    #bru-form textarea.fi-ed { border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.05); }
-    #bru-form textarea.fi-ed:focus { border-color: #a78bfa; }
-
-    #bru-form .r-opt-ed { border-color: rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); }
-    #bru-form .r-opt-ed:hover { border-color: #a78bfa; background: rgba(167,139,250,0.1); }
-    #bru-form .r-opt-ed.sel   { border-color: #7c3aed; background: rgba(124,58,237,0.22); }
-    #bru-form .r-opt-ed .r-name { color: #fff; }
-    #bru-form .r-opt-ed .r-info { color: rgba(255,255,255,0.45); }
-    #bru-form .r-opt-ed.sel .r-info { color: #c4b5fd; }
-
-    #bru-form .stanza-opt { border-color: rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); }
-    #bru-form .stanza-opt:hover { border-color: #a78bfa; }
-    #bru-form .stanza-opt.sel   { border-color: #7c3aed; background: rgba(124,58,237,0.22); }
-    #bru-form .stanza-opt .s-ico { color: #a78bfa; }
-    #bru-form .stanza-opt.sel .s-ico { color: #fff; }
-    #bru-form .stanza-opt .s-name { color: rgba(255,255,255,0.65); }
-    #bru-form .stanza-opt.sel .s-name { color: #fff; }
-
-    #bru-form .btn-next-ed { background: #7c3aed; color: #fff; }
-    #bru-form .btn-next-ed:hover { background: #a78bfa; color: #1e1b4b; }
-    #bru-form .btn-prev-ed { color: rgba(255,255,255,0.4); }
-    #bru-form .btn-prev-ed:hover { color: #fff; }
-    #bru-form .step-count  { color: rgba(255,255,255,0.3); }
-
-    #bru-form .riepilogo-ed { border-color: rgba(255,255,255,0.12); }
-    #bru-form .rr   { border-bottom-color: rgba(255,255,255,0.07); }
-    #bru-form .rl   { color: rgba(255,255,255,0.45); }
-    #bru-form .rv   { color: #fff; }
-    #bru-form .rv.rose { color: #c4b5fd; }
-
-    #bru-form .anticipo-box  { background: rgba(124,58,237,0.4); border-left: 3px solid #a78bfa; }
-    #bru-form .anticipo-lbl  { color: rgba(255,255,255,0.6); }
-    #bru-form .anticipo-val  { color: #c4b5fd; }
-    #bru-form .anticipo-note { color: rgba(255,255,255,0.4); }
-
-    #bru-form .compagni-dyn .fg-ed label { color: rgba(255,255,255,0.55); font-size:.72rem; }
-    #bru-form .compagni-dyn .mini-label { font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; }
-    #bru-form .form-ok-ed h3  { color: #fff; }
-    #bru-form .form-ok-ed p   { color: rgba(255,255,255,0.55); }
-    #bru-form .spinner-ed     { border-top-color: #a78bfa; }
-    #bru-form .sending-lbl    { color: rgba(255,255,255,0.4); }
-    #bru-form .form-error-ed p { color: #fca5a5; }
+    #bru-form .form-label { background: var(--surface); }
+    #bru-form #b_body { padding: 36px 32px; }
   </style>
 </head>
 <body>
 
-  <!-- ============================================================
-       NAV
-  ============================================================ -->
+  <!-- NAV -->
   <nav>
-    <a href="#home" class="nav-brand">PeperTango</a>
+    <a href="#home" class="nav-brand">PEPER<span>TANGO</span></a>
     <ul class="nav-links">
       <li><a href="#home">Home</a></li>
-      <li><a href="#mtp27">MTP 2027</a></li>
+      <li><a href="#mtp27">Maratona 2027</a></li>
       <li><a href="#brutia">Brutia Fest</a></li>
-      <li><a href="#footer">Contatti</a></li>
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#contatti">Contatti</a></li>
     </ul>
-    <a href="#mtp27" class="nav-cta">Prenota ora</a>
+    <a href="#mtp27" class="nav-cta">Iscriviti ora</a>
   </nav>
 
-  <!-- ============================================================
-       HERO
-  ============================================================ -->
+  <!-- HERO -->
   <section class="hero" id="home">
-    <div class="hero-left">
-      <p class="hero-label reveal">Due festival &middot; Una passione</p>
-      <h1 class="hero-hl reveal d1">
-        TANGO<br>
-        <em>dove</em><br>
-        TUTTO<br>
-        BRUCIA
-      </h1>
-      <p class="hero-body reveal d2">
-        Due eventi esclusivi di tango argentino. Due atmosfere, due location,
-        un'unica dedizione al ballo. Scegli il tuo festival.
-      </p>
-      <a href="#events" class="hero-link reveal d3">Esplora i festival &darr;</a>
+    <p class="hero-eyebrow reveal">Due festival &middot; Una passione autentica</p>
+    <h1 class="hero-hl reveal d1">
+      TANGO<br>
+      <em>piccante</em><br>
+      BRUCIA
+    </h1>
+    <p class="hero-sub reveal d2">
+      Due eventi esclusivi di tango argentino. Due atmosfere, due location,
+      un'unica dedizione al ballo. Scegli il tuo festival.
+    </p>
+    <div class="hero-actions reveal d3">
+      <a href="#mtp27" class="hero-btn primary">Maratona 2027 &rarr;</a>
+      <a href="#brutia" class="hero-btn outline">Brutia Festival</a>
     </div>
-    <div class="hero-right reveal d2">
-      <div class="hero-card">
-        <img
-          src="https://static.wixstatic.com/media/1b1050_2eb86a4903ab43d4be61f7973b50ec78~mv2.jpg/v1/fill/w_900,h_1125,al_c,q_85,enc_avif,quality_auto/hero.jpg"
-          alt="PeperTango">
+    <div class="hero-pills reveal d2">
+      <div class="h-pill" onclick="document.getElementById('mtp27').scrollIntoView({behavior:'smooth'})">
+        <div class="h-pill-num">01 &middot; Festival</div>
+        <div class="h-pill-name">Maratona<br>Tango Piccante</div>
+        <div class="h-pill-date">Giugno 2027 &middot; Maratea</div>
+        <div class="h-pill-arrow">Scopri &rarr;</div>
       </div>
-      <div class="hero-badge">
-        <span class="hero-badge-num">02</span>
-        <span class="hero-badge-lbl">Festival</span>
+      <div class="h-pill" onclick="document.getElementById('brutia').scrollIntoView({behavior:'smooth'})">
+        <div class="h-pill-num">02 &middot; Festival</div>
+        <div class="h-pill-name">Brutia<br>Tango Festival</div>
+        <div class="h-pill-date">Date TBD &middot; Calabria</div>
+        <div class="h-pill-arrow">Scopri &rarr;</div>
       </div>
     </div>
+    <div class="hero-scroll">Scroll per esplorare</div>
   </section>
 
-  <!-- ============================================================
-       EVENTS INTRO
-  ============================================================ -->
+  <!-- EVENTS INTRO -->
   <section class="events-intro" id="events">
     <div class="events-intro-head">
       <h2 class="section-hl reveal">
-        DUE<br><em>eventi,</em><br>UN CUORE
+        DUE <em>eventi,</em><br>UN CUORE
       </h2>
-      <p class="section-sub reveal d2">
+      <p class="events-intro-sub reveal d2">
         La Maratona Tango Piccante 2027 e il Brutia Tango Festival.
-        Iscrizioni separate, esperienze uniche, stessa passione autentica.
+        Iscrizioni separate, esperienze uniche, stessa passione autentica per il tango.
       </p>
     </div>
     <div class="events-grid">
-      <div class="ev-card reveal"
-           onclick="document.getElementById('mtp27').scrollIntoView({behavior:'smooth'})">
+      <div class="ev-card reveal" onclick="document.getElementById('mtp27').scrollIntoView({behavior:'smooth'})">
         <div class="ev-card-num">01 &middot; Giugno 2027 &middot; Maratea</div>
         <h3 class="ev-card-title">Maratona<br>Tango<br>Piccante</h3>
         <p class="ev-card-desc">
           Quattro giorni tra musica, ballo e mare. 120 posti selezionati,
-          4 pacchetti, pensione completa. L'esperienza che aspettavi.
+          4 pacchetti, pensione completa.
         </p>
         <span class="ev-card-cta">Scopri e iscriviti &rarr;</span>
       </div>
-      <div class="ev-card reveal d2"
-           onclick="document.getElementById('brutia').scrollIntoView({behavior:'smooth'})">
+      <div class="ev-card reveal d2" onclick="document.getElementById('brutia').scrollIntoView({behavior:'smooth'})">
         <div class="ev-card-num">02 &middot; TBD &middot; Calabria</div>
         <h3 class="ev-card-title">Brutia<br>Tango<br>Festival</h3>
         <p class="ev-card-desc">
           Il nuovo festival nella terra di Bruzio. Date e programma in arrivo.
-          Registra il tuo interesse adesso per non perdere il posto.
+          Registra il tuo interesse adesso.
         </p>
         <span class="ev-card-cta">Scopri e iscriviti &rarr;</span>
       </div>
     </div>
   </section>
 
-  <!-- ============================================================
-       GALLERY
-  ============================================================ -->
-  <section style="background:var(--base);padding:130px 5% 110px;">
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:70px;">
-      <h2 class="section-hl reveal">I NOSTRI<br><em>momenti</em></h2>
-      <p class="section-sub reveal d2" style="max-width:260px;">Immagini dai nostri eventi. Ogni foto racconta una storia di passione, musica e ballo.</p>
-    </div>
-    <div class="gallery-grid">
-      <div class="gallery-item reveal"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_9e83a1fe691447c9a08378d5603847cf~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g1.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item offset reveal d1"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_54c28a8d58b142928686004eeb9ec869~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g2.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d1"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_50b85768f93a415fbb2f195a8c71641d~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g3.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item offset reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_d3367f399d694a3d981df4110ceaea09~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g4.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d1"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_4c02263fd11c42e0a1b171ba43ac0182~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g5.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item offset reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_7ee55d97416e46558c29cf5b81e5b79e~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g6.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_9d7afd58ac5a425fb579faf6ee693d76~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g7.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item offset reveal d3"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_0e913f41e3b140d0a9d40e9efe1fbfa4~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g8.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_0881b85bd8494637863d74eb2cc9b70a~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g9.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item offset reveal d3"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_bbccff5b719f4f75b9bcad03fd099b4e~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g10.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       MTP27 — MARATONA TANGO PICCANTE
-  ============================================================ -->
-  <section class="event-section" id="mtp27">
-    <div class="ev-section-head">
-      <h2 class="ev-section-hl reveal">
+  <!-- MTP27 -->
+  <section class="event-section dark" id="mtp27">
+    <div class="ev-head">
+      <h2 class="ev-head-hl reveal">
         MARATONA<br>TANGO<br><em>piccante</em>
       </h2>
       <div class="reveal d2">
-        <div class="ev-section-tag">01 &middot; Giugno 2027 &middot; Maratea</div>
-        <p class="ev-section-body">
+        <span class="section-tag" style="color:var(--fire)">01 &middot; Giugno 2027 &middot; Maratea</span>
+        <p class="ev-head-body">
           Quattro notti di tango argentino nella perla del Tirreno.
-          120 partecipanti selezionati, musica, pensione completa
-          e camere assegnate in base all'ordine di iscrizione e al pacchetto scelto.
+          120 partecipanti selezionati, musica live, pensione completa
+          e camere assegnate in base al pacchetto scelto.
         </p>
       </div>
     </div>
-    <!-- Foto evento full-width -->
-    <div style="border-radius:16px;overflow:hidden;aspect-ratio:21/9;margin-bottom:80px;" class="reveal">
-      <img src="https://static.wixstatic.com/media/1b1050_3d16e12be82a48eb82f24d800cc9d815~mv2.jpg/v1/fill/w_1400,h_600,al_c,q_85,enc_avif,quality_auto/mtp.jpg"
-           alt="Maratona Tango Piccante"
-           style="width:100%;height:100%;object-fit:cover;filter:grayscale(100%);transition:filter 1s var(--ease);"
-           onmouseenter="this.style.filter='grayscale(0%)'"
-           onmouseleave="this.style.filter='grayscale(100%)'">
+    <div class="ev-photo reveal">
+      <img src="https://static.wixstatic.com/media/1b1050_3d16e12be82a48eb82f24d800cc9d815~mv2.jpg/v1/fill/w_1400,h_600,al_c,q_85,enc_avif,quality_auto/mtp.jpg" alt="Maratona Tango Piccante">
     </div>
-
-    <p class="pkg-label reveal">Scegli il tuo pacchetto</p>
+    <span class="pkg-label reveal">Scegli il tuo pacchetto</span>
     <div class="pkg-grid pkg-grid-4">
-      <div class="pkg-item reveal"
-           data-pkg="Cala Jannita"
-           onclick="selectPkg(this,'mtp27')">
-        <span class="pkg-big-num">4</span>
-        <span class="pkg-notti-lbl">notti</span>
+      <div class="pkg-item reveal" data-pkg="Cala Jannita" onclick="selectPkg(this,'mtp27')">
+        <span class="pkg-big-num">4</span><span class="pkg-notti-lbl">notti</span>
         <div class="pkg-name">Cala Jannita</div>
         <div class="pkg-date">Gio 10 &rarr; Lun 14 Giu</div>
         <div class="pkg-price">&euro;300</div>
         <div class="pkg-anticipo">Anticipo &euro;150 &middot; Saldo &euro;150</div>
         <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'mtp27');scrollToForm('mtp-form')">Seleziona</button>
       </div>
-      <div class="pkg-item reveal d1"
-           data-pkg="Fiumicello"
-           onclick="selectPkg(this,'mtp27')">
-        <span class="pkg-big-num">3</span>
-        <span class="pkg-notti-lbl">notti</span>
+      <div class="pkg-item reveal d1" data-pkg="Fiumicello" onclick="selectPkg(this,'mtp27')">
+        <span class="pkg-big-num">3</span><span class="pkg-notti-lbl">notti</span>
         <div class="pkg-name">Fiumicello</div>
         <div class="pkg-date">Gio 10 &rarr; Dom 13 Giu</div>
         <div class="pkg-price">&euro;225</div>
         <div class="pkg-anticipo">Anticipo &euro;150 &middot; Saldo &euro;75</div>
         <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'mtp27');scrollToForm('mtp-form')">Seleziona</button>
       </div>
-      <div class="pkg-item reveal d2"
-           data-pkg="Spiaggia Nera"
-           onclick="selectPkg(this,'mtp27')">
-        <span class="pkg-big-num">3</span>
-        <span class="pkg-notti-lbl">notti</span>
+      <div class="pkg-item reveal d2" data-pkg="Spiaggia Nera" onclick="selectPkg(this,'mtp27')">
+        <span class="pkg-big-num">3</span><span class="pkg-notti-lbl">notti</span>
         <div class="pkg-name">Spiaggia Nera</div>
         <div class="pkg-date">Ven 11 &rarr; Lun 14 Giu</div>
         <div class="pkg-price">&euro;225</div>
         <div class="pkg-anticipo">Anticipo &euro;150 &middot; Saldo &euro;75</div>
         <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'mtp27');scrollToForm('mtp-form')">Seleziona</button>
       </div>
-      <div class="pkg-item reveal d3"
-           data-pkg="Porto di Maratea"
-           onclick="selectPkg(this,'mtp27')">
-        <span class="pkg-big-num">2</span>
-        <span class="pkg-notti-lbl">notti</span>
+      <div class="pkg-item reveal d3" data-pkg="Porto di Maratea" onclick="selectPkg(this,'mtp27')">
+        <span class="pkg-big-num">2</span><span class="pkg-notti-lbl">notti</span>
         <div class="pkg-name">Porto di Maratea</div>
         <div class="pkg-date">Ven 11 &rarr; Dom 13 Giu</div>
         <div class="pkg-price">&euro;150</div>
@@ -906,9 +966,7 @@
     <!-- FORM MTP27 -->
     <div class="form-section" id="mtp-form">
       <p class="form-label">Iscrizione &middot; Maratona Tango Piccante 2027</p>
-      <div class="form-prog-wrap">
-        <div class="form-prog-bar" id="m_prog" style="width:25%"></div>
-      </div>
+      <div class="form-prog-wrap"><div class="form-prog-bar" id="m_prog" style="width:25%"></div></div>
       <div class="form-layout">
         <div class="form-sidebar-ed">
           <div class="fsn">
@@ -919,7 +977,6 @@
           </div>
         </div>
         <div id="m_body">
-          <!-- Step 1 -->
           <div class="form-step-ed active" id="m_fs1">
             <h3 class="fs-title">Pacchetto<br>&amp; ruolo</h3>
             <p class="fs-sub">Scegli il pacchetto e come balli</p>
@@ -941,7 +998,6 @@
               <button class="btn-next-ed" onclick="mtp.next()">Avanti &rarr;</button>
             </div>
           </div>
-          <!-- Step 2 -->
           <div class="form-step-ed" id="m_fs2">
             <h3 class="fs-title">Dati<br>personali</h3>
             <p class="fs-sub">Le tue informazioni di contatto</p>
@@ -961,7 +1017,6 @@
               <button class="btn-next-ed" onclick="mtp.next()">Avanti &rarr;</button>
             </div>
           </div>
-          <!-- Step 3 -->
           <div class="form-step-ed" id="m_fs3">
             <h3 class="fs-title">Tipo<br>stanza</h3>
             <p class="fs-sub">Scegli la tua sistemazione</p>
@@ -979,7 +1034,6 @@
               <button class="btn-next-ed" onclick="mtp.next()">Avanti &rarr;</button>
             </div>
           </div>
-          <!-- Step 4 -->
           <div class="form-step-ed" id="m_fs4">
             <h3 class="fs-title">Riepilogo<br>iscrizione</h3>
             <p class="fs-sub">Controlla e conferma</p>
@@ -995,73 +1049,49 @@
               <button class="btn-next-ed" onclick="mtp.send()">Invia iscrizione &rarr;</button>
             </div>
           </div>
-          <!-- Sending -->
-          <div class="form-sending-ed" id="m_sending">
-            <div class="spinner-ed"></div>
-            <p class="sending-lbl">Invio in corso...</p>
-          </div>
-          <!-- OK -->
-          <div class="form-ok-ed" id="m_ok">
-            <h3>Richiesta<br>inviata.</h3>
-            <p>Controlla la tua email. Ti contatteremo a breve per confermare l'iscrizione alla Maratona Tango Piccante 2027.</p>
-          </div>
-          <!-- Error -->
-          <div class="form-error-ed" id="m_error">
-            <p id="m_errMsg">Si &egrave; verificato un errore. Riprova.</p>
-            <button class="btn-retry-ed" onclick="mtp.resetError()">Riprova</button>
-          </div>
+          <div class="form-sending-ed" id="m_sending"><div class="spinner-ed"></div><p class="sending-lbl">Invio in corso...</p></div>
+          <div class="form-ok-ed" id="m_ok"><h3>Richiesta<br>inviata.</h3><p>Controlla la tua email. Ti contatteremo a breve per confermare l'iscrizione.</p></div>
+          <div class="form-error-ed" id="m_error"><p id="m_errMsg">Si &egrave; verificato un errore. Riprova.</p><button class="btn-retry-ed" onclick="mtp.resetError()">Riprova</button></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============================================================
-       BRUTIA TANGO FESTIVAL
-  ============================================================ -->
-  <section class="event-section surface" id="brutia">
-    <div class="ev-section-head">
-      <h2 class="ev-section-hl reveal">
+  <!-- BRUTIA -->
+  <section class="event-section warm-bg" id="brutia">
+    <div class="ev-head">
+      <h2 class="ev-head-hl reveal">
         BRUTIA<br>TANGO<br><em>festival</em>
       </h2>
       <div class="reveal d2">
-        <div class="ev-section-tag">02 &middot; Date TBD &middot; Calabria</div>
-        <p class="ev-section-body">
+        <span class="section-tag">02 &middot; Date TBD &middot; Calabria</span>
+        <p class="ev-head-body">
           Il nuovo festival nella terra di Bruzio. Tre pacchetti,
           un'esperienza autentica nel cuore della Calabria.
           Date e dettagli in arrivo — registra il tuo interesse adesso.
         </p>
       </div>
     </div>
-
-    <p class="pkg-label reveal">Scegli il tuo pacchetto</p>
+    <span class="pkg-label reveal">Scegli il tuo pacchetto</span>
     <div class="pkg-grid pkg-grid-3">
-      <div class="pkg-item reveal"
-           data-pkg="Pacchetto A"
-           onclick="selectPkg(this,'brutia')">
-        <span class="pkg-big-num">3</span>
-        <span class="pkg-notti-lbl">notti &middot; Segnaposto</span>
+      <div class="pkg-item reveal" data-pkg="Pacchetto A" onclick="selectPkg(this,'brutia')">
+        <span class="pkg-big-num">3</span><span class="pkg-notti-lbl">notti &middot; Segnaposto</span>
         <div class="pkg-name">Pacchetto A</div>
         <div class="pkg-date">Date da definire</div>
         <div class="pkg-price">&euro;&mdash;</div>
         <div class="pkg-anticipo">Anticipo: da definire</div>
         <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'brutia');scrollToForm('bru-form')">Seleziona</button>
       </div>
-      <div class="pkg-item reveal d1"
-           data-pkg="Pacchetto B"
-           onclick="selectPkg(this,'brutia')">
-        <span class="pkg-big-num">2</span>
-        <span class="pkg-notti-lbl">notti &middot; Segnaposto</span>
+      <div class="pkg-item reveal d1" data-pkg="Pacchetto B" onclick="selectPkg(this,'brutia')">
+        <span class="pkg-big-num">2</span><span class="pkg-notti-lbl">notti &middot; Segnaposto</span>
         <div class="pkg-name">Pacchetto B</div>
         <div class="pkg-date">Date da definire</div>
         <div class="pkg-price">&euro;&mdash;</div>
         <div class="pkg-anticipo">Anticipo: da definire</div>
         <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'brutia');scrollToForm('bru-form')">Seleziona</button>
       </div>
-      <div class="pkg-item reveal d2"
-           data-pkg="Pacchetto C"
-           onclick="selectPkg(this,'brutia')">
-        <span class="pkg-big-num">1</span>
-        <span class="pkg-notti-lbl">notte &middot; Segnaposto</span>
+      <div class="pkg-item reveal d2" data-pkg="Pacchetto C" onclick="selectPkg(this,'brutia')">
+        <span class="pkg-big-num">1</span><span class="pkg-notti-lbl">notte &middot; Segnaposto</span>
         <div class="pkg-name">Pacchetto C</div>
         <div class="pkg-date">Date da definire</div>
         <div class="pkg-price">&euro;&mdash;</div>
@@ -1073,143 +1103,286 @@
     <!-- FORM BRUTIA -->
     <div class="form-section" id="bru-form">
       <p class="form-label">Iscrizione &middot; Brutia Tango Festival</p>
-      <div class="form-prog-wrap">
-        <div class="form-prog-bar" id="b_prog" style="width:25%"></div>
+      <div class="bru-prog">
+        <div class="bru-pd active" id="b_ss1"><div class="bru-dot">1</div><div class="bru-dot-lbl">Dati</div></div>
+        <div class="bru-line"></div>
+        <div class="bru-pd" id="b_ss2"><div class="bru-dot">2</div><div class="bru-dot-lbl">Stanza</div></div>
+        <div class="bru-line"></div>
+        <div class="bru-pd" id="b_ss3"><div class="bru-dot">3</div><div class="bru-dot-lbl">Pacchetto</div></div>
       </div>
-      <div class="form-layout">
-        <div class="form-sidebar-ed">
-          <div class="fsn">
-            <div class="fsn-item active" id="b_ss1"><div class="fsn-num">1</div><div class="fsn-lbl">Pacchetto</div></div>
-            <div class="fsn-item" id="b_ss2"><div class="fsn-num">2</div><div class="fsn-lbl">Dati</div></div>
-            <div class="fsn-item" id="b_ss3"><div class="fsn-num">3</div><div class="fsn-lbl">Stanza</div></div>
-            <div class="fsn-item" id="b_ss4"><div class="fsn-num">4</div><div class="fsn-lbl">Conferma</div></div>
+      <div id="b_body">
+        <div class="form-step-ed active" id="b_fs1">
+          <h3 class="fs-title">Dati<br>personali</h3>
+          <p class="fs-sub">Le tue informazioni di contatto</p>
+          <div class="f-row-ed">
+            <div class="fg-ed"><label>Cognome *</label><input type="text" class="fi-ed" id="b_cognome" placeholder="Rossi"></div>
+            <div class="fg-ed"><label>Nome *</label><input type="text" class="fi-ed" id="b_nome" placeholder="Andrea"></div>
+          </div>
+          <div class="fg-ed"><label>Email *</label><input type="email" class="fi-ed" id="b_email" placeholder="andrea@email.com"></div>
+          <div class="f-row-ed">
+            <div class="fg-ed"><label>Telefono</label><input type="tel" class="fi-ed" id="b_tel" placeholder="+39 333 000 0000"></div>
+            <div class="fg-ed"><label>Citt&agrave;</label><input type="text" class="fi-ed" id="b_citta" placeholder="Roma"></div>
+          </div>
+          <span class="mini-label">Ruolo di ballo *</span>
+          <div class="ruolo-grid" style="margin-bottom:2rem">
+            <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')"><input type="radio" name="b_ruolo" value="Leader"><div class="r-name">Leader</div></label>
+            <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')"><input type="radio" name="b_ruolo" value="Follower"><div class="r-name">Follower</div></label>
+            <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')"><input type="radio" name="b_ruolo" value="Entrambi"><div class="r-name">Entrambi</div></label>
+          </div>
+          <div class="fg-ed"><label>Compagno/a di ballo</label><input type="text" class="fi-ed" id="b_compagno_ballo" placeholder="Nome e cognome del partner di ballo"></div>
+          <div class="form-nav-ed">
+            <span></span>
+            <span class="step-count">1 di 3</span>
+            <button class="btn-next-ed" onclick="bru.next()">Avanti &rarr;</button>
           </div>
         </div>
-        <div id="b_body">
-          <!-- Step 1 -->
-          <div class="form-step-ed active" id="b_fs1">
-            <h3 class="fs-title">Pacchetto<br>&amp; ruolo</h3>
-            <p class="fs-sub">Scegli il pacchetto e come balli</p>
-            <div class="pkg-radio-grid">
-              <label class="r-opt-ed" onclick="syncRadio(this,'b_pkg')"><input type="radio" name="b_pkg" value="Pacchetto A"><div class="r-name">Pacchetto A</div><div class="r-info">3 notti &middot; &euro;&mdash;</div></label>
-              <label class="r-opt-ed" onclick="syncRadio(this,'b_pkg')"><input type="radio" name="b_pkg" value="Pacchetto B"><div class="r-name">Pacchetto B</div><div class="r-info">2 notti &middot; &euro;&mdash;</div></label>
-              <label class="r-opt-ed" onclick="syncRadio(this,'b_pkg')"><input type="radio" name="b_pkg" value="Pacchetto C"><div class="r-name">Pacchetto C</div><div class="r-info">1 notte &middot; &euro;&mdash;</div></label>
-            </div>
-            <span class="mini-label">Ruolo di ballo</span>
-            <div class="ruolo-grid">
-              <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')"><input type="radio" name="b_ruolo" value="Leader"><div class="r-name">Leader</div></label>
-              <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')"><input type="radio" name="b_ruolo" value="Follower"><div class="r-name">Follower</div></label>
-              <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')"><input type="radio" name="b_ruolo" value="Entrambi"><div class="r-name">Entrambi</div></label>
-            </div>
-            <div class="form-nav-ed">
-              <span></span>
-              <span class="step-count">1 di 4</span>
-              <button class="btn-next-ed" onclick="bru.next()">Avanti &rarr;</button>
-            </div>
+        <div class="form-step-ed" id="b_fs2">
+          <h3 class="fs-title">Sistemazione<br>in stanza</h3>
+          <p class="fs-sub">Scegli il tipo di stanza e indica i tuoi compagni</p>
+          <div class="stanza-grid" style="grid-template-columns:repeat(3,1fr)">
+            <label class="stanza-opt" onclick="bruUpdateCompagni(1,this)"><input type="radio" name="b_stanza" value="Doppia"><div class="s-ico"><i class="fa-solid fa-bed"></i><i class="fa-solid fa-bed"></i></div><div class="s-name">Doppia</div><div class="s-sub">2 letti singoli</div></label>
+            <label class="stanza-opt" onclick="bruUpdateCompagni(1,this)"><input type="radio" name="b_stanza" value="Matrimoniale"><div class="s-ico"><i class="fa-solid fa-bed"></i></div><div class="s-name">Matrimoniale</div><div class="s-sub">1 letto grande</div></label>
+            <label class="stanza-opt" onclick="bruUpdateCompagni(2,this)"><input type="radio" name="b_stanza" value="Tripla"><div class="s-ico"><i class="fa-solid fa-users"></i></div><div class="s-name">Tripla</div><div class="s-sub">3 persone</div></label>
           </div>
-          <!-- Step 2: Dati personali (Cognome prima, poi Nome; senza note) -->
-          <div class="form-step-ed" id="b_fs2">
-            <h3 class="fs-title">Dati<br>personali</h3>
-            <p class="fs-sub">Le tue informazioni di contatto</p>
-            <div class="f-row-ed">
-              <div class="fg-ed"><label>Cognome *</label><input type="text" class="fi-ed" id="b_cognome" placeholder="Rossi"></div>
-              <div class="fg-ed"><label>Nome *</label><input type="text" class="fi-ed" id="b_nome" placeholder="Andrea"></div>
-            </div>
-            <div class="fg-ed"><label>Email *</label><input type="email" class="fi-ed" id="b_email" placeholder="andrea@email.com"></div>
-            <div class="f-row-ed">
-              <div class="fg-ed"><label>Telefono</label><input type="tel" class="fi-ed" id="b_tel" placeholder="+39 333 000 0000"></div>
-              <div class="fg-ed"><label>Citt&agrave;</label><input type="text" class="fi-ed" id="b_citta" placeholder="Roma"></div>
-            </div>
-            <div class="fg-ed"><label>Compagno/a di ballo</label><input type="text" class="fi-ed" id="b_compagno_ballo" placeholder="Nome e cognome del partner di ballo"></div>
-            <div class="form-nav-ed">
-              <button class="btn-prev-ed" onclick="bru.prev()">&larr; Indietro</button>
-              <span class="step-count">2 di 4</span>
-              <button class="btn-next-ed" onclick="bru.next()">Avanti &rarr;</button>
-            </div>
+          <div id="b_compagniContainer" class="compagni-dyn" style="display:none;margin-top:1.6rem">
+            <p class="mini-label" style="margin-bottom:.8rem">Compagni di stanza</p>
+            <div id="b_compagniFields"></div>
           </div>
-          <!-- Step 3: Tipologia stanza + compagni di stanza (cognome+nome separati) -->
-          <div class="form-step-ed" id="b_fs3">
-            <h3 class="fs-title">Sistemazione<br>in stanza</h3>
-            <p class="fs-sub">Scegli il tipo di stanza e indica i tuoi compagni</p>
-            <div class="stanza-grid" style="grid-template-columns:repeat(3,1fr)">
-              <label class="stanza-opt" onclick="bruUpdateCompagni(0,this)">
-                <input type="radio" name="b_stanza" value="Singola">
-                <div class="s-ico"><i class="fa-solid fa-bed"></i></div>
-                <div class="s-name">Singola</div>
-              </label>
-              <label class="stanza-opt" onclick="bruUpdateCompagni(1,this)">
-                <input type="radio" name="b_stanza" value="Doppia">
-                <div class="s-ico"><i class="fa-solid fa-bed"></i><i class="fa-solid fa-bed"></i></div>
-                <div class="s-name">Doppia</div>
-              </label>
-              <label class="stanza-opt" onclick="bruUpdateCompagni(2,this)">
-                <input type="radio" name="b_stanza" value="Tripla">
-                <div class="s-ico"><i class="fa-solid fa-users"></i></div>
-                <div class="s-name">Tripla</div>
-              </label>
-            </div>
-            <!-- Compagni stanza: cognome + nome separati per il matching dashboard -->
-            <div id="b_compagniContainer" class="compagni-dyn" style="display:none;margin-top:1.6rem">
-              <p class="mini-label" style="margin-bottom:.8rem">Compagni di stanza</p>
-              <div id="b_compagniFields"></div>
-            </div>
-            <div class="form-nav-ed">
-              <button class="btn-prev-ed" onclick="bru.prev()">&larr; Indietro</button>
-              <span class="step-count">3 di 4</span>
-              <button class="btn-next-ed" onclick="bru.next()">Avanti &rarr;</button>
-            </div>
-          </div>
-          <!-- Step 4: Note + Riepilogo + Invia -->
-          <div class="form-step-ed" id="b_fs4">
-            <h3 class="fs-title">Conferma<br>iscrizione</h3>
-            <p class="fs-sub">Ultime note, poi controlla e invia</p>
-            <div class="fg-ed" style="margin-bottom:2.2rem">
-              <label>Note o richieste particolari</label>
-              <textarea class="fi-ed" id="b_note" placeholder="Allergie, esigenze speciali, informazioni aggiuntive..."></textarea>
-            </div>
-            <div class="riepilogo-ed" id="b_riepilogo"></div>
-            <div class="anticipo-box">
-              <div class="anticipo-lbl">Anticipo da versare</div>
-              <div class="anticipo-val" id="b_anticipo">Da definire</div>
-              <div class="anticipo-note">Riceverai il link di pagamento via email dopo la conferma.</div>
-            </div>
-            <div class="form-nav-ed">
-              <button class="btn-prev-ed" onclick="bru.prev()">&larr; Modifica</button>
-              <span class="step-count">4 di 4</span>
-              <button class="btn-next-ed" onclick="bru.next()">Invia iscrizione &rarr;</button>
-            </div>
-          </div>
-          <!-- Sending -->
-          <div class="form-sending-ed" id="b_sending">
-            <div class="spinner-ed"></div>
-            <p class="sending-lbl">Invio in corso...</p>
-          </div>
-          <!-- OK -->
-          <div class="form-ok-ed" id="b_ok">
-            <h3>Richiesta<br>inviata.</h3>
-            <p>Controlla la tua email. Ti contatteremo appena i dettagli del Brutia Tango Festival saranno disponibili.</p>
-          </div>
-          <!-- Error -->
-          <div class="form-error-ed" id="b_error">
-            <p id="b_errMsg">Si &egrave; verificato un errore. Riprova.</p>
-            <button class="btn-retry-ed" onclick="bru.resetError()">Riprova</button>
+          <div class="form-nav-ed">
+            <button class="btn-prev-ed" onclick="bru.prev()">&larr; Indietro</button>
+            <span class="step-count">2 di 3</span>
+            <button class="btn-next-ed" onclick="bru.next()">Avanti &rarr;</button>
           </div>
         </div>
+        <div class="form-step-ed" id="b_fs3">
+          <h3 class="fs-title">Pacchetto<br>&amp; conferma</h3>
+          <p class="fs-sub">Scegli il pacchetto, aggiungi note e invia</p>
+          <div class="pkg-radio-grid" style="margin-bottom:2rem">
+            <label class="r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)"><input type="radio" name="b_pkg" value="Pacchetto A"><div class="r-name">Pacchetto A</div><div class="r-info">3 notti &middot; &euro;&mdash;</div></label>
+            <label class="r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)"><input type="radio" name="b_pkg" value="Pacchetto B"><div class="r-name">Pacchetto B</div><div class="r-info">2 notti &middot; &euro;&mdash;</div></label>
+            <label class="r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)"><input type="radio" name="b_pkg" value="Pacchetto C"><div class="r-name">Pacchetto C</div><div class="r-info">1 notte &middot; &euro;&mdash;</div></label>
+          </div>
+          <div class="fg-ed" style="margin-bottom:2.2rem">
+            <label>Note o richieste particolari</label>
+            <textarea class="fi-ed" id="b_note" placeholder="Allergie, esigenze speciali, informazioni aggiuntive..."></textarea>
+          </div>
+          <div class="riepilogo-ed" id="b_riepilogo"></div>
+          <div class="anticipo-box">
+            <div class="anticipo-lbl">Anticipo da versare</div>
+            <div class="anticipo-val" id="b_anticipo">Da definire</div>
+            <div class="anticipo-note">Riceverai il link di pagamento via email dopo la conferma.</div>
+          </div>
+          <div class="form-nav-ed">
+            <button class="btn-prev-ed" onclick="bru.prev()">&larr; Modifica</button>
+            <span class="step-count">3 di 3</span>
+            <button class="btn-next-ed" onclick="bru.next()">Invia iscrizione &rarr;</button>
+          </div>
+        </div>
+        <div class="form-sending-ed" id="b_sending"><div class="spinner-ed"></div><p class="sending-lbl">Invio in corso...</p></div>
+        <div class="form-ok-ed" id="b_ok"><h3>Richiesta<br>inviata.</h3><p>Controlla la tua email. Ti contatteremo appena i dettagli del Brutia Tango Festival saranno disponibili.</p></div>
+        <div class="form-error-ed" id="b_error"><p id="b_errMsg">Si &egrave; verificato un errore. Riprova.</p><button class="btn-retry-ed" onclick="bru.resetError()">Riprova</button></div>
       </div>
     </div>
   </section>
 
-  <!-- ============================================================
-       FOOTER
-  ============================================================ -->
+  <!-- SHOP -->
+  <section class="shop-section" id="shop">
+    <div class="shop-head">
+      <div>
+        <span class="section-tag" style="color:var(--fire)">PeperTango Store</span>
+        <h2 class="section-hl reveal" style="color:#fff">IL NOSTRO<br><em>shop</em></h2>
+      </div>
+      <p class="shop-head-body reveal d2">
+        Scarpe da tango, abbigliamento e gadget brandizzati PeperTango.
+        Porta a casa un pezzo del festival.
+      </p>
+    </div>
+    <div class="shop-cats reveal">
+      <button class="shop-cat active" onclick="filterShop(this,'all')">Tutto</button>
+      <button class="shop-cat" onclick="filterShop(this,'scarpe')">Scarpe da tango</button>
+      <button class="shop-cat" onclick="filterShop(this,'abbigliamento')">Abbigliamento</button>
+      <button class="shop-cat" onclick="filterShop(this,'gadget')">Gadget</button>
+    </div>
+    <div class="shop-grid reveal d1">
+      <!-- SCARPE -->
+      <div class="shop-card" data-cat="scarpe">
+        <div class="shop-img">
+          <i class="fa-solid fa-shoe-prints" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
+          <span class="shop-img-badge">Scarpe</span>
+        </div>
+        <div class="shop-body">
+          <div class="shop-cat-tag">Scarpe da tango</div>
+          <div class="shop-name">Leader Classic</div>
+          <div class="shop-desc">Suola in camoscio, punta aperta. Disponibile nei numeri 39&ndash;46.</div>
+          <div class="shop-footer">
+            <span class="shop-price">&euro;120</span>
+            <button class="shop-add" onclick="shopNotify()"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="shop-card" data-cat="scarpe">
+        <div class="shop-img">
+          <i class="fa-solid fa-shoe-prints" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
+          <span class="shop-img-badge">Scarpe</span>
+        </div>
+        <div class="shop-body">
+          <div class="shop-cat-tag">Scarpe da tango</div>
+          <div class="shop-name">Follower Tacco 7</div>
+          <div class="shop-desc">Elegante, tacco 7 cm, cinturino regolabile. Num. 35&ndash;42.</div>
+          <div class="shop-footer">
+            <span class="shop-price">&euro;140</span>
+            <button class="shop-add" onclick="shopNotify()"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <!-- ABBIGLIAMENTO -->
+      <div class="shop-card" data-cat="abbigliamento">
+        <div class="shop-img">
+          <i class="fa-solid fa-shirt" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
+          <span class="shop-img-badge">Abbigliamento</span>
+        </div>
+        <div class="shop-body">
+          <div class="shop-cat-tag">Abbigliamento</div>
+          <div class="shop-name">T-Shirt PeperTango</div>
+          <div class="shop-desc">100% cotone organico. Logo ricamato. Colori: nero, rosso, beige.</div>
+          <div class="shop-footer">
+            <span class="shop-price">&euro;35</span>
+            <button class="shop-add" onclick="shopNotify()"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="shop-card" data-cat="abbigliamento">
+        <div class="shop-img">
+          <i class="fa-solid fa-vest" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
+          <span class="shop-img-badge">Abbigliamento</span>
+        </div>
+        <div class="shop-body">
+          <div class="shop-cat-tag">Abbigliamento</div>
+          <div class="shop-name">Felpa Festival</div>
+          <div class="shop-desc">Felpa girocollo unisex. Stampa sul petto. S / M / L / XL / XXL.</div>
+          <div class="shop-footer">
+            <span class="shop-price">&euro;65</span>
+            <button class="shop-add" onclick="shopNotify()"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <!-- GADGET -->
+      <div class="shop-card" data-cat="gadget">
+        <div class="shop-img">
+          <i class="fa-solid fa-bag-shopping" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
+        </div>
+        <div class="shop-body">
+          <div class="shop-cat-tag">Gadget</div>
+          <div class="shop-name">Tote Bag</div>
+          <div class="shop-desc">Shopper in cotone naturale con logo PeperTango serigrafato.</div>
+          <div class="shop-footer">
+            <span class="shop-price">&euro;20</span>
+            <button class="shop-add" onclick="shopNotify()"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="shop-card" data-cat="gadget">
+        <div class="shop-img">
+          <i class="fa-solid fa-image" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
+        </div>
+        <div class="shop-body">
+          <div class="shop-cat-tag">Gadget</div>
+          <div class="shop-name">Poster Festival</div>
+          <div class="shop-desc">Stampa artistica 50x70 cm. Carta opaca 200g. Edizione limitata.</div>
+          <div class="shop-footer">
+            <span class="shop-price">&euro;25</span>
+            <button class="shop-add" onclick="shopNotify()"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="shop-note">
+      Shop in arrivo &mdash; per ordini scrivi a <a href="mailto:shop@pepertango.it">shop@pepertango.it</a>
+    </p>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery-section" id="gallery">
+    <div class="gallery-head">
+      <div>
+        <span class="section-tag">Momenti</span>
+        <h2 class="section-hl reveal">I NOSTRI<br><em>scatti</em></h2>
+      </div>
+      <p class="gallery-sub reveal d2">Immagini dai nostri festival. Ogni foto racconta una storia di passione, musica e ballo.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item reveal"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_9e83a1fe691447c9a08378d5603847cf~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g1.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d1"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_54c28a8d58b142928686004eeb9ec869~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g2.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d1"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_50b85768f93a415fbb2f195a8c71641d~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g3.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_d3367f399d694a3d981df4110ceaea09~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g4.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d1"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_4c02263fd11c42e0a1b171ba43ac0182~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g5.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_7ee55d97416e46558c29cf5b81e5b79e~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g6.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_9d7afd58ac5a425fb579faf6ee693d76~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g7.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d3"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_0e913f41e3b140d0a9d40e9efe1fbfa4~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g8.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_0881b85bd8494637863d74eb2cc9b70a~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g9.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d3"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_bbccff5b719f4f75b9bcad03fd099b4e~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g10.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+    </div>
+  </section>
+
+  <!-- CONTATTI -->
+  <section class="contatti-section" id="contatti">
+    <div class="contatti-grid">
+      <div class="contatti-head">
+        <span class="section-tag">Contattaci</span>
+        <h2 class="section-hl reveal">HAI<br><em>domande?</em></h2>
+        <p class="contatti-body reveal d1">
+          Siamo qui per aiutarti. Scrivici per informazioni sui festival,
+          sulle iscrizioni, sullo shop o per qualsiasi altra curiosit&agrave;.
+        </p>
+        <div class="contatti-links reveal d2">
+          <a href="mailto:info@pepertango.it" class="contatti-link">
+            <i class="fa-solid fa-envelope"></i>info@pepertango.it
+          </a>
+          <a href="#" class="contatti-link">
+            <i class="fa-brands fa-instagram"></i>@pepertango
+          </a>
+          <a href="#" class="contatti-link">
+            <i class="fa-brands fa-facebook"></i>PeperTango
+          </a>
+          <a href="#" class="contatti-link">
+            <i class="fa-brands fa-whatsapp"></i>Scrivici su WhatsApp
+          </a>
+        </div>
+      </div>
+      <div class="contatti-form-wrap reveal d2">
+        <h3>Scrivici</h3>
+        <p>Ti risponderemo entro 24 ore</p>
+        <div class="c-field"><label>Nome</label><input type="text" class="c-input" placeholder="Il tuo nome"></div>
+        <div class="c-field"><label>Email</label><input type="email" class="c-input" placeholder="tua@email.it"></div>
+        <div class="c-field"><label>Oggetto</label>
+          <select class="c-input" style="cursor:pointer">
+            <option>Informazioni sui festival</option>
+            <option>Iscrizione MTP27</option>
+            <option>Iscrizione Brutia</option>
+            <option>Ordine shop</option>
+            <option>Altro</option>
+          </select>
+        </div>
+        <div class="c-field"><label>Messaggio</label><textarea class="c-textarea" placeholder="La tua domanda o richiesta..."></textarea></div>
+        <button class="c-submit" onclick="alert('Grazie! Ti risponderemo presto.')">Invia messaggio</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
   <footer id="footer">
     <div class="footer-grid">
       <div>
-        <div class="footer-brand">PEPER<br>TANGO</div>
+        <div class="footer-brand">PEPER<span>TANGO</span></div>
         <p class="footer-mission">
           Esperienze di tango argentino curate per chi ama ballare,
           condividere e vivere il ritmo fino in fondo.
         </p>
+        <div class="footer-social">
+          <a href="#" class="f-social-btn"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="f-social-btn"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" class="f-social-btn"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
       </div>
       <div class="footer-cols">
         <div class="fc-col">
@@ -1218,7 +1391,7 @@
           <a href="#brutia">Brutia Tango Festival</a>
         </div>
         <div class="fc-col">
-          <div class="fc-title">Pacchetti</div>
+          <div class="fc-title">Pacchetti MTP</div>
           <a href="#mtp27">Cala Jannita</a>
           <a href="#mtp27">Fiumicello</a>
           <a href="#mtp27">Spiaggia Nera</a>
@@ -1227,8 +1400,9 @@
         <div class="fc-col">
           <div class="fc-title">Contatti</div>
           <a href="mailto:info@pepertango.it">info@pepertango.it</a>
-          <a href="#">Instagram</a>
-          <a href="#">Facebook</a>
+          <a href="#shop">Shop</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#contatti">Scrivici</a>
         </div>
       </div>
     </div>
@@ -1242,7 +1416,7 @@
   ============================================================ -->
   <script>
     /* ---- Config ---- */
-    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5lnoBRqshl1YVly5MyjSC3nJUp5sRlo8Wy7QGv8vy34J9XmdPZk2vIDSd_cX2ka17/exec';
+    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6pqs5rvySS2_il_VAJLU07ucnIFdZ86RT6OWlhxVzDvb04REbJTt3ZXaziRvmDmTR/exec';
 
     var PACCHETTI = {
       'Cala Jannita':     { prezzo:300, anticipo:150, saldo:150, notti:4 },
@@ -1263,13 +1437,11 @@
       }, 100);
     }
 
-    /* Seleziona card pacchetto (highlight visivo) */
     function selectPkg(el, section) {
       document.querySelectorAll('#' + section + ' .pkg-item').forEach(function(c) {
         c.classList.remove('selected');
       });
       el.classList.add('selected');
-      /* Sincronizza radio nel form */
       var pkg = el.dataset.pkg;
       var prefix = section === 'mtp27' ? 'm' : 'b';
       document.querySelectorAll('[name="' + prefix + '_pkg"]').forEach(function(r) {
@@ -1279,7 +1451,6 @@
       });
     }
 
-    /* Radio: deseleziona gli altri nello stesso gruppo */
     function syncRadio(el, name) {
       document.querySelectorAll('[name="' + name + '"]').forEach(function(r) {
         r.closest('.r-opt-ed').classList.remove('sel');
@@ -1288,9 +1459,20 @@
       el.querySelector('input').checked = true;
     }
 
+    /* ---- Shop ---- */
+    function shopNotify() {
+      alert('Shop in arrivo! Scrivi a shop@pepertango.it per preordinare.');
+    }
+    function filterShop(btn, cat) {
+      document.querySelectorAll('.shop-cat').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelectorAll('.shop-card').forEach(function(c) {
+        c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'block' : 'none';
+      });
+    }
+
     /* ---- FormEngine ---- */
     function FormEngine(cfg) {
-      /* cfg: { p (prefix), ev (evento), pkg (pacchetti obj), tot (step totali) } */
       var self   = { step:1, TOT:(cfg.tot||4), data:{} };
       var p      = cfg.p;
       var ev     = cfg.ev;
@@ -1298,7 +1480,6 @@
 
       function g(s)  { return document.getElementById(p + '_' + s); }
 
-      /* Aggiorna UI step indicator + progress */
       self.ui = function() {
         for (var i = 1; i <= self.TOT; i++) {
           var fs = g('fs' + i);
@@ -1326,6 +1507,50 @@
       };
 
       self.validate = function(s) {
+        if (ev === 'Brutia') {
+          if (s === 1) {
+            var nome    = g('nome').value.trim();
+            var cognome = g('cognome').value.trim();
+            var email   = g('email').value.trim();
+            var ruo     = document.querySelector('[name="b_ruolo"]:checked');
+            if (!cognome)                       { alert('Inserisci il cognome.'); return false; }
+            if (!nome)                          { alert('Inserisci il nome.'); return false; }
+            if (!email || !email.includes('@')) { alert('Email non valida.'); return false; }
+            if (!ruo)                           { alert('Seleziona il tuo ruolo.'); return false; }
+            self.data.nome           = nome;
+            self.data.cognome        = cognome;
+            self.data.nome_completo  = nome + ' ' + cognome;
+            self.data.email          = email;
+            self.data.tel            = g('tel').value.trim();
+            self.data.citta          = g('citta').value.trim();
+            self.data.ruolo          = ruo.value;
+            self.data.compagno_ballo = g('compagno_ballo').value.trim();
+          }
+          if (s === 2) {
+            var st = document.querySelector('[name="b_stanza"]:checked');
+            if (!st) { alert('Seleziona il tipo di stanza.'); return false; }
+            self.data.tipologia_stanza = st.value;
+            var maxC = { 'Doppia':1, 'Matrimoniale':1, 'Tripla':2 };
+            var n = maxC[st.value] || 0;
+            var compagni = [];
+            for (var i = 1; i <= n; i++) {
+              var cog = g('c' + i + '_cognome');
+              var nom = g('c' + i + '_nome');
+              var cogV = cog ? cog.value.trim() : '';
+              var nomV = nom ? nom.value.trim() : '';
+              if (cogV || nomV) compagni.push((nomV + ' ' + cogV).trim());
+            }
+            self.data.compagni_stanza = compagni;
+          }
+          if (s === 3) {
+            var pkg = document.querySelector('[name="b_pkg"]:checked');
+            if (!pkg) { alert('Seleziona un pacchetto.'); return false; }
+            self.data.pacchetto = pkg.value;
+            var noteEl = g('note');
+            if (noteEl) self.data.note = noteEl.value.trim();
+          }
+          return true;
+        }
         if (s === 1) {
           var pkg  = document.querySelector('[name="' + p + '_pkg"]:checked');
           var ruo  = document.querySelector('[name="' + p + '_ruolo"]:checked');
@@ -1338,15 +1563,15 @@
           var nome    = g('nome').value.trim();
           var cognome = g('cognome').value.trim();
           var email   = g('email').value.trim();
-          if (!nome)                         { alert('Inserisci il nome.'); return false; }
-          if (!cognome)                      { alert('Inserisci il cognome.'); return false; }
-          if (!email || !email.includes('@')){ alert('Email non valida.'); return false; }
-          self.data.nome          = nome;
-          self.data.cognome       = cognome;
-          self.data.nome_completo = nome + ' ' + cognome;
-          self.data.email         = email;
-          self.data.tel           = g('tel').value.trim();
-          self.data.citta         = g('citta').value.trim();
+          if (!nome)                          { alert('Inserisci il nome.'); return false; }
+          if (!cognome)                       { alert('Inserisci il cognome.'); return false; }
+          if (!email || !email.includes('@')) { alert('Email non valida.'); return false; }
+          self.data.nome           = nome;
+          self.data.cognome        = cognome;
+          self.data.nome_completo  = nome + ' ' + cognome;
+          self.data.email          = email;
+          self.data.tel            = g('tel').value.trim();
+          self.data.citta          = g('citta').value.trim();
           self.data.compagno_ballo = g('compagno_ballo').value.trim();
         }
         if (s === 3) {
@@ -1356,30 +1581,13 @@
           var maxC = { Singola:0, Doppia:1, Tripla:2, Quadrupla:3 };
           var n = maxC[st.value] || 0;
           var compagni = [];
-          if (ev === 'Brutia') {
-            /* Brutia: cognome + nome separati per ogni compagno di stanza */
-            for (var i = 1; i <= n; i++) {
-              var cog = g('c' + i + '_cognome');
-              var nom = g('c' + i + '_nome');
-              var cogV = cog ? cog.value.trim() : '';
-              var nomV = nom ? nom.value.trim() : '';
-              if (cogV || nomV) compagni.push((cogV + ' ' + nomV).trim());
-            }
-          } else {
-            /* MTP27: campo singolo combinato */
-            for (var i = 1; i <= n; i++) {
-              var cf = g('c' + i);
-              if (cf && cf.value.trim()) compagni.push(cf.value.trim());
-            }
-            var noteEl = g('note');
-            if (noteEl) self.data.note = noteEl.value.trim();
+          for (var i = 1; i <= n; i++) {
+            var cf = g('c' + i);
+            if (cf && cf.value.trim()) compagni.push(cf.value.trim());
           }
+          var noteEl = g('note');
+          if (noteEl) self.data.note = noteEl.value.trim();
           self.data.compagni_stanza = compagni;
-        }
-        /* Brutia step 4: raccoglie le note prima dell'invio */
-        if (s === 4 && ev === 'Brutia') {
-          var noteEl4 = g('note');
-          if (noteEl4) self.data.note = noteEl4.value.trim();
         }
         return true;
       };
@@ -1405,21 +1613,25 @@
       };
 
       self.riepilogo = function() {
-        var info = pkgMap[self.data.pacchetto] || {};
+        var pkgVal = self.data.pacchetto;
+        if (!pkgVal) {
+          var pkgEl = document.querySelector('[name="' + p + '_pkg"]:checked');
+          if (pkgEl) pkgVal = pkgEl.value;
+        }
+        var info = pkgMap[pkgVal] || {};
         var evName  = ev === 'MTP27' ? 'Maratona Tango Piccante 2027' : 'Brutia Tango Festival';
         var prezzoTxt = info.prezzo ? '€' + info.prezzo : 'Da definire';
         var rows = [
           ['Evento',         evName],
-          ['Pacchetto',      self.data.pacchetto        || '—'],
+          ['Pacchetto',      pkgVal                     || '—'],
           ['Ruolo',          self.data.ruolo            || '—'],
           ['Nome',           self.data.nome             || '—'],
           ['Cognome',        self.data.cognome          || '—'],
           ['Email',          self.data.email            || '—'],
           ['Telefono',       self.data.tel              || '—'],
-          ['Città',    self.data.citta            || '—'],
+          ['Città',     self.data.citta            || '—'],
           ['Compagno ballo', self.data.compagno_ballo   || '—']
         ];
-        /* Stanza e compagni: mostrati per entrambi gli eventi */
         if (self.data.tipologia_stanza) {
           rows.push(['Tipo stanza', self.data.tipologia_stanza]);
           if (self.data.tipologia_stanza !== 'Singola') {
@@ -1428,7 +1640,6 @@
             rows.push(['Compagni stanza', compTxt]);
           }
         }
-        /* Note sempre in fondo se presenti */
         if (self.data.note) rows.push(['Note', self.data.note]);
         rows.push(['Prezzo totale', prezzoTxt]);
         var box = g('riepilogo');
@@ -1441,27 +1652,23 @@
       };
 
       self.send = function() {
-        /* Nascondi step, mostra spinner */
         for (var i = 1; i <= self.TOT; i++) {
           var fs = g('fs' + i);
           if (fs) fs.classList.remove('active');
         }
         g('sending').classList.add('active');
-
-        /* Iframe trick per bypassare CORS */
         var iname = 'iframe_' + p + '_' + Date.now();
         var iframe = document.createElement('iframe');
         iframe.name = iname; iframe.style.display = 'none';
         document.body.appendChild(iframe);
-
         var form = document.createElement('form');
         form.method = 'POST'; form.action = APPS_SCRIPT_URL;
         form.target = iname; form.style.display = 'none';
-
         var campi = {
           action:           'nuova_iscrizione',
           evento:           ev,
           nome:             self.data.nome_completo      || '',
+          cognome:          self.data.cognome            || '',
           email:            self.data.email              || '',
           tel:              self.data.tel                || '',
           citta:            self.data.citta              || '',
@@ -1472,30 +1679,47 @@
           compagni_stanza:  (self.data.compagni_stanza || []).join(','),
           note:             self.data.note               || ''
         };
-
         Object.keys(campi).forEach(function(k) {
           var inp = document.createElement('input');
           inp.type = 'hidden'; inp.name = k; inp.value = campi[k];
           form.appendChild(inp);
         });
         document.body.appendChild(form);
-
-        iframe.onload = function() {
-          self.ok();
+        var done = false;
+        function cleanup() {
           setTimeout(function() {
             if (document.body.contains(form))   document.body.removeChild(form);
             if (document.body.contains(iframe)) document.body.removeChild(iframe);
-          }, 3000);
-        };
+          }, 1000);
+          window.removeEventListener('message', msgHandler);
+        }
+        function msgHandler(e) {
+          if (done) return;
+          var d = e.data;
+          if (!d || typeof d !== 'object' || !('ok' in d)) return;
+          done = true; cleanup();
+          g('sending').classList.remove('active');
+          if (d.ok === false) { self.showError(d.error || 'Siè verificato un errore.'); }
+          else { self.ok(); }
+        }
+        window.addEventListener('message', msgHandler);
         setTimeout(function() {
-          if (g('sending').classList.contains('active')) self.ok();
-        }, 8000);
+          if (!done) { done = true; cleanup(); self.ok(); }
+        }, 10000);
         form.submit();
       };
 
       self.ok = function() {
         g('sending').classList.remove('active');
         g('ok').classList.add('active');
+      };
+
+      self.showError = function(msg) {
+        g('sending').classList.remove('active');
+        var errEl = g('error');
+        var msgEl = g('errMsg');
+        if (msgEl) msgEl.textContent = msg;
+        if (errEl) errEl.classList.add('active');
       };
 
       self.resetError = function() {
@@ -1507,13 +1731,11 @@
       return self;
     }
 
-    /* ---- Crea le due istanze ---- */
     var mtp = FormEngine({ p:'m', ev:'MTP27',  pkg: PACCHETTI });
-    var bru = FormEngine({ p:'b', ev:'Brutia', pkg: PACCHETTI_BRU, tot:4 });
+    var bru = FormEngine({ p:'b', ev:'Brutia', pkg: PACCHETTI_BRU, tot:3 });
 
-    /* Funzione standalone per compagni stanza Brutia: cognome + nome separati */
     function bruUpdateCompagni(n, label) {
-      document.querySelectorAll('#b_fs3 .stanza-opt').forEach(function(o) {
+      document.querySelectorAll('#b_fs2 .stanza-opt').forEach(function(o) {
         o.classList.remove('sel');
       });
       if (label) { label.classList.add('sel'); label.querySelector('input').checked = true; }
@@ -1528,7 +1750,7 @@
         d.className = 'f-row-ed';
         d.style.marginBottom = '1.2rem';
         d.innerHTML = '<div class="fg-ed">'
-          + '<label>Compagno/a ' + i + ' &ndash; Cognome</label>'
+          + '<label>Compagno/a ' + i + ' – Cognome</label>'
           + '<input type="text" class="fi-ed" id="b_c' + i + '_cognome" placeholder="Rossi">'
           + '</div>'
           + '<div class="fg-ed">'
@@ -1537,6 +1759,11 @@
           + '</div>';
         flds.appendChild(d);
       }
+    }
+
+    function bruSelPkg(label) {
+      bru.data.pacchetto = label.querySelector('input').value;
+      bru.riepilogo();
     }
 
     /* ---- Scroll reveal ---- */

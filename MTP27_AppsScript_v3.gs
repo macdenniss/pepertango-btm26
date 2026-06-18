@@ -156,6 +156,14 @@ function doGet(e) {
         }
         return assegnaCameraManuale(params.id, params.camera || '', params.tipo_camera || '', evento);
 
+      // Aggiorna pacchetto, tipologia stanza, compagni e camera in un colpo solo
+      // Richiede: id; opzionali: pacchetto, tipologia_stanza, compagni_stanza, camera, tipo_camera
+      case 'aggiornaDatiIscritto':
+        if (!params.id) {
+          return jsonResponse({ ok: false, error: 'Parametro mancante: id obbligatorio.' });
+        }
+        return aggiornaDatiIscritto(params.id, params, evento);
+
       // Elimina un iscritto dal foglio
       // Richiede: id
       case 'eliminaIscrizione':
@@ -356,6 +364,43 @@ function assegnaCameraManuale(id, camera, tipoCamera, evento) {
 
   log('ASSEGNA_CAMERA_MANUALE', 'ID ' + id + ' -> ' + camera + ' (' + tipoCamera + ')');
   return jsonResponse({ ok: true, msg: 'Camera assegnata: ' + camera });
+}
+
+
+// -- AGGIORNA DATI ISCRITTO (pacchetto + stanza + camera) ----
+function aggiornaDatiIscritto(id, params, evento) {
+  var cfg   = getConfig(evento);
+  var ss    = getSpreadsheet(evento);
+  var sheet = getOrCreateSheet(ss, cfg.SHEET_ISCRITTI);
+  var riga  = trovaRigaPerId(sheet, id);
+
+  if (!riga) return jsonResponse({ ok: false, error: 'Iscritto non trovato.' });
+
+  var aggiornati = [];
+
+  if (params.pacchetto !== undefined && params.pacchetto !== '') {
+    sheet.getRange(riga, COL.PACCHETTO).setValue(params.pacchetto);
+    aggiornati.push('pacchetto');
+  }
+  if (params.tipologia_stanza !== undefined && params.tipologia_stanza !== '') {
+    sheet.getRange(riga, COL.TIPOLOGIA_STANZA).setValue(params.tipologia_stanza);
+    aggiornati.push('tipologia_stanza');
+  }
+  if (params.compagni_stanza !== undefined) {
+    sheet.getRange(riga, COL.COMPAGNI_STANZA).setValue(params.compagni_stanza);
+    aggiornati.push('compagni_stanza');
+  }
+  if (params.camera !== undefined) {
+    sheet.getRange(riga, COL.CAMERA).setValue(params.camera);
+    aggiornati.push('camera');
+  }
+  if (params.tipo_camera !== undefined && params.tipo_camera !== '') {
+    sheet.getRange(riga, COL.TIPO_CAMERA).setValue(params.tipo_camera);
+    aggiornati.push('tipo_camera');
+  }
+
+  log('AGGIORNA_DATI_ISCRITTO', 'ID ' + id + ' -> ' + aggiornati.join(', '));
+  return jsonResponse({ ok: true, msg: 'Aggiornato: ' + aggiornati.join(', ') });
 }
 
 

@@ -732,16 +732,40 @@
   </div>
 </div>
 
-<!-- MODAL camera -->
-<div class="modal-bg" id="modalCam">
+<!-- MODAL iscritto -->
+<div class="modal-bg" id="modalCam" onclick="if(event.target===this)closeModal()">
   <div class="modal">
-    <h3>Assegna Camera</h3>
+    <h3 id="modal-titolo">Modifica iscritto</h3>
     <input type="hidden" id="modal-id">
-    <label>Numero Camera</label>
+
+    <div style="background:var(--accent2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:1.4rem;font-size:14px;font-weight:600;color:var(--accent)" id="modal-nome-display"></div>
+
+    <label>Pacchetto</label>
+    <select id="modal-pkg">
+      <option value="">— nessun cambio —</option>
+      <option>Pacchetto A</option>
+      <option>Pacchetto B</option>
+      <option>Pacchetto C</option>
+    </select>
+
+    <label>Tipologia stanza</label>
+    <select id="modal-tipo-stanza">
+      <option value="">— nessun cambio —</option>
+      <option>Singola</option>
+      <option>Doppia</option>
+      <option>Matrimoniale</option>
+      <option>Tripla</option>
+    </select>
+
+    <label>Compagni di stanza <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted)">(separati da virgola)</span></label>
+    <input type="text" id="modal-compagni" placeholder="es. Mario Rossi, Laura Bianchi">
+
+    <label>Numero camera <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted)">(lascia vuoto per non cambiare)</span></label>
     <input type="text" id="modal-cam" placeholder="es. 101">
+
     <div class="modal-btns">
       <button class="btn-modal-cancel" onclick="closeModal()">Annulla</button>
-      <button class="btn-modal-ok" onclick="salvaCamera()">Salva</button>
+      <button class="btn-modal-ok" onclick="salvaModifiche()">Salva modifiche</button>
     </div>
   </div>
 </div>
@@ -1087,24 +1111,50 @@
     toast('Iscrizione eliminata.');
   }
 
-  /* Camera modal */
+  /* Modal iscritto */
   function openModal(id) {
+    var r = allData.find(function(x) { return (x.id || x.numero_progressivo || '').toString() === id.toString(); });
     document.getElementById('modal-id').value = id;
-    document.getElementById('modal-cam').value = '';
+    document.getElementById('modal-nome-display').textContent = r ? (r.nome || r.nome_completo || '—') : '—';
+    document.getElementById('modal-titolo').textContent = 'Modifica — ' + (r ? (r.nome || '—') : '—');
+
+    // Pre-popola con valori correnti
+    var pkg   = document.getElementById('modal-pkg');
+    var tipo  = document.getElementById('modal-tipo-stanza');
+    var comp  = document.getElementById('modal-compagni');
+    var cam   = document.getElementById('modal-cam');
+
+    pkg.value  = r ? (r.pacchetto || '') : '';
+    tipo.value = r ? (r.tipologia_stanza || '') : '';
+    comp.value = r ? (r.compagni_stanza || '') : '';
+    cam.value  = r ? (r.camera || '') : '';
+
     document.getElementById('modalCam').classList.add('open');
   }
   function closeModal() {
     document.getElementById('modalCam').classList.remove('open');
   }
-  function salvaCamera() {
-    var id   = document.getElementById('modal-id').value;
-    var cam  = document.getElementById('modal-cam').value.trim();
-    var tipo = '';
-    if (!cam) { alert('Inserisci il numero camera.'); return; }
+  function salvaModifiche() {
+    var id        = document.getElementById('modal-id').value;
+    var pkg       = document.getElementById('modal-pkg').value.trim();
+    var tipoStanza= document.getElementById('modal-tipo-stanza').value.trim();
+    var compagni  = document.getElementById('modal-compagni').value.trim();
+    var cam       = document.getElementById('modal-cam').value.trim();
+
+    var payload = { action: 'aggiornaDatiIscritto', id: id, evento: EVENTO };
+    var changes = [];
+
+    if (pkg)        { payload.pacchetto = pkg;              changes.push('pacchetto'); }
+    if (tipoStanza) { payload.tipologia_stanza = tipoStanza; changes.push('stanza'); }
+    payload.compagni_stanza = compagni; // aggiorna sempre (anche se vuoto, per poter rimuovere)
+    if (cam)        { payload.camera = cam; payload.tipo_camera = tipoStanza; changes.push('camera'); }
+
     closeModal();
-    callAction({ action:'assegnaCameraManuale', id:id, camera:cam, tipoCamera:tipo, evento:EVENTO });
-    toast('Camera assegnata.');
+    callAction(payload);
+    toast('Salvato: ' + (changes.length ? changes.join(', ') : 'compagni'));
   }
+  /* Alias retrocompatibilità */
+  function salvaCamera() { salvaModifiche(); }
 
   /* ============================================================
      HELPERS

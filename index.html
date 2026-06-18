@@ -1037,16 +1037,72 @@
 
     /* sub-sezioni */
     #page-brutia .ev-sub { background: #fff; }
-    #page-brutia .ev-sub.alt { background: #f5f0ff; }
+    #page-brutia .ev-sub.alt {
+      background: #1a0033;
+      padding: 60px 5%;
+    }
     #page-brutia .ev-sub-event-tag {
       background: #7b2ff7; color: #fff;
       padding: 4px 12px; border-radius: 20px;
     }
     #page-brutia .ev-sub-title { color: #0d1b3e; }
-    #page-brutia .tdj-avatar { background: #7b2ff7; color: #fff; }
-    #page-brutia .tdj-name { color: #7b2ff7; }
+    #page-brutia .ev-sub.alt .ev-sub-title {
+      color: #ffff00;
+      text-shadow: 0 0 20px rgba(255,255,0,.4);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: .05em;
+    }
+    #page-brutia .ev-sub.alt .ev-sub-event-tag {
+      background: transparent; color: #00e5ff;
+      font-size: 13px; letter-spacing: .15em; text-transform: uppercase;
+      padding: 0;
+    }
     #page-brutia .location-info h4 { color: #0d1b3e; }
     #page-brutia .location-address { color: #7b2ff7; }
+
+    /* TDJ GRID festival style */
+    #page-brutia .tdj-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+    #page-brutia .tdj-card {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      text-align: center;
+    }
+    #page-brutia .tdj-card:hover { transform: translateY(-4px); box-shadow: none; }
+    #page-brutia .tdj-avatar {
+      width: 120px; height: 120px;
+      border-radius: 0;
+      background: #000;
+      border: 3px solid #00e5ff;
+      box-shadow: 0 0 12px rgba(0,229,255,.5), inset 0 0 8px rgba(0,229,255,.1);
+      margin: 0 auto 10px;
+      filter: grayscale(100%) contrast(1.1);
+      transition: filter .3s, border-color .3s;
+    }
+    #page-brutia .tdj-card:nth-child(2) .tdj-avatar { border-color: #ff00cc; box-shadow: 0 0 12px rgba(255,0,204,.5); }
+    #page-brutia .tdj-card:nth-child(3) .tdj-avatar { border-color: #ffff00; box-shadow: 0 0 12px rgba(255,255,0,.5); }
+    #page-brutia .tdj-card:nth-child(4) .tdj-avatar { border-color: #00e5ff; box-shadow: 0 0 12px rgba(0,229,255,.5); }
+    #page-brutia .tdj-card:nth-child(5) .tdj-avatar { border-color: #ff00cc; box-shadow: 0 0 12px rgba(255,0,204,.5); }
+    #page-brutia .tdj-card:nth-child(6) .tdj-avatar { border-color: #ffff00; box-shadow: 0 0 12px rgba(255,255,0,.5); }
+    #page-brutia .tdj-card:hover .tdj-avatar { filter: grayscale(0%) contrast(1); }
+    #page-brutia .tdj-name {
+      color: #00e5ff; font-size: .95rem;
+      text-transform: uppercase; letter-spacing: .1em;
+      text-shadow: 0 0 8px rgba(0,229,255,.6);
+    }
+    #page-brutia .tdj-card:nth-child(2) .tdj-name,
+    #page-brutia .tdj-card:nth-child(5) .tdj-name { color: #ff00cc; text-shadow: 0 0 8px rgba(255,0,204,.6); }
+    #page-brutia .tdj-card:nth-child(3) .tdj-name,
+    #page-brutia .tdj-card:nth-child(6) .tdj-name { color: #ffff00; text-shadow: 0 0 8px rgba(255,255,0,.6); }
+    #page-brutia .tdj-bio {
+      color: rgba(255,255,255,.5); font-size: 12px;
+      text-transform: uppercase; letter-spacing: .08em;
+    }
 
     /* ============================================================
        BRUTIA — CARD STANZA + PACCHETTO
@@ -1588,24 +1644,39 @@
   <!-- BRUTIA · TDJ -->
   <section class="ev-sub alt" id="brutia-tdj">
     <div class="ev-sub-header">
-      <span class="ev-sub-event-tag">Brutia Tango Fest</span>
+      <span class="ev-sub-event-tag">Brutia Tango Fest 2026 &mdash; TDJ TEAM</span>
       <h3 class="ev-sub-title">I TDJ</h3>
     </div>
     <div class="tdj-grid">
       <div class="tdj-card">
-        <div class="tdj-avatar"><i class="fa-solid fa-music"></i></div>
-        <div class="tdj-name">TDJ 1</div>
-        <div class="tdj-bio">Nome e bio in arrivo</div>
+        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
+        <div class="tdj-name">Ciccio Aiello</div>
+        <div class="tdj-bio">TDJ</div>
       </div>
       <div class="tdj-card">
-        <div class="tdj-avatar"><i class="fa-solid fa-music"></i></div>
-        <div class="tdj-name">TDJ 2</div>
-        <div class="tdj-bio">Nome e bio in arrivo</div>
+        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
+        <div class="tdj-name">Salvo D'Urso</div>
+        <div class="tdj-bio">TDJ</div>
       </div>
       <div class="tdj-card">
-        <div class="tdj-avatar"><i class="fa-solid fa-music"></i></div>
-        <div class="tdj-name">TDJ 3</div>
-        <div class="tdj-bio">Nome e bio in arrivo</div>
+        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
+        <div class="tdj-name">Lavinia Livi</div>
+        <div class="tdj-bio">TDJ</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
+        <div class="tdj-name">Alan Spotti</div>
+        <div class="tdj-bio">TDJ</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
+        <div class="tdj-name">Cristina Borgia</div>
+        <div class="tdj-bio">TDJ</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
+        <div class="tdj-name">Carmine Parise</div>
+        <div class="tdj-bio">TDJ</div>
       </div>
     </div>
   </section>

@@ -260,6 +260,10 @@
       border-color: rgba(123,47,247,0.4);
       box-shadow: 0 4px 16px rgba(123,47,247,0.1);
     }
+    .cam-card.cam-card-mismatch {
+      border-color: #f59e0b;
+      box-shadow: 0 2px 8px rgba(245,158,11,0.15);
+    }
     .cam-card-num {
       font-family: 'DM Mono', monospace;
       font-size: 11px; font-weight: 500;
@@ -277,8 +281,26 @@
     .cam-tipo-tripla       { background: #dcfce7; color: #15803d; border: 1px solid #a7f0be; }
     .cam-card-ospiti { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.4; }
     .cam-card-compagni { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
-    .cam-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
-    .cam-card-pkg { font-size: 10px; color: var(--muted); }
+    .cam-card-footer { display: flex; align-items: center; justify-content: flex-end; margin-top: 10px; }
+
+    /* Ospiti con pacchetto */
+    .cam-guest-list { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+    .cam-guest-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .cam-guest-name { font-size: 13px; font-weight: 600; color: var(--ink); flex: 1; }
+    .cam-guest-pkg {
+      font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px;
+      background: var(--accent2); color: var(--accent); border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .cam-guest-pkg.mismatch {
+      background: #fff3e0; color: #c47000; border-color: #ffe0a0;
+    }
+    .cam-mismatch-alert {
+      margin-top: 8px; padding: 6px 10px; border-radius: 6px;
+      background: #fff8e1; border: 1px solid #ffe082;
+      font-size: 11px; font-weight: 600; color: #b45309;
+      display: flex; align-items: center; gap: 5px;
+    }
 
     /* TABLE */
     .tbl-wrap { overflow-x: auto; }
@@ -948,16 +970,50 @@
       lista.forEach(function(r) {
         var id = r.id || r.numero_progressivo;
         var cssClass = tipoClass[tipo] || 'cam-tipo-doppia';
-        html += '<div class="cam-card">';
+
+        // Raccoglie gli ospiti: intestatario + compagni trovati in allData
+        var ospiti = [{ nome: r.nome || '—', pkg: r.pacchetto || '' }];
+        if (r.compagni_stanza) {
+          var nomiCompagni = r.compagni_stanza.split(',').map(function(n) { return n.trim(); });
+          nomiCompagni.forEach(function(nomeC) {
+            if (!nomeC) return;
+            // cerca in allData per nome o nome_completo
+            var trovato = allData.find(function(x) {
+              var nc = (x.nome || x.nome_completo || '').toLowerCase();
+              return nc === nomeC.toLowerCase() || nc.indexOf(nomeC.toLowerCase()) !== -1;
+            });
+            ospiti.push({ nome: nomeC, pkg: trovato ? (trovato.pacchetto || '') : '' });
+          });
+        }
+
+        // Verifica mismatch pacchetti
+        var pacchetti = ospiti.map(function(o) { return o.pkg; }).filter(Boolean);
+        var hasMismatch = pacchetti.length > 1 && pacchetti.some(function(p) { return p !== pacchetti[0]; });
+
+        html += '<div class="cam-card' + (hasMismatch ? ' cam-card-mismatch' : '') + '">';
         html += '<div class="cam-card-num">Camera ' + (r.camera || '—') + '</div>';
         html += '<span class="cam-card-tipo ' + cssClass + '">' + tipo + '</span>';
-        html += '<div class="cam-card-ospiti">' + (r.nome || '—') + '</div>';
-        if (r.compagni_stanza) {
-          html += '<div class="cam-card-compagni">+ ' + r.compagni_stanza + '</div>';
+
+        // Lista ospiti con pacchetto
+        html += '<div class="cam-guest-list">';
+        ospiti.forEach(function(o, i) {
+          var isMismatch = hasMismatch && i > 0 && o.pkg !== ospiti[0].pkg;
+          html += '<div class="cam-guest-row">';
+          html += '<span class="cam-guest-name">' + o.nome + '</span>';
+          if (o.pkg) {
+            html += '<span class="cam-guest-pkg' + (isMismatch ? ' mismatch' : '') + '">' + o.pkg + '</span>';
+          }
+          html += '</div>';
+        });
+        html += '</div>';
+
+        // Alert mismatch
+        if (hasMismatch) {
+          html += '<div class="cam-mismatch-alert">⚠ Pacchetti diversi tra i compagni</div>';
         }
+
         html += '<div class="cam-card-footer">';
-        html += '<span class="cam-card-pkg">' + (r.pacchetto || '—') + '</span>';
-        html += '<button class="btn-sm btn-cam" onclick="openModal(\'' + id + '\')">✎</button>';
+        html += '<button class="btn-sm btn-cam" onclick="openModal(\'' + id + '\')">✎ Modifica</button>';
         html += '</div>';
         html += '</div>';
       });

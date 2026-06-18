@@ -1260,6 +1260,63 @@
     details > summary { list-style: none; }
     details > summary::-webkit-details-marker { display: none; }
     details[open] .opt-toggle { color: var(--accent); }
+
+    /* ============================================================
+       MOBILE RESPONSIVE
+    ============================================================ */
+    @media (max-width: 768px) {
+
+      /* NAV — hamburger */
+      nav { height: 64px; padding: 0 4%; }
+      .nav-brand img { height: 46px; }
+      .nav-links { display: none; }
+
+      /* HERO */
+      .hero {
+        padding-top: 80px; padding-left: 4%; padding-right: 4%;
+        min-height: auto; padding-bottom: 40px;
+      }
+      .hero-hl { font-size: clamp(2.4rem, 10vw, 4rem); max-width: 100%; }
+      .hero-sub { font-size: 1rem; max-width: 100%; }
+      .hero-pills { display: none; }
+      .hero-actions { flex-direction: column; gap: 0.75rem; }
+      .hero-btn { justify-content: center; padding: 14px 20px; font-size: 15px; }
+
+      /* SEZIONI GENERALI */
+      .chi-siamo { padding: 60px 4%; }
+      .chi-siamo-grid { gap: 40px; }
+
+      /* EVENTI */
+      .ev-sub { padding: 60px 4%; }
+      .ev-sub-header { flex-direction: column; gap: 1rem; }
+
+      /* TDJ grid */
+      .tdj-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 16px; }
+      #page-brutia .tdj-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 14px; }
+      #page-brutia .tdj-avatar { width: 90px; height: 90px; }
+
+      /* FORM */
+      #bru-form { border-radius: 12px; margin: 0 4px; }
+      #bru-form #b_body { padding: 20px 16px; }
+      #bru-form .fs-title { font-size: 1.3rem; }
+      .room-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .pkg-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+
+      /* LOCATION */
+      .location-grid { grid-template-columns: 1fr; }
+
+      /* FOOTER */
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-hl { font-size: clamp(2rem, 12vw, 3rem); }
+      .room-grid { grid-template-columns: 1fr; }
+      .pkg-grid { grid-template-columns: 1fr; }
+      .bru-prog { overflow-x: auto; }
+      #bru-form #b_body { padding: 16px 12px; }
+      .section-hl { font-size: clamp(1.8rem, 8vw, 3rem); }
+    }
   </style>
 </head>
 <body>

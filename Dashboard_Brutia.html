@@ -196,6 +196,46 @@
       text-transform: uppercase; color: var(--muted);
     }
 
+    /* CAMERA CARDS */
+    .cam-group { margin-bottom: 2rem; }
+    .cam-group-title {
+      font-size: 11px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: .8rem; padding-bottom: .4rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .cam-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .cam-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      position: relative;
+    }
+    .cam-card-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; font-weight: 500;
+      color: var(--muted); margin-bottom: 6px;
+    }
+    .cam-card-tipo {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 20px;
+      display: inline-block; margin-bottom: 8px;
+    }
+    .cam-tipo-singola      { background:#e0f2fe; color:#0369a1; }
+    .cam-tipo-doppia       { background:#ede9fe; color:#6d28d9; }
+    .cam-tipo-matrimoniale { background:#fce7f3; color:#be185d; }
+    .cam-tipo-tripla       { background:#dcfce7; color:#15803d; }
+    .cam-card-ospiti { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.4; }
+    .cam-card-compagni { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+    .cam-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+    .cam-card-pkg { font-size: 10px; color: var(--muted); }
+
     /* TABLE */
     .tbl-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; }
@@ -455,11 +495,12 @@
         <div id="ov-pacchetti"><div class="empty-state"><p>Caricamento...</p></div></div>
       </div>
       <div class="mini-card">
-        <div class="mini-card-title">Camere per categoria</div>
+        <div class="mini-card-title">Camere assegnate</div>
         <div id="ov-camere">
-          <div class="cat-row"><span class="cat-name">Deluxe (#1–50)</span><span class="cat-badge" id="ov-deluxe">—</span></div>
-          <div class="cat-row"><span class="cat-name">Standard (#51–90)</span><span class="cat-badge" id="ov-standard">—</span></div>
-          <div class="cat-row"><span class="cat-name">Economy (#91–120)</span><span class="cat-badge" id="ov-economy">—</span></div>
+          <div class="cat-row"><span class="cat-name">Singola</span><span class="cat-badge" id="ov-singola">—</span></div>
+          <div class="cat-row"><span class="cat-name">Doppia</span><span class="cat-badge" id="ov-doppia">—</span></div>
+          <div class="cat-row"><span class="cat-name">Matrimoniale</span><span class="cat-badge" id="ov-matrimoniale">—</span></div>
+          <div class="cat-row"><span class="cat-name">Tripla</span><span class="cat-badge" id="ov-tripla">—</span></div>
         </div>
       </div>
       <div class="mini-card">
@@ -657,7 +698,7 @@
   function renderOverview() {
     var attesa = 0, accettati = 0, anticipi = 0, incasso = 0;
     var pkgCount = {}, pagCount = {};
-    var numProgr = 0, deluxe = 0, std = 0, eco = 0;
+    var cSingola = 0, cDoppia = 0, cMatrimoniale = 0, cTripla = 0;
 
     allData.forEach(function(r) {
       var stato = (r.stato || '').toLowerCase();
@@ -668,19 +709,21 @@
       if (pag.includes('saldato'))  { anticipi++; }
       pkgCount[r.pacchetto] = (pkgCount[r.pacchetto] || 0) + 1;
       pagCount[r.pagamento] = (pagCount[r.pagamento] || 0) + 1;
-      var n = parseInt(r.numero_progressivo) || 0;
-      if (n >= 1 && n <= 50)  deluxe++;
-      if (n >= 51 && n <= 90) std++;
-      if (n >= 91)            eco++;
+      var tipo = (r.tipologia_stanza || '').toLowerCase();
+      if (tipo === 'singola')      cSingola++;
+      if (tipo === 'doppia')       cDoppia++;
+      if (tipo === 'matrimoniale') cMatrimoniale++;
+      if (tipo === 'tripla')       cTripla++;
     });
 
-    document.getElementById('ov-attesa').textContent    = attesa;
-    document.getElementById('ov-accettati').textContent = accettati;
-    document.getElementById('ov-anticipi').textContent  = anticipi;
-    document.getElementById('ov-incasso').textContent   = '€' + incasso;
-    document.getElementById('ov-deluxe').textContent    = deluxe + '/50';
-    document.getElementById('ov-standard').textContent  = std + '/40';
-    document.getElementById('ov-economy').textContent   = eco + '/30';
+    document.getElementById('ov-attesa').textContent       = attesa;
+    document.getElementById('ov-accettati').textContent    = accettati;
+    document.getElementById('ov-anticipi').textContent     = anticipi;
+    document.getElementById('ov-incasso').textContent      = '€' + incasso;
+    document.getElementById('ov-singola').textContent      = cSingola;
+    document.getElementById('ov-doppia').textContent       = cDoppia;
+    document.getElementById('ov-matrimoniale').textContent = cMatrimoniale;
+    document.getElementById('ov-tripla').textContent       = cTripla;
 
     var pkgHtml = Object.keys(pkgCount).map(function(k) {
       return '<div class="cat-row"><span class="cat-name">' + k + '</span><span class="cat-badge">' + pkgCount[k] + '</span></div>';
@@ -758,34 +801,65 @@
      CAMERE
   ============================================================ */
   function renderCamere() {
-    /* Brutia non ha categorie camera: mostra semplice lista degli assegnati */
     var assegnati = allData.filter(function(r) { return r.camera; });
 
     if (assegnati.length === 0) {
       document.getElementById('camere-body').innerHTML =
-        '<div class="empty-state"><p>Nessuna camera assegnata</p></div>';
+        '<div class="empty-state"><p>Nessuna camera assegnata ancora</p></div>';
       return;
     }
 
-    var righe = assegnati.map(function(r) {
-      return '<tr>'
-        + '<td><strong>' + r.camera + '</strong></td>'
-        + '<td class="wrap">' + (r.nome || '—')
-          + (r.tel ? '<br><small style="color:var(--muted)">' + r.tel + '</small>' : '') + '</td>'
-        + '<td>' + (r.tipologia_stanza || '—') + '</td>'
-        + '<td>' + (r.compagni_stanza ? '<small>' + r.compagni_stanza + '</small>' : '<span style="color:var(--muted)">—</span>') + '</td>'
-        + '<td>' + (r.pacchetto || '—') + '</td>'
-        + '<td>' + badgeStato(r.stato) + '</td>'
-        + '<td><button class="btn-sm btn-cam" onclick="openModal(\'' + (r.id||r.numero_progressivo) + '\')">'
-        + 'Modifica</button></td>'
-        + '</tr>';
-    }).join('');
+    /* Raggruppa per tipologia */
+    var ordine = ['Singola', 'Doppia', 'Matrimoniale', 'Tripla'];
+    var gruppi = {};
+    ordine.forEach(function(t) { gruppi[t] = []; });
 
-    document.getElementById('camere-body').innerHTML =
-      '<div class="section-card"><div class="tbl-wrap"><table>'
-      + '<thead><tr><th>Camera</th><th>Iscritto</th><th>Tipologia</th><th>Compagni</th><th>Pacchetto</th><th>Stato</th><th>Azioni</th></tr></thead>'
-      + '<tbody>' + righe + '</tbody>'
-      + '</table></div></div>';
+    assegnati.forEach(function(r) {
+      var tipo = r.tipologia_stanza || 'Altra';
+      if (!gruppi[tipo]) gruppi[tipo] = [];
+      gruppi[tipo].push(r);
+    });
+
+    var tipoClass = {
+      'Singola': 'cam-tipo-singola',
+      'Doppia': 'cam-tipo-doppia',
+      'Matrimoniale': 'cam-tipo-matrimoniale',
+      'Tripla': 'cam-tipo-tripla'
+    };
+
+    var html = '<div class="section-card" style="padding:24px 28px">';
+    var tuttiTipi = ordine.concat(Object.keys(gruppi).filter(function(k) { return ordine.indexOf(k) === -1; }));
+
+    tuttiTipi.forEach(function(tipo) {
+      var lista = gruppi[tipo];
+      if (!lista || lista.length === 0) return;
+
+      html += '<div class="cam-group">';
+      html += '<div class="cam-group-title">' + tipo + ' — ' + lista.length + ' camera' + (lista.length > 1 ? 'e' : '') + '</div>';
+      html += '<div class="cam-grid">';
+
+      lista.forEach(function(r) {
+        var id = r.id || r.numero_progressivo;
+        var cssClass = tipoClass[tipo] || 'cam-tipo-doppia';
+        html += '<div class="cam-card">';
+        html += '<div class="cam-card-num">Camera ' + (r.camera || '—') + '</div>';
+        html += '<span class="cam-card-tipo ' + cssClass + '">' + tipo + '</span>';
+        html += '<div class="cam-card-ospiti">' + (r.nome || '—') + '</div>';
+        if (r.compagni_stanza) {
+          html += '<div class="cam-card-compagni">+ ' + r.compagni_stanza + '</div>';
+        }
+        html += '<div class="cam-card-footer">';
+        html += '<span class="cam-card-pkg">' + (r.pacchetto || '—') + '</span>';
+        html += '<button class="btn-sm btn-cam" onclick="openModal(\'' + id + '\')">✎</button>';
+        html += '</div>';
+        html += '</div>';
+      });
+
+      html += '</div></div>';
+    });
+
+    html += '</div>';
+    document.getElementById('camere-body').innerHTML = html;
   }
 
   /* ============================================================

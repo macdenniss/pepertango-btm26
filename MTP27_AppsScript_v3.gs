@@ -5,7 +5,7 @@
 //
 // MTP27 Sheet:   https://docs.google.com/spreadsheets/d/1kBWs15V94ypf4Mdp7qM5x4vsyiadP1W87Xt7BZuORik
 // Brutia Sheet:  [PLACEHOLDER - inserisci ID dopo aver creato il foglio]
-// Deploy URL:    https://script.google.com/macros/s/AKfycbx5lnoBRqshl1YVly5MyjSC3nJUp5sRlo8Wy7QGv8vy34J9XmdPZk2vIDSd_cX2ka17/exec
+// Deploy URL:    https://script.google.com/macros/s/AKfycbw6pqs5rvySS2_il_VAJLU07ucnIFdZ86RT6OWlhxVzDvb04REbJTt3ZXaziRvmDmTR/exec
 //
 // Per aggiungere il foglio Brutia:
 // 1. Crea un nuovo Google Sheet per Brutia
@@ -38,16 +38,14 @@ var CONFIG = {
 };
 
 // -- CONFIGURAZIONE BRUTIA TANGO FESTIVAL --------------------
-// SEGNAPOSTO: compila questi dati quando hai le informazioni definitive,
-// poi rideploya lo script.
 var BRUTIA = {
-  SHEET_ID:       'PLACEHOLDER_INSERISCI_ID_SHEET_BRUTIA',
-  SHEET_ISCRITTI: 'Iscritti',
-  SHEET_LOG:      'Log',
-  EMAIL_DANILO:   'pepertango@gmail.com',
-  DATA_SALDO:     '2027-01-01',   // PLACEHOLDER - data invio email saldo
-  MAX_POSTI:      80,             // PLACEHOLDER - posti disponibili
-  NOME_EVENTO:    'Brutia Tango Festival',
+  SHEET_ID:         '10NWb995E6n2gRaXCQlb0BfikglQaOSNv3lnGlcfGhoA',
+  SHEET_ISCRITTI:   'Iscritti',
+  SHEET_LOG:        'Log',
+  EMAIL_DANILO:     'pepertango@gmail.com',
+  DATA_SALDO:       '2027-01-01',   // PLACEHOLDER - data invio email saldo
+  MAX_POSTI:        80,             // PLACEHOLDER - posti disponibili
+  NOME_EVENTO:      'Brutia Tango Festival',
 
   PACCHETTI: {
     'Pacchetto A': { notti:3, prezzo:0, anticipo:0, saldo:0, link_anticipo:'', link_saldo:'' },  // PLACEHOLDER
@@ -55,9 +53,10 @@ var BRUTIA = {
     'Pacchetto C': { notti:1, prezzo:0, anticipo:0, saldo:0, link_anticipo:'', link_saldo:'' }   // PLACEHOLDER
   },
 
-  SOGLIE:             { DELUXE: 30, STANDARD: 60, ECONOMY: 80 },  // PLACEHOLDER
+  // Brutia ha solo camere Standard (nessuna distinzione Deluxe/Economy)
+  CATEGORIA_UNICA:  'Standard',
   PRIORITA_PACCHETTI: ['Pacchetto A', 'Pacchetto B', 'Pacchetto C'],
-  PREFISSO_CAMERA:    { Deluxe: 'DEL', Standard: 'STD', Economy: 'ECO' }
+  PREFISSO_CAMERA:    { Standard: 'BTF' }
 };
 
 // -- HELPER: restituisce la config giusta in base all'evento --
@@ -77,7 +76,7 @@ function getSpreadsheet(evento) {
 
 
 // -- COLONNE FOGLIO ISCRITTI (1-based) -----------------------
-// Le colonne 22 e 23 sono NUOVE in v3, aggiunte in fondo senza spostare le altre.
+// Le colonne 22, 23, 24 sono NUOVE, aggiunte in fondo senza spostare le altre.
 var COL = {
   ID:                      1,   // A
   DATA_ISCR:               2,   // B
@@ -100,11 +99,14 @@ var COL = {
   EMAIL_SALDO:             19,  // S
   NUM_PROGR:               20,  // T
   PRIORITA:                21,  // U
-  TIPOLOGIA_STANZA:        22,  // V - NUOVO: Singola/Doppia/Tripla/Quadrupla
-  COMPAGNI_STANZA:         23   // W - NUOVO: nomi compagni separati da virgola
+  TIPOLOGIA_STANZA:        22,  // V
+  COMPAGNI_STANZA:         23,  // W
+  COGNOME:                 24,  // X
+  DATA_NASCITA:            25,  // Y - NUOVO v5: data di nascita
+  FACEBOOK:                26   // Z - NUOVO v5: link profilo Facebook
 };
 
-var TOT_COLONNE = 23;
+var TOT_COLONNE = 26;
 
 
 // -- ENTRY POINT HTTP ----------------------------------------
@@ -192,7 +194,7 @@ function doPost(e) {
     var evento = data.evento || 'MTP27';
 
     switch (action) {
-      case 'nuova_iscrizione':   return gestisciNuovaIscrizione(data, evento);
+      case 'nuova_iscrizione':   return htmlPostResponse(gestisciNuovaIscrizione(data, evento));
       case 'aggiorna_stato':     return aggiornaStato(data.id, data.stato, evento);
       case 'aggiorna_pagamento': return aggiornaPagamento(data.id, data.pagamento, evento);
       case 'assegna_camera':     return assegnaCameraManuale(data.id, data.camera, data.tipo_camera, evento);
@@ -227,7 +229,7 @@ function gestisciNuovaIscrizione(data, evento) {
     return r.email && r.email.toLowerCase() === (data.email || '').toLowerCase();
   });
   if (duplicato.length > 0) {
-    return jsonResponse({ ok: false, error: 'Email gia registrata.' });
+    return jsonResponse({ ok: false, error: 'Questa email e\' gia\' registrata. Controlla la tua casella di posta.' });
   }
 
   // Controlla posti disponibili
@@ -272,8 +274,11 @@ function gestisciNuovaIscrizione(data, evento) {
     false,                              // S
     num_progr,                          // T
     priorita,                           // U
-    data.tipologia_stanza || '',        // V - NUOVO
-    compagni_stanza                     // W - NUOVO
+    data.tipologia_stanza || '',        // V
+    compagni_stanza,                    // W
+    data.cognome          || '',        // X
+    data.data_nascita     || '',        // Y - NUOVO v5
+    data.facebook         || ''         // Z - NUOVO v5
   ]);
 
   inviaEmailConfermaRicezione(data, num_progr, pkg, cfg.NOME_EVENTO);
@@ -304,6 +309,12 @@ function aggiornaStato(id, nuovoStato, evento) {
     sheet.getRange(riga, COL.EMAIL_ANTICIPO).setValue(true);
   }
 
+  // Brutia: assegna camera subito all'accettazione (non serve aspettare anticipo)
+  if (nuovoStato === 'Accettato' && evento === 'Brutia') {
+    SpreadsheetApp.flush();
+    tentaAssegnazioneCameraPerIscritto(sheet, id, evento);
+  }
+
   log('AGGIORNA_STATO', 'ID ' + id + ' -> ' + nuovoStato);
   return jsonResponse({ ok: true, msg: 'Stato aggiornato: ' + nuovoStato });
 }
@@ -320,9 +331,10 @@ function aggiornaPagamento(id, nuovoPagamento, evento) {
 
   sheet.getRange(riga, COL.PAGAMENTO).setValue(nuovoPagamento);
 
-  if (nuovoPagamento === 'Anticipo versato') {
+  // Brutia: camera gia' assegnata all'accettazione, non serve riassegnarla al pagamento
+  if (nuovoPagamento === 'Anticipo versato' && evento !== 'Brutia') {
     SpreadsheetApp.flush();
-    tentaAssegnazioneCameraPerIscritto(sheet, id);
+    tentaAssegnazioneCameraPerIscritto(sheet, id, evento);
   }
 
   log('AGGIORNA_PAGAMENTO', 'ID ' + id + ' -> ' + nuovoPagamento);
@@ -350,15 +362,18 @@ function assegnaCameraManuale(id, camera, tipoCamera, evento) {
 // -- LOGICA ASSEGNAZIONE CAMERA ------------------------------
 
 // Determina la categoria (Deluxe/Standard/Economy) dal numero progressivo
-function calcolaCategoriaCamera(num_progr) {
+// Per Brutia restituisce sempre 'Standard' (nessuna distinzione di categoria)
+function calcolaCategoriaCamera(num_progr, evento) {
+  if (evento === 'Brutia') return 'Standard';
   if (num_progr <= CONFIG.SOGLIE.DELUXE)   return 'Deluxe';
   if (num_progr <= CONFIG.SOGLIE.STANDARD) return 'Standard';
   return 'Economy';
 }
 
-// Formatta il numero camera: DEL-001, STD-001, ECO-001
-function formatNumeroCamera(tipo, numero) {
-  var prefisso = CONFIG.PREFISSO_CAMERA[tipo] || tipo.substring(0, 3).toUpperCase();
+// Formatta il numero camera: DEL-001 / STD-001 / ECO-001 per MTP27, BTF-001 per Brutia
+function formatNumeroCamera(tipo, numero, evento) {
+  var cfg = getConfig(evento || 'MTP27');
+  var prefisso = cfg.PREFISSO_CAMERA[tipo] || tipo.substring(0, 3).toUpperCase();
   var num = numero.toString();
   while (num.length < 3) num = '0' + num;
   return prefisso + '-' + num;
@@ -376,7 +391,7 @@ function prossimoNumeroCamera(tutti, tipo) {
 }
 
 // Se un compagno ha gia' una camera assegnata, usa quella; altrimenti crea numero nuovo
-function trovaOCreaNumeroCamera(tutti, tipo, nomiCompagni) {
+function trovaOCreaNumeroCamera(tutti, tipo, nomiCompagni, evento) {
   for (var i = 0; i < nomiCompagni.length; i++) {
     var nome = nomiCompagni[i];
     var trovato = null;
@@ -391,7 +406,7 @@ function trovaOCreaNumeroCamera(tutti, tipo, nomiCompagni) {
       return trovato.camera;
     }
   }
-  return formatNumeroCamera(tipo, prossimoNumeroCamera(tutti, tipo));
+  return formatNumeroCamera(tipo, prossimoNumeroCamera(tutti, tipo), evento);
 }
 
 // Verifica che tutti i compagni dichiarati abbiano pagato l'anticipo
@@ -436,20 +451,20 @@ function verificaCompagni(tutti, iscritto) {
 // Tenta assegnazione camera per un singolo iscritto
 // - Singola: assegna subito
 // - Doppia/Tripla/Quadrupla: aspetta che tutti i compagni abbiano pagato
-function tentaAssegnazioneCameraPerIscritto(sheet, id) {
+function tentaAssegnazioneCameraPerIscritto(sheet, id, evento) {
   var riga = trovaRigaPerId(sheet, id);
   if (!riga) return;
 
   var dati = rigaToOggetto(sheet.getRange(riga, 1, 1, TOT_COLONNE).getValues()[0]);
   if (dati.camera) return; // gia' assegnata
 
-  var tutti    = getDatiIscritti(sheet);
-  var tipo     = calcolaCategoriaCamera(dati.num_progr);
+  var tutti     = getDatiIscritti(sheet);
+  var tipo      = calcolaCategoriaCamera(dati.num_progr, evento);
   var tipologia = dati.tipologia_stanza || 'Singola';
 
   if (tipologia === 'Singola') {
     // Camera singola: assegna subito
-    var numCamera = formatNumeroCamera(tipo, prossimoNumeroCamera(tutti, tipo));
+    var numCamera = formatNumeroCamera(tipo, prossimoNumeroCamera(tutti, tipo), evento);
     sheet.getRange(riga, COL.CAMERA).setValue(numCamera);
     sheet.getRange(riga, COL.TIPO_CAMERA).setValue(tipo);
     log('CAMERA_SINGOLA', dati.nome + ' -> ' + numCamera + ' (assegnata subito)');
@@ -470,7 +485,7 @@ function tentaAssegnazioneCameraPerIscritto(sheet, id) {
     }
 
     // Tutti pronti: assegna camera
-    var numCameraGruppo = trovaOCreaNumeroCamera(tutti, tipo, verifica.nomi);
+    var numCameraGruppo = trovaOCreaNumeroCamera(tutti, tipo, verifica.nomi, evento);
 
     // Assegna all'iscritto principale
     sheet.getRange(riga, COL.CAMERA).setValue(numCameraGruppo);
@@ -490,7 +505,7 @@ function tentaAssegnazioneCameraPerIscritto(sheet, id) {
       if (compagno && !compagno.camera) {
         var rigaCompagno = trovaRigaPerId(sheet, compagno.id);
         if (rigaCompagno) {
-          var tipoCompagno = calcolaCategoriaCamera(compagno.num_progr);
+          var tipoCompagno = calcolaCategoriaCamera(compagno.num_progr, evento);
           sheet.getRange(rigaCompagno, COL.CAMERA).setValue(numCameraGruppo);
           sheet.getRange(rigaCompagno, COL.TIPO_CAMERA).setValue(tipoCompagno);
           log('CAMERA_GRUPPO', compagno.nome + ' -> ' + numCameraGruppo + ' (assegnata con il gruppo)');
@@ -840,7 +855,10 @@ function inizializzaIntestazioni(sheet) {
     'N. Progressivo',      // T
     'Priorita',            // U
     'Tipologia Stanza',    // V - NUOVO v3
-    'Compagni di Stanza'   // W - NUOVO v3
+    'Compagni di Stanza',  // W - NUOVO v3
+    'Cognome',             // X
+    'Data di Nascita',    // Y - NUOVO v5
+    'Facebook'             // Z - NUOVO v5
   ];
 
   sheet.appendRow(intestazioni);
@@ -858,6 +876,7 @@ function inizializzaIntestazioni(sheet) {
   sheet.setColumnWidth(14, 130);
   sheet.setColumnWidth(22, 140);
   sheet.setColumnWidth(23, 200);
+  sheet.setColumnWidth(24, 140);
 }
 
 
@@ -905,7 +924,10 @@ function rigaToOggetto(r) {
     num_progr:        r[19] || 0,
     priorita:         r[20] || 99,
     tipologia_stanza: r[21] || '',
-    compagni_stanza:  r[22] || ''
+    compagni_stanza:  r[22] || '',
+    cognome:          r[23] || '',
+    data_nascita:     r[24] || '',
+    facebook:         r[25] || ''
   };
 }
 
@@ -919,6 +941,17 @@ function jsonResponse(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+// Usato da doPost per nuova_iscrizione: restituisce HTML che invia
+// il risultato al form tramite postMessage (bypassa il limite CORS dell'iframe).
+function htmlPostResponse(jsonResp) {
+  var content = jsonResp.getContent();
+  return HtmlService.createHtmlOutput(
+    '<!DOCTYPE html><html><body><script>' +
+    'try{window.parent.postMessage(' + content + ',"*");}catch(e){}' +
+    '<\/script></body></html>'
+  ).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 function log(tipo, messaggio) {
@@ -939,7 +972,7 @@ function logErrore(funzione, errore) {
 }
 
 
-// -- TEST ----------------------------------------------------
+// -- TEST MTP27 ----------------------------------------------
 // Esegui manualmente per verificare che tutto funzioni.
 function testSistema() {
   var datiTest = {
@@ -958,5 +991,181 @@ function testSistema() {
   };
 
   var risultato = gestisciNuovaIscrizione(datiTest);
-  Logger.log('Risultato test: ' + risultato.getContent());
+  Logger.log('Risultato test MTP27: ' + risultato.getContent());
+}
+
+
+// -- DIAGNOSI ASSEGNAZIONE CAMERA ----------------------------
+// Mostra lo stato di tutti gli iscritti Brutia e tenta l'assegnazione
+// camera per il primo idoneo. Apparira' nelle Notifiche.
+function diagnosiCameraAssegnazione() {
+  var risultato = 'DIAGNOSI CAMERA BRUTIA\n';
+  try {
+    var ss    = SpreadsheetApp.openById(BRUTIA.SHEET_ID);
+    var sheet = getOrCreateSheet(ss, BRUTIA.SHEET_ISCRITTI);
+    var tutti = getDatiIscritti(sheet);
+
+    risultato += 'Totale iscritti nel foglio: ' + tutti.length + '\n\n';
+
+    for (var i = 0; i < tutti.length; i++) {
+      var r = tutti[i];
+      risultato += '--- #' + r.num_progr + ' ' + r.nome + ' ---\n';
+      risultato += '  stato: ' + r.stato + '\n';
+      risultato += '  pagamento: ' + r.pagamento + '\n';
+      risultato += '  tipologia_stanza: "' + r.tipologia_stanza + '"\n';
+      risultato += '  compagni_stanza: "' + r.compagni_stanza + '"\n';
+      risultato += '  camera: "' + r.camera + '"\n';
+    }
+
+    // Cerca il primo senza camera e con pagamento anticipo
+    var candidato = null;
+    for (var j = 0; j < tutti.length; j++) {
+      if (tutti[j].pagamento === 'Anticipo versato' && !tutti[j].camera) {
+        candidato = tutti[j];
+        break;
+      }
+    }
+
+    if (!candidato) {
+      risultato += '\nNessun candidato idoneo (anticipo versato e senza camera).';
+      throw new Error(risultato);
+    }
+
+    risultato += '\nCANDIDATO: ' + candidato.nome + ' (#' + candidato.num_progr + ')\n';
+    var tipo = calcolaCategoriaCamera(candidato.num_progr, 'Brutia');
+    var tipologia = candidato.tipologia_stanza || 'Singola';
+    risultato += 'tipo camera calcolato: ' + tipo + '\n';
+    risultato += 'tipologia stanza: ' + tipologia + '\n';
+
+    if (tipologia !== 'Singola') {
+      var verifica = verificaCompagni(tutti, candidato);
+      risultato += 'compagni pronti: ' + verifica.pronti + '\n';
+      risultato += 'avvisi: ' + verifica.avvisi.join(' | ') + '\n';
+    }
+
+    risultato += '\nEseguo tentaAssegnazioneCameraPerIscritto...';
+    tentaAssegnazioneCameraPerIscritto(sheet, candidato.id, 'Brutia');
+    SpreadsheetApp.flush();
+
+    // Rileggi
+    var riga = trovaRigaPerId(sheet, candidato.id);
+    var datiAggiornati = rigaToOggetto(sheet.getRange(riga, 1, 1, TOT_COLONNE).getValues()[0]);
+    risultato += '\nCamera dopo assegnazione: "' + datiAggiornati.camera + '"';
+
+    if (datiAggiornati.camera) {
+      risultato += '\nSUCCESSO!';
+    } else {
+      risultato += '\nFALLITO - camera ancora vuota.';
+    }
+
+  } catch(err) {
+    if (err.message && err.message.indexOf('DIAGNOSI') !== -1) throw err;
+    risultato += '\nERRORE: ' + err.toString();
+  }
+  throw new Error(risultato);
+}
+
+
+// -- DIAGNOSI VISIBILE ---------------------------------------
+// Esegui questa funzione: il risultato apparira' nelle Notifiche
+// come un errore (testo rosso) con il messaggio di diagnosi.
+function diagnosiBrutia() {
+  var risultato = 'INIZIO DIAGNOSI\n';
+  try {
+    risultato += '1. Apro sheet Brutia (ID: ' + BRUTIA.SHEET_ID + ')...\n';
+    var ss = SpreadsheetApp.openById(BRUTIA.SHEET_ID);
+    risultato += '   OK - nome: ' + ss.getName() + '\n';
+
+    risultato += '2. Tab nel foglio: ';
+    var tabs = ss.getSheets().map(function(s) { return s.getName(); });
+    risultato += tabs.join(', ') + '\n';
+
+    risultato += '3. Creo/accedo tab Iscritti...\n';
+    var sheet = getOrCreateSheet(ss, 'Iscritti');
+    risultato += '   OK - righe attuali: ' + sheet.getLastRow() + '\n';
+
+    risultato += '4. Scrivo riga di test...\n';
+    sheet.appendRow(['DIAG-TEST', new Date(), 'Test diretto', 'diag@test.com']);
+    SpreadsheetApp.flush();
+    risultato += '   OK - righe dopo: ' + sheet.getLastRow() + '\n';
+
+    risultato += 'SUCCESSO - tutto funziona!';
+
+  } catch(err) {
+    risultato += 'ERRORE: ' + err.toString();
+  }
+  // Lancia errore con il messaggio: apparira' nelle Notifiche
+  throw new Error(risultato);
+}
+
+
+// -- TEST BRUTIA ---------------------------------------------
+// ESEGUI QUESTA FUNZIONE MANUALMENTE nell'editor Apps Script
+// prima di usare il form pubblico.
+// Serve a: (1) autorizzare accesso al foglio Brutia,
+//          (2) verificare che tutto funzioni.
+// Come eseguirla: seleziona "testBrutia" nel menu a tendina
+// vicino al pulsante Esegui (triangolo), poi clicca Esegui.
+// Controlla il log in basso: deve apparire "OK - iscrizione salvata".
+// Dopo averla eseguita con successo, rideploya lo script
+// (Deploy -> Gestisci deployment -> Modifica -> Nuova versione).
+function testBrutia() {
+  try {
+    Logger.log('--- TEST BRUTIA INIZIO ---');
+
+    // Step 1: verifica accesso al foglio Brutia
+    Logger.log('1. Apro il foglio Brutia...');
+    var ss = SpreadsheetApp.openById(BRUTIA.SHEET_ID);
+    Logger.log('   OK - foglio aperto: ' + ss.getName());
+
+    // Step 2: verifica o crea il tab Iscritti
+    Logger.log('2. Accedo al tab Iscritti...');
+    var sheet = getOrCreateSheet(ss, BRUTIA.SHEET_ISCRITTI);
+    Logger.log('   OK - tab trovato/creato: ' + sheet.getName());
+
+    // Step 3: inizializza intestazioni se vuoto
+    if (sheet.getLastRow() === 0) {
+      Logger.log('3. Foglio vuoto - aggiungo intestazioni...');
+      inizializzaIntestazioni(sheet);
+      Logger.log('   OK - intestazioni aggiunte');
+    } else {
+      Logger.log('3. Foglio gia inizializzato (' + sheet.getLastRow() + ' righe)');
+    }
+
+    // Step 4: scrivi riga di test
+    Logger.log('4. Scrivo riga di test...');
+    var datiTest = {
+      nome:             'Test Brutia',
+      email:            'testbrutia@pepertango.com',
+      tel:              '+39 333 0000000',
+      citta:            'Cosenza',
+      paese:            'Italia',
+      ruolo:            'Follower',
+      pacchetto:        'Pacchetto A',
+      compagno_ballo:   '',
+      tipologia_stanza: 'Singola',
+      compagni_stanza:  [],
+      note:             'Riga di test - eliminare'
+    };
+    var risultato = gestisciNuovaIscrizione(datiTest, 'Brutia');
+    Logger.log('   Risposta: ' + risultato.getContent());
+
+    // Step 5: verifica che la riga sia stata scritta
+    Logger.log('5. Verifico riga scritta...');
+    var righe = sheet.getLastRow();
+    Logger.log('   Righe totali nel foglio: ' + righe);
+
+    if (righe >= 2) {
+      Logger.log('   OK - iscrizione salvata correttamente!');
+      Logger.log('   Puoi eliminare la riga di test dal foglio.');
+    } else {
+      Logger.log('   ERRORE - riga non trovata dopo appendRow!');
+    }
+
+    Logger.log('--- TEST BRUTIA FINE ---');
+
+  } catch(err) {
+    Logger.log('ERRORE CRITICO: ' + err.toString());
+    Logger.log('Stack: ' + (err.stack || 'non disponibile'));
+  }
 }

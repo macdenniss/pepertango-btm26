@@ -412,6 +412,7 @@
     <div class="header-right">
       <span class="last-update" id="lastUpdate"></span>
       <button class="btn-refresh" onclick="loadAll()">&#8635; Aggiorna</button>
+      <button class="btn-refresh" onclick="testPost()" style="background:rgba(251,191,36,0.25)">&#9658; Test POST</button>
       <button class="btn-logout" onclick="logout()">Esci</button>
     </div>
   </header>
@@ -511,9 +512,9 @@
       <div class="tbl-wrap">
         <table>
           <thead><tr>
-            <th>#</th><th>Nome</th><th>Email</th><th>Pacchetto</th>
-            <th>Ruolo</th><th>Stato</th><th>Pagamento</th>
-            <th>Camera</th><th>Data</th><th>Azioni</th>
+            <th>#</th><th>Nome</th><th>Tel</th><th>Ruolo</th>
+            <th>Stanza</th><th>Pacchetto</th><th>Stato</th>
+            <th>Pagamento</th><th>Camera</th><th>Data</th><th>Azioni</th>
           </tr></thead>
           <tbody id="tb-iscritti"></tbody>
         </table>
@@ -581,7 +582,7 @@
   /* ============================================================
      CONFIG
   ============================================================ */
-  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5lnoBRqshl1YVly5MyjSC3nJUp5sRlo8Wy7QGv8vy34J9XmdPZk2vIDSd_cX2ka17/exec';
+  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6pqs5rvySS2_il_VAJLU07ucnIFdZ86RT6OWlhxVzDvb04REbJTt3ZXaziRvmDmTR/exec';
   var EVENTO  = 'Brutia';
   var PWD     = 'pepertango2026';
   var allData = [];
@@ -630,7 +631,14 @@
     fetch(url)
       .then(function(r) { return r.json(); })
       .then(function(data) {
-        allData = Array.isArray(data) ? data : (data.data || data.iscritti || []);
+        /* Debug visibile: mostra risposta grezza se c'e' errore */
+        if (data.ok === false) {
+          toast('ERRORE API: ' + (data.error || JSON.stringify(data)), 8000);
+          console.error('API error:', data);
+          allData = [];
+        } else {
+          allData = Array.isArray(data) ? data : (data.data || data.iscritti || []);
+        }
         renderOverview();
         renderIscritti();
         renderCamere();
@@ -639,7 +647,7 @@
       })
       .catch(function(e) {
         console.error(e);
-        toast('Errore caricamento dati. Controlla la connessione.');
+        toast('Errore caricamento dati: ' + e.message);
       });
   }
 
@@ -693,7 +701,7 @@
         + '<td>' + (r.ruolo||'—') + '</td>'
         + '<td>' + badgeStato(r.stato) + '</td>'
         + '<td>' + badgePag(r.pagamento) + '</td>'
-        + '<td>' + formatDate(r.data_iscrizione) + '</td></tr>';
+        + '<td>' + formatDate(r.data || r.data_iscrizione) + '</td></tr>';
     }).join('') || '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">Nessun iscritto</td></tr>';
   }
 
@@ -719,14 +727,21 @@
       return '<tr>'
         + '<td>' + (r.numero_progressivo||'—') + '</td>'
         + '<td class="wrap"><strong>' + (r.nome||'—') + '</strong>'
-          + (r.email ? '<br><small style="color:var(--muted)">' + r.email + '</small>' : '') + '</td>'
-        + '<td>' + (r.email||'—') + '</td>'
-        + '<td>' + (r.pacchetto||'—') + '</td>'
+          + (r.email ? '<br><small style="color:var(--muted)">' + r.email + '</small>' : '')
+          + (r.citta ? '<br><small style="color:var(--muted)">' + r.citta + '</small>' : '')
+          + (r.data_nascita ? '<br><small style="color:var(--muted)">Nata/o: ' + formatDate(r.data_nascita) + '</small>' : '')
+          + (r.facebook ? '<br><small><a href="' + r.facebook + '" target="_blank" style="color:var(--accent)">Facebook</a></small>' : '')
+          + '</td>'
+        + '<td>' + (r.tel||'—') + '</td>'
         + '<td>' + (r.ruolo||'—') + '</td>'
+        + '<td>' + (r.tipologia_stanza||'—')
+          + (r.compagni_stanza ? '<br><small style="color:var(--muted)">' + r.compagni_stanza + '</small>' : '')
+          + '</td>'
+        + '<td>' + (r.pacchetto||'—') + '</td>'
         + '<td>' + badgeStato(r.stato) + '</td>'
         + '<td>' + badgePag(r.pagamento) + '</td>'
         + '<td>' + (r.camera || '<span style="color:var(--muted)">—</span>') + '</td>'
-        + '<td>' + formatDate(r.data_iscrizione) + '</td>'
+        + '<td>' + formatDate(r.data || r.data_iscrizione) + '</td>'
         + '<td><div class="action-group">'
           + (r.stato !== 'Accettato' && r.stato !== 'Rifiutato' ? '<button class="btn-sm btn-accetta" onclick="aggiornaStato(\'' + id + '\',\'Accettato\')">Accetta</button>' : '')
           + (r.stato !== 'Rifiutato' ? '<button class="btn-sm btn-rifiuta" onclick="aggiornaStato(\'' + id + '\',\'Rifiutato\')">Rifiuta</button>' : '')
@@ -736,7 +751,7 @@
           + '<button class="btn-sm btn-del" onclick="elimina(\'' + id + '\')">&#215;</button>'
         + '</div></td>'
         + '</tr>';
-    }).join('') || '<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--muted)">Nessun risultato</td></tr>';
+    }).join('') || '<tr><td colspan="11" style="text-align:center;padding:40px;color:var(--muted)">Nessun risultato</td></tr>';
   }
 
   /* ============================================================
@@ -755,7 +770,10 @@
     var righe = assegnati.map(function(r) {
       return '<tr>'
         + '<td><strong>' + r.camera + '</strong></td>'
-        + '<td>' + (r.nome || '—') + '</td>'
+        + '<td class="wrap">' + (r.nome || '—')
+          + (r.tel ? '<br><small style="color:var(--muted)">' + r.tel + '</small>' : '') + '</td>'
+        + '<td>' + (r.tipologia_stanza || '—') + '</td>'
+        + '<td>' + (r.compagni_stanza ? '<small>' + r.compagni_stanza + '</small>' : '<span style="color:var(--muted)">—</span>') + '</td>'
         + '<td>' + (r.pacchetto || '—') + '</td>'
         + '<td>' + badgeStato(r.stato) + '</td>'
         + '<td><button class="btn-sm btn-cam" onclick="openModal(\'' + (r.id||r.numero_progressivo) + '\')">'
@@ -765,7 +783,7 @@
 
     document.getElementById('camere-body').innerHTML =
       '<div class="section-card"><div class="tbl-wrap"><table>'
-      + '<thead><tr><th>Camera</th><th>Iscritto</th><th>Pacchetto</th><th>Stato</th><th>Azioni</th></tr></thead>'
+      + '<thead><tr><th>Camera</th><th>Iscritto</th><th>Tipologia</th><th>Compagni</th><th>Pacchetto</th><th>Stato</th><th>Azioni</th></tr></thead>'
       + '<tbody>' + righe + '</tbody>'
       + '</table></div></div>';
   }
@@ -866,10 +884,76 @@
     if (!d) return '—';
     try { return new Date(d).toLocaleDateString('it-IT'); } catch(e) { return d; }
   }
-  function toast(msg) {
+  /* Test POST via iframe (stesso metodo del form pubblico) */
+  function testPost() {
+    toast('Invio test via iframe...', 4000);
+    var iname = 'iframe_test_' + Date.now();
+    var iframe = document.createElement('iframe');
+    iframe.name = iname;
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = APPS_SCRIPT_URL;
+    form.target = iname;
+    form.style.display = 'none';
+
+    var campi = {
+      action: 'nuova_iscrizione',
+      evento: 'Brutia',
+      nome: 'Test Brutia Diagnostico',
+      cognome: 'Test',
+      nome_completo: 'Test Brutia Diagnostico',
+      email: 'test.brutia.' + Date.now() + '@test.com',
+      data_nascita: '1990-01-01',
+      tel: '+39 333 0000000',
+      facebook: 'https://facebook.com/test',
+      citta: 'TestCity',
+      ruolo: 'Leader',
+      pacchetto: 'Pacchetto A',
+      tipologia_stanza: 'Doppia',
+      compagni_stanza: 'Mario Rossi',
+      note: 'TEST DIAGNOSTICO - eliminare'
+    };
+    Object.keys(campi).forEach(function(k) {
+      var inp = document.createElement('input');
+      inp.type = 'hidden'; inp.name = k; inp.value = campi[k];
+      form.appendChild(inp);
+    });
+    document.body.appendChild(form);
+
+    iframe.onload = function() {
+      setTimeout(function() {
+        fetch(APPS_SCRIPT_URL + '?action=getIscritti&evento=Brutia')
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            var lista = Array.isArray(data) ? data : (data.data || []);
+            var trovato = lista.find(function(r) { return (r.nome || '').indexOf('Test Brutia') !== -1; });
+            if (trovato) {
+              alert('SUCCESSO! Riga salvata nel foglio Brutia. Progressivo: #' + trovato.num_progr);
+              loadAll();
+            } else {
+              alert('PROBLEMA: iframe ha risposto ma la riga NON è nel foglio.\n\nRisposta API: ' + JSON.stringify(data).substring(0, 300));
+            }
+          })
+          .catch(function(e) {
+            alert('Errore nella verifica: ' + e.message);
+          });
+      }, 3000);
+    };
+
+    setTimeout(function() {
+      alert('TIMEOUT: nessuna risposta dall\'Apps Script dopo 12 secondi.\nVerifica che il deployment sia attivo.');
+    }, 12000);
+
+    form.submit();
+  }
+
+  function toast(msg, duration) {
     var t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
-    setTimeout(function() { t.classList.remove('show'); }, 3000);
+    setTimeout(function() { t.classList.remove('show'); }, duration || 3000);
   }
 </script>
 </body>

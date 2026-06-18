@@ -1668,9 +1668,9 @@
             </label>
           </div>
 
-          <div class="fg-ed" style="margin-top:1.2rem">
-            <label>Con chi desideri condividere la camera?</label>
-            <input type="text" class="fi-ed" id="b_compagni_stanza_txt" placeholder="Nome e cognome dei compagni di stanza">
+          <div id="b_compagniContainer" style="display:none;margin-top:1.2rem">
+            <p class="mini-label" style="margin-bottom:.8rem">Con chi desideri condividere la camera?</p>
+            <div id="b_compagniFields"></div>
           </div>
 
           <p class="mini-label" style="margin-bottom:.8rem;margin-top:1.6rem">Pacchetto *</p>
@@ -2170,8 +2170,17 @@
             var st = document.querySelector('[name="b_stanza"]:checked');
             if (!st) { alert('Seleziona la tipologia di camera.'); return false; }
             self.data.tipologia_stanza = st.value;
-            var compTxtEl = g('compagni_stanza_txt');
-            self.data.compagni_stanza = compTxtEl ? compTxtEl.value.trim() : '';
+            var maxC2 = { 'Singola':0, 'Doppia':1, 'Matrimoniale':1, 'Tripla':2 };
+            var nComp = maxC2[st.value] || 0;
+            var compagni = [];
+            for (var ci = 1; ci <= nComp; ci++) {
+              var cNome = g('c' + ci + '_nome');
+              var cCogn = g('c' + ci + '_cognome');
+              var nomeV = cNome ? cNome.value.trim() : '';
+              var cognV = cCogn ? cCogn.value.trim() : '';
+              if (nomeV || cognV) compagni.push((nomeV + ' ' + cognV).trim());
+            }
+            self.data.compagni_stanza = compagni.join(', ');
             var pkg = document.querySelector('[name="b_pkg"]:checked');
             if (!pkg) { alert('Seleziona un pacchetto.'); return false; }
             self.data.pacchetto = pkg.value;
@@ -2368,6 +2377,29 @@
     function syncStanza(label) {
       document.querySelectorAll('#b_fs2 .stanza-opt').forEach(function(o) { o.classList.remove('selected'); });
       if (label) { label.classList.add('selected'); label.querySelector('input').checked = true; }
+      var val = label ? label.querySelector('input').value : '';
+      var maxC = { 'Singola':0, 'Doppia':1, 'Matrimoniale':1, 'Tripla':2 };
+      var n = maxC[val] !== undefined ? maxC[val] : 0;
+      var cont = document.getElementById('b_compagniContainer');
+      var flds = document.getElementById('b_compagniFields');
+      if (!cont || !flds) return;
+      if (n === 0) { cont.style.display = 'none'; flds.innerHTML = ''; return; }
+      cont.style.display = 'block';
+      flds.innerHTML = '';
+      for (var i = 1; i <= n; i++) {
+        var d = document.createElement('div');
+        d.className = 'f-row-ed';
+        d.style.marginBottom = '1rem';
+        d.innerHTML = '<div class="fg-ed">'
+          + '<label>Compagno/a ' + i + ' — Nome</label>'
+          + '<input type="text" class="fi-ed" id="b_c' + i + '_nome" placeholder="Mario">'
+          + '</div>'
+          + '<div class="fg-ed">'
+          + '<label>Cognome</label>'
+          + '<input type="text" class="fi-ed" id="b_c' + i + '_cognome" placeholder="Rossi">'
+          + '</div>';
+        flds.appendChild(d);
+      }
     }
     function bruUpdateCompagni(n, label) {
       syncStanza(label);

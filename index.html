@@ -953,6 +953,54 @@
     }
 
     /* ============================================================
+       MTP27 — TEMA ESTATE (override scoped a #page-mtp27)
+    ============================================================ */
+    #page-mtp27 .event-section.dark {
+      background-color: #e8f9fb;
+      background-image: none;
+      border-top: 5px solid #00b4d8;
+    }
+    #page-mtp27 .ev-head-hl { color: #004f70; }
+    #page-mtp27 .ev-head-hl em { color: #ff6b35; }
+    #page-mtp27 .ev-head-body { color: rgba(0,60,90,.65); }
+    #page-mtp27 .section-tag { color: #ff6b35 !important; }
+
+    /* foto a colori nella pagina MTP */
+    #page-mtp27 .ev-photo img { filter: grayscale(0%); }
+
+    /* pacchetti: sfondo colorato per ogni card */
+    #page-mtp27 .pkg-item:nth-child(1) { background: #fff9e6; border-color: #ffb703; }
+    #page-mtp27 .pkg-item:nth-child(2) { background: #e0f7fa; border-color: #00b4d8; }
+    #page-mtp27 .pkg-item:nth-child(3) { background: #ffe8e0; border-color: #ff6b35; }
+    #page-mtp27 .pkg-item:nth-child(4) { background: #e8fbe8; border-color: #40c057; }
+    #page-mtp27 .pkg-big-num { color: rgba(0,0,0,.12); }
+    #page-mtp27 .pkg-item:nth-child(1) .pkg-big-num { color: rgba(255,183,3,.25); }
+    #page-mtp27 .pkg-item:nth-child(2) .pkg-big-num { color: rgba(0,180,216,.2); }
+    #page-mtp27 .pkg-item:nth-child(3) .pkg-big-num { color: rgba(255,107,53,.2); }
+    #page-mtp27 .pkg-item:nth-child(4) .pkg-big-num { color: rgba(64,192,87,.2); }
+    #page-mtp27 .pkg-label { color: #00b4d8; font-size: 15px; }
+
+    /* banner chiuso con tono caldo */
+    #page-mtp27 .mtp-closed-banner {
+      background: linear-gradient(135deg, #fff9e6 0%, #fff0e0 100%);
+      border-color: #ffb703;
+    }
+    #page-mtp27 .mtp-closed-icon {
+      background: linear-gradient(135deg, #ffb703, #ff6b35);
+      color: #fff;
+    }
+
+    /* sub-sezioni galleria/TDJ/location */
+    #page-mtp27 .ev-sub { background: #fff; }
+    #page-mtp27 .ev-sub.alt { background: #f0fbff; }
+    #page-mtp27 .ev-sub-event-tag {
+      background: #00b4d8; color: #fff;
+      padding: 4px 12px; border-radius: 20px;
+    }
+    #page-mtp27 .ev-sub-title { color: #004f70; }
+    #page-mtp27 .location-address { color: #00b4d8; }
+
+    /* ============================================================
        BRUTIA — CARD STANZA + PACCHETTO
     ============================================================ */
     .bru-step-hd { background: var(--muted); padding: 18px 28px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid rgba(45,45,45,.1); }

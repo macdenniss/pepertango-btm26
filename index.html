@@ -1581,7 +1581,7 @@
 
         <!-- ====== STEP 1: Chi sei ====== -->
         <div class="form-step-ed active" id="b_fs1">
-          <h3 class="fs-title" style="margin-bottom:.4rem">Modulo registrazioni</h3>
+          <h3 class="fs-title" style="margin-bottom:1.2rem">Modulo registrazioni</h3>
 
           <div class="f-row-ed">
             <div class="fg-ed">
@@ -1597,27 +1597,35 @@
             <label>Email *</label>
             <input type="email" class="fi-ed" id="b_email" placeholder="andrea@email.com">
           </div>
-          <div class="fg-ed">
-            <label>Ruolo di ballo *</label>
-            <select class="fi-ed" id="b_ruolo">
-              <option value="">— Seleziona —</option>
-              <option value="Leader">Leader</option>
-              <option value="Follower">Follower</option>
-              <option value="Entrambi">Entrambi (Leader &amp; Follower)</option>
-            </select>
-          </div>
-
-          <!-- Campi facoltativi nascosti -->
-          <details style="margin-top:.8rem">
-            <summary class="opt-toggle">+ Aggiungi telefono, citt&agrave; e compagno di ballo (facoltativo)</summary>
-            <div style="margin-top:1rem">
-              <div class="f-row-ed">
-                <div class="fg-ed"><label>Telefono</label><input type="tel" class="fi-ed" id="b_tel" placeholder="+39 333 000 0000"></div>
-                <div class="fg-ed"><label>Citt&agrave;</label><input type="text" class="fi-ed" id="b_citta" placeholder="Roma"></div>
-              </div>
-              <div class="fg-ed"><label>Compagno/a di ballo</label><input type="text" class="fi-ed" id="b_compagno_ballo" placeholder="Nome e cognome del partner di ballo"></div>
+          <div class="f-row-ed">
+            <div class="fg-ed">
+              <label>Data di nascita *</label>
+              <input type="date" class="fi-ed" id="b_nascita">
             </div>
-          </details>
+            <div class="fg-ed">
+              <label>Telefono *</label>
+              <input type="tel" class="fi-ed" id="b_tel" placeholder="+39 333 000 0000">
+            </div>
+          </div>
+          <div class="fg-ed">
+            <label>Facebook (link profilo) *</label>
+            <input type="url" class="fi-ed" id="b_facebook" placeholder="https://facebook.com/tuoprofilo">
+          </div>
+          <div class="f-row-ed">
+            <div class="fg-ed">
+              <label>Citt&agrave; *</label>
+              <input type="text" class="fi-ed" id="b_citta" placeholder="Roma">
+            </div>
+            <div class="fg-ed">
+              <label>Ruolo di ballo *</label>
+              <select class="fi-ed" id="b_ruolo">
+                <option value="">— Seleziona —</option>
+                <option value="Leader">Leader</option>
+                <option value="Follower">Follower</option>
+                <option value="Entrambi">Entrambi</option>
+              </select>
+            </div>
+          </div>
 
           <div class="form-nav-ed">
             <span></span>
@@ -1630,23 +1638,29 @@
           <h3 class="fs-title" style="margin-bottom:.4rem">Stanza &amp; Pacchetto</h3>
           <p class="fs-sub">Scegli la sistemazione e il pacchetto, poi invia</p>
 
-          <p class="mini-label" style="margin-bottom:.8rem;margin-top:.4rem">Tipo di stanza *</p>
-          <div class="room-grid">
-            <label class="room-card stanza-opt" onclick="bruUpdateCompagni(1,this)">
+          <p class="mini-label" style="margin-bottom:.8rem;margin-top:.4rem">Tipologia di camera *</p>
+          <div class="room-grid" style="grid-template-columns:repeat(auto-fill,minmax(120px,1fr))">
+            <label class="room-card stanza-opt" onclick="syncStanza(this)">
+              <input type="radio" name="b_stanza" value="Singola">
+              <div class="room-card-icon"><i class="fa-solid fa-bed"></i></div>
+              <div class="room-card-name">Singola</div>
+              <div class="room-card-desc">+€30/notte</div>
+            </label>
+            <label class="room-card stanza-opt" onclick="syncStanza(this)">
               <input type="radio" name="b_stanza" value="Doppia">
               <div class="room-card-icon">
-                <i class="fa-solid fa-bed"></i><i class="fa-solid fa-bed" style="font-size:1rem;opacity:.5;margin-left:2px"></i>
+                <i class="fa-solid fa-bed"></i><i class="fa-solid fa-bed" style="font-size:.9rem;opacity:.5;margin-left:2px"></i>
               </div>
               <div class="room-card-name">Doppia</div>
               <div class="room-card-desc">2 letti singoli</div>
             </label>
-            <label class="room-card stanza-opt" onclick="bruUpdateCompagni(1,this)">
+            <label class="room-card stanza-opt" onclick="syncStanza(this)">
               <input type="radio" name="b_stanza" value="Matrimoniale">
-              <div class="room-card-icon"><i class="fa-solid fa-bed" style="font-size:1.8rem"></i></div>
+              <div class="room-card-icon"><i class="fa-solid fa-bed" style="font-size:1.6rem"></i></div>
               <div class="room-card-name">Matrimoniale</div>
               <div class="room-card-desc">Ideale per coppie</div>
             </label>
-            <label class="room-card stanza-opt" onclick="bruUpdateCompagni(2,this)">
+            <label class="room-card stanza-opt" onclick="syncStanza(this)">
               <input type="radio" name="b_stanza" value="Tripla">
               <div class="room-card-icon"><i class="fa-solid fa-users"></i></div>
               <div class="room-card-name">Tripla</div>
@@ -1654,9 +1668,9 @@
             </label>
           </div>
 
-          <div id="b_compagniContainer" class="compagni-dyn" style="display:none;margin-top:1.2rem">
-            <p class="mini-label" style="margin-bottom:.8rem">Con chi condividi la stanza?</p>
-            <div id="b_compagniFields"></div>
+          <div class="fg-ed" style="margin-top:1.2rem">
+            <label>Con chi desideri condividere la camera?</label>
+            <input type="text" class="fi-ed" id="b_compagni_stanza_txt" placeholder="Nome e cognome dei compagni di stanza">
           </div>
 
           <p class="mini-label" style="margin-bottom:.8rem;margin-top:1.6rem">Pacchetto *</p>
@@ -1693,6 +1707,12 @@
             <div class="anticipo-val" id="b_anticipo">Da definire</div>
             <div class="anticipo-note">Riceverai le istruzioni di pagamento via email dopo la conferma.</div>
           </div>
+
+          <!-- Termini e condizioni -->
+          <label style="display:flex;align-items:flex-start;gap:10px;margin-top:1.4rem;cursor:pointer;font-size:.88rem;line-height:1.55">
+            <input type="checkbox" id="b_tc" style="margin-top:3px;accent-color:#7b2ff7;width:16px;height:16px;flex-shrink:0">
+            <span>Con la compilazione di questo modulo dichiaro di accettare il regolamento europeo sul trattamento dei dati personali (GDPR 679/2016), dando esplicito consenso a ricevere le comunicazioni di PeperTango e autorizzando la pubblicazione di foto e/o video realizzati durante l&rsquo;evento. *</span>
+          </label>
 
           <div class="form-nav-ed">
             <button class="btn-prev-ed" onclick="bru.prev()">&larr; Indietro</button>
@@ -2123,40 +2143,42 @@
             var nome    = g('nome').value.trim();
             var cognome = g('cognome').value.trim();
             var email   = g('email').value.trim();
-            var ruoSel  = g('ruolo') ? g('ruolo').value : '';
+            var ruoSel   = g('ruolo') ? g('ruolo').value : '';
+            var nascita  = g('nascita') ? g('nascita').value.trim() : '';
+            var tel      = g('tel') ? g('tel').value.trim() : '';
+            var facebook = g('facebook') ? g('facebook').value.trim() : '';
+            var citta    = g('citta') ? g('citta').value.trim() : '';
             if (!cognome)                       { alert('Inserisci il cognome.'); return false; }
             if (!nome)                          { alert('Inserisci il nome.'); return false; }
             if (!email || !email.includes('@')) { alert('Email non valida.'); return false; }
+            if (!nascita)                       { alert('Inserisci la data di nascita.'); return false; }
+            if (!tel)                           { alert('Inserisci il numero di telefono.'); return false; }
+            if (!facebook)                      { alert('Inserisci il link del profilo Facebook.'); return false; }
+            if (!citta)                         { alert('Inserisci la città.'); return false; }
             if (!ruoSel)                        { alert('Seleziona il ruolo di ballo.'); return false; }
             self.data.nome           = nome;
             self.data.cognome        = cognome;
             self.data.nome_completo  = nome + ' ' + cognome;
             self.data.email          = email;
-            self.data.tel            = g('tel').value.trim();
-            self.data.citta          = g('citta').value.trim();
+            self.data.data_nascita   = nascita;
+            self.data.tel            = tel;
+            self.data.facebook       = facebook;
+            self.data.citta          = citta;
             self.data.ruolo          = ruoSel;
-            self.data.compagno_ballo = g('compagno_ballo').value.trim();
           }
           if (s === 2) {
             var st = document.querySelector('[name="b_stanza"]:checked');
-            if (!st) { alert('Seleziona il tipo di stanza.'); return false; }
+            if (!st) { alert('Seleziona la tipologia di camera.'); return false; }
             self.data.tipologia_stanza = st.value;
-            var maxC = { 'Doppia':1, 'Matrimoniale':1, 'Tripla':2 };
-            var n = maxC[st.value] || 0;
-            var compagni = [];
-            for (var i = 1; i <= n; i++) {
-              var cog = g('c' + i + '_cognome');
-              var nom = g('c' + i + '_nome');
-              var cogV = cog ? cog.value.trim() : '';
-              var nomV = nom ? nom.value.trim() : '';
-              if (cogV || nomV) compagni.push((nomV + ' ' + cogV).trim());
-            }
-            self.data.compagni_stanza = compagni;
+            var compTxtEl = g('compagni_stanza_txt');
+            self.data.compagni_stanza = compTxtEl ? compTxtEl.value.trim() : '';
             var pkg = document.querySelector('[name="b_pkg"]:checked');
             if (!pkg) { alert('Seleziona un pacchetto.'); return false; }
             self.data.pacchetto = pkg.value;
             var noteEl = g('note');
             if (noteEl) self.data.note = noteEl.value.trim();
+            var tcEl = document.getElementById('b_tc');
+            if (!tcEl || !tcEl.checked) { alert('Devi accettare i termini e condizioni per procedere.'); return false; }
           }
           return true;
         }
@@ -2343,31 +2365,12 @@
     var mtp = FormEngine({ p:'m', ev:'MTP27',  pkg: PACCHETTI });
     var bru = FormEngine({ p:'b', ev:'Brutia', pkg: PACCHETTI_BRU, tot:2 });
 
+    function syncStanza(label) {
+      document.querySelectorAll('#b_fs2 .stanza-opt').forEach(function(o) { o.classList.remove('selected'); });
+      if (label) { label.classList.add('selected'); label.querySelector('input').checked = true; }
+    }
     function bruUpdateCompagni(n, label) {
-      document.querySelectorAll('#b_fs2 .stanza-opt').forEach(function(o) {
-        o.classList.remove('sel');
-      });
-      if (label) { label.classList.add('sel'); label.querySelector('input').checked = true; }
-      var cont = document.getElementById('b_compagniContainer');
-      var flds = document.getElementById('b_compagniFields');
-      if (!cont || !flds) return;
-      if (n === 0) { cont.style.display = 'none'; flds.innerHTML = ''; return; }
-      cont.style.display = 'block';
-      flds.innerHTML = '';
-      for (var i = 1; i <= n; i++) {
-        var d = document.createElement('div');
-        d.className = 'f-row-ed';
-        d.style.marginBottom = '1.2rem';
-        d.innerHTML = '<div class="fg-ed">'
-          + '<label>Compagno/a ' + i + ' – Cognome</label>'
-          + '<input type="text" class="fi-ed" id="b_c' + i + '_cognome" placeholder="Rossi">'
-          + '</div>'
-          + '<div class="fg-ed">'
-          + '<label>Nome</label>'
-          + '<input type="text" class="fi-ed" id="b_c' + i + '_nome" placeholder="Marco">'
-          + '</div>';
-        flds.appendChild(d);
-      }
+      syncStanza(label);
     }
 
     function bruSelPkg(label) {

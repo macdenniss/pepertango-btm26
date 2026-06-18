@@ -65,13 +65,14 @@
       box-shadow: 0 4px 0 0 var(--fg);
     }
     .nav-brand {
-      font-family: 'Kalam', cursive;
-      font-size: 1.4rem; font-weight: 700;
-      color: var(--accent);
-      transform: rotate(-1deg);
       display: inline-block;
+      transform: rotate(-1deg);
     }
-    .nav-brand span { color: var(--fg); }
+    .nav-brand img {
+      height: 52px;
+      width: auto;
+      display: block;
+    }
     .nav-links {
       display: flex; gap: 2rem; list-style: none;
     }
@@ -834,7 +835,7 @@
 
   <!-- NAV -->
   <nav>
-    <a href="#home" class="nav-brand">PEPER<span>TANGO</span></a>
+    <a href="#home" class="nav-brand"><img src="logo_pepertango.png" alt="PeperTango"></a>
     <ul class="nav-links">
       <li><a href="#home">Home</a></li>
       <li><a href="#mtp27">Maratona 2027</a></li>

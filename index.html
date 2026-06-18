@@ -1262,60 +1262,132 @@
     details[open] .opt-toggle { color: var(--accent); }
 
     /* ============================================================
+       HAMBURGER MENU
+    ============================================================ */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column; justify-content: center; align-items: center;
+      gap: 5px; width: 40px; height: 40px;
+      background: none; border: 2px solid #fff; border-radius: 6px;
+      cursor: pointer; padding: 6px;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: #fff; border-radius: 2px;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-drawer {
+      display: none;
+      position: fixed; top: 64px; left: 0; right: 0; z-index: 199;
+      background: #111;
+      border-bottom: 3px solid var(--fg);
+      flex-direction: column;
+    }
+    .nav-drawer.open { display: flex; }
+    .nav-drawer a {
+      font-family: 'Kalam', cursive; font-size: 18px; font-weight: 700;
+      color: #fff; padding: 16px 5%;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: block;
+    }
+    .nav-drawer a:active, .nav-drawer a:hover { background: var(--accent); }
+
+    /* ============================================================
        MOBILE RESPONSIVE
     ============================================================ */
     @media (max-width: 768px) {
 
-      /* NAV — hamburger */
+      /* Base: riduci font-size globale */
+      html { font-size: 100%; }
+
+      /* NAV */
       nav { height: 64px; padding: 0 4%; }
-      .nav-brand img { height: 46px; }
+      .nav-brand img { height: 44px; }
       .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
 
       /* HERO */
       .hero {
         padding-top: 80px; padding-left: 4%; padding-right: 4%;
-        min-height: auto; padding-bottom: 40px;
+        min-height: auto; padding-bottom: 48px;
       }
-      .hero-hl { font-size: clamp(2.4rem, 10vw, 4rem); max-width: 100%; }
-      .hero-sub { font-size: 1rem; max-width: 100%; }
+      .hero-hl { font-size: clamp(2.2rem, 9vw, 3.5rem); max-width: 100%; }
+      .hero-sub { font-size: 0.95rem; max-width: 100%; margin-top: 1rem; }
       .hero-pills { display: none; }
-      .hero-actions { flex-direction: column; gap: 0.75rem; }
-      .hero-btn { justify-content: center; padding: 14px 20px; font-size: 15px; }
+      .hero-actions { flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+      .hero-btn { justify-content: center; padding: 13px 20px; font-size: 15px; }
+      .hero-scroll { display: none; }
 
-      /* SEZIONI GENERALI */
-      .chi-siamo { padding: 60px 4%; }
-      .chi-siamo-grid { gap: 40px; }
+      /* CHI SIAMO */
+      .chi-siamo { padding: 48px 4%; }
+      .chi-siamo-grid { grid-template-columns: 1fr; gap: 32px; }
+      .chi-siamo-img-wrap { display: none; }
 
-      /* EVENTI */
-      .ev-sub { padding: 60px 4%; }
-      .ev-sub-header { flex-direction: column; gap: 1rem; }
+      /* SEZIONI EVENTO */
+      .event-section { padding: 48px 4% 40px; }
+      .ev-head { grid-template-columns: 1fr; gap: 0; margin-bottom: 32px; }
+      .ev-head-hl { font-size: clamp(2rem, 8vw, 3rem); }
+      .ev-photo { aspect-ratio: 4/3; margin-bottom: 32px; }
+
+      /* PACCHETTI */
+      .pkg-grid-4 { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .pkg-grid-3 { grid-template-columns: 1fr; }
+      .pkg-big-num { font-size: 3rem; }
+      .pkg-price { font-size: 1.6rem; }
+
+      /* EV-SUB (galleria, tdj, location) */
+      .ev-sub { padding: 40px 4%; }
+      .ev-sub-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; margin-bottom: 1.5rem; }
+      .ev-sub-title { font-size: 1.5rem; }
 
       /* TDJ grid */
-      .tdj-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 16px; }
-      #page-brutia .tdj-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 14px; }
-      #page-brutia .tdj-avatar { width: 90px; height: 90px; }
+      .tdj-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .tdj-card { padding: 14px 10px; }
+      .tdj-avatar { width: 64px; height: 64px; }
+      #page-brutia .tdj-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      #page-brutia .tdj-avatar { width: 80px; height: 80px; }
 
-      /* FORM */
-      #bru-form { border-radius: 12px; margin: 0 4px; }
-      #bru-form #b_body { padding: 20px 16px; }
-      #bru-form .fs-title { font-size: 1.3rem; }
-      .room-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .pkg-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      /* GALLERIA */
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
 
       /* LOCATION */
       .location-grid { grid-template-columns: 1fr; }
 
+      /* FORM */
+      .form-section { margin-top: 24px; border-radius: 12px; }
+      .form-label { padding: 12px 16px; }
+      #bru-form { margin: 0; border-radius: 12px; }
+      #bru-form .bru-prog { padding: 14px 16px !important; }
+      #bru-form #b_body { padding: 20px 16px !important; }
+      #bru-form .fs-title { font-size: 1.2rem; }
+      .room-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .pkg-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+
+      /* CONTATTI */
+      .contatti-section { padding: 48px 4%; }
+
       /* FOOTER */
+      footer { padding: 40px 4% 24px; }
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-cols { grid-template-columns: 1fr 1fr; gap: 20px; }
+
+      /* Sezione Brutia */
+      #page-brutia .ev-sub.alt { padding: 40px 4%; }
     }
 
     @media (max-width: 480px) {
-      .hero-hl { font-size: clamp(2rem, 12vw, 3rem); }
+      .pkg-grid-4 { grid-template-columns: 1fr; }
+      .tdj-grid { grid-template-columns: repeat(2, 1fr); }
+      #page-brutia .tdj-grid { grid-template-columns: repeat(2, 1fr); }
       .room-grid { grid-template-columns: 1fr; }
       .pkg-grid { grid-template-columns: 1fr; }
-      .bru-prog { overflow-x: auto; }
-      #bru-form #b_body { padding: 16px 12px; }
-      .section-hl { font-size: clamp(1.8rem, 8vw, 3rem); }
+      .footer-cols { grid-template-columns: 1fr; }
+      .hero-hl { font-size: clamp(1.9rem, 10vw, 2.8rem); }
+      #bru-form .bru-prog { overflow-x: auto; }
     }
   </style>
 </head>
@@ -1331,7 +1403,17 @@
       <li><a href="#" onclick="showPage('contatti');return false;" data-page="contatti">Contatti</a></li>
       <li><a href="#" onclick="showPage('shop');return false;" data-page="shop">Shop</a></li>
     </ul>
+    <button class="nav-hamburger" id="navHamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+  <div class="nav-drawer" id="navDrawer">
+    <a href="#" onclick="showPage('home');toggleMenu();return false;">Home</a>
+    <a href="#" onclick="showPage('mtp27');toggleMenu();return false;">Maratona Tango Piccante</a>
+    <a href="#" onclick="showPage('brutia');toggleMenu();return false;">Brutia Tango Fest</a>
+    <a href="#" onclick="showPage('contatti');toggleMenu();return false;">Contatti</a>
+    <a href="#" onclick="showPage('shop');toggleMenu();return false;">Shop</a>
+  </div>
 
   <!-- PAGE: HOME -->
   <div class="page active" id="page-home">
@@ -2092,6 +2174,14 @@
        JAVASCRIPT
   ============================================================ -->
   <script>
+    /* ---- Hamburger menu ---- */
+    function toggleMenu() {
+      var btn = document.getElementById('navHamburger');
+      var drawer = document.getElementById('navDrawer');
+      btn.classList.toggle('open');
+      drawer.classList.toggle('open');
+    }
+
     /* ---- Config ---- */
     var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6pqs5rvySS2_il_VAJLU07ucnIFdZ86RT6OWlhxVzDvb04REbJTt3ZXaziRvmDmTR/exec';
 

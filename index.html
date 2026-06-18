@@ -921,10 +921,114 @@
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* ============================================================
-       BRUTIA FORM OVERRIDES
+       BRUTIA FORM OVERRIDES — dark neon theme
     ============================================================ */
-    #bru-form .bru-prog { background: var(--muted); }
-    #bru-form #b_body { padding: 32px 28px; }
+    #bru-form {
+      background: #1a0033;
+      border-color: #7b2ff7;
+      box-shadow: 0 0 40px rgba(123,47,247,.25), 6px 6px 0 0 #7b2ff7;
+    }
+    #bru-form .bru-prog {
+      background: #23004a;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    #bru-form #b_body { padding: 32px 28px; background: #1a0033; }
+
+    /* dots */
+    #bru-form .bru-dot {
+      background: #23004a; border: 2px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.35);
+    }
+    #bru-form .bru-dot-lbl { color: rgba(255,255,255,.35); }
+    #bru-form .bru-pd.active .bru-dot {
+      background: #7b2ff7; border-color: #7b2ff7; color: #fff;
+      box-shadow: 0 0 12px rgba(123,47,247,.7);
+    }
+    #bru-form .bru-pd.active .bru-dot-lbl { color: #fff; }
+    #bru-form .bru-pd.done .bru-dot { background: #00e5ff; border-color: #00e5ff; color: #000; }
+    #bru-form .bru-pd.done .bru-dot-lbl { color: rgba(255,255,255,.45); }
+    #bru-form .bru-line { background: rgba(255,255,255,.12); }
+
+    /* testi */
+    #bru-form .fs-title { color: #fff; }
+    #bru-form .fs-sub { color: rgba(255,255,255,.45); }
+    #bru-form label, #bru-form .mini-label { color: rgba(255,255,255,.65); }
+    #bru-form details summary { color: rgba(255,255,255,.4); }
+    #bru-form .step-count { color: rgba(255,255,255,.2); }
+
+    /* input */
+    #bru-form .fi-ed {
+      background: rgba(255,255,255,.07);
+      border-color: rgba(255,255,255,.15);
+      color: #fff;
+    }
+    #bru-form .fi-ed::placeholder { color: rgba(255,255,255,.2); }
+    #bru-form .fi-ed:focus { border-color: #7b2ff7; box-shadow: 0 0 0 3px rgba(123,47,247,.3); }
+
+    /* select */
+    #bru-form select.fi-ed { appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237b2ff7' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center;
+      padding-right: 36px;
+    }
+    #bru-form select.fi-ed option { background: #23004a; color: #fff; }
+
+    /* room cards */
+    #bru-form .room-card {
+      background: rgba(255,255,255,.05);
+      border-color: rgba(255,255,255,.12);
+    }
+    #bru-form .room-card-name { color: rgba(255,255,255,.8); }
+    #bru-form .room-card-desc { color: rgba(255,255,255,.4); }
+    #bru-form .room-card i { color: rgba(255,255,255,.5); }
+    #bru-form .stanza-opt.selected,
+    #bru-form .room-card.selected {
+      background: rgba(123,47,247,.2);
+      border-color: #7b2ff7;
+      box-shadow: 3px 3px 0 0 #7b2ff7;
+    }
+    #bru-form .stanza-opt.selected .room-card-name,
+    #bru-form .room-card.selected .room-card-name { color: #fff; }
+    #bru-form .stanza-opt:hover { border-color: #7b2ff7; }
+
+    /* pacchetti */
+    #bru-form .pkg-card {
+      background: rgba(255,255,255,.05);
+      border-color: rgba(255,255,255,.12);
+    }
+    #bru-form .pkg-card-letter { color: #00e5ff; text-shadow: 0 0 10px rgba(0,229,255,.5); }
+    #bru-form .pkg-card-name { color: rgba(255,255,255,.85); }
+    #bru-form .pkg-card-info { color: rgba(255,255,255,.4); }
+    #bru-form .pkg-card.selected {
+      background: rgba(0,229,255,.1);
+      border-color: #00e5ff;
+      box-shadow: 3px 3px 0 0 #00e5ff;
+    }
+    #bru-form .pkg-card:hover { border-color: #00e5ff; }
+
+    /* riepilogo + anticipo */
+    #bru-form .riepilogo-ed { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.6); }
+    #bru-form .anticipo-box { background: rgba(0,229,255,.07); border-color: rgba(0,229,255,.2); }
+    #bru-form .anticipo-lbl { color: rgba(255,255,255,.45); }
+    #bru-form .anticipo-val { color: #00e5ff; text-shadow: 0 0 8px rgba(0,229,255,.5); }
+    #bru-form .anticipo-note { color: rgba(255,255,255,.3); }
+
+    /* bottoni */
+    #bru-form .btn-next-ed {
+      background: #7b2ff7;
+      box-shadow: 0 0 16px rgba(123,47,247,.45), 3px 3px 0 0 #4a0099;
+      color: #fff;
+    }
+    #bru-form .btn-next-ed:hover { background: #9240ff; box-shadow: 0 0 20px rgba(123,47,247,.6), 3px 3px 0 0 #4a0099; }
+    #bru-form .btn-prev-ed { color: rgba(255,255,255,.45); border-color: rgba(255,255,255,.2); background: transparent; }
+    #bru-form .btn-prev-ed:hover { border-color: rgba(255,255,255,.5); color: rgba(255,255,255,.8); }
+
+    /* stati finali */
+    #bru-form .form-ok-ed h3 { color: #00e5ff; text-shadow: 0 0 12px rgba(0,229,255,.5); }
+    #bru-form .form-ok-ed p { color: rgba(255,255,255,.55); }
+    #bru-form .form-error-ed p { color: #ff69b4; }
+    #bru-form .btn-retry-ed { border-color: rgba(255,255,255,.2); color: rgba(255,255,255,.6); }
+    #bru-form .compagni-dyn label { color: rgba(255,255,255,.6); }
 
     /* ============================================================
        MTP — REGISTRAZIONI CHIUSE
@@ -1448,13 +1552,13 @@
     <div class="form-section" id="bru-form" style="margin-top:40px">
 
       <!-- Intestazione form -->
-      <div style="background:var(--ink);padding:22px 32px;display:flex;align-items:center;justify-content:space-between">
-        <span style="font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#fff">Iscrizione Brutia Tango Fest 2026</span>
-        <span style="font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.12em" id="bru-step-lbl">Passo 1 di 3</span>
+      <div style="background:#23004a;padding:22px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(123,47,247,.3)">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#00e5ff;text-shadow:0 0 10px rgba(0,229,255,.4)">Iscrizione Brutia Tango Fest 2026</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.12em" id="bru-step-lbl">Passo 1 di 2</span>
       </div>
 
-      <!-- Progress dots -->
-      <div class="bru-prog" style="padding:18px 32px;border-bottom:1px solid rgba(26,24,20,.07)">
+      <!-- Progress dots (2 step) -->
+      <div class="bru-prog" style="padding:18px 32px">
         <div class="bru-pd active" id="b_ss1">
           <div class="bru-dot">1</div>
           <div class="bru-dot-lbl">Chi sei</div>
@@ -1462,12 +1566,7 @@
         <div class="bru-line"></div>
         <div class="bru-pd" id="b_ss2">
           <div class="bru-dot">2</div>
-          <div class="bru-dot-lbl">La stanza</div>
-        </div>
-        <div class="bru-line"></div>
-        <div class="bru-pd" id="b_ss3">
-          <div class="bru-dot">3</div>
-          <div class="bru-dot-lbl">Il pacchetto</div>
+          <div class="bru-dot-lbl">Stanza &amp; Pacchetto</div>
         </div>
       </div>
 
@@ -1492,25 +1591,18 @@
             <label>Email *</label>
             <input type="email" class="fi-ed" id="b_email" placeholder="andrea@email.com">
           </div>
-
-          <span class="mini-label" style="margin-top:1.2rem">Come balli? *</span>
-          <div class="ruolo-grid" style="margin-bottom:1.5rem">
-            <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')">
-              <input type="radio" name="b_ruolo" value="Leader">
-              <div class="r-name">Leader</div>
-            </label>
-            <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')">
-              <input type="radio" name="b_ruolo" value="Follower">
-              <div class="r-name">Follower</div>
-            </label>
-            <label class="r-opt-ed" onclick="syncRadio(this,'b_ruolo')">
-              <input type="radio" name="b_ruolo" value="Entrambi">
-              <div class="r-name">Entrambi</div>
-            </label>
+          <div class="fg-ed">
+            <label>Ruolo di ballo *</label>
+            <select class="fi-ed" id="b_ruolo">
+              <option value="">— Seleziona —</option>
+              <option value="Leader">Leader</option>
+              <option value="Follower">Follower</option>
+              <option value="Entrambi">Entrambi (Leader &amp; Follower)</option>
+            </select>
           </div>
 
           <!-- Campi facoltativi nascosti -->
-          <details>
+          <details style="margin-top:.8rem">
             <summary class="opt-toggle">+ Aggiungi telefono, citt&agrave; e compagno di ballo (facoltativo)</summary>
             <div style="margin-top:1rem">
               <div class="f-row-ed">
@@ -1527,11 +1619,12 @@
           </div>
         </div>
 
-        <!-- ====== STEP 2: La stanza ====== -->
+        <!-- ====== STEP 2: Stanza + Pacchetto ====== -->
         <div class="form-step-ed" id="b_fs2">
-          <h3 class="fs-title" style="margin-bottom:.4rem">La tua stanza</h3>
-          <p class="fs-sub">Scegli il tipo di sistemazione che preferisci</p>
+          <h3 class="fs-title" style="margin-bottom:.4rem">Stanza &amp; Pacchetto</h3>
+          <p class="fs-sub">Scegli la sistemazione e il pacchetto, poi invia</p>
 
+          <p class="mini-label" style="margin-bottom:.8rem;margin-top:.4rem">Tipo di stanza *</p>
           <div class="room-grid">
             <label class="room-card stanza-opt" onclick="bruUpdateCompagni(1,this)">
               <input type="radio" name="b_stanza" value="Doppia">
@@ -1539,19 +1632,19 @@
                 <i class="fa-solid fa-bed"></i><i class="fa-solid fa-bed" style="font-size:1rem;opacity:.5;margin-left:2px"></i>
               </div>
               <div class="room-card-name">Doppia</div>
-              <div class="room-card-desc">2 letti singoli<br>ognuno nel proprio spazio</div>
+              <div class="room-card-desc">2 letti singoli</div>
             </label>
             <label class="room-card stanza-opt" onclick="bruUpdateCompagni(1,this)">
               <input type="radio" name="b_stanza" value="Matrimoniale">
               <div class="room-card-icon"><i class="fa-solid fa-bed" style="font-size:1.8rem"></i></div>
               <div class="room-card-name">Matrimoniale</div>
-              <div class="room-card-desc">1 letto grande<br>ideale per coppie</div>
+              <div class="room-card-desc">Ideale per coppie</div>
             </label>
             <label class="room-card stanza-opt" onclick="bruUpdateCompagni(2,this)">
               <input type="radio" name="b_stanza" value="Tripla">
               <div class="room-card-icon"><i class="fa-solid fa-users"></i></div>
               <div class="room-card-name">Tripla</div>
-              <div class="room-card-desc">Fino a 3 persone<br>nella stessa stanza</div>
+              <div class="room-card-desc">Fino a 3 persone</div>
             </label>
           </div>
 
@@ -1560,17 +1653,7 @@
             <div id="b_compagniFields"></div>
           </div>
 
-          <div class="form-nav-ed">
-            <button class="btn-prev-ed" onclick="bru.prev()">&larr; Indietro</button>
-            <button class="btn-next-ed" style="padding:14px 36px;font-size:11px" onclick="bru.next()">Continua &rarr;</button>
-          </div>
-        </div>
-
-        <!-- ====== STEP 3: Il pacchetto ====== -->
-        <div class="form-step-ed" id="b_fs3">
-          <h3 class="fs-title" style="margin-bottom:.4rem">Il pacchetto</h3>
-          <p class="fs-sub">Scegli il pacchetto e invia la tua iscrizione</p>
-
+          <p class="mini-label" style="margin-bottom:.8rem;margin-top:1.6rem">Pacchetto *</p>
           <div class="pkg-cards">
             <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)">
               <input type="radio" name="b_pkg" value="Pacchetto A">
@@ -1592,7 +1675,7 @@
             </label>
           </div>
 
-          <div class="fg-ed">
+          <div class="fg-ed" style="margin-top:1.4rem">
             <label>Note o richieste (facoltativo)</label>
             <textarea class="fi-ed" id="b_note" placeholder="Allergie, esigenze particolari, altro..."></textarea>
           </div>
@@ -1607,7 +1690,7 @@
 
           <div class="form-nav-ed">
             <button class="btn-prev-ed" onclick="bru.prev()">&larr; Indietro</button>
-            <button class="btn-next-ed" style="padding:14px 36px;font-size:11px;background:var(--pepper)" onclick="bru.next()">Invia iscrizione &rarr;</button>
+            <button class="btn-next-ed" style="padding:14px 36px;font-size:11px" onclick="bru.next()">Invia iscrizione &rarr;</button>
           </div>
         </div>
 
@@ -2034,18 +2117,18 @@
             var nome    = g('nome').value.trim();
             var cognome = g('cognome').value.trim();
             var email   = g('email').value.trim();
-            var ruo     = document.querySelector('[name="b_ruolo"]:checked');
+            var ruoSel  = g('ruolo') ? g('ruolo').value : '';
             if (!cognome)                       { alert('Inserisci il cognome.'); return false; }
             if (!nome)                          { alert('Inserisci il nome.'); return false; }
             if (!email || !email.includes('@')) { alert('Email non valida.'); return false; }
-            if (!ruo)                           { alert('Seleziona il tuo ruolo.'); return false; }
+            if (!ruoSel)                        { alert('Seleziona il ruolo di ballo.'); return false; }
             self.data.nome           = nome;
             self.data.cognome        = cognome;
             self.data.nome_completo  = nome + ' ' + cognome;
             self.data.email          = email;
             self.data.tel            = g('tel').value.trim();
             self.data.citta          = g('citta').value.trim();
-            self.data.ruolo          = ruo.value;
+            self.data.ruolo          = ruoSel;
             self.data.compagno_ballo = g('compagno_ballo').value.trim();
           }
           if (s === 2) {
@@ -2063,8 +2146,6 @@
               if (cogV || nomV) compagni.push((nomV + ' ' + cogV).trim());
             }
             self.data.compagni_stanza = compagni;
-          }
-          if (s === 3) {
             var pkg = document.querySelector('[name="b_pkg"]:checked');
             if (!pkg) { alert('Seleziona un pacchetto.'); return false; }
             self.data.pacchetto = pkg.value;
@@ -2254,7 +2335,7 @@
     }
 
     var mtp = FormEngine({ p:'m', ev:'MTP27',  pkg: PACCHETTI });
-    var bru = FormEngine({ p:'b', ev:'Brutia', pkg: PACCHETTI_BRU, tot:3 });
+    var bru = FormEngine({ p:'b', ev:'Brutia', pkg: PACCHETTI_BRU, tot:2 });
 
     function bruUpdateCompagni(n, label) {
       document.querySelectorAll('#b_fs2 .stanza-opt').forEach(function(o) {

@@ -55,7 +55,7 @@
     ============================================================ */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      height: 72px;
+      height: 88px;
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 5%;
       background: var(--bg);
@@ -67,37 +67,25 @@
       transform: rotate(-1deg);
     }
     .nav-brand img {
-      height: 52px;
+      height: 62px;
       width: auto;
       display: block;
     }
     .nav-links {
-      display: flex; gap: 2rem; list-style: none;
+      display: flex; gap: 0; list-style: none; height: 100%;
     }
+    .nav-links li { display: flex; align-items: center; }
     .nav-links a {
       font-family: 'Patrick Hand', cursive;
-      font-size: 15px; color: var(--fg); opacity: .6;
-      transition: opacity 0.2s, color 0.2s;
+      font-size: 15px; color: var(--fg);
+      padding: 0 18px; height: 88px;
+      display: flex; align-items: center;
+      transition: background 0.15s, color 0.15s;
       position: relative;
     }
-    .nav-links a::after {
-      content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
-      height: 2px; background: var(--accent);
-      transform: scaleX(0); transition: transform 0.2s; transform-origin: left;
-    }
-    .nav-links a:hover { opacity: 1; color: var(--accent); }
-    .nav-links a:hover::after { transform: scaleX(1); }
-    .nav-cta {
-      background: var(--fg); color: var(--bg);
-      padding: 9px 22px;
-      border-radius: var(--r-wobbly-sm);
-      font-family: 'Patrick Hand', cursive; font-size: 14px;
-      border: 2px solid var(--fg); box-shadow: var(--shadow-sm);
-      transition: all 0.1s; display: inline-block;
-    }
-    .nav-cta:hover {
-      background: var(--accent); border-color: var(--accent);
-      transform: translate(-1px,-1px); box-shadow: 3px 3px 0 0 var(--fg);
+    .nav-links a:hover {
+      background: var(--accent);
+      color: #fff;
     }
 
     /* ============================================================
@@ -1011,7 +999,6 @@
       <li><a href="#contatti">Contatti</a></li>
       <li><a href="#shop">Shop</a></li>
     </ul>
-    <a href="#mtp27" class="nav-cta">Iscriviti ora</a>
   </nav>
 
   <!-- HERO -->

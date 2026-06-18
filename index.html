@@ -734,6 +734,12 @@
     .c-submit:active { transform: translate(2px,2px); box-shadow: none; }
 
     /* ============================================================
+       VIRTUAL PAGES
+    ============================================================ */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ============================================================
        EVENT SUB-SECTIONS (Galleria · TDJ · Location · Mappa)
     ============================================================ */
     .ev-sub {
@@ -996,15 +1002,18 @@
 
   <!-- NAV -->
   <nav>
-    <a href="#home" class="nav-brand"><img src="logo_pepertango.png" alt="PeperTango"></a>
+    <a href="#" onclick="showPage('home');return false;" class="nav-brand"><img src="logo_pepertango.png" alt="PeperTango"></a>
     <ul class="nav-links">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#mtp27">Maratona Tango Piccante</a></li>
-      <li><a href="#brutia">Brutia Tango Fest</a></li>
-      <li><a href="#contatti">Contatti</a></li>
-      <li><a href="#shop">Shop</a></li>
+      <li><a href="#" onclick="showPage('home');return false;" data-page="home">Home</a></li>
+      <li><a href="#" onclick="showPage('mtp27');return false;" data-page="mtp27">Maratona Tango Piccante</a></li>
+      <li><a href="#" onclick="showPage('brutia');return false;" data-page="brutia">Brutia Tango Fest</a></li>
+      <li><a href="#" onclick="showPage('contatti');return false;" data-page="contatti">Contatti</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;" data-page="shop">Shop</a></li>
     </ul>
   </nav>
+
+  <!-- PAGE: HOME -->
+  <div class="page active" id="page-home">
 
   <!-- HERO -->
   <section class="hero" id="home">
@@ -1065,7 +1074,7 @@
       </p>
     </div>
     <div class="events-grid">
-      <div class="ev-card reveal" onclick="document.getElementById('mtp27').scrollIntoView({behavior:'smooth'})">
+      <div class="ev-card reveal" onclick="showPage('mtp27')" style="cursor:pointer">
         <div class="ev-card-num">01 &middot; Giugno 2027 &middot; Maratea</div>
         <h3 class="ev-card-title">Maratona<br>Tango<br>Piccante</h3>
         <p class="ev-card-desc">
@@ -1074,7 +1083,7 @@
         </p>
         <span class="ev-card-cta">Scopri e iscriviti &rarr;</span>
       </div>
-      <div class="ev-card reveal d2" onclick="document.getElementById('brutia').scrollIntoView({behavior:'smooth'})">
+      <div class="ev-card reveal d2" onclick="showPage('brutia')" style="cursor:pointer">
         <div class="ev-card-num">02 &middot; TBD &middot; Calabria</div>
         <h3 class="ev-card-title">Brutia<br>Tango<br>Festival</h3>
         <p class="ev-card-desc">
@@ -1085,6 +1094,11 @@
       </div>
     </div>
   </section>
+
+  </div><!-- /page-home -->
+
+  <!-- PAGE: MTP27 -->
+  <div class="page" id="page-mtp27">
 
   <!-- MTP27 -->
   <section class="event-section dark" id="mtp27">
@@ -1213,6 +1227,11 @@
       </div>
     </div>
   </section>
+
+  </div><!-- /page-mtp27 -->
+
+  <!-- PAGE: BRUTIA -->
+  <div class="page" id="page-brutia">
 
   <!-- BRUTIA -->
   <section class="event-section warm-bg" id="brutia">
@@ -1502,6 +1521,11 @@
     </div>
   </section>
 
+  </div><!-- /page-brutia -->
+
+  <!-- PAGE: SHOP -->
+  <div class="page" id="page-shop">
+
   <!-- SHOP -->
   <section class="shop-section" id="shop">
     <div class="shop-head">
@@ -1641,6 +1665,11 @@
     </div>
   </section>
 
+  </div><!-- /page-shop -->
+
+  <!-- PAGE: CONTATTI -->
+  <div class="page" id="page-contatti">
+
   <!-- CONTATTI -->
   <section class="contatti-section" id="contatti">
     <div class="contatti-grid">
@@ -1685,6 +1714,8 @@
       </div>
     </div>
   </section>
+
+  </div><!-- /page-contatti -->
 
   <!-- FOOTER -->
   <footer id="footer">
@@ -2090,6 +2121,21 @@
       });
     }, { threshold: 0.07 });
     document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+    /* ---- Virtual pages ---- */
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+      var target = document.getElementById('page-' + name);
+      if (target) { target.classList.add('active'); }
+      window.scrollTo(0, 0);
+      /* highlight active nav link */
+      document.querySelectorAll('.nav-links a[data-page]').forEach(function(a) {
+        a.style.background = a.dataset.page === name ? 'var(--accent)' : '';
+        a.style.color = a.dataset.page === name ? '#fff' : '';
+      });
+    }
+    /* init: active nav highlight for home */
+    document.addEventListener('DOMContentLoaded', function() { showPage('home'); });
   </script>
 </body>
 </html>

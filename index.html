@@ -1002,6 +1002,59 @@
     #page-mtp27 .location-address { color: #00b4d8; }
 
     /* ============================================================
+       BRUTIA — TEMA BLU SCURO / VIOLA (override scoped a #page-brutia)
+    ============================================================ */
+    #page-brutia .event-section.warm-bg {
+      background-color: #0d1b3e;
+      background-image: none;
+      border-top: 5px solid #7b2ff7;
+      color: #e8e0ff;
+    }
+    #page-brutia .ev-head-hl { color: #e8e0ff; }
+    #page-brutia .ev-head-hl em { color: #b388ff; }
+    #page-brutia .ev-head-body { color: rgba(232,224,255,.7); }
+    #page-brutia .section-tag { color: #b388ff !important; background: rgba(123,47,247,.15) !important; }
+    #page-brutia .pkg-label { color: #b388ff; }
+
+    /* foto a colori */
+    #page-brutia .ev-photo img { filter: grayscale(0%); }
+
+    /* pacchetti: tre card con sfumature viola/indigo */
+    #page-brutia .pkg-item { background: #1a2a5e; border-color: #4a3f8a; color: #e8e0ff; }
+    #page-brutia .pkg-item:nth-child(1) { background: #1a1a4e; border-color: #7b2ff7; }
+    #page-brutia .pkg-item:nth-child(2) { background: #1e1060; border-color: #9c47ff; }
+    #page-brutia .pkg-item:nth-child(3) { background: #160d40; border-color: #6a1fd4; }
+    #page-brutia .pkg-big-num { color: rgba(179,136,255,.18); }
+    #page-brutia .pkg-name { color: #e8e0ff; }
+    #page-brutia .pkg-date { color: rgba(232,224,255,.6); }
+    #page-brutia .pkg-price { color: #b388ff; }
+    #page-brutia .pkg-anticipo { color: rgba(232,224,255,.5); }
+    #page-brutia .pkg-notti-lbl { color: rgba(232,224,255,.5); }
+    #page-brutia .pkg-item:hover, #page-brutia .pkg-item.selected {
+      background: #7b2ff7; border-color: #b388ff;
+    }
+    #page-brutia .pkg-btn {
+      background: #7b2ff7; color: #fff; border-color: #b388ff;
+    }
+    #page-brutia .pkg-btn:hover { background: #9c47ff; }
+
+    /* sub-sezioni */
+    #page-brutia .ev-sub { background: #0f1e45; }
+    #page-brutia .ev-sub.alt { background: #0a1230; }
+    #page-brutia .ev-sub-event-tag {
+      background: #7b2ff7; color: #fff;
+      padding: 4px 12px; border-radius: 20px;
+    }
+    #page-brutia .ev-sub-title { color: #e8e0ff; }
+    #page-brutia .tdj-card { background: #1a2a5e; border-color: #4a3f8a; color: #e8e0ff; }
+    #page-brutia .tdj-avatar { background: #7b2ff7; color: #fff; }
+    #page-brutia .tdj-name { color: #b388ff; }
+    #page-brutia .tdj-bio { color: rgba(232,224,255,.6); }
+    #page-brutia .location-info h4 { color: #b388ff; }
+    #page-brutia .location-info p { color: rgba(232,224,255,.75); }
+    #page-brutia .location-address { color: #b388ff; }
+
+    /* ============================================================
        BRUTIA — CARD STANZA + PACCHETTO
     ============================================================ */
     .bru-step-hd { background: var(--muted); padding: 18px 28px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid rgba(45,45,45,.1); }
@@ -1303,7 +1356,7 @@
   <section class="event-section warm-bg" id="brutia">
     <div class="ev-head">
       <h2 class="ev-head-hl reveal">
-        BRUTIA<br>TANGO<br><em>festival</em>
+        BRUTIA<br>TANGO<br><em>fest 2026</em>
       </h2>
       <div class="reveal d2">
         <span class="section-tag">02 &middot; Date TBD &middot; Calabria</span>

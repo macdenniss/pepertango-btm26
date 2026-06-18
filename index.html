@@ -698,6 +698,133 @@
     .c-submit:active { transform: translate(2px,2px); box-shadow: none; }
 
     /* ============================================================
+       EVENT SUB-SECTIONS (Galleria · TDJ · Location · Mappa)
+    ============================================================ */
+    .ev-sub {
+      padding: 80px 5%;
+      border-top: 3px solid var(--muted);
+    }
+    .ev-sub.alt { background: #f9f9f9; }
+    .ev-sub-header {
+      display: flex; align-items: baseline; gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+    .ev-sub-event-tag {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 12px; letter-spacing: .15em; text-transform: uppercase;
+      background: var(--fg); color: #fff;
+      padding: 3px 10px; border-radius: 30px;
+      white-space: nowrap;
+    }
+    .ev-sub-title {
+      font-family: 'Kalam', cursive; font-size: 2rem; font-weight: 700;
+      color: var(--fg); transform: rotate(-0.5deg); display: inline-block;
+    }
+
+    /* Galleria */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .gallery-item {
+      aspect-ratio: 4/3;
+      background: var(--muted);
+      border: 2px solid var(--fg);
+      border-radius: var(--r-wobbly-sm);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .1s, box-shadow .1s;
+    }
+    .gallery-item:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      color: rgba(45,45,45,.3);
+      font-family: 'Patrick Hand', cursive; font-size: 13px;
+    }
+    .gallery-placeholder i { font-size: 2rem; }
+
+    /* TDJ */
+    .tdj-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+    }
+    .tdj-card {
+      border: 2px solid var(--fg);
+      border-radius: var(--r-wobbly-sm);
+      box-shadow: var(--shadow-sm);
+      padding: 24px 20px;
+      text-align: center;
+      background: #fff;
+      transition: transform .1s, box-shadow .1s;
+    }
+    .tdj-card:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
+    .tdj-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--muted);
+      border: 2px solid var(--fg);
+      margin: 0 auto 12px;
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      color: rgba(45,45,45,.3); font-size: 2rem;
+    }
+    .tdj-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .tdj-name {
+      font-family: 'Kalam', cursive; font-size: 1rem; font-weight: 700;
+      color: var(--fg); margin-bottom: 4px;
+    }
+    .tdj-bio {
+      font-family: 'Patrick Hand', cursive; font-size: 13px;
+      color: rgba(45,45,45,.55); line-height: 1.5;
+    }
+
+    /* Location */
+    .location-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+      align-items: start;
+    }
+    @media (max-width: 700px) { .location-grid { grid-template-columns: 1fr; } }
+    .location-info h4 {
+      font-family: 'Kalam', cursive; font-size: 1.4rem; font-weight: 700;
+      margin-bottom: 10px; color: var(--fg);
+    }
+    .location-info p {
+      font-family: 'Patrick Hand', cursive; font-size: 15px;
+      line-height: 1.7; color: rgba(45,45,45,.65); margin-bottom: 16px;
+    }
+    .location-address {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Patrick Hand', cursive; font-size: 14px;
+      border: 2px solid var(--fg); border-radius: var(--r-wobbly-sm);
+      box-shadow: var(--shadow-sm); padding: 8px 16px;
+      background: var(--yellow); color: var(--fg);
+      text-decoration: none;
+      transition: transform .1s, box-shadow .1s;
+    }
+    .location-address:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
+    .map-wrap {
+      border: 3px solid var(--fg);
+      border-radius: var(--r-wobbly-sm);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+    .map-placeholder {
+      width: 100%; height: 100%; min-height: 260px;
+      background: var(--muted);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+      color: rgba(45,45,45,.35);
+      font-family: 'Patrick Hand', cursive; font-size: 14px;
+    }
+    .map-placeholder i { font-size: 2.5rem; }
+
+    /* ============================================================
        FOOTER
     ============================================================ */
     footer {
@@ -976,6 +1103,68 @@
     </div>
   </section>
 
+  <!-- MTP · GALLERIA -->
+  <section class="ev-sub" id="mtp27-gallery">
+    <div class="ev-sub-header">
+      <span class="ev-sub-event-tag">Maratona Tango Piccante</span>
+      <h3 class="ev-sub-title">Galleria</h3>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+    </div>
+  </section>
+
+  <!-- MTP · TDJ -->
+  <section class="ev-sub alt" id="mtp27-tdj">
+    <div class="ev-sub-header">
+      <span class="ev-sub-event-tag">Maratona Tango Piccante</span>
+      <h3 class="ev-sub-title">I TDJ</h3>
+    </div>
+    <div class="tdj-grid">
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-music"></i></div>
+        <div class="tdj-name">TDJ 1</div>
+        <div class="tdj-bio">Nome e bio in arrivo</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-music"></i></div>
+        <div class="tdj-name">TDJ 2</div>
+        <div class="tdj-bio">Nome e bio in arrivo</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-music"></i></div>
+        <div class="tdj-name">TDJ 3</div>
+        <div class="tdj-bio">Nome e bio in arrivo</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MTP · LOCATION + MAPPA -->
+  <section class="ev-sub" id="mtp27-location">
+    <div class="ev-sub-header">
+      <span class="ev-sub-event-tag">Maratona Tango Piccante</span>
+      <h3 class="ev-sub-title">Location &amp; Come raggiungerla</h3>
+    </div>
+    <div class="location-grid">
+      <div class="location-info">
+        <h4>Maratea, Basilicata</h4>
+        <p>La perla del Tirreno ospita la Maratona Tango Piccante. Un borgo incantevole sul mare, tra scogliere e panorami mozzafiato. Struttura alberghiera con pensione completa a pochi passi dalla spiaggia.</p>
+        <p><strong>Come arrivare:</strong> Autostrada A3 Salerno–Reggio Calabria, uscita Lagonegro Nord. Da Napoli circa 2h30 in auto. Stazione ferroviaria di Maratea sulla linea Napoli–Reggio Calabria.</p>
+        <a href="https://maps.google.com/?q=Maratea,Basilicata" target="_blank" class="location-address">
+          <i class="fa-solid fa-location-dot"></i> Maratea, Basilicata
+        </a>
+      </div>
+      <div class="map-wrap">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24573.123456789!2d15.7197!3d39.9932!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1339c9b7e1234567%3A0xabcdef1234567890!2sMaratea%2C%20Basilicata!5e0!3m2!1sit!2sit!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+
   <!-- BRUTIA -->
   <section class="event-section warm-bg" id="brutia">
     <div class="ev-head">
@@ -1195,6 +1384,71 @@
           <button class="btn-retry-ed" onclick="bru.resetError()">Riprova</button>
         </div>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- BRUTIA · GALLERIA -->
+  <section class="ev-sub" id="brutia-gallery">
+    <div class="ev-sub-header">
+      <span class="ev-sub-event-tag">Brutia Tango Fest</span>
+      <h3 class="ev-sub-title">Galleria</h3>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+    </div>
+  </section>
+
+  <!-- BRUTIA · TDJ -->
+  <section class="ev-sub alt" id="brutia-tdj">
+    <div class="ev-sub-header">
+      <span class="ev-sub-event-tag">Brutia Tango Fest</span>
+      <h3 class="ev-sub-title">I TDJ</h3>
+    </div>
+    <div class="tdj-grid">
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-music"></i></div>
+        <div class="tdj-name">TDJ 1</div>
+        <div class="tdj-bio">Nome e bio in arrivo</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-music"></i></div>
+        <div class="tdj-name">TDJ 2</div>
+        <div class="tdj-bio">Nome e bio in arrivo</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-music"></i></div>
+        <div class="tdj-name">TDJ 3</div>
+        <div class="tdj-bio">Nome e bio in arrivo</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRUTIA · LOCATION + MAPPA -->
+  <section class="ev-sub" id="brutia-location">
+    <div class="ev-sub-header">
+      <span class="ev-sub-event-tag">Brutia Tango Fest</span>
+      <h3 class="ev-sub-title">Location &amp; Come raggiungerla</h3>
+    </div>
+    <div class="location-grid">
+      <div class="location-info">
+        <h4>Calabria — Location TBD</h4>
+        <p>Il Brutia Tango Festival si terrà nel cuore della Calabria, nella terra di Bruzio. La location definitiva sarà comunicata presto. Preparati a vivere il tango in una cornice autentica e suggestiva del Sud Italia.</p>
+        <p><strong>Come arrivare:</strong> Indicazioni dettagliate disponibili non appena la location sarà confermata. Seguici per aggiornamenti.</p>
+        <a href="https://maps.google.com/?q=Calabria,Italia" target="_blank" class="location-address">
+          <i class="fa-solid fa-location-dot"></i> Calabria, Italia
+        </a>
+      </div>
+      <div class="map-wrap">
+        <div class="map-placeholder">
+          <i class="fa-solid fa-map-location-dot"></i>
+          Location da confermare
+        </div>
       </div>
     </div>
   </section>

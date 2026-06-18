@@ -92,15 +92,15 @@
        HERO
     ============================================================ */
     .hero {
-      min-height: 55vh; padding-top: 88px;
+      min-height: 75vh; padding-top: 108px;
       background-color: var(--bg);
       background-image:
-        linear-gradient(rgba(255,255,255,0.78), rgba(255,255,255,0.78)),
+        linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.55)),
         url('1b1050_3fc82fffd1c14595ad774a2e578933c0~mv2.avif');
-      background-size: 75% auto;
-      background-position: center 45%;
+      background-size: 30% auto;
+      background-position: right 8% center;
       display: flex; flex-direction: column; justify-content: center;
-      padding-left: 5%; padding-right: 5%;
+      padding-left: 6%; padding-right: 5%;
       position: relative; overflow: hidden;
     }
     .hero::before { display: none; }
@@ -112,9 +112,10 @@
     }
     .hero-hl {
       font-family: 'Kalam', cursive;
-      font-size: clamp(3rem, 10vw, 8rem);
+      font-size: clamp(3rem, 8vw, 7rem);
       font-weight: 700; line-height: 1.05;
       color: var(--fg); position: relative; z-index: 1;
+      max-width: 55%;
     }
     .hero-hl em {
       font-family: 'Kalam', cursive;
@@ -239,11 +240,11 @@
 
     .events-intro {
       background: transparent;
-      padding: 20px 5% 60px;
+      padding: 60px 5% 80px;
     }
     .events-intro-head {
       display: grid; grid-template-columns: 6fr 6fr;
-      gap: 5%; align-items: flex-end; margin-bottom: 60px;
+      gap: 5%; align-items: flex-end; margin-bottom: 48px;
     }
     .events-intro-sub {
       font-family: 'Patrick Hand', cursive;

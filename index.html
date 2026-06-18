@@ -201,6 +201,49 @@
     /* ============================================================
        EVENTS INTRO
     ============================================================ */
+    /* ============================================================
+       CHI SIAMO
+    ============================================================ */
+    .chi-siamo {
+      padding: 100px 5%;
+      background: var(--yellow);
+      border-top: 3px solid var(--fg);
+      border-bottom: 3px solid var(--fg);
+    }
+    .chi-siamo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    @media (max-width: 760px) { .chi-siamo-grid { grid-template-columns: 1fr; } }
+    .chi-siamo-text .section-tag { display: block; margin-bottom: 1rem; }
+    .chi-siamo-hl {
+      font-family: 'Kalam', cursive; font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700; color: var(--fg);
+      line-height: 1.1; margin-bottom: 1.5rem;
+      transform: rotate(-0.5deg); display: inline-block;
+    }
+    .chi-siamo-hl em { color: var(--accent); font-style: italic; }
+    .chi-siamo-body p {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1rem; line-height: 1.8;
+      color: rgba(45,45,45,.75); margin-bottom: 1rem;
+    }
+    .chi-siamo-img-wrap {
+      border: 3px solid var(--fg);
+      border-radius: var(--r-wobbly-md);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      transform: rotate(1deg);
+    }
+    .chi-siamo-img-wrap img {
+      width: 100%; display: block;
+      aspect-ratio: 4/3; object-fit: cover;
+    }
+
     .events-intro {
       background: transparent;
       padding: 100px 5% 80px;
@@ -1005,6 +1048,24 @@
   </section>
 
   <!-- EVENTS INTRO -->
+  <!-- CHI SIAMO -->
+  <section class="chi-siamo" id="chi-siamo">
+    <div class="chi-siamo-grid">
+      <div class="chi-siamo-text">
+        <span class="section-tag" style="color:var(--fire)">Chi siamo</span>
+        <h2 class="chi-siamo-hl">Il tango che<br>parla al <em>cuore</em></h2>
+        <div class="chi-siamo-body">
+          <p>Nel cuore di Cosenza, città affascinante e vivace, nasce l'idea dei PeperTango, un gruppo affiatato di tre amici appassionati di tango argentino. Spesso organizziamo eventi di tango a tema in cui invitiamo altri amanti della danza ad unirsi a noi, creando così una rete di amicizie sempre in crescita.</p>
+          <p>Ciascuno di noi porta con sé un'energia unica e una profonda connessione con questa danza sensuale e coinvolgente. Nel corso del tempo, il tango argentino non solo ha creato una forte connessione tra noi, ma ha anche arricchito le nostre vite, regalandoci momenti di bellezza, passione e amicizia che non avremmo mai immaginato.</p>
+          <p>La nostra storia è un tributo alla bellezza di questa danza e all'importanza delle passioni condivise.</p>
+        </div>
+      </div>
+      <div class="chi-siamo-img-wrap reveal">
+        <img src="https://static.wixstatic.com/media/1b1050_3fc82fffd1c14595ad774a2e578933c0~mv2.jpg/v1/fill/w_568,h_431,al_c,lg_1,q_80,enc_avif,quality_auto/1b1050_3fc82fffd1c14595ad774a2e578933c0~mv2.jpg" alt="PeperTango — Chi siamo">
+      </div>
+    </div>
+  </section>
+
   <section class="events-intro" id="events">
     <div class="events-intro-head">
       <h2 class="section-hl reveal">

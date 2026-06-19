@@ -931,6 +931,10 @@
       background: #f0eaff;
       border-color: #7b2ff7;
       box-shadow: 0 0 40px rgba(123,47,247,.15), 6px 6px 0 0 #7b2ff7;
+      max-width: 650px;
+      margin: 40px auto 60px;
+      padding: 40px;
+      border-radius: 16px;
     }
     #bru-form .bru-prog {
       background: #e4d8ff;
@@ -1369,10 +1373,11 @@
       /* FORM */
       .form-section { margin-top: 24px; border-radius: 12px; }
       .form-label { padding: 12px 16px; }
-      #bru-form { margin: 0; border-radius: 12px; }
+      #bru-form { margin: 30px 5% 50px; padding: 28px 20px !important; border-radius: 12px; max-width: calc(100% - 20px); }
       #bru-form .bru-prog { padding: 14px 16px !important; }
-      #bru-form #b_body { padding: 20px 16px !important; }
+      #bru-form #b_body { padding: 16px 12px !important; }
       #bru-form .fs-title { font-size: 1.2rem; }
+      #bru-form input, #bru-form select, #bru-form textarea { font-size: 16px !important; }
       .room-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
       .pkg-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
 
@@ -1424,7 +1429,11 @@
       .gallery-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
 
       /* Forms */
+      #bru-form { margin: 20px 3% 40px; padding: 24px 16px !important; }
+      #bru-form #b_body { padding: 12px 8px !important; }
       #bru-form .bru-prog { overflow-x: auto; }
+      #bru-form .fs-title { font-size: 1.1rem; }
+      #bru-form input, #bru-form select, #bru-form textarea { font-size: 16px !important; }
 
       /* Spacing improvements */
       .section-tag { font-size: 0.85rem; margin-bottom: 0.5rem; }

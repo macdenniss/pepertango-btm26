@@ -1430,6 +1430,30 @@
       .section-tag { font-size: 0.85rem; margin-bottom: 0.5rem; }
       .section-hl { line-height: 1.2; }
     }
+    /* ============================================================
+       COMPACT FORM LAYOUT
+    ============================================================ */
+    .form-step-ed { display: block !important; margin-bottom: 0 !important; }
+    #b_fs1, #b_fs2 { display: block !important; }
+    .form-section { margin-top: 20px !important; margin-bottom: 30px !important; }
+    .form-section > div > div { margin-bottom: 12px !important; }
+    .form-section > div > div > div { margin-bottom: 12px !important; }
+    .form-section [style*="margin-bottom:40px"] { margin-bottom: 12px !important; }
+    .form-section [style*="margin-bottom:48px"] { margin-bottom: 12px !important; }
+    .form-section [style*="gap:24px"] { gap: 12px !important; }
+    .form-section [style*="padding:28px"] { padding: 16px !important; }
+    .form-section [style*="padding:20px"] { padding: 12px !important; }
+    .form-section [style*="grid-template-columns:repeat(2,1fr)"] { grid-template-columns: repeat(3, 1fr) !important; }
+    .form-section [style*="minmax(150px"] { grid-template-columns: repeat(4, 1fr) !important; }
+    .form-section [style*="minmax(140px"] { grid-template-columns: repeat(4, 1fr) !important; }
+    .form-section h4 { font-size: 1rem !important; }
+    .form-section p { font-size: 0.8rem !important; }
+    .form-section label { font-size: 0.85rem !important; }
+    .form-section input, .form-section select, .form-section textarea { font-size: 0.9rem !important; padding: 8px !important; }
+    .form-nav-ed { margin-top: 16px !important; }
+    .form-nav-ed button { padding: 12px 32px !important; font-size: 14px !important; }
+    .riepilogo-ed, .anticipo-box { margin-bottom: 16px !important; padding: 16px !important; }
+    .bru-prog { display: none !important; }
   </style>
 </head>
 <body>
@@ -1731,17 +1755,8 @@
         <p style="color:rgba(80,0,180,.6);font-size:0.9rem">Compila il modulo per iscriverti</p>
       </div>
 
-      <!-- Progress simple -->
-      <div class="bru-prog" style="padding:24px 0;margin-bottom:48px;display:flex;justify-content:center;gap:40px">
-        <div class="bru-pd active" id="b_ss1" style="text-align:center">
-          <div class="bru-dot" style="width:48px;height:48px;font-size:20px;margin:0 auto 12px">1</div>
-          <div class="bru-dot-lbl" style="font-size:13px">I tuoi dati</div>
-        </div>
-        <div class="bru-pd" id="b_ss2" style="text-align:center">
-          <div class="bru-dot" style="width:48px;height:48px;font-size:20px;margin:0 auto 12px">2</div>
-          <div class="bru-dot-lbl" style="font-size:13px">Camera e pacchetto</div>
-        </div>
-      </div>
+      <!-- Progress hidden for compact view -->
+      <div class="bru-prog" style="display:none"></div>
 
       <div id="b_body" style="padding:0">
 

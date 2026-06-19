@@ -98,7 +98,7 @@
         linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.55)),
         url('1b1050_3fc82fffd1c14595ad774a2e578933c0~mv2.avif');
       background-size: cover;
-      background-position: center center;
+      background-position: center 50%;
       background-repeat: no-repeat;
       display: flex; flex-direction: column; justify-content: center;
       padding-left: 6%; padding-right: 5%;
@@ -1068,8 +1068,11 @@
        MTP27 — TEMA ESTATE (override scoped a #page-mtp27)
     ============================================================ */
     #page-mtp27 .event-section.dark {
-      background-color: #e8f9fb;
-      background-image: none;
+      background-color: #e8f9fb !important;
+      background-image: url('/cristo_maratea.jpg') !important;
+      background-attachment: fixed !important;
+      background-size: cover !important;
+      background-position: center bottom !important;
       border-top: 5px solid #00b4d8;
     }
     #page-mtp27 .ev-head-hl { color: #004f70; }
@@ -1078,6 +1081,7 @@
     #page-mtp27 .section-tag { color: #ff6b35 !important; }
 
     /* foto a colori nella pagina MTP */
+    #page-mtp27 .ev-photo { display: none !important; }
     #page-mtp27 .ev-photo img { filter: grayscale(0%); }
 
     /* pacchetti: sfondo colorato per ogni card */

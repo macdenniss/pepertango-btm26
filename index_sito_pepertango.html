@@ -2372,6 +2372,9 @@
             self.data.ruolo          = ruoSel;
           }
           if (s === 2) {
+            var ruolo = g('ruolo');
+            if (!ruolo || !ruolo.value) { alert('Seleziona il ruolo di ballo.'); return false; }
+            self.data.ruolo = ruolo.value;
             var st = document.querySelector('[name="b_stanza"]:checked');
             if (!st) { alert('Seleziona la tipologia di camera.'); return false; }
             self.data.tipologia_stanza = st.value;

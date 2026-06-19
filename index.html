@@ -1815,23 +1815,24 @@
               <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Facebook</b><div>Il link del tuo profilo/<i>Your link profile</i></div> *</label>
               <input type="url" class="fi-ed" id="b_facebook" placeholder="https://facebook.com/tuoprofilo" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
             </div>
-            <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Città in cui vivi </b><b>/</b><b> </b>C<i>ity where you live</i> *</label>
+            <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px;grid-column:1/-1">
+              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Città in cui vivi </b><b>/</b><b> </b><i>City where you live</i> *</label>
               <input type="text" class="fi-ed" id="b_citta" placeholder="Roma" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
             </div>
           </div>
         </div>
 
-        <!-- ====== STEP 2: Stanza + Pacchetto ====== -->
+        <!-- ====== STEP 2: Alloggio + Pacchetto ====== -->
         <div class="form-step-ed" id="b_fs2">
-          <!-- Ruolo di Ballo Card -->
+          <!-- SEZIONE 1: Chi balli? -->
           <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
             <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
               <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
                 <i class="fa-solid fa-person"></i>
               </div>
               <div>
-                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Ruolo di ballo — Dance role</h4>
+                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Chi balli? — Dance role</h4>
+                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Il tuo ruolo di ballo</p>
               </div>
             </div>
           </div>
@@ -1846,6 +1847,7 @@
             </select>
           </div>
 
+          <!-- SEZIONE 2: Dove dormi? (Alloggio) -->
           <!-- Camera Card -->
           <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
             <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
@@ -1853,8 +1855,8 @@
                 <i class="fa-solid fa-door-open"></i>
               </div>
               <div>
-                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Che camera preferisci?</h4>
-                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Seleziona la tipologia</p>
+                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Dove dormi? — Accommodation</h4>
+                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Scegli camera e compagni</p>
               </div>
             </div>
           </div>
@@ -1905,6 +1907,7 @@
             <div id="b_compagniFields"></div>
           </div>
 
+          <!-- SEZIONE 3: Quanto paghi? (Pacchetto) -->
           <!-- Pacchetto Card -->
           <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
             <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
@@ -1949,9 +1952,10 @@
             </label>
           </div>
 
+          <!-- SEZIONE 4: Note speciali -->
           <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:24px;margin-bottom:40px">
-            <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem">Note (Facoltativo)</label>
-            <textarea class="fi-ed" id="b_note" placeholder="Allergie, esigenze particolari..." style="border-radius:8px;border:1px solid rgba(123,47,247,.3);min-height:100px"></textarea>
+            <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem">Note speciali (Facoltativo) / Special notes</label>
+            <textarea class="fi-ed" id="b_note" placeholder="Allergie, esigenze particolari, etc..." style="border-radius:8px;border:1px solid rgba(123,47,247,.3);min-height:100px"></textarea>
           </div>
 
           <div class="riepilogo-ed" id="b_riepilogo" style="margin-bottom:40px"></div>

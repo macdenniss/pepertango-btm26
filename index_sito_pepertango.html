@@ -993,11 +993,14 @@
     #bru-form .stanza-opt.selected,
     #bru-form .room-card.selected {
       background: #ede0ff;
-      border-color: #7b2ff7;
-      box-shadow: 3px 3px 0 0 #7b2ff7;
+      border-color: #5000b4;
+      border-width: 3px;
+      box-shadow: 4px 4px 0 0 #5000b4;
     }
     #bru-form .stanza-opt.selected .room-card-name,
-    #bru-form .room-card.selected .room-card-name { color: #5000b4; }
+    #bru-form .room-card.selected .room-card-name { color: #5000b4; font-weight: 700; }
+    #bru-form .stanza-opt.selected .room-card-icon,
+    #bru-form .room-card.selected .room-card-icon { color: #7b2ff7; }
     #bru-form .stanza-opt:hover { border-color: #7b2ff7; }
 
     /* pacchetti */
@@ -1014,6 +1017,8 @@
       box-shadow: 3px 3px 0 0 #7b2ff7;
     }
     #bru-form .pkg-card:hover { border-color: #7b2ff7; }
+    #bru-form .pkg-card.sel { background: #ede0ff; border-color: #7b2ff7; border-width: 3px; box-shadow: 4px 4px 0 0 #7b2ff7; }
+    #bru-form .pkg-card.sel .pkg-card-letter { color: #5000b4; font-weight: 700; }
 
     /* riepilogo + anticipo */
     #bru-form .riepilogo-ed { background: #fff; border-color: rgba(123,47,247,.2); color: rgba(45,0,96,.7); }

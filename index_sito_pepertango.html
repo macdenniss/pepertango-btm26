@@ -1854,8 +1854,21 @@
             </label>
           </div>
 
-          <div id="b_compagniContainer" style="display:none;margin-bottom:48px;background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:12px;padding:24px">
-            <p style="font-weight:600;color:#2d0060;margin-bottom:8px">Con chi desideri condividere la camera? — Whom would you like to share the room?</p>
+          <!-- Compagni Card -->
+          <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+              <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
+                <i class="fa-solid fa-people-group"></i>
+              </div>
+              <div>
+                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Con chi condividi?</h4>
+                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Opzionale / Optional</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="b_compagniContainer" style="margin-bottom:48px;background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:24px">
+            <p style="font-weight:600;color:#2d0060;margin-bottom:16px">Con chi desideri condividere la camera? — Whom would you like to share the room?</p>
             <p style="font-size:.9rem;color:rgba(80,0,180,.6);margin-bottom:16px">Facoltativo — penseremo noi agli abbinamenti / Optional — we'll arrange matches</p>
             <div id="b_compagniFields"></div>
           </div>
@@ -2716,7 +2729,6 @@
       var cont = document.getElementById('b_compagniContainer');
       var flds = document.getElementById('b_compagniFields');
       if (!cont || !flds) return;
-      if (n === 0) { cont.style.display = 'none'; flds.innerHTML = ''; return; }
       cont.style.display = 'block';
       flds.innerHTML = '';
       for (var i = 1; i <= n; i++) {

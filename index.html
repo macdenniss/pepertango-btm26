@@ -2386,7 +2386,6 @@
             var nome    = g('nome').value.trim();
             var cognome = g('cognome').value.trim();
             var email   = g('email').value.trim();
-            var ruoSel   = g('ruolo') ? g('ruolo').value : '';
             var nascita  = g('nascita') ? g('nascita').value.trim() : '';
             var tel      = g('tel') ? g('tel').value.trim() : '';
             var facebook = g('facebook') ? g('facebook').value.trim() : '';
@@ -2398,7 +2397,6 @@
             if (!tel)                           { alert('Inserisci il numero di telefono.'); return false; }
             if (!facebook)                      { alert('Inserisci il link del profilo Facebook.'); return false; }
             if (!citta)                         { alert('Inserisci la città.'); return false; }
-            if (!ruoSel)                        { alert('Seleziona il ruolo di ballo.'); return false; }
             self.data.nome           = nome;
             self.data.cognome        = cognome;
             self.data.nome_completo  = nome + ' ' + cognome;
@@ -2407,7 +2405,6 @@
             self.data.tel            = tel;
             self.data.facebook       = facebook;
             self.data.citta          = citta;
-            self.data.ruolo          = ruoSel;
           }
           if (s === 2) {
             var ruolo = g('ruolo');

@@ -381,10 +381,18 @@
     }
     .empty-state p { font-size: 1rem; font-weight: 300; }
 
+    /* ============================================================
+       RESPONSIVE BREAKPOINTS
+    ============================================================ */
+
+    /* TABLET + MOBILE (768px and below) */
     @media (max-width: 768px) {
+      /* Stats */
       .stats-grid { grid-template-columns: 1fr 1fr; }
-      .mini-stats  { grid-template-columns: 1fr; }
-      .cont-grid   { grid-template-columns: 1fr; }
+      .mini-stats { grid-template-columns: 1fr; }
+      .cont-grid { grid-template-columns: 1fr; }
+
+      /* Navigation */
       .tab-btn { padding: 12px 10px; font-size: 9px; }
     }
   </style>
@@ -592,7 +600,7 @@
   /* ============================================================
      CONFIG
   ============================================================ */
-  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5lnoBRqshl1YVly5MyjSC3nJUp5sRlo8Wy7QGv8vy34J9XmdPZk2vIDSd_cX2ka17/exec';
+  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6pqs5rvySS2_il_VAJLU07ucnIFdZ86RT6OWlhxVzDvb04REbJTt3ZXaziRvmDmTR/exec';
   var EVENTO  = 'MTP27';
   var PWD     = 'pepertango2027';
   var allData = [];

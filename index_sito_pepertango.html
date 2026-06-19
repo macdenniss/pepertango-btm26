@@ -1,0 +1,2589 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PeperTango — Maratona Tango Piccante &amp; Brutia Tango Fest 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* ============================================================
+       TOKENS — HAND-DRAWN DESIGN SYSTEM
+    ============================================================ */
+    :root {
+      --bg:      #ffffff;
+      --fg:      #2d2d2d;
+      --muted:   #e5e0d8;
+      --accent:  #ff4d4d;
+      --blue:    #2a6b2a;
+      --yellow:  #fff9c4;
+      --border:  #2d2d2d;
+      --shadow:     4px 4px 0px 0px #2d2d2d;
+      --shadow-sm:  2px 2px 0px 0px #2d2d2d;
+      --shadow-lg:  8px 8px 0px 0px #2d2d2d;
+      --r-wobbly:    255px 15px 225px 15px / 15px 225px 15px 255px;
+      --r-wobbly-md: 15px 225px 15px 255px / 225px 15px 255px 15px;
+      --r-wobbly-sm: 8px 60px 8px 60px / 60px 8px 60px 8px;
+      --ease:    cubic-bezier(0.16, 1, 0.3, 1);
+      /* legacy aliases kept for JS compat */
+      --pepper:  #ff4d4d;
+      --fire:    #2a6b2a;
+      --sun:     #fff9c4;
+      --ink:     #2d2d2d;
+      --base:    #fdfbf7;
+      --surface: #fff;
+      --warm:    #fffdf5;
+    }
+
+    /* ============================================================
+       RESET + BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 112%; }
+    body {
+      font-family: 'Patrick Hand', cursive;
+      background-color: var(--bg);
+      color: var(--fg);
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* ============================================================
+       NAV
+    ============================================================ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 88px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      background: #111111;
+      border-bottom: 3px solid var(--fg);
+      box-shadow: 0 4px 0 0 var(--fg);
+    }
+    .nav-brand {
+      display: inline-block;
+      transform: rotate(-1deg);
+    }
+    .nav-brand img {
+      height: 62px;
+      width: auto;
+      display: block;
+    }
+    .nav-links {
+      display: flex; gap: 0; list-style: none; height: 100%;
+    }
+    .nav-links li { display: flex; align-items: center; }
+    .nav-links a {
+      font-family: 'Kalam', cursive;
+      font-size: 17px; font-weight: 700; color: #ffffff;
+      padding: 0 18px; height: 88px;
+      display: flex; align-items: center;
+      transition: background 0.15s, color 0.15s;
+      position: relative;
+    }
+    .nav-links a:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      min-height: 75vh; padding-top: 108px;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.55)),
+        url('1b1050_3fc82fffd1c14595ad774a2e578933c0~mv2.avif');
+      background-size: cover;
+      background-position: center 55%;
+      background-repeat: no-repeat;
+      display: flex; flex-direction: column; justify-content: center;
+      padding-left: 6%; padding-right: 5%;
+      position: relative; overflow: hidden;
+    }
+    .hero::before { display: none; }
+    .hero-eyebrow {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 15px; color: var(--accent);
+      margin-bottom: 1.5rem;
+      transform: rotate(-0.5deg); display: inline-block;
+    }
+    .hero-hl {
+      font-family: 'Kalam', cursive;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 700; line-height: 1.05;
+      color: var(--fg); position: relative; z-index: 1;
+      max-width: 55%;
+    }
+    .hero-hl em {
+      font-family: 'Kalam', cursive;
+      font-style: italic; color: var(--accent);
+      display: inline-block; transform: rotate(-2deg);
+    }
+    .hero-sub {
+      margin-top: 2rem;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.1rem; line-height: 1.7;
+      color: rgba(45,45,45,.65); max-width: 460px;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap;
+    }
+    .hero-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px;
+      border-radius: var(--r-wobbly-sm);
+      font-family: 'Patrick Hand', cursive; font-size: 15px;
+      border: 2px solid var(--fg); box-shadow: var(--shadow-sm);
+      transition: all 0.1s; cursor: pointer;
+    }
+    .hero-btn.primary { background: var(--accent); color: #fff; border-color: var(--fg); }
+    .hero-btn.primary:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
+    .hero-btn.outline { background: #fff; color: var(--fg); }
+    .hero-btn.outline:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
+    .hero-scroll {
+      position: absolute; bottom: 3rem; left: 5%;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 13px; color: rgba(45,45,45,.35);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero-scroll::after {
+      content: ''; display: block; width: 40px;
+      border-bottom: 2px dashed rgba(45,45,45,.2);
+    }
+    /* Floating pills */
+    .hero-pills {
+      position: absolute; right: 5%; top: 20%; transform: translateY(0);
+      display: flex; flex-direction: column; gap: 18px;
+    }
+    .h-pill {
+      background: #fff;
+      border: 2px solid var(--fg);
+      border-radius: var(--r-wobbly-md); padding: 20px 24px; min-width: 220px;
+      box-shadow: var(--shadow); transition: all 0.1s; cursor: pointer;
+    }
+    .h-pill:nth-child(1) { transform: rotate(-1.5deg); }
+    .h-pill:nth-child(1):hover { transform: rotate(-1.5deg) translate(-2px,-2px); box-shadow: var(--shadow-lg); }
+    .h-pill:nth-child(2) { transform: rotate(1deg); }
+    .h-pill:nth-child(2):hover { transform: rotate(1deg) translate(-2px,-2px); box-shadow: var(--shadow-lg); }
+    .h-pill-num { font-family: 'Patrick Hand', cursive; font-size: 12px; color: var(--accent); margin-bottom: 8px; }
+    .h-pill-name { font-family: 'Kalam', cursive; font-size: 1.1rem; font-weight: 700; color: var(--fg); line-height: 1.1; margin-bottom: 6px; }
+    .h-pill-date { font-family: 'Patrick Hand', cursive; font-size: 12px; color: rgba(45,45,45,.45); }
+    .h-pill-arrow { font-family: 'Patrick Hand', cursive; font-size: 13px; color: var(--accent); margin-top: 10px; }
+
+    /* ============================================================
+       SECTION SHARED
+    ============================================================ */
+    .section-tag {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 14px; color: var(--accent);
+      margin-bottom: 1rem; display: block;
+    }
+    .section-hl {
+      font-family: 'Kalam', cursive;
+      font-size: clamp(2rem, 6vw, 5rem);
+      font-weight: 700; line-height: 1.05; color: var(--fg);
+    }
+    .section-hl em {
+      font-family: 'Kalam', cursive;
+      font-style: italic; color: var(--accent);
+      display: inline-block; transform: rotate(-1.5deg);
+    }
+
+    /* ============================================================
+       EVENTS INTRO
+    ============================================================ */
+    /* ============================================================
+       CHI SIAMO
+    ============================================================ */
+    .chi-siamo {
+      padding: 100px 5%;
+      background: var(--yellow);
+      border-top: 3px solid var(--fg);
+      border-bottom: 3px solid var(--fg);
+    }
+    .chi-siamo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .chi-siamo-text .section-tag { display: block; margin-bottom: 1rem; }
+    .chi-siamo-hl {
+      font-family: 'Kalam', cursive; font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700; color: var(--fg);
+      line-height: 1.1; margin-bottom: 1.5rem;
+      transform: rotate(-0.5deg); display: inline-block;
+    }
+    .chi-siamo-hl em { color: var(--accent); font-style: italic; }
+    .chi-siamo-body p {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1rem; line-height: 1.8;
+      color: rgba(45,45,45,.75); margin-bottom: 1rem;
+    }
+    .chi-siamo-img-wrap {
+      border: 3px solid var(--fg);
+      border-radius: var(--r-wobbly-md);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      transform: rotate(1deg);
+    }
+    .chi-siamo-img-wrap img {
+      width: 100%; display: block;
+      aspect-ratio: 4/3; object-fit: cover;
+    }
+
+    .events-intro {
+      background: transparent;
+      padding: 60px 5% 80px;
+    }
+    .events-intro-head {
+      display: grid; grid-template-columns: 6fr 6fr;
+      gap: 5%; align-items: flex-end; margin-bottom: 48px;
+    }
+    .events-intro-sub {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1rem; line-height: 1.75; color: rgba(45,45,45,.6);
+    }
+    .events-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    }
+    .ev-card {
+      border-radius: var(--r-wobbly-md); padding: 40px 36px;
+      border: 3px solid var(--fg); background: #fff;
+      box-shadow: var(--shadow);
+      cursor: pointer; position: relative; overflow: hidden;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .ev-card::before { display: none; }
+    .ev-card:hover { transform: translate(-3px,-3px); box-shadow: var(--shadow-lg); }
+    .ev-card > * { position: relative; z-index: 1; }
+    .ev-card-num {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 13px; color: var(--accent); margin-bottom: 1.2rem;
+    }
+    .ev-card:hover .ev-card-num { color: var(--accent); }
+    .ev-card-title {
+      font-family: 'Kalam', cursive;
+      font-size: clamp(1.5rem, 2.5vw, 2.2rem); font-weight: 700;
+      line-height: 1.05; margin-bottom: 1rem; color: var(--fg);
+      transition: color 0.2s;
+    }
+    .ev-card:hover .ev-card-title { color: var(--fg); }
+    .ev-card-desc {
+      font-family: 'Patrick Hand', cursive;
+      font-size: .95rem; line-height: 1.7;
+      color: rgba(45,45,45,.6); max-width: 360px;
+    }
+    .ev-card:hover .ev-card-desc { color: rgba(45,45,45,.6); }
+    .ev-card-cta {
+      display: inline-block; margin-top: 1.8rem;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 14px; color: var(--accent);
+      border-bottom: 2px dashed var(--accent); padding-bottom: 3px;
+    }
+    .ev-card:hover .ev-card-cta { color: var(--accent); }
+
+    /* ============================================================
+       EVENT SECTION (MTP / BRUTIA)
+    ============================================================ */
+    .event-section { padding: 100px 5% 80px; }
+    .event-section.dark {
+      background-color: var(--yellow);
+      background-image: radial-gradient(var(--muted) 1px, transparent 1px);
+      background-size: 24px 24px; color: var(--fg);
+    }
+    .event-section.light { background: transparent; }
+    .event-section.warm-bg {
+      background-color: #fff;
+      background-image: radial-gradient(var(--muted) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    .ev-head {
+      display: grid; grid-template-columns: 6fr 6fr;
+      gap: 5%; margin-bottom: 70px; align-items: flex-end;
+    }
+    .ev-head-hl {
+      font-family: 'Kalam', cursive;
+      font-size: clamp(2.5rem, 7vw, 6rem);
+      font-weight: 700; line-height: 1;
+    }
+    .ev-head-hl em {
+      font-family: 'Kalam', cursive;
+      font-style: italic; color: var(--accent);
+      display: inline-block; transform: rotate(-2deg);
+    }
+    .event-section.dark .ev-head-hl { color: var(--fg); }
+    .ev-head-body { font-family: 'Patrick Hand', cursive; font-size: 1rem; line-height: 1.75; color: rgba(45,45,45,.65); }
+    .event-section.dark .ev-head-body { color: rgba(45,45,45,.65); }
+    .ev-head-body .section-tag { margin-bottom: 0.8rem; }
+    .ev-photo {
+      border-radius: var(--r-wobbly-md); overflow: hidden;
+      aspect-ratio: 21/8; margin-bottom: 60px;
+      border: 3px solid var(--fg); box-shadow: var(--shadow);
+    }
+    .ev-photo img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(100%);
+      transition: filter 1.2s var(--ease), transform 1.2s var(--ease);
+    }
+    .ev-photo:hover img { filter: grayscale(0%); transform: scale(1.04); }
+
+    /* ============================================================
+       PACKAGES GRID
+    ============================================================ */
+    .pkg-label {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 14px; color: var(--accent); margin-bottom: 20px; display: block;
+    }
+    .pkg-grid { display: grid; gap: 16px; margin-bottom: 60px; }
+    .pkg-grid-4 { grid-template-columns: repeat(4,1fr); }
+    .pkg-grid-3 { grid-template-columns: repeat(3,1fr); }
+
+    .pkg-item {
+      border-radius: var(--r-wobbly-md); padding: 28px 24px;
+      border: 2px solid var(--fg); background: #fff;
+      box-shadow: var(--shadow); cursor: pointer; position: relative;
+      transition: all 0.1s;
+    }
+    .event-section.dark .pkg-item { background: #fff; border-color: var(--fg); }
+    .pkg-item:hover, .pkg-item.selected {
+      transform: translate(-2px,-2px); box-shadow: var(--shadow-lg);
+      background: var(--accent); border-color: var(--fg);
+    }
+    .pkg-big-num {
+      font-family: 'Kalam', cursive;
+      font-size: 4.5rem; font-weight: 700; line-height: 1;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .pkg-item:hover .pkg-big-num, .pkg-item.selected .pkg-big-num { color: rgba(255,255,255,.6); }
+    .pkg-notti-lbl {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 12px; color: rgba(45,45,45,.4);
+      display: block; margin-bottom: 1rem; transition: color 0.2s;
+    }
+    .pkg-item:hover .pkg-notti-lbl, .pkg-item.selected .pkg-notti-lbl { color: rgba(255,255,255,.7); }
+    .pkg-name {
+      font-family: 'Kalam', cursive;
+      font-size: 1.15rem; font-weight: 700; margin-bottom: 0.3rem; transition: color 0.2s;
+    }
+    .pkg-item:hover .pkg-name, .pkg-item.selected .pkg-name { color: #fff; }
+    .pkg-date {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 12px; color: rgba(45,45,45,.4); margin-bottom: 1rem; transition: color 0.2s;
+    }
+    .pkg-item:hover .pkg-date, .pkg-item.selected .pkg-date { color: rgba(255,255,255,.7); }
+    .pkg-price {
+      font-family: 'Kalam', cursive; font-size: 2rem; font-weight: 700; transition: color 0.2s;
+    }
+    .pkg-item:hover .pkg-price, .pkg-item.selected .pkg-price { color: #fff; }
+    .pkg-anticipo {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 12px; color: rgba(45,45,45,.4); margin-top: 0.2rem; transition: color 0.2s;
+    }
+    .pkg-item:hover .pkg-anticipo, .pkg-item.selected .pkg-anticipo { color: rgba(255,255,255,.7); }
+    .pkg-btn {
+      margin-top: 1.5rem; background: var(--fg); color: #fff;
+      padding: 9px 18px; border-radius: var(--r-wobbly-sm);
+      font-family: 'Patrick Hand', cursive; font-size: 13px;
+      border: 2px solid var(--fg); box-shadow: 2px 2px 0 0 rgba(0,0,0,.4);
+      cursor: pointer; display: inline-block; transition: all 0.1s;
+    }
+    .pkg-item:hover .pkg-btn, .pkg-item.selected .pkg-btn { background: #fff; color: var(--accent); border-color: #fff; }
+
+    /* ============================================================
+       FORM WRAPPER
+    ============================================================ */
+    .form-section {
+      margin-top: 40px; background: #fff;
+      border-radius: var(--r-wobbly-md);
+      border: 3px solid var(--fg);
+      box-shadow: var(--shadow-lg); overflow: visible;
+    }
+    .form-label {
+      padding: 16px 28px;
+      font-family: 'Patrick Hand', cursive; font-size: 13px;
+      color: rgba(45,45,45,.5); background: var(--muted);
+      border-bottom: 2px solid var(--fg);
+    }
+    .form-layout { display: grid; grid-template-columns: 220px 1fr; }
+    /* SIDEBAR */
+    .form-sidebar-ed {
+      border-right: 2px solid rgba(45,45,45,.15);
+      padding: 28px 20px; background: #fafaf8;
+    }
+    .fsn { display: flex; flex-direction: column; gap: 6px; }
+    .fsn-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 8px; cursor: default; transition: background 0.2s;
+    }
+    .fsn-item.active { background: rgba(255,77,77,.08); }
+    .fsn-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Kalam', cursive; font-size: 12px; font-weight: 700;
+      background: var(--muted); color: rgba(45,45,45,.5);
+      flex-shrink: 0; border: 2px solid var(--fg); transition: all 0.2s;
+    }
+    .fsn-item.active .fsn-num { background: var(--accent); color: #fff; }
+    .fsn-item.done .fsn-num { background: var(--fg); color: #fff; }
+    .fsn-lbl {
+      font-family: 'Patrick Hand', cursive; font-size: 13px; color: rgba(45,45,45,.4); transition: color 0.2s;
+    }
+    .fsn-item.active .fsn-lbl { color: var(--fg); }
+    .fsn-item.done .fsn-lbl { color: rgba(45,45,45,.6); }
+    .form-prog-wrap { height: 4px; background: var(--muted); position: relative; }
+    .form-prog-bar { height: 100%; background: var(--accent); transition: width 0.5s var(--ease); }
+
+    /* ============================================================
+       BRUTIA HORIZONTAL PROGRESS
+    ============================================================ */
+    .bru-prog {
+      display: flex; align-items: flex-start; padding: 20px 28px;
+      border-bottom: 2px solid rgba(45,45,45,.1); background: var(--muted);
+    }
+    .bru-pd { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 0 0 auto; }
+    .bru-dot {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 2px solid rgba(45,45,45,.3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Kalam', cursive; font-size: 13px; font-weight: 700; color: rgba(45,45,45,.35);
+      transition: all 0.3s;
+    }
+    .bru-dot-lbl {
+      font-family: 'Patrick Hand', cursive; font-size: 11px;
+      color: rgba(45,45,45,.35); transition: color 0.3s; white-space: nowrap;
+    }
+    .bru-pd.active .bru-dot { background: var(--accent); border-color: var(--fg); color: #fff; box-shadow: 2px 2px 0 0 var(--fg); }
+    .bru-pd.active .bru-dot-lbl { color: var(--fg); }
+    .bru-pd.done .bru-dot { background: var(--fg); border-color: var(--fg); color: #fff; }
+    .bru-pd.done .bru-dot-lbl { color: rgba(45,45,45,.55); }
+    .bru-line { flex: 1; height: 2px; border-bottom: 2px dashed rgba(45,45,45,.2); margin: 15px 8px 20px; }
+    .bru-pd.done + .bru-line { border-color: var(--fg); border-style: solid; }
+
+    /* ============================================================
+       FORM STEPS (shared)
+    ============================================================ */
+    #m_body, #b_body { padding: 32px 28px; }
+    .form-step-ed { display: none; }
+    .form-step-ed.active { display: block; }
+    .fs-title {
+      font-family: 'Kalam', cursive; font-size: 1.8rem; font-weight: 700;
+      line-height: 1.05; margin-bottom: 0.4rem; color: var(--fg);
+    }
+    .fs-sub {
+      font-family: 'Patrick Hand', cursive; font-size: .95rem;
+      color: rgba(45,45,45,.55); margin-bottom: 1.8rem; line-height: 1.5;
+    }
+    .f-row-ed { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .fg-ed { margin-bottom: 16px; }
+    .fg-ed label {
+      display: block; font-family: 'Patrick Hand', cursive;
+      font-size: 13px; color: rgba(45,45,45,.55); margin-bottom: 5px;
+    }
+    .fi-ed {
+      width: 100%; height: 44px;
+      border: 2px solid rgba(45,45,45,.2); border-radius: var(--r-wobbly-sm);
+      background: #fff; padding: 0 12px;
+      font-family: 'Patrick Hand', cursive; font-size: 15px; color: var(--fg);
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .fi-ed:focus { border-color: var(--accent); box-shadow: 2px 2px 0 0 var(--accent); }
+    .fi-ed::placeholder { color: rgba(45,45,45,.25); }
+    textarea.fi-ed { height: 90px; resize: vertical; padding: 10px 12px; border-radius: 12px; }
+    .mini-label {
+      display: block; font-family: 'Patrick Hand', cursive;
+      font-size: 13px; color: rgba(45,45,45,.5); margin-bottom: 10px; margin-top: 4px;
+    }
+
+    /* Radio options */
+    .pkg-radio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.8rem; }
+    .ruolo-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 1.5rem; }
+    .r-opt-ed {
+      display: block; padding: 12px 14px; border-radius: var(--r-wobbly-sm);
+      border: 2px solid rgba(45,45,45,.2); cursor: pointer; background: #fff;
+      box-shadow: 2px 2px 0 0 rgba(45,45,45,.15); transition: all 0.1s;
+    }
+    .r-opt-ed:hover { border-color: var(--accent); transform: translate(-1px,-1px); box-shadow: 3px 3px 0 0 var(--accent); }
+    .r-opt-ed.sel { border-color: var(--accent); background: rgba(255,77,77,.06); box-shadow: var(--shadow-sm); }
+    .r-opt-ed input { display: none; }
+    .r-name { font-family: 'Patrick Hand', cursive; font-size: 14px; color: var(--fg); }
+    .r-info { font-family: 'Patrick Hand', cursive; font-size: 12px; color: rgba(45,45,45,.5); margin-top: 2px; }
+    .r-opt-ed.sel .r-info { color: var(--accent); }
+
+    /* Stanza options */
+    .stanza-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 1.8rem; }
+    .stanza-opt {
+      display: block; padding: 16px 10px; border-radius: var(--r-wobbly-sm); text-align: center;
+      border: 2px solid rgba(45,45,45,.2); cursor: pointer; background: #fff;
+      box-shadow: 2px 2px 0 0 rgba(45,45,45,.15); transition: all 0.1s;
+    }
+    .stanza-opt:hover { border-color: var(--accent); transform: translate(-1px,-1px); box-shadow: 3px 3px 0 0 var(--accent); }
+    .stanza-opt.sel { border-color: var(--accent); background: rgba(255,77,77,.06); }
+    .stanza-opt input { display: none; }
+    .s-ico { font-size: 1.4rem; color: var(--muted); margin-bottom: 8px; transition: color 0.2s; }
+    .stanza-opt.sel .s-ico { color: var(--accent); }
+    .s-name { font-family: 'Patrick Hand', cursive; font-size: 13px; color: var(--fg); }
+    .s-sub { font-family: 'Patrick Hand', cursive; font-size: 11px; color: rgba(45,45,45,.4); margin-top: 3px; }
+    .compagni-dyn { margin-top: 1.5rem; }
+
+    /* Form nav */
+    .form-nav-ed {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 2.2rem; padding-top: 1.2rem;
+      border-top: 2px dashed rgba(45,45,45,.15);
+    }
+    .btn-next-ed {
+      background: var(--accent); color: #fff;
+      border: 2px solid var(--fg); border-radius: var(--r-wobbly-sm);
+      padding: 11px 26px; font-family: 'Patrick Hand', cursive; font-size: 14px;
+      cursor: pointer; box-shadow: var(--shadow-sm); transition: all 0.1s;
+    }
+    .btn-next-ed:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
+    .btn-next-ed:active { transform: translate(2px,2px); box-shadow: none; }
+    .btn-prev-ed {
+      background: none; border: none; cursor: pointer;
+      font-family: 'Patrick Hand', cursive; font-size: 14px;
+      color: rgba(45,45,45,.4); transition: color 0.2s;
+    }
+    .btn-prev-ed:hover { color: var(--fg); }
+    .step-count { font-family: 'Patrick Hand', cursive; font-size: 12px; color: rgba(45,45,45,.3); }
+
+    /* Riepilogo */
+    .riepilogo-ed { border: 2px solid rgba(45,45,45,.1); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+    .rr { display: flex; justify-content: space-between; padding: 10px 14px; border-bottom: 1px dashed rgba(45,45,45,.1); }
+    .rr:last-child { border-bottom: none; }
+    .rl { font-family: 'Patrick Hand', cursive; font-size: 13px; color: rgba(45,45,45,.5); }
+    .rv { font-family: 'Patrick Hand', cursive; font-size: 13px; font-weight: 700; color: var(--fg); }
+    .rv.rose { color: var(--accent); }
+
+    /* Anticipo box */
+    .anticipo-box {
+      background: rgba(255,77,77,.06); border-left: 4px solid var(--accent);
+      border-radius: 0 10px 10px 0; padding: 14px 16px; margin-bottom: 18px;
+    }
+    .anticipo-lbl { font-family: 'Patrick Hand', cursive; font-size: 12px; color: rgba(45,45,45,.5); }
+    .anticipo-val { font-family: 'Kalam', cursive; font-size: 1.8rem; font-weight: 700; color: var(--accent); line-height: 1.1; }
+    .anticipo-note { font-family: 'Patrick Hand', cursive; font-size: 12px; color: rgba(45,45,45,.4); margin-top: 4px; }
+
+    /* Sending / OK / Error */
+    .form-sending-ed, .form-ok-ed, .form-error-ed { display: none; padding: 60px 28px; text-align: center; }
+    .form-sending-ed.active, .form-ok-ed.active, .form-error-ed.active { display: block; }
+    .spinner-ed {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 3px solid var(--muted); border-top-color: var(--accent);
+      animation: spin 0.8s linear infinite; margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .sending-lbl { font-family: 'Patrick Hand', cursive; font-size: 14px; color: rgba(45,45,45,.45); }
+    .form-ok-ed h3 { font-family: 'Kalam', cursive; font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; }
+    .form-ok-ed p { font-family: 'Patrick Hand', cursive; font-size: .95rem; color: rgba(45,45,45,.6); line-height: 1.7; max-width: 380px; margin: 0 auto; }
+    .form-error-ed p { font-family: 'Patrick Hand', cursive; color: var(--accent); font-size: .95rem; margin-bottom: 1rem; }
+    .btn-retry-ed {
+      background: var(--accent); color: #fff; border: 2px solid var(--fg);
+      padding: 10px 22px; border-radius: var(--r-wobbly-sm); cursor: pointer;
+      box-shadow: var(--shadow-sm); font-family: 'Patrick Hand', cursive; font-size: 14px;
+    }
+
+    /* ============================================================
+       SHOP SECTION
+    ============================================================ */
+    .shop-section {
+      padding: 100px 5% 80px;
+      background-color: var(--yellow);
+      background-image: radial-gradient(var(--muted) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .shop-head { display: grid; grid-template-columns: 6fr 6fr; gap: 5%; align-items: flex-end; margin-bottom: 50px; }
+    .shop-head .section-hl { color: var(--fg); }
+    .shop-head .section-tag { color: var(--accent); }
+    .shop-head-body { font-family: 'Patrick Hand', cursive; font-size: 1rem; line-height: 1.75; color: rgba(45,45,45,.6); }
+    .shop-cats { display: flex; gap: 10px; margin-bottom: 36px; flex-wrap: wrap; }
+    .shop-cat {
+      padding: 8px 18px; border-radius: var(--r-wobbly-sm);
+      font-family: 'Patrick Hand', cursive; font-size: 13px; cursor: pointer;
+      border: 2px solid var(--fg); color: var(--fg); background: transparent;
+      box-shadow: 2px 2px 0 0 var(--fg); transition: all 0.1s;
+    }
+    .shop-cat.active, .shop-cat:hover { background: var(--accent); border-color: var(--fg); color: #fff; transform: translate(-1px,-1px); box-shadow: 3px 3px 0 0 var(--fg); }
+    .shop-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
+    .shop-card {
+      background: #fff; border: 2px solid var(--fg);
+      border-radius: var(--r-wobbly-md); overflow: hidden;
+      box-shadow: var(--shadow); transition: all 0.1s; cursor: pointer;
+    }
+    .shop-card:hover { transform: translate(-3px,-3px); box-shadow: var(--shadow-lg); }
+    .shop-img {
+      aspect-ratio: 1; background: var(--muted);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; color: rgba(45,45,45,.2);
+      position: relative; overflow: hidden;
+      border-bottom: 2px solid var(--fg);
+    }
+    .shop-img-badge {
+      position: absolute; top: 10px; left: 10px;
+      background: var(--accent); color: #fff;
+      font-family: 'Patrick Hand', cursive; font-size: 11px;
+      padding: 3px 10px; border: 1.5px solid var(--fg);
+      border-radius: 4px; box-shadow: 2px 2px 0 0 var(--fg);
+    }
+    .shop-body { padding: 16px 16px 18px; }
+    .shop-cat-tag { font-family: 'Patrick Hand', cursive; font-size: 11px; color: var(--accent); margin-bottom: 5px; }
+    .shop-name { font-family: 'Kalam', cursive; font-size: 14px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
+    .shop-desc { font-family: 'Patrick Hand', cursive; font-size: 12px; color: rgba(45,45,45,.5); margin-bottom: 12px; line-height: 1.5; }
+    .shop-footer { display: flex; align-items: center; justify-content: space-between; }
+    .shop-price { font-family: 'Kalam', cursive; font-size: 1.2rem; font-weight: 700; color: var(--fg); }
+    .shop-add {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--accent); border: 2px solid var(--fg);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1rem; box-shadow: 2px 2px 0 0 var(--fg); transition: all 0.1s;
+    }
+    .shop-add:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 0 var(--fg); }
+    .shop-note { margin-top: 36px; text-align: center; font-family: 'Patrick Hand', cursive; font-size: 13px; color: rgba(45,45,45,.4); }
+    .shop-note a { color: var(--accent); text-decoration: underline; }
+
+    /* ============================================================
+       GALLERY
+    ============================================================ */
+    .gallery-section { padding: 100px 5% 80px; background: transparent; }
+    .gallery-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; }
+    .gallery-sub { font-family: 'Patrick Hand', cursive; font-size: .95rem; color: rgba(45,45,45,.6); max-width: 280px; line-height: 1.7; }
+    .gallery-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      grid-auto-rows: 200px; gap: 14px;
+    }
+    .gallery-item {
+      border-radius: 12px; overflow: hidden; position: relative;
+      border: 2px solid var(--fg); box-shadow: 3px 3px 0 0 var(--fg); transition: all 0.1s;
+    }
+    .gallery-item:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
+    .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    .gallery-item:nth-child(5) { grid-column: span 2; }
+    .gallery-item:nth-child(8) { grid-column: span 2; grid-row: span 2; }
+    .gallery-img-wrap { width: 100%; height: 100%; position: relative; }
+    .gallery-img-wrap img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(80%); transition: filter 0.8s var(--ease), transform 0.8s var(--ease); }
+    .gallery-item:hover .gallery-img-wrap img { filter: grayscale(0%); transform: scale(1.06); }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: rgba(45,45,45,0); transition: background 0.4s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .gallery-item:hover .gallery-overlay { background: rgba(45,45,45,.25); }
+    .gallery-circle {
+      width: 70px; height: 70px; border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.8);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Patrick Hand', cursive; font-size: 11px; color: #fff;
+      opacity: 0; transform: scale(0.6);
+      transition: opacity 0.4s, transform 0.4s var(--ease);
+    }
+    .gallery-item:hover .gallery-circle { opacity: 1; transform: scale(1); }
+
+    /* ============================================================
+       CONTATTI
+    ============================================================ */
+    .contatti-section { padding: 100px 5% 90px; background: transparent; }
+    .contatti-grid { display: grid; grid-template-columns: 6fr 6fr; gap: 8%; align-items: start; }
+    .contatti-head .section-hl { margin-bottom: 1.2rem; }
+    .contatti-body { font-family: 'Patrick Hand', cursive; font-size: 1rem; line-height: 1.75; color: rgba(45,45,45,.6); margin-bottom: 2rem; }
+    .contatti-links { display: flex; flex-direction: column; gap: 10px; }
+    .contatti-link {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'Patrick Hand', cursive; font-size: 15px; color: var(--fg);
+      padding: 12px 0; border-bottom: 2px dashed rgba(45,45,45,.15); transition: color 0.2s;
+    }
+    .contatti-link:hover { color: var(--accent); }
+    .contatti-link i { font-size: 1rem; color: var(--accent); width: 20px; }
+    .contatti-form-wrap {
+      background: #fff; border-radius: var(--r-wobbly-md); padding: 32px 28px;
+      border: 3px solid var(--fg); box-shadow: var(--shadow-lg);
+      transform: rotate(0.5deg);
+    }
+    .contatti-form-wrap h3 { font-family: 'Kalam', cursive; font-size: 1.4rem; font-weight: 700; margin-bottom: 0.3rem; color: var(--fg); }
+    .contatti-form-wrap p { font-family: 'Patrick Hand', cursive; font-size: .9rem; color: rgba(45,45,45,.55); margin-bottom: 20px; }
+    .c-field { margin-bottom: 14px; }
+    .c-field label { display: block; font-family: 'Patrick Hand', cursive; font-size: 13px; color: rgba(45,45,45,.55); margin-bottom: 5px; }
+    .c-input {
+      width: 100%; height: 44px; padding: 0 12px;
+      border: 2px solid rgba(45,45,45,.2); border-radius: var(--r-wobbly-sm);
+      background: #fff; font-family: 'Patrick Hand', cursive; font-size: 14px; color: var(--fg);
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .c-input:focus { border-color: var(--accent); box-shadow: 2px 2px 0 0 var(--accent); }
+    .c-textarea {
+      width: 100%; height: 90px; padding: 10px 12px;
+      border: 2px solid rgba(45,45,45,.2); border-radius: 12px;
+      background: #fff; font-family: 'Patrick Hand', cursive; font-size: 14px; color: var(--fg);
+      outline: none; resize: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .c-textarea:focus { border-color: var(--accent); box-shadow: 2px 2px 0 0 var(--accent); }
+    .c-submit {
+      width: 100%; padding: 13px;
+      background: var(--accent); color: #fff;
+      border: 2px solid var(--fg); border-radius: var(--r-wobbly-sm);
+      cursor: pointer; font-family: 'Patrick Hand', cursive; font-size: 15px;
+      margin-top: 8px; box-shadow: var(--shadow-sm); transition: all 0.1s;
+    }
+    .c-submit:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
+    .c-submit:active { transform: translate(2px,2px); box-shadow: none; }
+
+    /* ============================================================
+       VIRTUAL PAGES
+    ============================================================ */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ============================================================
+       EVENT SUB-SECTIONS (Galleria · TDJ · Location · Mappa)
+    ============================================================ */
+    .ev-sub {
+      padding: 80px 5%;
+      border-top: 3px solid var(--muted);
+    }
+    .ev-sub.alt { background: #f9f9f9; }
+    .ev-sub-header {
+      display: flex; align-items: baseline; gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+    .ev-sub-event-tag {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 12px; letter-spacing: .15em; text-transform: uppercase;
+      background: var(--fg); color: #fff;
+      padding: 3px 10px; border-radius: 30px;
+      white-space: nowrap;
+    }
+    .ev-sub-title {
+      font-family: 'Kalam', cursive; font-size: 2rem; font-weight: 700;
+      color: var(--fg); transform: rotate(-0.5deg); display: inline-block;
+    }
+
+    /* Galleria */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .gallery-item {
+      aspect-ratio: 4/3;
+      background: var(--muted);
+      border: 2px solid var(--fg);
+      border-radius: var(--r-wobbly-sm);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .1s, box-shadow .1s;
+    }
+    .gallery-item:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      color: rgba(45,45,45,.3);
+      font-family: 'Patrick Hand', cursive; font-size: 13px;
+    }
+    .gallery-placeholder i { font-size: 2rem; }
+
+    /* TDJ */
+    .tdj-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+    }
+    .tdj-card {
+      border: 2px solid var(--fg);
+      border-radius: var(--r-wobbly-sm);
+      box-shadow: var(--shadow-sm);
+      padding: 24px 20px;
+      text-align: center;
+      background: #fff;
+      transition: transform .1s, box-shadow .1s;
+    }
+    .tdj-card:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
+    .tdj-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--muted);
+      border: 2px solid var(--fg);
+      margin: 0 auto 12px;
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      color: rgba(45,45,45,.3); font-size: 2rem;
+    }
+    .tdj-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .tdj-name {
+      font-family: 'Kalam', cursive; font-size: 1rem; font-weight: 700;
+      color: var(--fg); margin-bottom: 4px;
+    }
+    .tdj-bio {
+      font-family: 'Patrick Hand', cursive; font-size: 13px;
+      color: rgba(45,45,45,.55); line-height: 1.5;
+    }
+
+    /* Location */
+    .location-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+      align-items: start;
+    }
+    .location-info h4 {
+      font-family: 'Kalam', cursive; font-size: 1.4rem; font-weight: 700;
+      margin-bottom: 10px; color: var(--fg);
+    }
+    .location-info p {
+      font-family: 'Patrick Hand', cursive; font-size: 15px;
+      line-height: 1.7; color: rgba(45,45,45,.65); margin-bottom: 16px;
+    }
+    .location-address {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Patrick Hand', cursive; font-size: 14px;
+      border: 2px solid var(--fg); border-radius: var(--r-wobbly-sm);
+      box-shadow: var(--shadow-sm); padding: 8px 16px;
+      background: var(--yellow); color: var(--fg);
+      text-decoration: none;
+      transition: transform .1s, box-shadow .1s;
+    }
+    .location-address:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
+    .map-wrap {
+      border: 3px solid var(--fg);
+      border-radius: var(--r-wobbly-sm);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+    }
+    .map-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+    .map-placeholder {
+      width: 100%; height: 100%; min-height: 260px;
+      background: var(--muted);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+      color: rgba(45,45,45,.35);
+      font-family: 'Patrick Hand', cursive; font-size: 14px;
+    }
+    .map-placeholder i { font-size: 2.5rem; }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background-color: var(--fg);
+      background-image: radial-gradient(rgba(253,251,247,.05) 1px, transparent 1px);
+      background-size: 24px 24px;
+      color: rgba(253,251,247,.6); padding: 60px 5% 28px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 4fr 8fr;
+      gap: 8%; padding-bottom: 44px;
+      border-bottom: 2px dashed rgba(253,251,247,.15);
+    }
+    .footer-brand {
+      font-family: 'Kalam', cursive; font-size: 2rem; font-weight: 700;
+      line-height: 0.9; margin-bottom: 1rem; color: #4caf50;
+      transform: rotate(-1deg); display: inline-block;
+    }
+    .footer-brand span { color: var(--accent); }
+    .footer-mission { font-family: 'Patrick Hand', cursive; font-size: .9rem; line-height: 1.7; color: rgba(253,251,247,.35); max-width: 260px; margin-bottom: 1.5rem; }
+    .footer-social { display: flex; gap: 10px; }
+    .f-social-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 2px solid rgba(253,251,247,.2);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(253,251,247,.4); font-size: .85rem;
+      box-shadow: 2px 2px 0 0 rgba(253,251,247,.1); transition: all 0.1s;
+    }
+    .f-social-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translate(-1px,-1px); }
+    .footer-cols { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+    .fc-col { display: flex; flex-direction: column; gap: 8px; }
+    .fc-title {
+      font-family: 'Patrick Hand', cursive; font-size: 13px; color: rgba(253,251,247,.35); margin-bottom: 4px;
+      text-decoration: underline; text-decoration-style: wavy; text-underline-offset: 4px;
+    }
+    .fc-col a { font-family: 'Patrick Hand', cursive; font-size: 14px; color: rgba(253,251,247,.5); transition: color 0.2s; }
+    .fc-col a:hover { color: var(--accent); }
+    .footer-bottom { padding-top: 20px; text-align: center; font-family: 'Patrick Hand', cursive; font-size: 12px; color: rgba(253,251,247,.2); }
+
+    /* ============================================================
+       REVEAL ANIMATION
+    ============================================================ */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
+    }
+    .reveal.d1 { transition-delay: 0.1s; }
+    .reveal.d2 { transition-delay: 0.2s; }
+    .reveal.d3 { transition-delay: 0.3s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ============================================================
+       BRUTIA FORM OVERRIDES — dark neon theme
+    ============================================================ */
+    #bru-form {
+      background: #f0eaff;
+      border-color: #7b2ff7;
+      box-shadow: 0 0 40px rgba(123,47,247,.15), 6px 6px 0 0 #7b2ff7;
+    }
+    #bru-form .bru-prog {
+      background: #e4d8ff;
+      border-bottom: 1px solid rgba(123,47,247,.2);
+    }
+    #bru-form #b_body { padding: 32px 28px; background: #f0eaff; }
+
+    /* dots */
+    #bru-form .bru-dot {
+      background: #d8c8ff; border: 2px solid rgba(123,47,247,.3);
+      color: rgba(80,0,180,.4);
+    }
+    #bru-form .bru-dot-lbl { color: rgba(80,0,180,.5); }
+    #bru-form .bru-pd.active .bru-dot {
+      background: #7b2ff7; border-color: #7b2ff7; color: #fff;
+      box-shadow: 0 0 12px rgba(123,47,247,.5);
+    }
+    #bru-form .bru-pd.active .bru-dot-lbl { color: #5000b4; font-weight: 700; }
+    #bru-form .bru-pd.done .bru-dot { background: #5000b4; border-color: #5000b4; color: #fff; }
+    #bru-form .bru-pd.done .bru-dot-lbl { color: rgba(80,0,180,.5); }
+    #bru-form .bru-line { background: rgba(123,47,247,.2); }
+
+    /* testi */
+    #bru-form .fs-title { color: #2d0060; font-size: 1.6rem; }
+    #bru-form .fs-sub { color: rgba(80,0,180,.55); font-size: 1rem; }
+    #bru-form label, #bru-form .mini-label { color: rgba(45,0,96,.75); font-size: 1rem; }
+    #bru-form details summary { color: rgba(80,0,180,.5); font-size: .95rem; }
+    #bru-form .step-count { color: rgba(80,0,180,.25); }
+    #bru-form .fi-ed { font-size: 1rem; padding: 12px 14px; }
+    #bru-form .room-card-name { font-size: 1rem; }
+    #bru-form .room-card-desc { font-size: .9rem; }
+    #bru-form .pkg-card-name { font-size: 1rem; }
+    #bru-form .pkg-card-info { font-size: .9rem; }
+    #bru-form .pkg-card-letter { font-size: 1.5rem; }
+    #bru-form .bru-dot-lbl { font-size: .85rem; }
+
+    /* input */
+    #bru-form .fi-ed {
+      background: #fff;
+      border-color: rgba(123,47,247,.3);
+      color: #2d0060;
+    }
+    #bru-form .fi-ed::placeholder { color: rgba(80,0,180,.3); }
+    #bru-form .fi-ed:focus { border-color: #7b2ff7; box-shadow: 0 0 0 3px rgba(123,47,247,.2); }
+
+    /* select */
+    #bru-form select.fi-ed { appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237b2ff7' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center;
+      padding-right: 36px;
+    }
+    #bru-form select.fi-ed option { background: #fff; color: #2d0060; }
+
+    /* room cards */
+    #bru-form .room-card {
+      background: #fff;
+      border-color: rgba(123,47,247,.25);
+    }
+    #bru-form .room-card-name { color: #2d0060; }
+    #bru-form .room-card-desc { color: rgba(80,0,180,.5); }
+    #bru-form .room-card i { color: rgba(123,47,247,.6); }
+    #bru-form .stanza-opt.selected,
+    #bru-form .room-card.selected {
+      background: #ede0ff;
+      border-color: #7b2ff7;
+      box-shadow: 3px 3px 0 0 #7b2ff7;
+    }
+    #bru-form .stanza-opt.selected .room-card-name,
+    #bru-form .room-card.selected .room-card-name { color: #5000b4; }
+    #bru-form .stanza-opt:hover { border-color: #7b2ff7; }
+
+    /* pacchetti */
+    #bru-form .pkg-card {
+      background: #fff;
+      border-color: rgba(123,47,247,.25);
+    }
+    #bru-form .pkg-card-letter { color: #7b2ff7; }
+    #bru-form .pkg-card-name { color: #2d0060; }
+    #bru-form .pkg-card-info { color: rgba(80,0,180,.5); }
+    #bru-form .pkg-card.selected {
+      background: #ede0ff;
+      border-color: #7b2ff7;
+      box-shadow: 3px 3px 0 0 #7b2ff7;
+    }
+    #bru-form .pkg-card:hover { border-color: #7b2ff7; }
+
+    /* riepilogo + anticipo */
+    #bru-form .riepilogo-ed { background: #fff; border-color: rgba(123,47,247,.2); color: rgba(45,0,96,.7); }
+    #bru-form .anticipo-box { background: #ede0ff; border-color: rgba(123,47,247,.3); }
+    #bru-form .anticipo-lbl { color: rgba(80,0,180,.6); }
+    #bru-form .anticipo-val { color: #5000b4; }
+    #bru-form .anticipo-note { color: rgba(80,0,180,.45); }
+
+    /* bottoni */
+    #bru-form .btn-next-ed {
+      background: #7b2ff7;
+      box-shadow: 3px 3px 0 0 #4a0099;
+      color: #fff;
+    }
+    #bru-form .btn-next-ed:hover { background: #9240ff; }
+    #bru-form .btn-prev-ed { color: rgba(80,0,180,.5); border-color: rgba(123,47,247,.3); background: transparent; }
+    #bru-form .btn-prev-ed:hover { border-color: #7b2ff7; color: #5000b4; }
+
+    /* stati finali */
+    #bru-form .form-ok-ed h3 { color: #5000b4; }
+    #bru-form .form-ok-ed p { color: rgba(80,0,180,.6); }
+    #bru-form .form-error-ed p { color: #c00070; }
+    #bru-form .btn-retry-ed { border-color: rgba(123,47,247,.3); color: rgba(80,0,180,.6); }
+    #bru-form .compagni-dyn label { color: rgba(45,0,96,.7); }
+
+    /* ============================================================
+       MTP — REGISTRAZIONI CHIUSE
+    ============================================================ */
+    .mtp-closed-banner {
+      background: #fff; border: 3px solid var(--fg);
+      border-radius: var(--r-wobbly-md); padding: 40px 36px;
+      display: flex; align-items: center; gap: 28px;
+      margin-top: 40px; box-shadow: var(--shadow); transform: rotate(-0.5deg);
+    }
+    .mtp-closed-icon {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: var(--muted); border: 2px solid var(--fg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; color: rgba(45,45,45,.4); flex-shrink: 0;
+      box-shadow: 2px 2px 0 0 var(--fg);
+    }
+    .mtp-closed-title { font-family: 'Kalam', cursive; font-size: 1.4rem; font-weight: 700; color: var(--fg); margin-bottom: 6px; }
+    .mtp-closed-text { font-family: 'Patrick Hand', cursive; font-size: .95rem; color: rgba(45,45,45,.6); line-height: 1.65; }
+    .mtp-closed-text a { color: var(--accent); text-decoration: underline; }
+    .pkg-btn-closed {
+      margin-top: 1.5rem; cursor: not-allowed;
+      background: var(--muted); color: rgba(45,45,45,.4);
+      padding: 9px 18px; border-radius: var(--r-wobbly-sm);
+      font-family: 'Patrick Hand', cursive; font-size: 13px;
+      border: 2px dashed rgba(45,45,45,.2); display: inline-block;
+    }
+
+    /* ============================================================
+       MTP27 — TEMA ESTATE (override scoped a #page-mtp27)
+    ============================================================ */
+    #page-mtp27 .event-section.dark {
+      background-color: #e8f9fb;
+      background-image: none;
+      border-top: 5px solid #00b4d8;
+    }
+    #page-mtp27 .ev-head-hl { color: #004f70; }
+    #page-mtp27 .ev-head-hl em { color: #ff6b35; }
+    #page-mtp27 .ev-head-body { color: rgba(0,60,90,.65); }
+    #page-mtp27 .section-tag { color: #ff6b35 !important; }
+
+    /* foto a colori nella pagina MTP */
+    #page-mtp27 .ev-photo img { filter: grayscale(0%); }
+
+    /* pacchetti: sfondo colorato per ogni card */
+    #page-mtp27 .pkg-item:nth-child(1) { background: #fff9e6; border-color: #ffb703; }
+    #page-mtp27 .pkg-item:nth-child(2) { background: #e0f7fa; border-color: #00b4d8; }
+    #page-mtp27 .pkg-item:nth-child(3) { background: #ffe8e0; border-color: #ff6b35; }
+    #page-mtp27 .pkg-item:nth-child(4) { background: #e8fbe8; border-color: #40c057; }
+    #page-mtp27 .pkg-big-num { color: rgba(0,0,0,.12); }
+    #page-mtp27 .pkg-item:nth-child(1) .pkg-big-num { color: rgba(255,183,3,.25); }
+    #page-mtp27 .pkg-item:nth-child(2) .pkg-big-num { color: rgba(0,180,216,.2); }
+    #page-mtp27 .pkg-item:nth-child(3) .pkg-big-num { color: rgba(255,107,53,.2); }
+    #page-mtp27 .pkg-item:nth-child(4) .pkg-big-num { color: rgba(64,192,87,.2); }
+    #page-mtp27 .pkg-label { color: #00b4d8; font-size: 15px; }
+
+    /* banner chiuso con tono caldo */
+    #page-mtp27 .mtp-closed-banner {
+      background: linear-gradient(135deg, #fff9e6 0%, #fff0e0 100%);
+      border-color: #ffb703;
+    }
+    #page-mtp27 .mtp-closed-icon {
+      background: linear-gradient(135deg, #ffb703, #ff6b35);
+      color: #fff;
+    }
+
+    /* sub-sezioni galleria/TDJ/location */
+    #page-mtp27 .ev-sub { background: #fff; }
+    #page-mtp27 .ev-sub.alt { background: #f0fbff; }
+    #page-mtp27 .ev-sub-event-tag {
+      background: #00b4d8; color: #fff;
+      padding: 4px 12px; border-radius: 20px;
+    }
+    #page-mtp27 .ev-sub-title { color: #004f70; }
+    #page-mtp27 .location-address { color: #00b4d8; }
+
+    /* ============================================================
+       BRUTIA — TEMA BLU SCURO / VIOLA (override scoped a #page-brutia)
+    ============================================================ */
+    #page-brutia .event-section.warm-bg {
+      background-color: #ffffff;
+      background-image: none;
+      border-top: 5px solid #7b2ff7;
+    }
+    #page-brutia .ev-head-hl { color: #0d1b3e; }
+    #page-brutia .ev-head-hl em { color: #7b2ff7; }
+    #page-brutia .ev-head-body { color: rgba(13,27,62,.65); }
+    #page-brutia .section-tag { color: #7b2ff7 !important; }
+    #page-brutia .pkg-label { color: #7b2ff7; }
+
+    /* foto a colori */
+    #page-brutia .ev-photo img { filter: grayscale(0%); }
+
+    /* pacchetti: sfondo bianco con bordi colorati */
+    #page-brutia .pkg-item:nth-child(1) { background: #f3eeff; border-color: #7b2ff7; }
+    #page-brutia .pkg-item:nth-child(2) { background: #eef0ff; border-color: #3f52d4; }
+    #page-brutia .pkg-item:nth-child(3) { background: #f8f0ff; border-color: #9c47ff; }
+    #page-brutia .pkg-big-num { color: rgba(123,47,247,.15); }
+    #page-brutia .pkg-item:nth-child(1) .pkg-big-num { color: rgba(123,47,247,.15); }
+    #page-brutia .pkg-item:nth-child(2) .pkg-big-num { color: rgba(63,82,212,.15); }
+    #page-brutia .pkg-item:nth-child(3) .pkg-big-num { color: rgba(156,71,255,.15); }
+    #page-brutia .pkg-price { color: #7b2ff7; }
+    #page-brutia .pkg-item:hover, #page-brutia .pkg-item.selected {
+      background: #7b2ff7; border-color: #0d1b3e;
+    }
+    #page-brutia .pkg-btn {
+      background: #7b2ff7; color: #fff; border-color: #0d1b3e;
+    }
+    #page-brutia .pkg-btn:hover { background: #9c47ff; }
+
+    /* sub-sezioni */
+    #page-brutia .ev-sub { background: #fff; }
+    #page-brutia .ev-sub.alt {
+      background: #1a0033;
+      padding: 60px 5%;
+    }
+    #page-brutia .ev-sub-event-tag {
+      background: #7b2ff7; color: #fff;
+      padding: 4px 12px; border-radius: 20px;
+    }
+    #page-brutia .ev-sub-title { color: #0d1b3e; }
+    #page-brutia .ev-sub.alt .ev-sub-title {
+      color: #ffff00;
+      text-shadow: 0 0 20px rgba(255,255,0,.4);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: .05em;
+    }
+    #page-brutia .ev-sub.alt .ev-sub-event-tag {
+      background: transparent; color: #00e5ff;
+      font-size: 13px; letter-spacing: .15em; text-transform: uppercase;
+      padding: 0;
+    }
+    #page-brutia .location-info h4 { color: #0d1b3e; }
+    #page-brutia .location-address { color: #7b2ff7; }
+
+    /* TDJ GRID festival style */
+    #page-brutia .tdj-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+    #page-brutia .tdj-card {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      text-align: center;
+    }
+    #page-brutia .tdj-card:hover { transform: translateY(-4px); box-shadow: none; }
+    #page-brutia .tdj-avatar {
+      width: 120px; height: 120px;
+      border-radius: 0;
+      background: #000;
+      border: 3px solid #00e5ff;
+      box-shadow: 0 0 12px rgba(0,229,255,.5), inset 0 0 8px rgba(0,229,255,.1);
+      margin: 0 auto 10px;
+      filter: grayscale(100%) contrast(1.1);
+      transition: filter .3s, border-color .3s;
+    }
+    #page-brutia .tdj-card:nth-child(2) .tdj-avatar { border-color: #ff00cc; box-shadow: 0 0 12px rgba(255,0,204,.5); }
+    #page-brutia .tdj-card:nth-child(3) .tdj-avatar { border-color: #ffff00; box-shadow: 0 0 12px rgba(255,255,0,.5); }
+    #page-brutia .tdj-card:nth-child(4) .tdj-avatar { border-color: #00e5ff; box-shadow: 0 0 12px rgba(0,229,255,.5); }
+    #page-brutia .tdj-card:nth-child(5) .tdj-avatar { border-color: #ff00cc; box-shadow: 0 0 12px rgba(255,0,204,.5); }
+    #page-brutia .tdj-card:nth-child(6) .tdj-avatar { border-color: #ffff00; box-shadow: 0 0 12px rgba(255,255,0,.5); }
+    #page-brutia .tdj-card:hover .tdj-avatar { filter: grayscale(0%) contrast(1); }
+    #page-brutia .tdj-name {
+      color: #00e5ff; font-size: .95rem;
+      text-transform: uppercase; letter-spacing: .1em;
+      text-shadow: 0 0 8px rgba(0,229,255,.6);
+    }
+    #page-brutia .tdj-card:nth-child(2) .tdj-name,
+    #page-brutia .tdj-card:nth-child(5) .tdj-name { color: #ff00cc; text-shadow: 0 0 8px rgba(255,0,204,.6); }
+    #page-brutia .tdj-card:nth-child(3) .tdj-name,
+    #page-brutia .tdj-card:nth-child(6) .tdj-name { color: #ffff00; text-shadow: 0 0 8px rgba(255,255,0,.6); }
+    #page-brutia .tdj-bio {
+      color: rgba(255,255,255,.5); font-size: 12px;
+      text-transform: uppercase; letter-spacing: .08em;
+    }
+
+    /* ============================================================
+       BRUTIA — CARD STANZA + PACCHETTO
+    ============================================================ */
+    .bru-step-hd { background: var(--muted); padding: 18px 28px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid rgba(45,45,45,.1); }
+    .bru-step-name { font-family: 'Patrick Hand', cursive; font-size: 13px; color: rgba(45,45,45,.5); letter-spacing: .05em; }
+    .bru-step-counter { font-family: 'Patrick Hand', cursive; font-size: 12px; color: rgba(45,45,45,.4); }
+
+    .room-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 20px; }
+    .room-card {
+      border: 2px solid rgba(45,45,45,.2); border-radius: var(--r-wobbly-sm);
+      padding: 24px 14px; text-align: center; cursor: pointer; background: #fff;
+      box-shadow: 2px 2px 0 0 rgba(45,45,45,.15); transition: all 0.1s; display: block;
+    }
+    .room-card input { display: none; }
+    .room-card:hover { border-color: var(--accent); transform: translate(-1px,-1px); box-shadow: 3px 3px 0 0 var(--accent); }
+    .room-card.sel { border-color: var(--accent); background: rgba(255,77,77,.05); box-shadow: var(--shadow-sm); }
+    .room-card-icon { font-size: 1.6rem; margin-bottom: 10px; color: var(--muted); transition: color 0.2s; }
+    .room-card.sel .room-card-icon { color: var(--accent); }
+    .room-card-name { font-family: 'Kalam', cursive; font-size: 15px; font-weight: 700; margin-bottom: 6px; color: var(--fg); }
+    .room-card-desc { font-family: 'Patrick Hand', cursive; font-size: 12px; color: rgba(45,45,45,.5); line-height: 1.5; }
+
+    .pkg-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 20px; }
+    .pkg-card {
+      border: 2px solid rgba(45,45,45,.2); border-radius: var(--r-wobbly-sm);
+      padding: 22px 18px; cursor: pointer; background: #fff;
+      box-shadow: 2px 2px 0 0 rgba(45,45,45,.15); transition: all 0.1s; display: block; position: relative;
+    }
+    .pkg-card input { display: none; }
+    .pkg-card:hover { border-color: var(--accent); transform: translate(-1px,-1px); box-shadow: 3px 3px 0 0 var(--accent); }
+    .pkg-card.sel { border-color: var(--accent); background: rgba(255,77,77,.05); box-shadow: var(--shadow-sm); }
+    .pkg-card-letter { font-family: 'Kalam', cursive; font-size: 3rem; font-weight: 700; line-height: 1; color: var(--muted); transition: color 0.2s; margin-bottom: 6px; }
+    .pkg-card.sel .pkg-card-letter { color: var(--accent); }
+    .pkg-card-name { font-family: 'Patrick Hand', cursive; font-size: 12px; color: rgba(45,45,45,.5); margin-bottom: 5px; }
+    .pkg-card-info { font-family: 'Patrick Hand', cursive; font-size: 13px; color: var(--fg); }
+
+    .opt-toggle {
+      font-family: 'Patrick Hand', cursive; font-size: 13px; color: rgba(45,45,45,.5);
+      cursor: pointer; margin-bottom: 1rem; display: block;
+      user-select: none; text-decoration: underline;
+      text-decoration-style: dashed; text-underline-offset: 3px;
+    }
+    .opt-toggle:hover { color: var(--accent); }
+    details > summary { list-style: none; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] .opt-toggle { color: var(--accent); }
+
+    /* ============================================================
+       HAMBURGER MENU
+    ============================================================ */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column; justify-content: center; align-items: center;
+      gap: 5px; width: 40px; height: 40px;
+      background: none; border: 2px solid #fff; border-radius: 6px;
+      cursor: pointer; padding: 6px;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: #fff; border-radius: 2px;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-drawer {
+      display: none;
+      position: fixed; top: 64px; left: 0; right: 0; z-index: 199;
+      background: #111;
+      border-bottom: 3px solid var(--fg);
+      flex-direction: column;
+    }
+    .nav-drawer.open { display: flex; }
+    .nav-drawer a {
+      font-family: 'Kalam', cursive; font-size: 18px; font-weight: 700;
+      color: #fff; padding: 16px 5%;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: block;
+    }
+    .nav-drawer a:active, .nav-drawer a:hover { background: var(--accent); }
+
+    /* ============================================================
+       RESPONSIVE BREAKPOINTS
+    ============================================================ */
+
+    /* TABLET + MOBILE (768px and below) */
+    @media (max-width: 768px) {
+      html { font-size: 100%; }
+
+      /* Navigation */
+      nav { height: 64px; padding: 0 4%; }
+      .nav-brand img { height: 44px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+
+      /* Hero Section */
+      .hero {
+        padding-top: 80px; padding-left: 4%; padding-right: 4%;
+        min-height: auto; padding-bottom: 48px;
+      }
+      .hero-hl { font-size: clamp(2.2rem, 9vw, 3.5rem); max-width: 100%; }
+      .hero-sub { font-size: 0.95rem; max-width: 100%; margin-top: 1rem; }
+      .hero-pills { display: none; }
+      .hero-actions { flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+      .hero-btn { justify-content: center; padding: 13px 20px; font-size: 15px; }
+      .hero-scroll { display: none; }
+
+      /* Chi Siamo Section */
+      .chi-siamo { padding: 48px 4%; }
+      .chi-siamo-grid { grid-template-columns: 1fr; gap: 32px; }
+      .chi-siamo-img-wrap { display: none; }
+
+      /* Event Sections */
+      .event-section { padding: 48px 4% 40px; }
+      .ev-head { grid-template-columns: 1fr; gap: 0; margin-bottom: 32px; }
+      .ev-head-hl { font-size: clamp(2rem, 8vw, 3rem); }
+      .ev-photo { aspect-ratio: 4/3; margin-bottom: 32px; }
+
+      /* Packages Grid */
+      .pkg-grid-4 { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .pkg-grid-3 { grid-template-columns: 1fr; }
+      .pkg-big-num { font-size: 3rem; }
+      .pkg-price { font-size: 1.6rem; }
+
+      /* Event Sub-sections (Gallery, TDJ, Location) */
+      .ev-sub { padding: 40px 4%; }
+      .ev-sub-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; margin-bottom: 1.5rem; }
+      .ev-sub-title { font-size: 1.5rem; }
+
+      /* TDJ Grid */
+      .tdj-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .tdj-card { padding: 14px 10px; }
+      .tdj-avatar { width: 64px; height: 64px; }
+      #page-brutia .tdj-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      #page-brutia .tdj-avatar { width: 80px; height: 80px; }
+
+      /* Gallery */
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+
+      /* Location */
+      .location-grid { grid-template-columns: 1fr; }
+
+      /* Forms */
+      .form-section { margin-top: 24px; border-radius: 12px; }
+      .form-label { padding: 12px 16px; }
+      #bru-form { margin: 0; border-radius: 12px; }
+      #bru-form .bru-prog { padding: 14px 16px !important; }
+      #bru-form #b_body { padding: 20px 16px !important; }
+      #bru-form .fs-title { font-size: 1.2rem; }
+      .room-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .pkg-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+
+      /* Contact Section */
+      .contatti-section { padding: 48px 4%; }
+
+      /* Footer */
+      footer { padding: 40px 4% 24px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-cols { grid-template-columns: 1fr 1fr; gap: 20px; }
+
+      /* Brutia Section */
+      #page-brutia .ev-sub.alt { padding: 40px 4%; }
+    }
+
+    /* SMALL MOBILE (480px and below) */
+    @media (max-width: 480px) {
+      /* Grid Columns */
+      .pkg-grid-4 { grid-template-columns: 1fr; }
+      .tdj-grid { grid-template-columns: repeat(2, 1fr); }
+      #page-brutia .tdj-grid { grid-template-columns: repeat(2, 1fr); }
+      .room-grid { grid-template-columns: 1fr; }
+      .pkg-grid { grid-template-columns: 1fr; }
+      .footer-cols { grid-template-columns: 1fr; }
+
+      /* Typography */
+      .hero-hl { font-size: clamp(1.9rem, 10vw, 2.8rem); }
+
+      /* Forms */
+      #bru-form .bru-prog { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" onclick="showPage('home');return false;" class="nav-brand"><img src="logo_pepertango.png" alt="PeperTango"></a>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showPage('home');return false;" data-page="home">Home</a></li>
+      <li><a href="#" onclick="showPage('mtp27');return false;" data-page="mtp27">Maratona Tango Piccante</a></li>
+      <li><a href="#" onclick="showPage('brutia');return false;" data-page="brutia">Brutia Tango Fest</a></li>
+      <li><a href="#" onclick="showPage('contatti');return false;" data-page="contatti">Contatti</a></li>
+      <li><a href="#" onclick="showPage('shop');return false;" data-page="shop">Shop</a></li>
+    </ul>
+    <button class="nav-hamburger" id="navHamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="nav-drawer" id="navDrawer">
+    <a href="#" onclick="showPage('home');toggleMenu();return false;">Home</a>
+    <a href="#" onclick="showPage('mtp27');toggleMenu();return false;">Maratona Tango Piccante</a>
+    <a href="#" onclick="showPage('brutia');toggleMenu();return false;">Brutia Tango Fest</a>
+    <a href="#" onclick="showPage('contatti');toggleMenu();return false;">Contatti</a>
+    <a href="#" onclick="showPage('shop');toggleMenu();return false;">Shop</a>
+  </div>
+
+  <!-- PAGE: HOME -->
+  <div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+<h1 class="hero-hl reveal d1">
+      TANGO<br>
+      <em>piccante</em><br>
+      BRUCIA
+    </h1>
+    <p class="hero-sub reveal d2">
+      Due location d'eccezione, selezionate per regalarti bellezza e comfort.<br>
+      Due atmosfere uniche, studiate per farti immergere totalmente nella musica.
+    </p>
+    <div class="hero-pills reveal d2">
+      <div class="h-pill" onclick="document.getElementById('mtp27').scrollIntoView({behavior:'smooth'})">
+        <div class="h-pill-num">01 &middot; Festival</div>
+        <div class="h-pill-name">Maratona<br>Tango Piccante</div>
+        <div class="h-pill-date">Giugno 2027 &middot; Maratea</div>
+        <div class="h-pill-arrow">Scopri &rarr;</div>
+      </div>
+      <div class="h-pill" onclick="document.getElementById('brutia').scrollIntoView({behavior:'smooth'})">
+        <div class="h-pill-num">02 &middot; Festival</div>
+        <div class="h-pill-name">Brutia<br>Tango Festival</div>
+        <div class="h-pill-date">Date TBD &middot; Calabria</div>
+        <div class="h-pill-arrow">Scopri &rarr;</div>
+      </div>
+    </div>
+    <div class="hero-scroll">Scroll per esplorare</div>
+  </section>
+
+  <!-- EVENTS INTRO -->
+  <section class="events-intro" id="events">
+    <div class="events-intro-head">
+      <h2 class="section-hl reveal" style="color:#111111">
+        DUE <em style="color:#2a6b2a">eventi,</em><br>UN CUORE
+      </h2>
+      <p class="events-intro-sub reveal d2">Un'unica passione, due modi di viverla. 🔥 Scopri due eventi esclusivi di tango argentino.</p>
+    </div>
+    <div class="events-grid">
+      <div class="ev-card reveal" onclick="showPage('mtp27')" style="cursor:pointer">
+        <div class="ev-card-num">01 &middot; Giugno 2027 &middot; Maratea</div>
+        <h3 class="ev-card-title">Maratona<br>Tango<br>Piccante</h3>
+        <p class="ev-card-desc">
+          Quattro giorni tra musica, ballo e mare. 120 posti selezionati,
+          4 pacchetti, pensione completa.
+        </p>
+        <span class="ev-card-cta">Scopri e iscriviti &rarr;</span>
+      </div>
+      <div class="ev-card reveal d2" onclick="showPage('brutia')" style="cursor:pointer">
+        <div class="ev-card-num">02 &middot; TBD &middot; Calabria</div>
+        <h3 class="ev-card-title">Brutia<br>Tango<br>Festival</h3>
+        <p class="ev-card-desc">
+          Il nuovo festival nella terra di Bruzio. Date e programma in arrivo.
+          Registra il tuo interesse adesso.
+        </p>
+        <span class="ev-card-cta">Scopri e iscriviti &rarr;</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHI SIAMO -->
+  <section class="chi-siamo" id="chi-siamo">
+    <div class="chi-siamo-grid">
+      <div class="chi-siamo-text">
+        <span class="section-tag" style="color:var(--fire)">Chi siamo</span>
+        <h2 class="chi-siamo-hl">Il tango che<br>parla al <em>cuore</em></h2>
+        <div class="chi-siamo-body">
+          <p>Nel cuore di Cosenza, città affascinante e vivace, nasce l'idea dei PeperTango, un gruppo affiatato di tre amici appassionati di tango argentino. Spesso organizziamo eventi di tango a tema in cui invitiamo altri amanti della danza ad unirsi a noi, creando così una rete di amicizie sempre in crescita.</p>
+          <p>Ciascuno di noi porta con sé un'energia unica e una profonda connessione con questa danza sensuale e coinvolgente. Nel corso del tempo, il tango argentino non solo ha creato una forte connessione tra noi, ma ha anche arricchito le nostre vite, regalandoci momenti di bellezza, passione e amicizia che non avremmo mai immaginato.</p>
+          <p>La nostra storia è un tributo alla bellezza di questa danza e all'importanza delle passioni condivise.</p>
+        </div>
+      </div>
+      <div class="chi-siamo-img-wrap reveal">
+        <img src="https://static.wixstatic.com/media/1b1050_3fc82fffd1c14595ad774a2e578933c0~mv2.jpg/v1/fill/w_568,h_431,al_c,lg_1,q_80,enc_avif,quality_auto/1b1050_3fc82fffd1c14595ad774a2e578933c0~mv2.jpg" alt="PeperTango — Chi siamo">
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery-section" id="gallery">
+    <div class="gallery-head">
+      <div>
+        <span class="section-tag">Momenti</span>
+        <h2 class="section-hl reveal">I NOSTRI<br><em>scatti</em></h2>
+      </div>
+      <p class="gallery-sub reveal d2">Immagini dai nostri festival. Ogni foto racconta una storia di passione, musica e ballo.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item reveal"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_9e83a1fe691447c9a08378d5603847cf~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g1.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d1"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_54c28a8d58b142928686004eeb9ec869~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g2.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d1"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_50b85768f93a415fbb2f195a8c71641d~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g3.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_d3367f399d694a3d981df4110ceaea09~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g4.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d1"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_4c02263fd11c42e0a1b171ba43ac0182~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g5.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_7ee55d97416e46558c29cf5b81e5b79e~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g6.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_9d7afd58ac5a425fb579faf6ee693d76~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g7.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d3"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_0e913f41e3b140d0a9d40e9efe1fbfa4~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g8.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_0881b85bd8494637863d74eb2cc9b70a~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g9.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+      <div class="gallery-item reveal d3"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_bbccff5b719f4f75b9bcad03fd099b4e~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g10.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
+    </div>
+  </section>
+
+  </div><!-- /page-home -->
+
+  <!-- PAGE: MTP27 -->
+  <div class="page" id="page-mtp27">
+
+  <!-- MTP27 -->
+  <section class="event-section dark" id="mtp27">
+    <div class="ev-head">
+      <h2 class="ev-head-hl reveal">
+        MARATONA<br>TANGO<br><em>piccante</em>
+      </h2>
+      <div class="reveal d2">
+        <p class="ev-head-body">
+          Preparatevi a immergervi in un'esperienza intensa e coinvolgente per la undicesima edizione della Maratona Tango Piccante, dall'11 al 14 giugno 2026. Soggiorneremo all'interno del Grand Hotel Pianeta Maratea, in una posizione unica, accanto al Cristo Redentore, affacciato dall'alto su uno dei panorami più suggestivi della costa.
+        </p>
+      </div>
+    </div>
+    <div class="ev-photo reveal">
+      <img src="https://static.wixstatic.com/media/1b1050_3d16e12be82a48eb82f24d800cc9d815~mv2.jpg/v1/fill/w_1400,h_600,al_c,q_85,enc_avif,quality_auto/mtp.jpg" alt="Maratona Tango Piccante">
+    </div>
+    <span class="pkg-label reveal">Scegli il tuo pacchetto</span>
+    <div class="pkg-grid pkg-grid-4">
+      <div class="pkg-item reveal" data-pkg="Cala Jannita" onclick="selectPkg(this,'mtp27')">
+        <span class="pkg-big-num">4</span><span class="pkg-notti-lbl">notti</span>
+        <div class="pkg-name">Cala Jannita</div>
+        <div class="pkg-date">Gio 10 &rarr; Lun 14 Giu</div>
+        <div class="pkg-price">&euro;300</div>
+        <div class="pkg-anticipo">Anticipo &euro;150 &middot; Saldo &euro;150</div>
+        <button class="pkg-btn-closed" disabled>Iscrizioni chiuse</button>
+      </div>
+      <div class="pkg-item reveal d1" data-pkg="Fiumicello" onclick="selectPkg(this,'mtp27')">
+        <span class="pkg-big-num">3</span><span class="pkg-notti-lbl">notti</span>
+        <div class="pkg-name">Fiumicello</div>
+        <div class="pkg-date">Gio 10 &rarr; Dom 13 Giu</div>
+        <div class="pkg-price">&euro;225</div>
+        <div class="pkg-anticipo">Anticipo &euro;150 &middot; Saldo &euro;75</div>
+        <button class="pkg-btn-closed" disabled>Iscrizioni chiuse</button>
+      </div>
+      <div class="pkg-item reveal d2" data-pkg="Spiaggia Nera" onclick="selectPkg(this,'mtp27')">
+        <span class="pkg-big-num">3</span><span class="pkg-notti-lbl">notti</span>
+        <div class="pkg-name">Spiaggia Nera</div>
+        <div class="pkg-date">Ven 11 &rarr; Lun 14 Giu</div>
+        <div class="pkg-price">&euro;225</div>
+        <div class="pkg-anticipo">Anticipo &euro;150 &middot; Saldo &euro;75</div>
+        <button class="pkg-btn-closed" disabled>Iscrizioni chiuse</button>
+      </div>
+      <div class="pkg-item reveal d3" data-pkg="Porto di Maratea" onclick="selectPkg(this,'mtp27')">
+        <span class="pkg-big-num">2</span><span class="pkg-notti-lbl">notti</span>
+        <div class="pkg-name">Porto di Maratea</div>
+        <div class="pkg-date">Ven 11 &rarr; Dom 13 Giu</div>
+        <div class="pkg-price">&euro;150</div>
+        <div class="pkg-anticipo">Anticipo &euro;150 &middot; Saldo &euro;0</div>
+        <button class="pkg-btn-closed" disabled>Iscrizioni chiuse</button>
+      </div>
+    </div>
+
+    <div class="mtp-closed-banner">
+      <div class="mtp-closed-icon"><i class="fa-solid fa-lock"></i></div>
+      <div>
+        <div class="mtp-closed-title">Registrazioni chiuse</div>
+        <p class="mtp-closed-text">
+          Le iscrizioni alla Maratona Tango Piccante 2027 sono ufficialmente chiuse.<br>
+          Per informazioni scrivi a <a href="mailto:info@pepertango.it">info@pepertango.it</a> &mdash; ti avviseremo per la prossima edizione.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MTP · GALLERIA -->
+  <section class="ev-sub" id="mtp27-gallery">
+    <div class="ev-sub-header">
+      <span class="ev-sub-event-tag">Maratona Tango Piccante</span>
+      <h3 class="ev-sub-title">Galleria</h3>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+    </div>
+  </section>
+
+  <!-- MTP · TDJ -->
+  <section class="ev-sub alt" id="mtp27-tdj">
+    <div class="ev-sub-header">
+      <span class="ev-sub-event-tag">Maratona Tango Piccante</span>
+      <h3 class="ev-sub-title">I TDJ</h3>
+    </div>
+    <div class="tdj-grid">
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-music"></i></div>
+        <div class="tdj-name">TDJ 1</div>
+        <div class="tdj-bio">Nome e bio in arrivo</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-music"></i></div>
+        <div class="tdj-name">TDJ 2</div>
+        <div class="tdj-bio">Nome e bio in arrivo</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-music"></i></div>
+        <div class="tdj-name">TDJ 3</div>
+        <div class="tdj-bio">Nome e bio in arrivo</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MTP · LOCATION + MAPPA -->
+  <section class="ev-sub" id="mtp27-location">
+    <div class="ev-sub-header">
+      <span class="ev-sub-event-tag">Maratona Tango Piccante</span>
+      <h3 class="ev-sub-title">Location &amp; Come raggiungerla</h3>
+    </div>
+    <div class="location-grid">
+      <div class="location-info">
+        <h4>Maratea, Basilicata</h4>
+        <p>La perla del Tirreno ospita la Maratona Tango Piccante. Un borgo incantevole sul mare, tra scogliere e panorami mozzafiato. Struttura alberghiera con pensione completa a pochi passi dalla spiaggia.</p>
+        <p><strong>Come arrivare:</strong> Autostrada A3 Salerno–Reggio Calabria, uscita Lagonegro Nord. Da Napoli circa 2h30 in auto. Stazione ferroviaria di Maratea sulla linea Napoli–Reggio Calabria.</p>
+        <a href="https://maps.google.com/?q=Maratea,Basilicata" target="_blank" class="location-address">
+          <i class="fa-solid fa-location-dot"></i> Maratea, Basilicata
+        </a>
+      </div>
+      <div class="map-wrap">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24573.123456789!2d15.7197!3d39.9932!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1339c9b7e1234567%3A0xabcdef1234567890!2sMaratea%2C%20Basilicata!5e0!3m2!1sit!2sit!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+
+  </div><!-- /page-mtp27 -->
+
+  <!-- PAGE: BRUTIA -->
+  <div class="page" id="page-brutia">
+
+  <!-- BRUTIA -->
+  <section class="event-section warm-bg" id="brutia">
+    <div class="ev-head">
+      <h2 class="ev-head-hl reveal">
+        BRUTIA<br>TANGO<br><em>fest 2026</em>
+      </h2>
+      <div class="reveal d2">
+        <span class="section-tag">02 &middot; Date TBD &middot; Calabria</span>
+        <p class="ev-head-body">
+          Il nuovo festival nella terra di Bruzio. Tre pacchetti,
+          un'esperienza autentica nel cuore della Calabria.
+          Date e dettagli in arrivo — registra il tuo interesse adesso.
+        </p>
+      </div>
+    </div>
+    <span class="pkg-label reveal">Scegli il tuo pacchetto</span>
+    <div class="pkg-grid pkg-grid-3">
+      <div class="pkg-item reveal" data-pkg="Pacchetto A" onclick="selectPkg(this,'brutia')">
+        <span class="pkg-big-num">3</span><span class="pkg-notti-lbl">notti &middot; Segnaposto</span>
+        <div class="pkg-name">Pacchetto A</div>
+        <div class="pkg-date">Date da definire</div>
+        <div class="pkg-price">&euro;&mdash;</div>
+        <div class="pkg-anticipo">Anticipo: da definire</div>
+        <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'brutia');scrollToForm('bru-form')">Seleziona</button>
+      </div>
+      <div class="pkg-item reveal d1" data-pkg="Pacchetto B" onclick="selectPkg(this,'brutia')">
+        <span class="pkg-big-num">2</span><span class="pkg-notti-lbl">notti &middot; Segnaposto</span>
+        <div class="pkg-name">Pacchetto B</div>
+        <div class="pkg-date">Date da definire</div>
+        <div class="pkg-price">&euro;&mdash;</div>
+        <div class="pkg-anticipo">Anticipo: da definire</div>
+        <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'brutia');scrollToForm('bru-form')">Seleziona</button>
+      </div>
+      <div class="pkg-item reveal d2" data-pkg="Pacchetto C" onclick="selectPkg(this,'brutia')">
+        <span class="pkg-big-num">1</span><span class="pkg-notti-lbl">notte &middot; Segnaposto</span>
+        <div class="pkg-name">Pacchetto C</div>
+        <div class="pkg-date">Date da definire</div>
+        <div class="pkg-price">&euro;&mdash;</div>
+        <div class="pkg-anticipo">Anticipo: da definire</div>
+        <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'brutia');scrollToForm('bru-form')">Seleziona</button>
+      </div>
+    </div>
+
+    <div class="form-section" id="bru-form" style="margin-top:40px">
+
+      <!-- Intestazione form -->
+      <div style="background:#7b2ff7;padding:22px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(123,47,247,.4)">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#fff">Iscrizione Brutia Tango Fest 2026</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.12em" id="bru-step-lbl">Passo 1 di 2</span>
+      </div>
+
+      <!-- Progress dots (2 step) -->
+      <div class="bru-prog" style="padding:18px 32px">
+        <div class="bru-pd active" id="b_ss1">
+          <div class="bru-dot">1</div>
+          <div class="bru-dot-lbl">Chi sei</div>
+        </div>
+        <div class="bru-line"></div>
+        <div class="bru-pd" id="b_ss2">
+          <div class="bru-dot">2</div>
+          <div class="bru-dot-lbl">Stanza &amp; Pacchetto</div>
+        </div>
+      </div>
+
+      <div id="b_body" style="padding:36px 32px">
+
+        <!-- ====== STEP 1: Chi sei ====== -->
+        <div class="form-step-ed active" id="b_fs1">
+          <h3 class="fs-title" style="margin-bottom:1.2rem">Modulo registrazioni</h3>
+
+          <div class="f-row-ed">
+            <div class="fg-ed">
+              <label>Cognome *</label>
+              <input type="text" class="fi-ed" id="b_cognome" placeholder="Rossi">
+            </div>
+            <div class="fg-ed">
+              <label>Nome *</label>
+              <input type="text" class="fi-ed" id="b_nome" placeholder="Andrea">
+            </div>
+          </div>
+          <div class="fg-ed">
+            <label>Email *</label>
+            <input type="email" class="fi-ed" id="b_email" placeholder="andrea@email.com">
+          </div>
+          <div class="f-row-ed">
+            <div class="fg-ed">
+              <label>Data di nascita *</label>
+              <input type="date" class="fi-ed" id="b_nascita">
+            </div>
+            <div class="fg-ed">
+              <label>Telefono *</label>
+              <input type="tel" class="fi-ed" id="b_tel" placeholder="+39 333 000 0000">
+            </div>
+          </div>
+          <div class="fg-ed">
+            <label>Facebook (link profilo) *</label>
+            <input type="url" class="fi-ed" id="b_facebook" placeholder="https://facebook.com/tuoprofilo">
+          </div>
+          <div class="f-row-ed">
+            <div class="fg-ed">
+              <label>Citt&agrave; *</label>
+              <input type="text" class="fi-ed" id="b_citta" placeholder="Roma">
+            </div>
+            <div class="fg-ed">
+              <label>Ruolo di ballo *</label>
+              <select class="fi-ed" id="b_ruolo">
+                <option value="">— Seleziona —</option>
+                <option value="Leader">Leader</option>
+                <option value="Follower">Follower</option>
+                <option value="Entrambi">Entrambi</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-nav-ed">
+            <span></span>
+            <button class="btn-next-ed" style="padding:14px 36px;font-size:11px" onclick="bru.next()">Continua &rarr;</button>
+          </div>
+        </div>
+
+        <!-- ====== STEP 2: Stanza + Pacchetto ====== -->
+        <div class="form-step-ed" id="b_fs2">
+          <h3 class="fs-title" style="margin-bottom:.4rem">Stanza &amp; Pacchetto</h3>
+          <p class="fs-sub">Scegli la sistemazione e il pacchetto, poi invia</p>
+
+          <p class="mini-label" style="margin-bottom:.8rem;margin-top:.4rem">Tipologia di camera *</p>
+          <div class="room-grid" style="grid-template-columns:repeat(auto-fill,minmax(120px,1fr))">
+            <label class="room-card stanza-opt" onclick="syncStanza(this)">
+              <input type="radio" name="b_stanza" value="Singola">
+              <div class="room-card-icon"><i class="fa-solid fa-bed"></i></div>
+              <div class="room-card-name">Singola</div>
+              <div class="room-card-desc">+€30/notte</div>
+            </label>
+            <label class="room-card stanza-opt" onclick="syncStanza(this)">
+              <input type="radio" name="b_stanza" value="Doppia">
+              <div class="room-card-icon">
+                <i class="fa-solid fa-bed"></i><i class="fa-solid fa-bed" style="font-size:.9rem;opacity:.5;margin-left:2px"></i>
+              </div>
+              <div class="room-card-name">Doppia</div>
+              <div class="room-card-desc">2 letti singoli</div>
+            </label>
+            <label class="room-card stanza-opt" onclick="syncStanza(this)">
+              <input type="radio" name="b_stanza" value="Matrimoniale">
+              <div class="room-card-icon"><i class="fa-solid fa-bed" style="font-size:1.6rem"></i></div>
+              <div class="room-card-name">Matrimoniale</div>
+              <div class="room-card-desc">Ideale per coppie</div>
+            </label>
+            <label class="room-card stanza-opt" onclick="syncStanza(this)">
+              <input type="radio" name="b_stanza" value="Tripla">
+              <div class="room-card-icon"><i class="fa-solid fa-users"></i></div>
+              <div class="room-card-name">Tripla</div>
+              <div class="room-card-desc">Fino a 3 persone</div>
+            </label>
+          </div>
+
+          <div id="b_compagniContainer" style="display:none;margin-top:1.2rem">
+            <p class="mini-label" style="margin-bottom:.3rem">Con chi desideri condividere la camera?</p>
+            <p style="font-size:.85rem;color:rgba(80,0,180,.5);margin-bottom:.8rem">Se non indichi nessuno, sar&agrave; cura dell&rsquo;organizzazione abbinare i compagni di stanza.</p>
+            <div id="b_compagniFields"></div>
+          </div>
+
+          <p class="mini-label" style="margin-bottom:.8rem;margin-top:1.6rem">Pacchetto *</p>
+          <div class="pkg-cards">
+            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)">
+              <input type="radio" name="b_pkg" value="Pacchetto A">
+              <div class="pkg-card-letter">A</div>
+              <div class="pkg-card-name">Pacchetto A</div>
+              <div class="pkg-card-info">3 notti &middot; &euro;&mdash;</div>
+            </label>
+            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)">
+              <input type="radio" name="b_pkg" value="Pacchetto B">
+              <div class="pkg-card-letter">B</div>
+              <div class="pkg-card-name">Pacchetto B</div>
+              <div class="pkg-card-info">2 notti &middot; &euro;&mdash;</div>
+            </label>
+            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)">
+              <input type="radio" name="b_pkg" value="Pacchetto C">
+              <div class="pkg-card-letter">C</div>
+              <div class="pkg-card-name">Pacchetto C</div>
+              <div class="pkg-card-info">1 notte &middot; &euro;&mdash;</div>
+            </label>
+          </div>
+
+          <div class="fg-ed" style="margin-top:1.4rem">
+            <label>Note o richieste (facoltativo)</label>
+            <textarea class="fi-ed" id="b_note" placeholder="Allergie, esigenze particolari, altro..."></textarea>
+          </div>
+
+          <div class="riepilogo-ed" id="b_riepilogo" style="margin-top:1.5rem"></div>
+
+          <div class="anticipo-box">
+            <div class="anticipo-lbl">Anticipo richiesto</div>
+            <div class="anticipo-val" id="b_anticipo">Da definire</div>
+            <div class="anticipo-note">Riceverai le istruzioni di pagamento via email dopo la conferma.</div>
+          </div>
+
+          <!-- Termini e condizioni -->
+          <label style="display:flex;align-items:flex-start;gap:10px;margin-top:1.4rem;cursor:pointer;font-size:.88rem;line-height:1.55">
+            <input type="checkbox" id="b_tc" style="margin-top:3px;accent-color:#7b2ff7;width:16px;height:16px;flex-shrink:0">
+            <span>Con la compilazione di questo modulo dichiaro di accettare il regolamento europeo sul trattamento dei dati personali (GDPR 679/2016), dando esplicito consenso a ricevere le comunicazioni di PeperTango e autorizzando la pubblicazione di foto e/o video realizzati durante l&rsquo;evento. *</span>
+          </label>
+
+          <div class="form-nav-ed">
+            <button class="btn-prev-ed" onclick="bru.prev()">&larr; Indietro</button>
+            <button class="btn-next-ed" style="padding:14px 36px;font-size:11px" onclick="bru.next()">Invia iscrizione &rarr;</button>
+          </div>
+        </div>
+
+        <div class="form-sending-ed" id="b_sending"><div class="spinner-ed"></div><p class="sending-lbl">Invio in corso...</p></div>
+        <div class="form-ok-ed" id="b_ok">
+          <h3>Iscrizione<br>inviata!</h3>
+          <p>Controlla la tua email. Ti risponderemo appena i dettagli del Brutia Tango Fest 2026 saranno disponibili.</p>
+        </div>
+        <div class="form-error-ed" id="b_error">
+          <p id="b_errMsg">Si &egrave; verificato un errore. Riprova.</p>
+          <button class="btn-retry-ed" onclick="bru.resetError()">Riprova</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- BRUTIA · GALLERIA -->
+  <section class="ev-sub" id="brutia-gallery">
+    <div class="ev-sub-header">
+      <span class="ev-sub-event-tag">Brutia Tango Fest</span>
+      <h3 class="ev-sub-title">Galleria</h3>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
+    </div>
+  </section>
+
+  <!-- BRUTIA · TDJ -->
+  <section class="ev-sub alt" id="brutia-tdj">
+    <div class="ev-sub-header">
+      <span class="ev-sub-event-tag">Brutia Tango Fest 2026 &mdash; TDJ TEAM</span>
+      <h3 class="ev-sub-title">I TDJ</h3>
+    </div>
+    <div class="tdj-grid">
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
+        <div class="tdj-name">Ciccio Aiello</div>
+        <div class="tdj-bio">TDJ</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
+        <div class="tdj-name">Salvo D'Urso</div>
+        <div class="tdj-bio">TDJ</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
+        <div class="tdj-name">Lavinia Livi</div>
+        <div class="tdj-bio">TDJ</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
+        <div class="tdj-name">Alan Spotti</div>
+        <div class="tdj-bio">TDJ</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
+        <div class="tdj-name">Cristina Borgia</div>
+        <div class="tdj-bio">TDJ</div>
+      </div>
+      <div class="tdj-card">
+        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
+        <div class="tdj-name">Carmine Parise</div>
+        <div class="tdj-bio">TDJ</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRUTIA · LOCATION + MAPPA -->
+  <section class="ev-sub" id="brutia-location">
+    <div class="ev-sub-header">
+      <span class="ev-sub-event-tag">Brutia Tango Fest</span>
+      <h3 class="ev-sub-title">Location &amp; Come raggiungerla</h3>
+    </div>
+    <div class="location-grid">
+      <div class="location-info">
+        <h4>Calabria — Location TBD</h4>
+        <p>Il Brutia Tango Fest 2026 si terrà nel cuore della Calabria, nella terra di Bruzio. La location definitiva sarà comunicata presto. Preparati a vivere il tango in una cornice autentica e suggestiva del Sud Italia.</p>
+        <p><strong>Come arrivare:</strong> Indicazioni dettagliate disponibili non appena la location sarà confermata. Seguici per aggiornamenti.</p>
+        <a href="https://maps.google.com/?q=Calabria,Italia" target="_blank" class="location-address">
+          <i class="fa-solid fa-location-dot"></i> Calabria, Italia
+        </a>
+      </div>
+      <div class="map-wrap">
+        <div class="map-placeholder">
+          <i class="fa-solid fa-map-location-dot"></i>
+          Location da confermare
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </div><!-- /page-brutia -->
+
+  <!-- PAGE: SHOP -->
+  <div class="page" id="page-shop">
+
+  <!-- SHOP -->
+  <section class="shop-section" id="shop">
+    <div class="shop-head">
+      <div>
+        <span class="section-tag" style="color:var(--fire)">PeperTango Store</span>
+        <h2 class="section-hl reveal" style="color:#fff">IL NOSTRO<br><em>shop</em></h2>
+      </div>
+      <p class="shop-head-body reveal d2">
+        Abbigliamento e gadget brandizzati PeperTango in edizione limitata.
+        Ogni acquisto sostiene la nostra passione per il tango.
+      </p>
+    </div>
+    <div class="shop-cats reveal">
+      <button class="shop-cat active" onclick="filterShop(this,'all')">Tutto</button>
+      <button class="shop-cat" onclick="filterShop(this,'abbigliamento')">Abbigliamento</button>
+      <button class="shop-cat" onclick="filterShop(this,'gadget')">Gadget</button>
+    </div>
+    <div class="shop-grid reveal d1">
+      <!-- ABBIGLIAMENTO -->
+      <div class="shop-card" data-cat="abbigliamento">
+        <div class="shop-img">
+          <i class="fa-solid fa-shirt" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
+          <span class="shop-img-badge">Abbigliamento</span>
+        </div>
+        <div class="shop-body">
+          <div class="shop-cat-tag">Abbigliamento</div>
+          <div class="shop-name">T-Shirt PeperTango</div>
+          <div class="shop-desc">100% cotone organico. Logo PeperTango stampato. Colori: nero, rosso, bianco.</div>
+          <div class="shop-footer">
+            <span class="shop-price">&euro;35</span>
+            <button class="shop-add" onclick="shopNotify('T-Shirt PeperTango')"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="shop-card" data-cat="abbigliamento">
+        <div class="shop-img">
+          <i class="fa-solid fa-vest" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
+          <span class="shop-img-badge">Abbigliamento</span>
+        </div>
+        <div class="shop-body">
+          <div class="shop-cat-tag">Abbigliamento</div>
+          <div class="shop-name">Felpa PeperTango</div>
+          <div class="shop-desc">Felpa girocollo unisex. Logo stampato sul petto. S / M / L / XL / XXL.</div>
+          <div class="shop-footer">
+            <span class="shop-price">&euro;55</span>
+            <button class="shop-add" onclick="shopNotify('Felpa PeperTango')"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="shop-card" data-cat="abbigliamento">
+        <div class="shop-img">
+          <i class="fa-solid fa-baseball-bat-ball" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
+          <span class="shop-img-badge">Abbigliamento</span>
+        </div>
+        <div class="shop-body">
+          <div class="shop-cat-tag">Abbigliamento</div>
+          <div class="shop-name">Cappellino PeperTango</div>
+          <div class="shop-desc">Berretto con visiera ricamato. Taglia unica regolabile.</div>
+          <div class="shop-footer">
+            <span class="shop-price">&euro;28</span>
+            <button class="shop-add" onclick="shopNotify('Cappellino PeperTango')"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <!-- GADGET -->
+      <div class="shop-card" data-cat="gadget">
+        <div class="shop-img">
+          <i class="fa-solid fa-bag-shopping" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
+          <span class="shop-img-badge">Gadget</span>
+        </div>
+        <div class="shop-body">
+          <div class="shop-cat-tag">Gadget</div>
+          <div class="shop-name">Tote Bag</div>
+          <div class="shop-desc">Shopper in cotone naturale con logo PeperTango serigrafato.</div>
+          <div class="shop-footer">
+            <span class="shop-price">&euro;18</span>
+            <button class="shop-add" onclick="shopNotify('Tote Bag PeperTango')"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="shop-card" data-cat="gadget">
+        <div class="shop-img">
+          <i class="fa-solid fa-mug-hot" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
+          <span class="shop-img-badge">Gadget</span>
+        </div>
+        <div class="shop-body">
+          <div class="shop-cat-tag">Gadget</div>
+          <div class="shop-name">Mug PeperTango</div>
+          <div class="shop-desc">Tazza in ceramica 330ml con logo. Lavabile in lavastoviglie.</div>
+          <div class="shop-footer">
+            <span class="shop-price">&euro;16</span>
+            <button class="shop-add" onclick="shopNotify('Mug PeperTango')"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="shop-card" data-cat="gadget">
+        <div class="shop-img">
+          <i class="fa-solid fa-image" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
+          <span class="shop-img-badge">Gadget</span>
+        </div>
+        <div class="shop-body">
+          <div class="shop-cat-tag">Gadget</div>
+          <div class="shop-name">Poster Festival</div>
+          <div class="shop-desc">Stampa artistica 50x70 cm. Carta opaca 200g. Edizione limitata.</div>
+          <div class="shop-footer">
+            <span class="shop-price">&euro;25</span>
+            <button class="shop-add" onclick="shopNotify('Poster Festival PeperTango')"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="shop-note">
+      <i class="fa-solid fa-truck"></i> Spedizione in tutta Italia &mdash; prodotti realizzati su ordinazione tramite Printful.<br>
+      Per info scrivi a <a href="mailto:shop@pepertango.it">shop@pepertango.it</a>
+    </p>
+  </section>
+
+  </div><!-- /page-shop -->
+
+  <!-- PAGE: CONTATTI -->
+  <div class="page" id="page-contatti">
+
+  <!-- CONTATTI -->
+  <section class="contatti-section" id="contatti">
+    <div class="contatti-grid">
+      <div class="contatti-head">
+        <span class="section-tag">Contattaci</span>
+        <h2 class="section-hl reveal">HAI<br><em>domande?</em></h2>
+        <p class="contatti-body reveal d1">
+          Siamo qui per aiutarti. Scrivici per informazioni sui festival,
+          sulle iscrizioni, sullo shop o per qualsiasi altra curiosit&agrave;.
+        </p>
+        <div class="contatti-links reveal d2">
+          <a href="mailto:info@pepertango.it" class="contatti-link">
+            <i class="fa-solid fa-envelope"></i>info@pepertango.it
+          </a>
+          <a href="#" class="contatti-link">
+            <i class="fa-brands fa-instagram"></i>@pepertango
+          </a>
+          <a href="#" class="contatti-link">
+            <i class="fa-brands fa-facebook"></i>PeperTango
+          </a>
+          <a href="#" class="contatti-link">
+            <i class="fa-brands fa-whatsapp"></i>Scrivici su WhatsApp
+          </a>
+        </div>
+      </div>
+      <div class="contatti-form-wrap reveal d2">
+        <h3>Scrivici</h3>
+        <p>Ti risponderemo entro 24 ore</p>
+        <div class="c-field"><label>Nome</label><input type="text" class="c-input" placeholder="Il tuo nome"></div>
+        <div class="c-field"><label>Email</label><input type="email" class="c-input" placeholder="tua@email.it"></div>
+        <div class="c-field"><label>Oggetto</label>
+          <select class="c-input" style="cursor:pointer">
+            <option>Informazioni sui festival</option>
+            <option>Iscrizione MTP27</option>
+            <option>Iscrizione Brutia</option>
+            <option>Ordine shop</option>
+            <option>Altro</option>
+          </select>
+        </div>
+        <div class="c-field"><label>Messaggio</label><textarea class="c-textarea" placeholder="La tua domanda o richiesta..."></textarea></div>
+        <button class="c-submit" onclick="alert('Grazie! Ti risponderemo presto.')">Invia messaggio</button>
+      </div>
+    </div>
+  </section>
+
+  </div><!-- /page-contatti -->
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">PEPER<span>TANGO</span></div>
+        <p class="footer-mission">
+          Esperienze di tango argentino curate per chi ama ballare,
+          condividere e vivere il ritmo fino in fondo.
+        </p>
+        <div class="footer-social">
+          <a href="#" class="f-social-btn"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="f-social-btn"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" class="f-social-btn"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-cols">
+        <div class="fc-col">
+          <div class="fc-title">Festival</div>
+          <a href="#mtp27">Maratona Tango Piccante</a>
+          <a href="#brutia">Brutia Tango Fest 2026</a>
+        </div>
+        <div class="fc-col">
+          <div class="fc-title">Pacchetti MTP</div>
+          <a href="#mtp27">Cala Jannita</a>
+          <a href="#mtp27">Fiumicello</a>
+          <a href="#mtp27">Spiaggia Nera</a>
+          <a href="#mtp27">Porto di Maratea</a>
+        </div>
+        <div class="fc-col">
+          <div class="fc-title">Contatti</div>
+          <a href="mailto:info@pepertango.it">info@pepertango.it</a>
+          <a href="#shop">Shop</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#contatti">Scrivici</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2027 PeperTango &middot; Tutti i diritti riservati
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    /* ---- Hamburger menu ---- */
+    function toggleMenu() {
+      var btn = document.getElementById('navHamburger');
+      var drawer = document.getElementById('navDrawer');
+      btn.classList.toggle('open');
+      drawer.classList.toggle('open');
+    }
+
+    /* ---- Config ---- */
+    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6pqs5rvySS2_il_VAJLU07ucnIFdZ86RT6OWlhxVzDvb04REbJTt3ZXaziRvmDmTR/exec';
+
+    var PACCHETTI = {
+      'Cala Jannita':     { prezzo:300, anticipo:150, saldo:150, notti:4 },
+      'Fiumicello':       { prezzo:225, anticipo:150, saldo:75,  notti:3 },
+      'Spiaggia Nera':    { prezzo:225, anticipo:150, saldo:75,  notti:3 },
+      'Porto di Maratea': { prezzo:150, anticipo:150, saldo:0,   notti:2 }
+    };
+    var PACCHETTI_BRU = {
+      'Pacchetto A': { prezzo:0, anticipo:0, saldo:0, notti:3 },
+      'Pacchetto B': { prezzo:0, anticipo:0, saldo:0, notti:2 },
+      'Pacchetto C': { prezzo:0, anticipo:0, saldo:0, notti:1 }
+    };
+
+    /* ---- Helpers ---- */
+    function scrollToForm(id) {
+      setTimeout(function() {
+        document.getElementById(id).scrollIntoView({ behavior:'smooth', block:'start' });
+      }, 100);
+    }
+
+    function selectPkg(el, section) {
+      document.querySelectorAll('#' + section + ' .pkg-item').forEach(function(c) {
+        c.classList.remove('selected');
+      });
+      el.classList.add('selected');
+      var pkg = el.dataset.pkg;
+      var prefix = section === 'mtp27' ? 'm' : 'b';
+      document.querySelectorAll('[name="' + prefix + '_pkg"]').forEach(function(r) {
+        var label = r.closest('.r-opt-ed');
+        if (r.value === pkg) { r.checked = true; label.classList.add('sel'); }
+        else { r.checked = false; label.classList.remove('sel'); }
+      });
+    }
+
+    function syncRadio(el, name) {
+      document.querySelectorAll('[name="' + name + '"]').forEach(function(r) {
+        r.closest('.r-opt-ed').classList.remove('sel');
+      });
+      el.classList.add('sel');
+      el.querySelector('input').checked = true;
+    }
+
+    /* ---- Shop ---- */
+    function shopNotify(prodotto) {
+      var soggetto = encodeURIComponent('Ordine: ' + prodotto);
+      var corpo = encodeURIComponent(
+        'Ciao PeperTango,\n\n' +
+        'Vorrei ordinare il seguente prodotto:\n\n' +
+        '- Prodotto: ' + prodotto + '\n' +
+        '- Taglia/variante: \n' +
+        '- Quantità: \n\n' +
+        'Nome e cognome: \n' +
+        'Indirizzo di spedizione: \n' +
+        'Telefono: \n\n' +
+        'Grazie!'
+      );
+      window.location.href = 'mailto:shop@pepertango.it?subject=' + soggetto + '&body=' + corpo;
+    }
+    function filterShop(btn, cat) {
+      document.querySelectorAll('.shop-cat').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelectorAll('.shop-card').forEach(function(c) {
+        c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'block' : 'none';
+      });
+    }
+
+    /* ---- FormEngine ---- */
+    function FormEngine(cfg) {
+      var self   = { step:1, TOT:(cfg.tot||4), data:{} };
+      var p      = cfg.p;
+      var ev     = cfg.ev;
+      var pkgMap = cfg.pkg;
+
+      function g(s)  { return document.getElementById(p + '_' + s); }
+
+      self.ui = function() {
+        for (var i = 1; i <= self.TOT; i++) {
+          var fs = g('fs' + i);
+          var ss = g('ss' + i);
+          if (fs) fs.classList.toggle('active', i === self.step);
+          if (ss) {
+            ss.classList.remove('active','done');
+            if (i === self.step) ss.classList.add('active');
+            else if (i < self.step) ss.classList.add('done');
+          }
+        }
+        var prog = g('prog');
+        if (prog) prog.style.width = (self.step / self.TOT * 100) + '%';
+        if (self.step === self.TOT) self.riepilogo();
+      };
+
+      self.next = function() {
+        if (!self.validate(self.step)) return;
+        if (self.step < self.TOT) { self.step++; self.ui(); }
+        else self.send();
+      };
+
+      self.prev = function() {
+        if (self.step > 1) { self.step--; self.ui(); }
+      };
+
+      self.validate = function(s) {
+        if (ev === 'Brutia') {
+          if (s === 1) {
+            var nome    = g('nome').value.trim();
+            var cognome = g('cognome').value.trim();
+            var email   = g('email').value.trim();
+            var ruoSel   = g('ruolo') ? g('ruolo').value : '';
+            var nascita  = g('nascita') ? g('nascita').value.trim() : '';
+            var tel      = g('tel') ? g('tel').value.trim() : '';
+            var facebook = g('facebook') ? g('facebook').value.trim() : '';
+            var citta    = g('citta') ? g('citta').value.trim() : '';
+            if (!cognome)                       { alert('Inserisci il cognome.'); return false; }
+            if (!nome)                          { alert('Inserisci il nome.'); return false; }
+            if (!email || !email.includes('@')) { alert('Email non valida.'); return false; }
+            if (!nascita)                       { alert('Inserisci la data di nascita.'); return false; }
+            if (!tel)                           { alert('Inserisci il numero di telefono.'); return false; }
+            if (!facebook)                      { alert('Inserisci il link del profilo Facebook.'); return false; }
+            if (!citta)                         { alert('Inserisci la città.'); return false; }
+            if (!ruoSel)                        { alert('Seleziona il ruolo di ballo.'); return false; }
+            self.data.nome           = nome;
+            self.data.cognome        = cognome;
+            self.data.nome_completo  = nome + ' ' + cognome;
+            self.data.email          = email;
+            self.data.data_nascita   = nascita;
+            self.data.tel            = tel;
+            self.data.facebook       = facebook;
+            self.data.citta          = citta;
+            self.data.ruolo          = ruoSel;
+          }
+          if (s === 2) {
+            var st = document.querySelector('[name="b_stanza"]:checked');
+            if (!st) { alert('Seleziona la tipologia di camera.'); return false; }
+            self.data.tipologia_stanza = st.value;
+            var maxC2 = { 'Singola':0, 'Doppia':1, 'Matrimoniale':1, 'Tripla':2 };
+            var nComp = maxC2[st.value] || 0;
+            var compagni = [];
+            for (var ci = 1; ci <= nComp; ci++) {
+              var cNome = g('c' + ci + '_nome');
+              var cCogn = g('c' + ci + '_cognome');
+              var nomeV = cNome ? cNome.value.trim() : '';
+              var cognV = cCogn ? cCogn.value.trim() : '';
+              if (nomeV || cognV) compagni.push((nomeV + ' ' + cognV).trim());
+            }
+            self.data.compagni_stanza = compagni.join(', ');
+            var pkg = document.querySelector('[name="b_pkg"]:checked');
+            if (!pkg) { alert('Seleziona un pacchetto.'); return false; }
+            self.data.pacchetto = pkg.value;
+            var noteEl = g('note');
+            if (noteEl) self.data.note = noteEl.value.trim();
+            var tcEl = document.getElementById('b_tc');
+            if (!tcEl || !tcEl.checked) { alert('Devi accettare i termini e condizioni per procedere.'); return false; }
+          }
+          return true;
+        }
+        if (s === 1) {
+          var pkg  = document.querySelector('[name="' + p + '_pkg"]:checked');
+          var ruo  = document.querySelector('[name="' + p + '_ruolo"]:checked');
+          if (!pkg)  { alert('Seleziona un pacchetto.'); return false; }
+          if (!ruo)  { alert('Seleziona il tuo ruolo.'); return false; }
+          self.data.pacchetto = pkg.value;
+          self.data.ruolo     = ruo.value;
+        }
+        if (s === 2) {
+          var nome    = g('nome').value.trim();
+          var cognome = g('cognome').value.trim();
+          var email   = g('email').value.trim();
+          if (!nome)                          { alert('Inserisci il nome.'); return false; }
+          if (!cognome)                       { alert('Inserisci il cognome.'); return false; }
+          if (!email || !email.includes('@')) { alert('Email non valida.'); return false; }
+          self.data.nome           = nome;
+          self.data.cognome        = cognome;
+          self.data.nome_completo  = nome + ' ' + cognome;
+          self.data.email          = email;
+          self.data.tel            = g('tel').value.trim();
+          self.data.citta          = g('citta').value.trim();
+          self.data.compagno_ballo = g('compagno_ballo').value.trim();
+        }
+        if (s === 3) {
+          var st = document.querySelector('[name="' + p + '_stanza"]:checked');
+          if (!st) { alert('Seleziona il tipo di stanza.'); return false; }
+          self.data.tipologia_stanza = st.value;
+          var maxC = { Singola:0, Doppia:1, Tripla:2, Quadrupla:3 };
+          var n = maxC[st.value] || 0;
+          var compagni = [];
+          for (var i = 1; i <= n; i++) {
+            var cf = g('c' + i);
+            if (cf && cf.value.trim()) compagni.push(cf.value.trim());
+          }
+          var noteEl = g('note');
+          if (noteEl) self.data.note = noteEl.value.trim();
+          self.data.compagni_stanza = compagni;
+        }
+        return true;
+      };
+
+      self.updateCompagni = function(n, label) {
+        document.querySelectorAll('#' + p + '_fs3 .stanza-opt').forEach(function(o) {
+          o.classList.remove('sel');
+        });
+        if (label) { label.classList.add('sel'); label.querySelector('input').checked = true; }
+        var cont = g('compagniContainer');
+        var flds = g('compagniFields');
+        if (!cont || !flds) return;
+        if (n === 0) { cont.style.display = 'none'; flds.innerHTML = ''; return; }
+        cont.style.display = 'block';
+        flds.innerHTML = '';
+        for (var i = 1; i <= n; i++) {
+          var d = document.createElement('div');
+          d.className = 'fg-ed';
+          d.innerHTML = '<label>Compagno/a di stanza ' + i + '</label>'
+            + '<input type="text" class="fi-ed" id="' + p + '_c' + i + '" placeholder="Nome e cognome">';
+          flds.appendChild(d);
+        }
+      };
+
+      self.riepilogo = function() {
+        var pkgVal = self.data.pacchetto;
+        if (!pkgVal) {
+          var pkgEl = document.querySelector('[name="' + p + '_pkg"]:checked');
+          if (pkgEl) pkgVal = pkgEl.value;
+        }
+        var info = pkgMap[pkgVal] || {};
+        var evName  = ev === 'MTP27' ? 'Maratona Tango Piccante 2027' : 'Brutia Tango Fest 2026';
+        var prezzoTxt = info.prezzo ? '€' + info.prezzo : 'Da definire';
+        var rows = [
+          ['Evento',         evName],
+          ['Pacchetto',      pkgVal                     || '—'],
+          ['Ruolo',          self.data.ruolo            || '—'],
+          ['Nome',           self.data.nome             || '—'],
+          ['Cognome',        self.data.cognome          || '—'],
+          ['Email',          self.data.email            || '—'],
+          ['Telefono',       self.data.tel              || '—'],
+          ['Città',     self.data.citta            || '—'],
+          ['Compagno ballo', self.data.compagno_ballo   || '—']
+        ];
+        if (self.data.tipologia_stanza) {
+          rows.push(['Tipo stanza', self.data.tipologia_stanza]);
+          if (self.data.tipologia_stanza !== 'Singola') {
+            var compTxt = (self.data.compagni_stanza && self.data.compagni_stanza.length)
+              ? self.data.compagni_stanza.join(', ') : 'da assegnare';
+            rows.push(['Compagni stanza', compTxt]);
+          }
+        }
+        if (self.data.note) rows.push(['Note', self.data.note]);
+        rows.push(['Prezzo totale', prezzoTxt]);
+        var box = g('riepilogo');
+        if (box) box.innerHTML = rows.map(function(r) {
+          var rose = r[0] === 'Prezzo totale' ? ' rose' : '';
+          return '<div class="rr"><span class="rl">' + r[0] + '</span><span class="rv' + rose + '">' + r[1] + '</span></div>';
+        }).join('');
+        var aEl = g('anticipo');
+        if (aEl) aEl.textContent = info.anticipo ? '€' + info.anticipo : 'Da definire';
+      };
+
+      self.send = function() {
+        for (var i = 1; i <= self.TOT; i++) {
+          var fs = g('fs' + i);
+          if (fs) fs.classList.remove('active');
+        }
+        g('sending').classList.add('active');
+        var iname = 'iframe_' + p + '_' + Date.now();
+        var iframe = document.createElement('iframe');
+        iframe.name = iname; iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+        var form = document.createElement('form');
+        form.method = 'POST'; form.action = APPS_SCRIPT_URL;
+        form.target = iname; form.style.display = 'none';
+        var campi = {
+          action:           'nuova_iscrizione',
+          evento:           ev,
+          nome:             self.data.nome_completo      || '',
+          cognome:          self.data.cognome            || '',
+          email:            self.data.email              || '',
+          tel:              self.data.tel                || '',
+          citta:            self.data.citta              || '',
+          ruolo:            self.data.ruolo              || '',
+          pacchetto:        self.data.pacchetto          || '',
+          compagno_ballo:   self.data.compagno_ballo     || '',
+          tipologia_stanza: self.data.tipologia_stanza   || '',
+          compagni_stanza:  (self.data.compagni_stanza || []).join(','),
+          note:             self.data.note               || ''
+        };
+        Object.keys(campi).forEach(function(k) {
+          var inp = document.createElement('input');
+          inp.type = 'hidden'; inp.name = k; inp.value = campi[k];
+          form.appendChild(inp);
+        });
+        document.body.appendChild(form);
+        var done = false;
+        function cleanup() {
+          setTimeout(function() {
+            if (document.body.contains(form))   document.body.removeChild(form);
+            if (document.body.contains(iframe)) document.body.removeChild(iframe);
+          }, 1000);
+          window.removeEventListener('message', msgHandler);
+        }
+        function msgHandler(e) {
+          if (done) return;
+          var d = e.data;
+          if (!d || typeof d !== 'object' || !('ok' in d)) return;
+          done = true; cleanup();
+          g('sending').classList.remove('active');
+          if (d.ok === false) { self.showError(d.error || 'Siè verificato un errore.'); }
+          else { self.ok(); }
+        }
+        window.addEventListener('message', msgHandler);
+        setTimeout(function() {
+          if (!done) { done = true; cleanup(); self.ok(); }
+        }, 10000);
+        form.submit();
+      };
+
+      self.ok = function() {
+        g('sending').classList.remove('active');
+        g('ok').classList.add('active');
+      };
+
+      self.showError = function(msg) {
+        g('sending').classList.remove('active');
+        var errEl = g('error');
+        var msgEl = g('errMsg');
+        if (msgEl) msgEl.textContent = msg;
+        if (errEl) errEl.classList.add('active');
+      };
+
+      self.resetError = function() {
+        g('error').classList.remove('active');
+        var fs = g('fs' + self.step);
+        if (fs) fs.classList.add('active');
+      };
+
+      return self;
+    }
+
+    var mtp = FormEngine({ p:'m', ev:'MTP27',  pkg: PACCHETTI });
+    var bru = FormEngine({ p:'b', ev:'Brutia', pkg: PACCHETTI_BRU, tot:2 });
+
+    function syncStanza(label) {
+      document.querySelectorAll('#b_fs2 .stanza-opt').forEach(function(o) { o.classList.remove('selected'); });
+      if (label) { label.classList.add('selected'); label.querySelector('input').checked = true; }
+      var val = label ? label.querySelector('input').value : '';
+      var maxC = { 'Singola':0, 'Doppia':1, 'Matrimoniale':1, 'Tripla':2 };
+      var n = maxC[val] !== undefined ? maxC[val] : 0;
+      var cont = document.getElementById('b_compagniContainer');
+      var flds = document.getElementById('b_compagniFields');
+      if (!cont || !flds) return;
+      if (n === 0) { cont.style.display = 'none'; flds.innerHTML = ''; return; }
+      cont.style.display = 'block';
+      flds.innerHTML = '';
+      for (var i = 1; i <= n; i++) {
+        var d = document.createElement('div');
+        d.className = 'f-row-ed';
+        d.style.marginBottom = '1rem';
+        d.innerHTML = '<div class="fg-ed">'
+          + '<label>Compagno/a ' + i + ' — Nome</label>'
+          + '<input type="text" class="fi-ed" id="b_c' + i + '_nome" placeholder="Mario">'
+          + '</div>'
+          + '<div class="fg-ed">'
+          + '<label>Cognome</label>'
+          + '<input type="text" class="fi-ed" id="b_c' + i + '_cognome" placeholder="Rossi">'
+          + '</div>';
+        flds.appendChild(d);
+      }
+    }
+    function bruUpdateCompagni(n, label) {
+      syncStanza(label);
+    }
+
+    function bruSelPkg(label) {
+      bru.data.pacchetto = label.querySelector('input').value;
+      bru.riepilogo();
+    }
+
+    /* ---- Scroll reveal ---- */
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.07 });
+    document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+    /* ---- Virtual pages ---- */
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+      var target = document.getElementById('page-' + name);
+      if (target) { target.classList.add('active'); }
+      window.scrollTo(0, 0);
+      /* highlight active nav link */
+      document.querySelectorAll('.nav-links a[data-page]').forEach(function(a) {
+        a.style.background = a.dataset.page === name ? 'var(--accent)' : '';
+        a.style.color = a.dataset.page === name ? '#fff' : '';
+      });
+    }
+    /* init: active nav highlight for home */
+    document.addEventListener('DOMContentLoaded', function() { showPage('home'); });
+  </script>
+</body>
+</html>

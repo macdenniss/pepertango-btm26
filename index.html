@@ -1309,39 +1309,40 @@
       html { font-size: 100%; }
 
       /* NAV */
-      nav { height: 64px; padding: 0 4%; }
+      nav { height: 64px; padding: 0 5%; }
       .nav-brand img { height: 44px; }
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
 
       /* HERO */
       .hero {
-        padding-top: 80px; padding-left: 4%; padding-right: 4%;
-        min-height: auto; padding-bottom: 48px;
+        padding-top: 100px; padding-left: 5%; padding-right: 5%;
+        min-height: auto; padding-bottom: 60px;
       }
-      .hero-hl { font-size: clamp(2.2rem, 9vw, 3.5rem); max-width: 100%; }
-      .hero-sub { font-size: 0.95rem; max-width: 100%; margin-top: 1rem; }
+      .hero-hl { font-size: clamp(2.4rem, 10vw, 3.8rem); max-width: 100%; line-height: 1.2; }
+      .hero-sub { font-size: 1rem; max-width: 100%; margin-top: 1.5rem; line-height: 1.6; }
       .hero-pills { display: none; }
-      .hero-actions { flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
-      .hero-btn { justify-content: center; padding: 13px 20px; font-size: 15px; }
+      .hero-actions { flex-direction: column; gap: 1rem; margin-top: 2rem; }
+      .hero-btn { justify-content: center; padding: 14px 24px; font-size: 16px; }
       .hero-scroll { display: none; }
 
       /* CHI SIAMO */
-      .chi-siamo { padding: 48px 4%; }
-      .chi-siamo-grid { grid-template-columns: 1fr; gap: 32px; }
+      .chi-siamo { padding: 60px 5%; }
+      .chi-siamo-grid { grid-template-columns: 1fr; gap: 40px; }
       .chi-siamo-img-wrap { display: none; }
 
       /* SEZIONI EVENTO */
-      .event-section { padding: 48px 4% 40px; }
-      .ev-head { grid-template-columns: 1fr; gap: 0; margin-bottom: 32px; }
-      .ev-head-hl { font-size: clamp(2rem, 8vw, 3rem); }
-      .ev-photo { aspect-ratio: 4/3; margin-bottom: 32px; }
+      .event-section { padding: 60px 5% 50px; }
+      .ev-head { grid-template-columns: 1fr; gap: 0; margin-bottom: 40px; }
+      .ev-head-hl { font-size: clamp(2.2rem, 9vw, 3.2rem); line-height: 1.2; }
+      .ev-photo { aspect-ratio: 3/2; margin-bottom: 40px; }
 
       /* PACCHETTI */
-      .pkg-grid-4 { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .pkg-grid-4 { grid-template-columns: 1fr 1fr; gap: 12px; }
       .pkg-grid-3 { grid-template-columns: 1fr; }
-      .pkg-big-num { font-size: 3rem; }
-      .pkg-price { font-size: 1.6rem; }
+      .pkg-item { padding: 20px 14px; }
+      .pkg-big-num { font-size: 3.2rem; }
+      .pkg-price { font-size: 1.7rem; }
 
       /* EV-SUB (galleria, tdj, location) */
       .ev-sub { padding: 40px 4%; }
@@ -1384,14 +1385,46 @@
     }
 
     @media (max-width: 480px) {
-      .pkg-grid-4 { grid-template-columns: 1fr; }
-      .tdj-grid { grid-template-columns: repeat(2, 1fr); }
-      #page-brutia .tdj-grid { grid-template-columns: repeat(2, 1fr); }
+      /* Base spacing */
+      html { font-size: 100%; }
+      body { padding-top: 0; }
+
+      /* Hero adjustments */
+      .hero { padding-top: 90px; padding-left: 5%; padding-right: 5%; padding-bottom: 50px; }
+      .hero-hl { font-size: clamp(2rem, 11vw, 2.8rem); line-height: 1.2; }
+      .hero-sub { font-size: 0.95rem; line-height: 1.5; margin-top: 1.2rem; }
+      .hero-actions { gap: 0.8rem; margin-top: 1.8rem; }
+      .hero-btn { padding: 12px 20px; font-size: 14px; }
+
+      /* Sections */
+      .chi-siamo { padding: 50px 5%; }
+      .event-section { padding: 50px 5% 40px; }
+      .ev-head { margin-bottom: 32px; }
+      .ev-photo { aspect-ratio: 5/4; margin-bottom: 32px; }
+      .gallery-section { padding: 50px 5%; }
+
+      /* Grid layouts */
+      .pkg-grid-4 { grid-template-columns: 1fr; gap: 12px; }
+      .pkg-grid-3 { grid-template-columns: 1fr; }
+      .pkg-item { padding: 18px 12px; margin-bottom: 8px; }
+      .pkg-big-num { font-size: 2.8rem; }
+      .pkg-price { font-size: 1.5rem; }
+      .pkg-name { font-size: 1.1rem; }
+
+      /* Grid systems */
+      .tdj-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      #page-brutia .tdj-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
       .room-grid { grid-template-columns: 1fr; }
       .pkg-grid { grid-template-columns: 1fr; }
       .footer-cols { grid-template-columns: 1fr; }
-      .hero-hl { font-size: clamp(1.9rem, 10vw, 2.8rem); }
+      .gallery-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+
+      /* Forms */
       #bru-form .bru-prog { overflow-x: auto; }
+
+      /* Spacing improvements */
+      .section-tag { font-size: 0.85rem; margin-bottom: 0.5rem; }
+      .section-hl { line-height: 1.2; }
     }
   </style>
 </head>

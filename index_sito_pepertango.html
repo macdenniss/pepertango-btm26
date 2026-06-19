@@ -2345,20 +2345,13 @@
       self.validate = function(s) {
         if (ev === 'Brutia') {
           if (s === 1) {
-            var nome    = g('nome').value.trim();
-            var cognome = g('cognome').value.trim();
-            var email   = g('email').value.trim();
+            var nome    = g('nome') ? g('nome').value.trim() : '';
+            var cognome = g('cognome') ? g('cognome').value.trim() : '';
+            var email   = g('email') ? g('email').value.trim() : '';
             var nascita  = g('nascita') ? g('nascita').value.trim() : '';
             var tel      = g('tel') ? g('tel').value.trim() : '';
             var facebook = g('facebook') ? g('facebook').value.trim() : '';
             var citta    = g('citta') ? g('citta').value.trim() : '';
-            if (!cognome)                       { alert('Inserisci il cognome.'); return false; }
-            if (!nome)                          { alert('Inserisci il nome.'); return false; }
-            if (!email || !email.includes('@')) { alert('Email non valida.'); return false; }
-            if (!nascita)                       { alert('Inserisci la data di nascita.'); return false; }
-            if (!tel)                           { alert('Inserisci il numero di telefono.'); return false; }
-            if (!facebook)                      { alert('Inserisci il link del profilo Facebook.'); return false; }
-            if (!citta)                         { alert('Inserisci la città.'); return false; }
             self.data.nome           = nome;
             self.data.cognome        = cognome;
             self.data.nome_completo  = nome + ' ' + cognome;
@@ -2370,13 +2363,11 @@
           }
           if (s === 2) {
             var ruolo = g('ruolo');
-            if (!ruolo || !ruolo.value) { alert('Seleziona il ruolo di ballo.'); return false; }
-            self.data.ruolo = ruolo.value;
+            if (ruolo) self.data.ruolo = ruolo.value;
             var st = document.querySelector('[name="b_stanza"]:checked');
-            if (!st) { alert('Seleziona la tipologia di camera.'); return false; }
-            self.data.tipologia_stanza = st.value;
+            if (st) self.data.tipologia_stanza = st.value;
             var maxC2 = { 'Singola':0, 'Doppia':1, 'Matrimoniale':1, 'Tripla':2 };
-            var nComp = maxC2[st.value] || 0;
+            var nComp = maxC2[st ? st.value : ''] || 0;
             var compagni = [];
             for (var ci = 1; ci <= nComp; ci++) {
               var cNome = g('c' + ci + '_nome');
@@ -2387,12 +2378,9 @@
             }
             self.data.compagni_stanza = compagni.join(', ');
             var pkg = document.querySelector('[name="b_pkg"]:checked');
-            if (!pkg) { alert('Seleziona un pacchetto.'); return false; }
-            self.data.pacchetto = pkg.value;
+            if (pkg) self.data.pacchetto = pkg.value;
             var noteEl = g('note');
             if (noteEl) self.data.note = noteEl.value.trim();
-            var tcEl = document.getElementById('b_tc');
-            if (!tcEl || !tcEl.checked) { alert('Devi accettare i termini e condizioni per procedere.'); return false; }
           }
           return true;
         }

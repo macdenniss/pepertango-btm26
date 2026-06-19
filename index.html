@@ -1728,7 +1728,188 @@
         </p>
       </div>
     </div>
-    <span class="pkg-label reveal">Scegli il tuo pacchetto</span>
+
+    <!-- FORM IN CIMA -->
+    <div class="form-section" id="bru-form" style="margin-top:40px;margin-bottom:60px">
+
+      <!-- Intestazione form -->
+      <div style="background:#7b2ff7;padding:22px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(123,47,247,.4)">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#fff">Registrati al Brutia Tango Fest 2026</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.12em" id="bru-step-lbl">Passo 1 di 2</span>
+      </div>
+
+      <!-- Progress dots (2 step) -->
+      <div class="bru-prog" style="padding:18px 32px">
+        <div class="bru-pd active" id="b_ss1">
+          <div class="bru-dot">1</div>
+          <div class="bru-dot-lbl">I tuoi dati</div>
+        </div>
+        <div class="bru-line"></div>
+        <div class="bru-pd" id="b_ss2">
+          <div class="bru-dot">2</div>
+          <div class="bru-dot-lbl">Pacchetto e camera</div>
+        </div>
+      </div>
+
+      <div id="b_body" style="padding:36px 32px">
+
+        <!-- ====== STEP 1: Chi sei ====== -->
+        <div class="form-step-ed active" id="b_fs1">
+          <h3 class="fs-title" style="margin-bottom:.8rem">Chi sei?</h3>
+          <p class="fs-sub" style="margin-bottom:1.4rem">Compilare i campi con * è obbligatorio</p>
+
+          <div class="f-row-ed">
+            <div class="fg-ed">
+              <label>Cognome *</label>
+              <input type="text" class="fi-ed" id="b_cognome" placeholder="Rossi">
+            </div>
+            <div class="fg-ed">
+              <label>Nome *</label>
+              <input type="text" class="fi-ed" id="b_nome" placeholder="Andrea">
+            </div>
+          </div>
+          <div class="fg-ed">
+            <label>Email *</label>
+            <input type="email" class="fi-ed" id="b_email" placeholder="andrea@email.com">
+          </div>
+          <div class="f-row-ed">
+            <div class="fg-ed">
+              <label>Data di nascita *</label>
+              <input type="date" class="fi-ed" id="b_nascita">
+            </div>
+            <div class="fg-ed">
+              <label>Telefono *</label>
+              <input type="tel" class="fi-ed" id="b_tel" placeholder="+39 333 000 0000">
+            </div>
+          </div>
+          <div class="fg-ed">
+            <label>Facebook (profilo personale) *</label>
+            <input type="url" class="fi-ed" id="b_facebook" placeholder="https://facebook.com/tuoprofilo">
+          </div>
+          <div class="f-row-ed">
+            <div class="fg-ed">
+              <label>Città *</label>
+              <input type="text" class="fi-ed" id="b_citta" placeholder="Roma">
+            </div>
+            <div class="fg-ed">
+              <label>Nel tango ballo come *</label>
+              <select class="fi-ed" id="b_ruolo">
+                <option value="">— Seleziona —</option>
+                <option value="Leader">Leader</option>
+                <option value="Follower">Follower</option>
+                <option value="Entrambi">Entrambi</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-nav-ed">
+            <span></span>
+            <button class="btn-next-ed" style="padding:14px 36px;font-size:11px" onclick="bru.next()">Continua &rarr;</button>
+          </div>
+        </div>
+
+        <!-- ====== STEP 2: Stanza + Pacchetto ====== -->
+        <div class="form-step-ed" id="b_fs2">
+          <h3 class="fs-title" style="margin-bottom:.8rem">Scegli la tua esperienza</h3>
+          <p class="fs-sub" style="margin-bottom:1.4rem">Camera e pacchetto</p>
+
+          <p class="mini-label" style="margin-bottom:.8rem;margin-top:.4rem">Che camera preferisci? *</p>
+          <div class="room-grid" style="grid-template-columns:repeat(auto-fill,minmax(120px,1fr))">
+            <label class="room-card stanza-opt" onclick="syncStanza(this)">
+              <input type="radio" name="b_stanza" value="Singola">
+              <div class="room-card-icon"><i class="fa-solid fa-bed"></i></div>
+              <div class="room-card-name">Singola</div>
+              <div class="room-card-desc">+€30/notte</div>
+            </label>
+            <label class="room-card stanza-opt" onclick="syncStanza(this)">
+              <input type="radio" name="b_stanza" value="Doppia">
+              <div class="room-card-icon">
+                <i class="fa-solid fa-bed"></i><i class="fa-solid fa-bed" style="font-size:.9rem;opacity:.5;margin-left:2px"></i>
+              </div>
+              <div class="room-card-name">Doppia</div>
+              <div class="room-card-desc">2 letti singoli</div>
+            </label>
+            <label class="room-card stanza-opt" onclick="syncStanza(this)">
+              <input type="radio" name="b_stanza" value="Matrimoniale">
+              <div class="room-card-icon"><i class="fa-solid fa-bed" style="font-size:1.6rem"></i></div>
+              <div class="room-card-name">Matrimoniale</div>
+              <div class="room-card-desc">Per coppie</div>
+            </label>
+            <label class="room-card stanza-opt" onclick="syncStanza(this)">
+              <input type="radio" name="b_stanza" value="Tripla">
+              <div class="room-card-icon"><i class="fa-solid fa-users"></i></div>
+              <div class="room-card-name">Tripla</div>
+              <div class="room-card-desc">Fino a 3 persone</div>
+            </label>
+          </div>
+
+          <div id="b_compagniContainer" style="display:none;margin-top:1.2rem">
+            <p class="mini-label" style="margin-bottom:.3rem">Con chi vuoi stare? (Facoltativo)</p>
+            <p style="font-size:.85rem;color:rgba(80,0,180,.5);margin-bottom:.8rem">Lascialo vuoto e penseremo noi agli abbinamenti.</p>
+            <div id="b_compagniFields"></div>
+          </div>
+
+          <p class="mini-label" style="margin-bottom:.8rem;margin-top:1.6rem">Quale pacchetto scegli? *</p>
+          <div class="pkg-cards">
+            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)">
+              <input type="radio" name="b_pkg" value="Pacchetto A">
+              <div class="pkg-card-letter">A</div>
+              <div class="pkg-card-name">Pacchetto A</div>
+              <div class="pkg-card-info">3 notti &middot; &euro;&mdash;</div>
+            </label>
+            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)">
+              <input type="radio" name="b_pkg" value="Pacchetto B">
+              <div class="pkg-card-letter">B</div>
+              <div class="pkg-card-name">Pacchetto B</div>
+              <div class="pkg-card-info">2 notti &middot; &euro;&mdash;</div>
+            </label>
+            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)">
+              <input type="radio" name="b_pkg" value="Pacchetto C">
+              <div class="pkg-card-letter">C</div>
+              <div class="pkg-card-name">Pacchetto C</div>
+              <div class="pkg-card-info">1 notte &middot; &euro;&mdash;</div>
+            </label>
+          </div>
+
+          <div class="fg-ed" style="margin-top:1.4rem">
+            <label>Note particolari (Facoltativo)</label>
+            <textarea class="fi-ed" id="b_note" placeholder="Allergie, esigenze particolari, altro..."></textarea>
+          </div>
+
+          <div class="riepilogo-ed" id="b_riepilogo" style="margin-top:1.5rem"></div>
+
+          <div class="anticipo-box">
+            <div class="anticipo-lbl">Anticipo richiesto</div>
+            <div class="anticipo-val" id="b_anticipo">Da definire</div>
+            <div class="anticipo-note">Riceverai le istruzioni di pagamento via email.</div>
+          </div>
+
+          <!-- Termini e condizioni -->
+          <label style="display:flex;align-items:flex-start;gap:10px;margin-top:1.4rem;cursor:pointer;font-size:.88rem;line-height:1.55">
+            <input type="checkbox" id="b_tc" style="margin-top:3px;accent-color:#7b2ff7;width:16px;height:16px;flex-shrink:0">
+            <span>Accetto il trattamento dei dati personali secondo GDPR 679/2016 e autorizzo la pubblicazione di foto/video dell'evento. *</span>
+          </label>
+
+          <div class="form-nav-ed">
+            <button class="btn-prev-ed" onclick="bru.prev()">&larr; Indietro</button>
+            <button class="btn-next-ed" style="padding:14px 36px;font-size:11px" onclick="bru.next()">Invia iscrizione &rarr;</button>
+          </div>
+        </div>
+
+        <div class="form-sending-ed" id="b_sending"><div class="spinner-ed"></div><p class="sending-lbl">Invio in corso...</p></div>
+        <div class="form-ok-ed" id="b_ok">
+          <h3>Iscrizione<br>confermata!</h3>
+          <p>Controlla la tua email. Ti risponderemo appena i dettagli saranno disponibili.</p>
+        </div>
+        <div class="form-error-ed" id="b_error">
+          <p id="b_errMsg">Si è verificato un errore. Riprova.</p>
+          <button class="btn-retry-ed" onclick="bru.resetError()">Riprova</button>
+        </div>
+
+      </div>
+    </div>
+
+    <span class="pkg-label reveal" style="margin-top:60px">Dettagli dei pacchetti</span>
     <div class="pkg-grid pkg-grid-3">
       <div class="pkg-item reveal" data-pkg="Pacchetto A" onclick="selectPkg(this,'brutia')">
         <span class="pkg-big-num">3</span><span class="pkg-notti-lbl">notti &middot; Segnaposto</span>
@@ -1756,183 +1937,6 @@
       </div>
     </div>
 
-    <div class="form-section" id="bru-form" style="margin-top:40px">
-
-      <!-- Intestazione form -->
-      <div style="background:#7b2ff7;padding:22px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(123,47,247,.4)">
-        <span style="font-size:11px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:#fff">Iscrizione Brutia Tango Fest 2026</span>
-        <span style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.12em" id="bru-step-lbl">Passo 1 di 2</span>
-      </div>
-
-      <!-- Progress dots (2 step) -->
-      <div class="bru-prog" style="padding:18px 32px">
-        <div class="bru-pd active" id="b_ss1">
-          <div class="bru-dot">1</div>
-          <div class="bru-dot-lbl">Chi sei</div>
-        </div>
-        <div class="bru-line"></div>
-        <div class="bru-pd" id="b_ss2">
-          <div class="bru-dot">2</div>
-          <div class="bru-dot-lbl">Stanza &amp; Pacchetto</div>
-        </div>
-      </div>
-
-      <div id="b_body" style="padding:36px 32px">
-
-        <!-- ====== STEP 1: Chi sei ====== -->
-        <div class="form-step-ed active" id="b_fs1">
-          <h3 class="fs-title" style="margin-bottom:1.2rem">Modulo registrazioni</h3>
-
-          <div class="f-row-ed">
-            <div class="fg-ed">
-              <label>Cognome *</label>
-              <input type="text" class="fi-ed" id="b_cognome" placeholder="Rossi">
-            </div>
-            <div class="fg-ed">
-              <label>Nome *</label>
-              <input type="text" class="fi-ed" id="b_nome" placeholder="Andrea">
-            </div>
-          </div>
-          <div class="fg-ed">
-            <label>Email *</label>
-            <input type="email" class="fi-ed" id="b_email" placeholder="andrea@email.com">
-          </div>
-          <div class="f-row-ed">
-            <div class="fg-ed">
-              <label>Data di nascita *</label>
-              <input type="date" class="fi-ed" id="b_nascita">
-            </div>
-            <div class="fg-ed">
-              <label>Telefono *</label>
-              <input type="tel" class="fi-ed" id="b_tel" placeholder="+39 333 000 0000">
-            </div>
-          </div>
-          <div class="fg-ed">
-            <label>Facebook (link profilo) *</label>
-            <input type="url" class="fi-ed" id="b_facebook" placeholder="https://facebook.com/tuoprofilo">
-          </div>
-          <div class="f-row-ed">
-            <div class="fg-ed">
-              <label>Citt&agrave; *</label>
-              <input type="text" class="fi-ed" id="b_citta" placeholder="Roma">
-            </div>
-            <div class="fg-ed">
-              <label>Ruolo di ballo *</label>
-              <select class="fi-ed" id="b_ruolo">
-                <option value="">— Seleziona —</option>
-                <option value="Leader">Leader</option>
-                <option value="Follower">Follower</option>
-                <option value="Entrambi">Entrambi</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-nav-ed">
-            <span></span>
-            <button class="btn-next-ed" style="padding:14px 36px;font-size:11px" onclick="bru.next()">Continua &rarr;</button>
-          </div>
-        </div>
-
-        <!-- ====== STEP 2: Stanza + Pacchetto ====== -->
-        <div class="form-step-ed" id="b_fs2">
-          <h3 class="fs-title" style="margin-bottom:.4rem">Stanza &amp; Pacchetto</h3>
-          <p class="fs-sub">Scegli la sistemazione e il pacchetto, poi invia</p>
-
-          <p class="mini-label" style="margin-bottom:.8rem;margin-top:.4rem">Tipologia di camera *</p>
-          <div class="room-grid" style="grid-template-columns:repeat(auto-fill,minmax(120px,1fr))">
-            <label class="room-card stanza-opt" onclick="syncStanza(this)">
-              <input type="radio" name="b_stanza" value="Singola">
-              <div class="room-card-icon"><i class="fa-solid fa-bed"></i></div>
-              <div class="room-card-name">Singola</div>
-              <div class="room-card-desc">+€30/notte</div>
-            </label>
-            <label class="room-card stanza-opt" onclick="syncStanza(this)">
-              <input type="radio" name="b_stanza" value="Doppia">
-              <div class="room-card-icon">
-                <i class="fa-solid fa-bed"></i><i class="fa-solid fa-bed" style="font-size:.9rem;opacity:.5;margin-left:2px"></i>
-              </div>
-              <div class="room-card-name">Doppia</div>
-              <div class="room-card-desc">2 letti singoli</div>
-            </label>
-            <label class="room-card stanza-opt" onclick="syncStanza(this)">
-              <input type="radio" name="b_stanza" value="Matrimoniale">
-              <div class="room-card-icon"><i class="fa-solid fa-bed" style="font-size:1.6rem"></i></div>
-              <div class="room-card-name">Matrimoniale</div>
-              <div class="room-card-desc">Ideale per coppie</div>
-            </label>
-            <label class="room-card stanza-opt" onclick="syncStanza(this)">
-              <input type="radio" name="b_stanza" value="Tripla">
-              <div class="room-card-icon"><i class="fa-solid fa-users"></i></div>
-              <div class="room-card-name">Tripla</div>
-              <div class="room-card-desc">Fino a 3 persone</div>
-            </label>
-          </div>
-
-          <div id="b_compagniContainer" style="display:none;margin-top:1.2rem">
-            <p class="mini-label" style="margin-bottom:.3rem">Con chi desideri condividere la camera?</p>
-            <p style="font-size:.85rem;color:rgba(80,0,180,.5);margin-bottom:.8rem">Se non indichi nessuno, sar&agrave; cura dell&rsquo;organizzazione abbinare i compagni di stanza.</p>
-            <div id="b_compagniFields"></div>
-          </div>
-
-          <p class="mini-label" style="margin-bottom:.8rem;margin-top:1.6rem">Pacchetto *</p>
-          <div class="pkg-cards">
-            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)">
-              <input type="radio" name="b_pkg" value="Pacchetto A">
-              <div class="pkg-card-letter">A</div>
-              <div class="pkg-card-name">Pacchetto A</div>
-              <div class="pkg-card-info">3 notti &middot; &euro;&mdash;</div>
-            </label>
-            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)">
-              <input type="radio" name="b_pkg" value="Pacchetto B">
-              <div class="pkg-card-letter">B</div>
-              <div class="pkg-card-name">Pacchetto B</div>
-              <div class="pkg-card-info">2 notti &middot; &euro;&mdash;</div>
-            </label>
-            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)">
-              <input type="radio" name="b_pkg" value="Pacchetto C">
-              <div class="pkg-card-letter">C</div>
-              <div class="pkg-card-name">Pacchetto C</div>
-              <div class="pkg-card-info">1 notte &middot; &euro;&mdash;</div>
-            </label>
-          </div>
-
-          <div class="fg-ed" style="margin-top:1.4rem">
-            <label>Note o richieste (facoltativo)</label>
-            <textarea class="fi-ed" id="b_note" placeholder="Allergie, esigenze particolari, altro..."></textarea>
-          </div>
-
-          <div class="riepilogo-ed" id="b_riepilogo" style="margin-top:1.5rem"></div>
-
-          <div class="anticipo-box">
-            <div class="anticipo-lbl">Anticipo richiesto</div>
-            <div class="anticipo-val" id="b_anticipo">Da definire</div>
-            <div class="anticipo-note">Riceverai le istruzioni di pagamento via email dopo la conferma.</div>
-          </div>
-
-          <!-- Termini e condizioni -->
-          <label style="display:flex;align-items:flex-start;gap:10px;margin-top:1.4rem;cursor:pointer;font-size:.88rem;line-height:1.55">
-            <input type="checkbox" id="b_tc" style="margin-top:3px;accent-color:#7b2ff7;width:16px;height:16px;flex-shrink:0">
-            <span>Con la compilazione di questo modulo dichiaro di accettare il regolamento europeo sul trattamento dei dati personali (GDPR 679/2016), dando esplicito consenso a ricevere le comunicazioni di PeperTango e autorizzando la pubblicazione di foto e/o video realizzati durante l&rsquo;evento. *</span>
-          </label>
-
-          <div class="form-nav-ed">
-            <button class="btn-prev-ed" onclick="bru.prev()">&larr; Indietro</button>
-            <button class="btn-next-ed" style="padding:14px 36px;font-size:11px" onclick="bru.next()">Invia iscrizione &rarr;</button>
-          </div>
-        </div>
-
-        <div class="form-sending-ed" id="b_sending"><div class="spinner-ed"></div><p class="sending-lbl">Invio in corso...</p></div>
-        <div class="form-ok-ed" id="b_ok">
-          <h3>Iscrizione<br>inviata!</h3>
-          <p>Controlla la tua email. Ti risponderemo appena i dettagli del Brutia Tango Fest 2026 saranno disponibili.</p>
-        </div>
-        <div class="form-error-ed" id="b_error">
-          <p id="b_errMsg">Si &egrave; verificato un errore. Riprova.</p>
-          <button class="btn-retry-ed" onclick="bru.resetError()">Riprova</button>
-        </div>
-
-      </div>
-    </div>
   </section>
 
   <!-- BRUTIA · GALLERIA -->

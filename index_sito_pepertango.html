@@ -1792,6 +1792,28 @@
 
         <!-- ====== STEP 2: Stanza + Pacchetto ====== -->
         <div class="form-step-ed" id="b_fs2">
+          <!-- Ruolo di Ballo Card -->
+          <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+              <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
+                <i class="fa-solid fa-person"></i>
+              </div>
+              <div>
+                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Ruolo di ballo — Dance role</h4>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px;margin-bottom:48px">
+            <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Ruolo di ballo </b><b>/ </b><i>Dance role</i></label>
+            <select class="fi-ed" id="b_ruolo" style="border-radius:8px;border:1px solid rgba(123,47,247,.3);width:100%">
+              <option value="">— Seleziona / Select —</option>
+              <option value="Leader">Leader</option>
+              <option value="Follower">Follower</option>
+              <option value="Entrambi">Entrambi / Both</option>
+            </select>
+          </div>
+
           <!-- Camera Card -->
           <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
             <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
@@ -1836,28 +1858,6 @@
             <p style="font-weight:600;color:#2d0060;margin-bottom:8px">Con chi desideri condividere la camera? — Whom would you like to share the room?</p>
             <p style="font-size:.9rem;color:rgba(80,0,180,.6);margin-bottom:16px">Facoltativo — penseremo noi agli abbinamenti / Optional — we'll arrange matches</p>
             <div id="b_compagniFields"></div>
-          </div>
-
-          <!-- Ruolo di Ballo Card -->
-          <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
-              <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
-                <i class="fa-solid fa-person"></i>
-              </div>
-              <div>
-                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Ruolo di ballo — Dance role</h4>
-              </div>
-            </div>
-          </div>
-
-          <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px;margin-bottom:48px">
-            <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Ruolo di ballo </b><b>/ </b><i>Dance role</i></label>
-            <select class="fi-ed" id="b_ruolo" style="border-radius:8px;border:1px solid rgba(123,47,247,.3);width:100%">
-              <option value="">— Seleziona / Select —</option>
-              <option value="Leader">Leader</option>
-              <option value="Follower">Follower</option>
-              <option value="Entrambi">Entrambi / Both</option>
-            </select>
           </div>
 
           <!-- Pacchetto Card -->
@@ -2739,6 +2739,12 @@
     }
 
     function bruSelPkg(label) {
+      // Remove sel class from all package cards
+      document.querySelectorAll('.pkg-card.r-opt-ed').forEach(function(card) {
+        card.classList.remove('sel');
+      });
+      // Add sel class to selected package
+      if (label) label.classList.add('sel');
       bru.data.pacchetto = label.querySelector('input').value;
       bru.riepilogo();
     }

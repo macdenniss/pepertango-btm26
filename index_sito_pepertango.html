@@ -2782,7 +2782,8 @@
 
     function syncRadio(el, name) {
       document.querySelectorAll('[name="' + name + '"]').forEach(function(r) {
-        r.closest('.r-opt-ed').classList.remove('sel');
+        var parent = r.closest('.r-opt-ed') || r.closest('.role-card') || r.closest('.room-card') || r.closest('.pkg-card') || r.closest('.stanza-opt');
+        if (parent) parent.classList.remove('sel');
       });
       el.classList.add('sel');
       el.querySelector('input').checked = true;

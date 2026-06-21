@@ -1876,231 +1876,358 @@
       </div>
     </section>
 
-    <span class="pkg-label reveal">Compila il modulo per iscriverti</span>
+    <!-- HERO SECTION CON URGENCY -->
+    <div style="text-align:center;margin-bottom:60px">
+      <h3 style="font-family:'Kalam',cursive;font-size:2.2rem;font-weight:700;color:#2d0060;margin-bottom:16px">
+        Sei a pochi minuti dal tuo Brutia 2026
+      </h3>
+      <p style="font-size:1.1rem;color:rgba(80,0,180,.8);margin-bottom:24px;line-height:1.6">
+        Scegli il tuo percorso: lezioni magistrali, milonghe, comunità, Calabria.
+        <br><strong>Tutto quello che serve per 4 giorni indimenticabili.</strong>
+      </p>
+      <div style="display:inline-block;background:#fff9c4;border:2px solid #2d0060;border-radius:12px;padding:12px 24px;margin-bottom:32px">
+        <span style="font-weight:700;color:#2d0060">⏰ Early Bird -€50</span>
+        <span style="color:rgba(80,0,180,.8);font-size:.9rem"> — Scade 30 settembre</span>
+      </div>
+    </div>
 
     <!-- FORM IN CIMA - CARD BASED DESIGN -->
     <div class="form-section" id="bru-form" style="margin-top:40px;margin-bottom:60px;max-width:750px;margin-left:auto;margin-right:auto">
 
-      <!-- Header semplice -->
-      <div style="text-align:center;margin-bottom:48px">
-        <h3 style="font-family:'Kalam',cursive;font-size:1.8rem;font-weight:700;color:#2d0060;margin-bottom:8px">Registrazione</h3>
-        <p style="color:rgba(80,0,180,.6);font-size:0.9rem">Compila il modulo per iscriverti</p>
-      </div>
-
-      <!-- Progress hidden for compact view -->
+      <!-- Progress Bar (hidden for compact) -->
       <div class="bru-prog" style="display:none"></div>
 
       <div id="b_body" style="padding:0">
 
-        <!-- ====== STEP 1: Chi sei ====== -->
+        <!-- ====== STEP 1: Chi sei? ====== -->
         <div class="form-step-ed active" id="b_fs1">
-          <!-- Info Card -->
+          <!-- STEP 1 HEADER -->
           <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+            <div style="display:flex;align-items:center;gap:16px">
               <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
                 <i class="fa-solid fa-user"></i>
               </div>
               <div>
-                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Parlaci di te</h4>
-                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Informazioni personali</p>
+                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">1 / Raccontaci di te</h4>
+                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">I tuoi dati essenziali</p>
               </div>
             </div>
           </div>
 
-          <!-- Form Fields in Card Grid -->
+          <!-- FORM FIELDS STEP 1 — 5 CAMPI SNELLI -->
           <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:40px">
+            <!-- COGNOME -->
             <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Cognome </b><b>/ </b><i>Surname</i> *</label>
-              <input type="text" class="fi-ed" id="b_cognome" placeholder="Rossi" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
+              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem">Cognome <span style="color:#ff4d4d">*</span></label>
+              <input type="text" class="fi-ed" id="b_cognome" placeholder="Rossi" style="border-radius:8px;border:1px solid rgba(123,47,247,.3);width:100%;padding:12px;font-size:1rem">
             </div>
+            <!-- NOME -->
             <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Nome </b><b>/ </b><i>Name</i> *</label>
-              <input type="text" class="fi-ed" id="b_nome" placeholder="Andrea" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
+              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem">Nome <span style="color:#ff4d4d">*</span></label>
+              <input type="text" class="fi-ed" id="b_nome" placeholder="Andrea" style="border-radius:8px;border:1px solid rgba(123,47,247,.3);width:100%;padding:12px;font-size:1rem">
             </div>
+            <!-- EMAIL -->
             <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px;grid-column:1/-1">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem">Email *</label>
-              <input type="email" class="fi-ed" id="b_email" placeholder="andrea@email.com" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
+              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem">Email <span style="color:#ff4d4d">*</span></label>
+              <input type="email" class="fi-ed" id="b_email" placeholder="andrea@email.com" style="border-radius:8px;border:1px solid rgba(123,47,247,.3);width:100%;padding:12px;font-size:1rem">
+              <p style="font-size:.8rem;color:rgba(80,0,180,.5);margin-top:8px;margin-bottom:0">Ti invieremo i dettagli e il link di accesso</p>
             </div>
+            <!-- TELEFONO -->
             <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Data di nascita </b><b>/ </b><i>Date of birth</i> *</label>
-              <input type="date" class="fi-ed" id="b_nascita" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
+              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem">Telefono <span style="color:#ff4d4d">*</span></label>
+              <input type="tel" class="fi-ed" id="b_tel" placeholder="+39 333 000 0000" style="border-radius:8px;border:1px solid rgba(123,47,247,.3);width:100%;padding:12px;font-size:1rem">
             </div>
+            <!-- CITTÀ -->
             <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Numero telefono </b><b>/ </b><i>Telephone number</i> *</label>
-              <input type="tel" class="fi-ed" id="b_tel" placeholder="+39 333 000 0000" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
-            </div>
-            <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px;grid-column:1/-1">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Facebook</b><div>Il link del tuo profilo/<i>Your link profile</i></div> *</label>
-              <input type="url" class="fi-ed" id="b_facebook" placeholder="https://facebook.com/tuoprofilo" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
-            </div>
-            <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px;grid-column:1/-1">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Città in cui vivi </b><b>/</b><b> </b><i>City where you live</i> *</label>
-              <input type="text" class="fi-ed" id="b_citta" placeholder="Roma" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
+              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem">Città <span style="color:#ff4d4d">*</span></label>
+              <input type="text" class="fi-ed" id="b_citta" placeholder="Roma" style="border-radius:8px;border:1px solid rgba(123,47,247,.3);width:100%;padding:12px;font-size:1rem">
             </div>
           </div>
+
+          <!-- RASSICURAZIONE POST-STEP1 -->
+          <div style="background:rgba(42,107,42,.08);border:2px solid rgba(42,107,42,.2);border-radius:12px;padding:20px;margin-bottom:40px;text-align:center">
+            <p style="color:rgba(42,107,42,.8);font-size:.95rem;margin:0">
+              <strong>✓ I tuoi dati sono al sicuro</strong><br>
+              <span style="font-size:.85rem">Trattati secondo GDPR. Usati solo per organizzare al meglio Brutia per te.</span>
+            </p>
+          </div>
+
+          <!-- NEXT BUTTON -->
+          <button onclick="bru.next()" style="width:100%;padding:16px;background:#7b2ff7;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:600;font-size:1.1rem;margin-bottom:40px">
+            Continua &rarr;
+          </button>
         </div>
 
-        <!-- ====== STEP 2: Alloggio + Pacchetto ====== -->
+        <!-- ====== STEP 2: Ruolo + Alloggio + Pacchetto + Dettagli ====== -->
         <div class="form-step-ed" id="b_fs2">
-          <!-- SEZIONE 1: Chi balli? -->
+          <!-- STEP 2a: CHI SEI QUANDO BALLI? -->
           <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
             <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
               <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
-                <i class="fa-solid fa-person"></i>
+                <i class="fa-solid fa-people-line"></i>
               </div>
               <div>
-                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Chi balli? — Dance role</h4>
-                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Il tuo ruolo di ballo</p>
+                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">2 / Il tuo ruolo di ballo</h4>
+                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Come ami ballare</p>
               </div>
             </div>
+            <p style="color:rgba(80,0,180,.8);font-size:.95rem;margin:0;line-height:1.6">
+              Il tango è <strong>relazione</strong>. Se guidi (leader), scoprirai come il corpo segue l'energia.
+              Se segui (follower), sentirai come il partner comunica attraverso i movimenti.
+              <br><strong>Tutti trovano il loro posto a Brutia.</strong>
+            </p>
           </div>
 
-          <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px;margin-bottom:48px">
-            <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Ruolo di ballo </b><b>/ </b><i>Dance role</i></label>
-            <select class="fi-ed" id="b_ruolo" style="border-radius:8px;border:1px solid rgba(123,47,247,.3);width:100%">
-              <option value="">— Seleziona / Select —</option>
-              <option value="Leader">Leader</option>
-              <option value="Follower">Follower</option>
-              <option value="Entrambi">Entrambi / Both</option>
-            </select>
+          <!-- ROLE SELECTION (CARDS) -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:48px">
+            <label class="role-card" onclick="syncRadio(this,'b_ruolo')" style="border:2px solid #7b2ff7;border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all 0.3s;background:#fff">
+              <input type="radio" name="b_ruolo" value="Leader" style="display:none">
+              <div style="font-size:48px;margin-bottom:12px">👨‍🎤</div>
+              <div style="font-weight:700;color:#2d0060;margin-bottom:8px;font-size:1.1rem">Leader</div>
+              <div style="font-size:.85rem;color:rgba(80,0,180,.6);line-height:1.5">Guidi il ballo<br>Decidi la direzione</div>
+            </label>
+            <label class="role-card" onclick="syncRadio(this,'b_ruolo')" style="border:2px solid #7b2ff7;border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all 0.3s;background:#fff">
+              <input type="radio" name="b_ruolo" value="Follower" style="display:none">
+              <div style="font-size:48px;margin-bottom:12px">👩‍🎤</div>
+              <div style="font-weight:700;color:#2d0060;margin-bottom:8px;font-size:1.1rem">Follower</div>
+              <div style="font-size:.85rem;color:rgba(80,0,180,.6);line-height:1.5">Segui il partner<br>Rispondi all'energia</div>
+            </label>
+            <label class="role-card" onclick="syncRadio(this,'b_ruolo')" style="border:2px solid #7b2ff7;border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all 0.3s;background:#fff">
+              <input type="radio" name="b_ruolo" value="Entrambi" style="display:none">
+              <div style="font-size:48px;margin-bottom:12px">🎭</div>
+              <div style="font-weight:700;color:#2d0060;margin-bottom:8px;font-size:1.1rem">Entrambi</div>
+              <div style="font-size:.85rem;color:rgba(80,0,180,.6);line-height:1.5">Balli tutti e due<br>Massima flessibilità</div>
+            </label>
           </div>
 
-          <!-- SEZIONE 2: Dove dormi? (Alloggio) -->
-          <!-- Camera Card -->
+          <!-- STEP 2b: DOVE DORMI? -->
           <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
             <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
               <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
                 <i class="fa-solid fa-door-open"></i>
               </div>
               <div>
-                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Dove dormi? — Accommodation</h4>
-                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Scegli camera e compagni</p>
+                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">3 / Dove dormi?</h4>
+                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Comfort + comunità</p>
               </div>
             </div>
+            <p style="color:rgba(80,0,180,.8);font-size:.95rem;margin:0">
+              Scegli il tipo di stanza. Se desideri, <strong>noi ti aiutiamo a trovare compagni affini</strong> (stessa città, stesso livello, stessi interessi).
+            </p>
           </div>
 
-          <div class="room-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:20px;margin-bottom:48px">
-            <label class="room-card stanza-opt" onclick="syncStanza(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
+          <!-- ROOM SELECTION WITH POPULAR BADGE -->
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:48px">
+            <!-- SINGOLA -->
+            <label class="room-card stanza-opt" onclick="syncStanza(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.3s;background:#fff">
               <input type="radio" name="b_stanza" value="Singola" style="display:none">
-              <div class="room-card-icon" style="font-size:32px;margin-bottom:12px"><i class="fa-solid fa-bed"></i></div>
-              <div class="room-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">Singola</div>
-              <div class="room-card-desc" style="font-size:.85rem;color:rgba(80,0,180,.6)">+€30/notte</div>
+              <div style="font-size:40px;margin-bottom:12px">🛏️</div>
+              <div style="font-weight:700;color:#2d0060;margin-bottom:4px">Singola</div>
+              <div style="font-size:.9rem;color:rgba(80,0,180,.8);font-weight:600;margin-bottom:4px">€30/notte</div>
+              <div style="font-size:.8rem;color:rgba(80,0,180,.5)">Privacy totale</div>
             </label>
-            <label class="room-card stanza-opt" onclick="syncStanza(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
+
+            <!-- DOPPIA (MOST POPULAR) -->
+            <label class="room-card stanza-opt room-popular" onclick="syncStanza(this)" style="border:3px solid #fff9c4;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.3s;background:#fff;position:relative">
+              <div style="position:absolute;top:-12px;right:12px;background:#fff9c4;border:2px solid #2d0060;border-radius:8px;padding:4px 12px;font-weight:600;font-size:.75rem;color:#2d0060">
+                💡 POPOLARE
+              </div>
               <input type="radio" name="b_stanza" value="Doppia" style="display:none">
-              <div class="room-card-icon" style="font-size:32px;margin-bottom:12px"><i class="fa-solid fa-bed"></i><i class="fa-solid fa-bed" style="font-size:.85rem;opacity:1;margin-left:6px"></i></div>
-              <div class="room-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">Doppia</div>
-              <div class="room-card-desc" style="font-size:.85rem;color:rgba(80,0,180,.6)">2 letti</div>
+              <div style="font-size:40px;margin-bottom:12px">🛏️🛏️</div>
+              <div style="font-weight:700;color:#2d0060;margin-bottom:4px">Doppia</div>
+              <div style="font-size:.9rem;color:rgba(80,0,180,.8);font-weight:600;margin-bottom:4px">€0 (inclusa)</div>
+              <div style="font-size:.8rem;color:rgba(80,0,180,.5)">Comunità garantita</div>
             </label>
-            <label class="room-card stanza-opt" onclick="syncStanza(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
+
+            <!-- MATRIMONIALE -->
+            <label class="room-card stanza-opt" onclick="syncStanza(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.3s;background:#fff">
               <input type="radio" name="b_stanza" value="Matrimoniale" style="display:none">
-              <div class="room-card-icon" style="font-size:40px;margin-bottom:12px"><i class="fa-solid fa-bed"></i></div>
-              <div class="room-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">Matrimoniale</div>
-              <div class="room-card-desc" style="font-size:.85rem;color:rgba(80,0,180,.6)">Per coppie</div>
+              <div style="font-size:40px;margin-bottom:12px">🛌</div>
+              <div style="font-weight:700;color:#2d0060;margin-bottom:4px">Matrimoniale</div>
+              <div style="font-size:.9rem;color:rgba(80,0,180,.8);font-weight:600;margin-bottom:4px">€50/notte</div>
+              <div style="font-size:.8rem;color:rgba(80,0,180,.5)">Con il partner</div>
             </label>
-            <label class="room-card stanza-opt" onclick="syncStanza(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
+
+            <!-- TRIPLA -->
+            <label class="room-card stanza-opt" onclick="syncStanza(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.3s;background:#fff">
               <input type="radio" name="b_stanza" value="Tripla" style="display:none">
-              <div class="room-card-icon" style="font-size:32px;margin-bottom:12px"><i class="fa-solid fa-users"></i></div>
-              <div class="room-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">Tripla</div>
-              <div class="room-card-desc" style="font-size:.85rem;color:rgba(80,0,180,.6)">Fino a 3</div>
+              <div style="font-size:40px;margin-bottom:12px">👥</div>
+              <div style="font-weight:700;color:#2d0060;margin-bottom:4px">Tripla</div>
+              <div style="font-size:.9rem;color:rgba(80,0,180,.8);font-weight:600;margin-bottom:4px">Gratuita</div>
+              <div style="font-size:.8rem;color:rgba(80,0,180,.5)">Fino a 3 persone</div>
             </label>
           </div>
 
-          <!-- Compagni Card -->
+          <!-- STEP 2c: QUALE PACCHETTO? -->
           <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
             <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
               <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
-                <i class="fa-solid fa-people-group"></i>
+                <i class="fa-solid fa-star"></i>
               </div>
               <div>
-                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Con chi condividi?</h4>
-                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Opzionale / Optional</p>
+                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">4 / Quale avventura?</h4>
+                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Scegli la durata (early bird -€50)</p>
               </div>
             </div>
           </div>
 
-          <div id="b_compagniContainer" style="margin-bottom:48px;background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:24px">
-            <p style="font-weight:600;color:#2d0060;margin-bottom:16px">Con chi desideri condividere la camera? — Whom would you like to share the room?</p>
-            <p style="font-size:.9rem;color:rgba(80,0,180,.6);margin-bottom:16px">Facoltativo — penseremo noi agli abbinamenti / Optional — we'll arrange matches</p>
-            <div id="b_compagniFields"></div>
-          </div>
-
-          <!-- SEZIONE 3: Quanto paghi? (Pacchetto) -->
-          <!-- Pacchetto Card -->
-          <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
-              <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
-                <i class="fa-solid fa-box"></i>
+          <!-- PACCHETTI CON DESCRIZIONI -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;margin-bottom:48px">
+            <!-- FULL PASS 4 GIORNI (BEST) -->
+            <label class="pkg-card r-opt-ed pkg-best" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)" style="border:3px solid #ff4d4d;border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all 0.3s;background:#fff;position:relative">
+              <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#ff4d4d;color:#fff;border-radius:8px;padding:6px 16px;font-weight:700;font-size:.8rem">
+                🏆 MIGLIORE
               </div>
-              <div>
-                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Quale pacchetto?</h4>
-                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Scegli la durata</p>
+              <input type="radio" name="b_pkg" value="Full Pass 4 giorni — €200" style="display:none">
+              <div style="font-family:'Kalam',cursive;font-size:40px;font-weight:700;color:#ff4d4d;margin-bottom:8px">4</div>
+              <div style="font-weight:700;color:#2d0060;margin-bottom:4px">Full Pass</div>
+              <div style="font-size:.85rem;color:rgba(80,0,180,.6);margin-bottom:12px">4 giorni completi</div>
+              <div style="font-size:1.4rem;font-weight:700;color:#ff4d4d">€200</div>
+              <div style="font-size:.75rem;color:rgba(80,0,180,.5);margin-top:8px">Early bird -€50</div>
+              <div style="text-align:left;margin-top:16px;padding-top:16px;border-top:1px solid rgba(123,47,247,.2)">
+                <div style="font-size:.8rem;color:rgba(80,0,180,.7);line-height:1.8">
+                  ✓ 8 lezioni magistrali<br>
+                  ✓ 4 milonghe notturne<br>
+                  ✓ Convivio con ballerini<br>
+                  ✓ Caffè & snack inclusi
+                </div>
               </div>
-            </div>
+            </label>
+
+            <!-- WEEKEND 2 GIORNI -->
+            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all 0.3s;background:#fff">
+              <input type="radio" name="b_pkg" value="Weekend 2 giorni — €100" style="display:none">
+              <div style="font-family:'Kalam',cursive;font-size:40px;font-weight:700;color:#7b2ff7;margin-bottom:8px">2</div>
+              <div style="font-weight:700;color:#2d0060;margin-bottom:4px">Weekend</div>
+              <div style="font-size:.85rem;color:rgba(80,0,180,.6);margin-bottom:12px">Sabato + Domenica</div>
+              <div style="font-size:1.4rem;font-weight:700;color:#7b2ff7">€100</div>
+              <div style="font-size:.75rem;color:rgba(80,0,180,.5);margin-top:8px">Early bird -€50</div>
+              <div style="text-align:left;margin-top:16px;padding-top:16px;border-top:1px solid rgba(123,47,247,.2)">
+                <div style="font-size:.8rem;color:rgba(80,0,180,.7);line-height:1.8">
+                  ✓ 4 lezioni<br>
+                  ✓ 2 milonghe<br>
+                  ✓ Convivio<br>
+                  ✓ Caffè incluso
+                </div>
+              </div>
+            </label>
+
+            <!-- DAY PASS 1 GIORNO -->
+            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all 0.3s;background:#fff">
+              <input type="radio" name="b_pkg" value="Day Pass 1 giorno — €40" style="display:none">
+              <div style="font-family:'Kalam',cursive;font-size:40px;font-weight:700;color:#7b2ff7;margin-bottom:8px">1</div>
+              <div style="font-weight:700;color:#2d0060;margin-bottom:4px">Day Pass</div>
+              <div style="font-size:.85rem;color:rgba(80,0,180,.6);margin-bottom:12px">1 giorno a scelta</div>
+              <div style="font-size:1.4rem;font-weight:700;color:#7b2ff7">€40</div>
+              <div style="font-size:.75rem;color:rgba(80,0,180,.5);margin-top:8px">Senza alloggio</div>
+              <div style="text-align:left;margin-top:16px;padding-top:16px;border-top:1px solid rgba(123,47,247,.2)">
+                <div style="font-size:.8rem;color:rgba(80,0,180,.7);line-height:1.8">
+                  ✓ 2 lezioni<br>
+                  ✓ 1 milonga<br>
+                  ✓ Snack & caffè<br>
+                  ✓ No alloggio
+                </div>
+              </div>
+            </label>
           </div>
 
-          <div class="pkg-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;margin-bottom:48px">
-            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
-              <input type="radio" name="b_pkg" value="2 NOTTI/two nights" style="display:none">
-              <div class="pkg-card-letter" style="font-family:'Kalam',cursive;font-size:32px;font-weight:700;color:#7b2ff7;margin-bottom:8px">A</div>
-              <div class="pkg-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">2 NOTTI<br><span style="font-size:0.8rem;font-weight:400">two nights</span></div>
-              <div class="pkg-card-info" style="font-size:.85rem;color:rgba(80,0,180,.6);margin-bottom:8px">Sat 4 - Mon 6 Jan</div>
-              <div class="pkg-card-info" style="font-size:1.1rem;font-weight:700;color:#7b2ff7">180€</div>
-            </label>
-            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
-              <input type="radio" name="b_pkg" value="3 NOTTI/three nights" style="display:none">
-              <div class="pkg-card-letter" style="font-family:'Kalam',cursive;font-size:32px;font-weight:700;color:#7b2ff7;margin-bottom:8px">B</div>
-              <div class="pkg-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">3 NOTTI<br><span style="font-size:0.8rem;font-weight:400">three nights</span></div>
-              <div class="pkg-card-info" style="font-size:.85rem;color:rgba(80,0,180,.6);margin-bottom:8px">Fri 3 - Mon 6 Jan</div>
-              <div class="pkg-card-info" style="font-size:1.1rem;font-weight:700;color:#7b2ff7">220€</div>
-            </label>
-            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
-              <input type="radio" name="b_pkg" value="4 NOTTI/four nights" style="display:none">
-              <div class="pkg-card-letter" style="font-family:'Kalam',cursive;font-size:32px;font-weight:700;color:#7b2ff7;margin-bottom:8px">C</div>
-              <div class="pkg-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">4 NOTTI<br><span style="font-size:0.8rem;font-weight:400">four nights</span></div>
-              <div class="pkg-card-info" style="font-size:.85rem;color:rgba(80,0,180,.6);margin-bottom:8px">Fri 3 - Mon 7 Jun</div>
-              <div class="pkg-card-info" style="font-size:1.1rem;font-weight:700;color:#7b2ff7">260€</div>
-            </label>
-            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
-              <input type="radio" name="b_pkg" value="MILONGHE" style="display:none">
-              <div class="pkg-card-letter" style="font-family:'Kalam',cursive;font-size:32px;font-weight:700;color:#7b2ff7;margin-bottom:8px">D</div>
-              <div class="pkg-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">MILONGHE</div>
-              <div class="pkg-card-info" style="font-size:.85rem;color:rgba(80,0,180,.6);margin-bottom:8px">6 Full pass</div>
-              <div class="pkg-card-info" style="font-size:1.1rem;font-weight:700;color:#7b2ff7">100€</div>
-            </label>
-          </div>
-
-          <!-- SEZIONE 4: Note speciali -->
+          <!-- STEP 2d: DETTAGLI FINALI -->
+          <!-- NOTE SPECIALI -->
           <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:24px;margin-bottom:40px">
-            <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem">Note speciali (Facoltativo) / Special notes</label>
-            <textarea class="fi-ed" id="b_note" placeholder="Allergie, esigenze particolari, etc..." style="border-radius:8px;border:1px solid rgba(123,47,247,.3);min-height:100px"></textarea>
+            <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem">
+              Note speciali (allergie, disabilità, altro)
+            </label>
+            <textarea id="b_note" placeholder="Es. vegetariano, ridotta mobilità, altro..." style="border-radius:8px;border:1px solid rgba(123,47,247,.3);width:100%;min-height:80px;padding:12px;font-size:1rem"></textarea>
+            <p style="font-size:.8rem;color:rgba(80,0,180,.5);margin-top:8px;margin-bottom:0">Facoltativo — Aiutaci a conoscerti meglio</p>
           </div>
 
-          <label style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;cursor:pointer;font-size:.9rem;line-height:1.6;background:rgba(123,47,247,.04);border:2px solid rgba(123,47,247,.1);border-radius:12px;padding:20px">
+          <!-- PRIVACY CHECKBOX -->
+          <label style="display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;cursor:pointer;font-size:.9rem;line-height:1.6;background:rgba(123,47,247,.04);border:2px solid rgba(123,47,247,.1);border-radius:12px;padding:20px">
             <input type="checkbox" id="b_tc" style="margin-top:4px;accent-color:#7b2ff7;width:18px;height:18px;flex-shrink:0">
-            <span style="color:#2d0060">Ho letto l'<a href="#" onclick="showPage('privacy');return false;" style="color:#7b2ff7;text-decoration:underline;cursor:pointer">informativa sulla privacy</a> e accetto che <b>Pepertango ASD</b> tratti i miei dati personali (nome, cognome, email, telefono, città, data di nascita, profilo Facebook) per l'iscrizione e la gestione dell'evento. I miei dati saranno conservati fino al termine dell'evento e delle relative attività amministrative. Comprendo che ho diritto di accesso, rettifica, cancellazione e portabilità dei miei dati. *</span>
+            <span style="color:#2d0060">
+              Ho letto l'<a href="#privacy" style="color:#7b2ff7;text-decoration:underline;cursor:pointer;font-weight:600">informativa sulla privacy</a>.
+              Accetto che <strong>Pepertango ASD</strong> tratti i miei dati per iscrizione, organizzazione evento, e comunicazioni future.
+              <span style="color:rgba(80,0,180,.6)">I miei dati rimarranno riservati e conforme a GDPR.</span>
+              <span style="color:#ff4d4d"> *</span>
+            </span>
           </label>
 
+          <!-- FOTO CHECKBOX -->
           <label style="display:flex;align-items:flex-start;gap:12px;margin-bottom:40px;cursor:pointer;font-size:.9rem;line-height:1.6;background:rgba(123,47,247,.04);border:2px solid rgba(123,47,247,.1);border-radius:12px;padding:20px">
             <input type="checkbox" id="b_foto" style="margin-top:4px;accent-color:#7b2ff7;width:18px;height:18px;flex-shrink:0">
-            <span style="color:#2d0060">Autorizzo la pubblicazione di foto e video dell'evento in cui potrei comparire (facoltativo)</span>
+            <span style="color:#2d0060">
+              Autorizzo la pubblicazione di foto/video in cui potrei comparire (facoltativo).
+              <span style="color:rgba(80,0,180,.6)"> Scopri come le usiamo nella nostra <a href="#" style="color:#7b2ff7;text-decoration:underline">policy fotos</a>.</span>
+            </span>
           </label>
 
-          <div class="form-nav-ed" style="gap:16px;justify-content:space-between">
-            <button class="btn-prev-ed" onclick="bru.prev()" style="padding:16px 40px;background:#fff;border:2px solid #7b2ff7;color:#7b2ff7;border-radius:12px;cursor:pointer;font-weight:600">&larr; Indietro</button>
-            <button class="btn-next-ed" style="padding:32px 80px;font-size:22px;background:#7b2ff7;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:600" onclick="bru.next()">Invia &rarr;</button>
+          <!-- BACK + SUBMIT -->
+          <div style="display:flex;gap:16px;justify-content:space-between">
+            <button onclick="bru.prev()" style="flex:1;padding:16px;background:#fff;border:2px solid #7b2ff7;color:#7b2ff7;border-radius:12px;cursor:pointer;font-weight:600;font-size:1rem">
+              &larr; Indietro
+            </button>
+            <button onclick="bru.next()" style="flex:2;padding:16px;background:#7b2ff7;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:600;font-size:1.1rem">
+              ✓ Conferma la mia iscrizione
+            </button>
           </div>
         </div>
 
-        <div class="form-sending-ed" id="b_sending" style="text-align:center;padding:40px"><div class="spinner-ed"></div><p class="sending-lbl">Invio...</p></div>
-        <div class="form-ok-ed" id="b_ok" style="text-align:center;padding:40px">
-          <div style="font-size:48px;margin-bottom:16px">✓</div>
-          <h3 style="font-family:'Kalam',cursive;font-size:1.6rem;font-weight:700;color:#7b2ff7;margin-bottom:16px">Iscrizione confermata!</h3>
-          <p style="color:rgba(80,0,180,.6)">Controlla la tua email per i dettagli.</p>
+        <!-- SENDING STATE -->
+        <div class="form-sending-ed" id="b_sending" style="text-align:center;padding:60px 40px;display:none">
+          <div class="spinner-ed" style="margin-bottom:20px"></div>
+          <p class="sending-lbl" style="font-size:1.1rem;color:rgba(80,0,180,.8);font-weight:600">Elaborazione in corso...</p>
         </div>
-        <div class="form-error-ed" id="b_error" style="text-align:center;padding:40px">
-          <p id="b_errMsg" style="color:#ff4d4d;margin-bottom:20px">Si è verificato un errore. Riprova.</p>
-          <button class="btn-retry-ed" onclick="bru.resetError()" style="padding:16px 40px;background:#ff4d4d;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:600">Riprova</button>
+
+        <!-- SUCCESS STATE -->
+        <div class="form-ok-ed" id="b_ok" style="text-align:center;padding:60px 40px;background:linear-gradient(135deg,rgba(42,107,42,.05) 0%,rgba(123,47,247,.05) 100%);border-radius:16px;display:none">
+          <div style="font-size:64px;margin-bottom:24px">✓</div>
+          <h2 style="font-family:'Kalam',cursive;font-size:2rem;font-weight:700;color:#2d0060;margin-bottom:12px;margin-top:0">
+            Benvenuto/a a Brutia 2026!
+          </h2>
+          <p style="font-size:1.1rem;color:rgba(80,0,180,.8);margin-bottom:32px;line-height:1.6">
+            La tua iscrizione è confermata. Controlla la tua email per i dettagli, le istruzioni per il pagamento,
+            e i contatti della comunità.
+          </p>
+
+          <!-- PROSSIMI STEP -->
+          <div style="background:#fff;border:2px solid rgba(123,47,247,.2);border-radius:12px;padding:32px;margin-bottom:32px;max-width:500px;margin-left:auto;margin-right:auto;text-align:left">
+            <h4 style="font-weight:700;color:#2d0060;margin-bottom:16px;margin-top:0">Prossimi step:</h4>
+            <div style="display:grid;gap:12px;font-size:.95rem;color:rgba(80,0,180,.8)">
+              <div style="padding:12px;background:rgba(123,47,247,.05);border-radius:8px">
+                <span style="font-weight:600">1.</span> Completa il pagamento (link in email)
+              </div>
+              <div style="padding:12px;background:rgba(123,47,247,.05);border-radius:8px">
+                <span style="font-weight:600">2.</span> Ti inviteremo nel gruppo privato (comunità + logistica)
+              </div>
+              <div style="padding:12px;background:rgba(123,47,247,.05);border-radius:8px">
+                <span style="font-weight:600">3.</span> Riceverai il programma dettagliato 1 mese prima
+              </div>
+              <div style="padding:12px;background:rgba(123,47,247,.05);border-radius:8px">
+                <span style="font-weight:600">4.</span> Ci vediamo a Calabria — Preparati a ballare!
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA: CONDIVIDI O TORNA -->
+          <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=www.pepertango.com" target="_blank"
+              style="padding:12px 32px;background:#3b5998;color:#fff;border-radius:12px;text-decoration:none;font-weight:600;cursor:pointer">
+              📱 Condividi con amici
+            </a>
+            <button onclick="location.href='#'" style="padding:12px 32px;background:rgba(123,47,247,.1);border:2px solid #7b2ff7;color:#7b2ff7;border-radius:12px;font-weight:600;cursor:pointer">
+              ← Torna al sito
+            </button>
+          </div>
+        </div>
+
+        <!-- ERROR STATE -->
+        <div class="form-error-ed" id="b_error" style="text-align:center;padding:60px 40px;background:rgba(255,77,77,.05);border:2px solid rgba(255,77,77,.2);border-radius:16px;display:none">
+          <div style="font-size:48px;margin-bottom:20px">⚠️</div>
+          <h3 style="font-family:'Kalam',cursive;font-size:1.4rem;font-weight:700;color:#ff4d4d;margin-bottom:12px;margin-top:0">Errore nell'iscrizione</h3>
+          <p id="b_errMsg" style="color:rgba(80,0,180,.8);margin-bottom:24px;font-size:1rem">Si è verificato un errore. Riprova.</p>
+          <button onclick="bru.resetError()" style="padding:14px 40px;background:#ff4d4d;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:600;font-size:1rem">
+            🔄 Riprova
+          </button>
         </div>
 
       </div>

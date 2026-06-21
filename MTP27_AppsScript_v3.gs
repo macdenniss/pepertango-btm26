@@ -317,8 +317,8 @@ function aggiornaStato(id, nuovoStato, evento) {
     sheet.getRange(riga, COL.EMAIL_ANTICIPO).setValue(true);
   }
 
-  // Brutia: assegna camera subito all'accettazione (non serve aspettare anticipo)
-  if (nuovoStato === 'Accettato' && evento === 'Brutia') {
+  // Assegna camera subito all'accettazione per tutti gli eventi (non serve aspettare anticipo)
+  if (nuovoStato === 'Accettato') {
     SpreadsheetApp.flush();
     tentaAssegnazioneCameraPerIscritto(sheet, id, evento);
   }
@@ -339,11 +339,7 @@ function aggiornaPagamento(id, nuovoPagamento, evento) {
 
   sheet.getRange(riga, COL.PAGAMENTO).setValue(nuovoPagamento);
 
-  // Brutia: camera gia' assegnata all'accettazione, non serve riassegnarla al pagamento
-  if (nuovoPagamento === 'Anticipo versato' && evento !== 'Brutia') {
-    SpreadsheetApp.flush();
-    tentaAssegnazioneCameraPerIscritto(sheet, id, evento);
-  }
+  // Camera gia' assegnata all'accettazione, non serve riassegnarla al pagamento
 
   log('AGGIORNA_PAGAMENTO', 'ID ' + id + ' -> ' + nuovoPagamento);
   return jsonResponse({ ok: true, msg: 'Pagamento aggiornato: ' + nuovoPagamento });
@@ -728,7 +724,7 @@ function inviaEmailConfermaRicezione(data, numProgr, pkg, nomeEvento) {
     'www.pepertango.com';
 
   try {
-    GmailApp.sendEmail(data.email, soggetto, corpo, { name: 'PeperTango' });
+    // DISABILITATO: GmailApp.sendEmail(data.email, soggetto, corpo, { name: 'PeperTango' });
   } catch(e) {
     logErrore('inviaEmailConfermaRicezione', e.toString());
   }
@@ -758,7 +754,7 @@ function inviaEmailAccettazione(dati) {
     'www.pepertango.com';
 
   try {
-    GmailApp.sendEmail(dati.email, soggetto, corpo, { name: 'PeperTango' });
+    // DISABILITATO: GmailApp.sendEmail(dati.email, soggetto, corpo, { name: 'PeperTango' });
   } catch(e) {
     logErrore('inviaEmailAccettazione', e.toString());
   }
@@ -798,7 +794,7 @@ function inviaEmailSaldoAutomatico() {
       'PeperTango - Peper Bruzia ASD';
 
     try {
-      GmailApp.sendEmail(dati.email, soggetto, corpo, { name: 'PeperTango' });
+      // DISABILITATO: GmailApp.sendEmail(dati.email, soggetto, corpo, { name: 'PeperTango' });
       var riga = trovaRigaPerId(sheet, dati.id);
       if (riga) sheet.getRange(riga, COL.EMAIL_SALDO).setValue(true);
       log('EMAIL_SALDO', dati.nome + ' - ' + dati.email);
@@ -832,7 +828,7 @@ function inviaNotificaDanilo(data, numProgr, id, nomeEvento, emailDanilo) {
     'https://docs.google.com/spreadsheets/d/1kBWs15V94ypf4Mdp7qM5x4vsyiadP1W87Xt7BZuORik/edit';
 
   try {
-    GmailApp.sendEmail(dest, soggetto, corpo);
+    // DISABILITATO: GmailApp.sendEmail(dest, soggetto, corpo);
   } catch(e) {
     logErrore('inviaNotificaDanilo', e.toString());
   }

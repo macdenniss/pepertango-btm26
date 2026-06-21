@@ -25,7 +25,7 @@
     /* LOGIN */
     #loginScreen {
       position: fixed; inset: 0; background: var(--ink);
-      display: flex; flex-direction: column;
+      display: none; flex-direction: column;
       align-items: center; justify-content: center; z-index: 999;
     }
     .login-logo {
@@ -70,7 +70,7 @@
     }
 
     /* MAIN LAYOUT */
-    #app { display: none; }
+    #app { display: block; }
 
     header {
       height: 64px; background: var(--ink);
@@ -132,14 +132,25 @@
     .tab-content.active { display: block; }
 
     /* STATS CARDS */
+    .stats-urgente {
+      display: grid; grid-template-columns: 1fr; gap: 0;
+      margin-bottom: 2rem;
+    }
     .stats-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
       margin-bottom: 2rem;
     }
     .stat-card {
       background: var(--surface); border-radius: 12px;
       padding: 1.5rem; border: 1px solid var(--border);
     }
+    .stat-card.urgente {
+      background: linear-gradient(135deg, rgba(217,43,75,0.05) 0%, rgba(217,43,75,0.02) 100%);
+      border: 2px solid var(--danger);
+      box-shadow: 0 4px 16px rgba(217,43,75,0.15);
+    }
+    .stat-card.urgente .stat-val { color: var(--danger); font-size: 4rem; }
+    .stat-card.urgente .stat-label { color: var(--danger); font-weight: 800; }
     .stat-label {
       font-size: 10px; font-weight: 700; letter-spacing: 0.2em;
       text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;
@@ -158,9 +169,17 @@
 
     /* MINI STATS */
     .mini-stats {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem;
+      display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem;
       margin-bottom: 2rem;
     }
+    .section-title {
+      grid-column: 1 / -1;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      padding: 1rem 0 0.5rem; border-top: 2px solid var(--border);
+      margin-top: 0.5rem;
+    }
+    .section-title:first-child { border-top: none; margin-top: 0; }
     .mini-card {
       background: var(--surface); border-radius: 10px;
       padding: 1.2rem 1.4rem; border: 1px solid var(--border);
@@ -433,12 +452,17 @@
 
   <!-- TAB: OVERVIEW -->
   <div class="tab-content active" id="tab-overview">
-    <div class="stats-grid">
-      <div class="stat-card orange">
-        <div class="stat-label">In attesa</div>
+    <!-- SEZIONE URGENTE: RICHIESTE DA APPROVARE -->
+    <div class="stats-urgente">
+      <div class="stat-card urgente">
+        <div class="stat-label">⚠️  Da approvare</div>
         <div class="stat-val" id="ov-attesa">—</div>
-        <div class="stat-sub">richieste da approvare</div>
+        <div class="stat-sub">richieste in attesa di revisione</div>
       </div>
+    </div>
+
+    <!-- KPI PRINCIPALI -->
+    <div class="stats-grid">
       <div class="stat-card green">
         <div class="stat-label">Accettati</div>
         <div class="stat-val" id="ov-accettati">—</div>
@@ -457,10 +481,9 @@
     </div>
 
     <div class="mini-stats">
-      <div class="mini-card">
-        <div class="mini-card-title">Distribuzione pacchetti</div>
-        <div id="ov-pacchetti"><div class="empty-state"><p>Caricamento...</p></div></div>
-      </div>
+      <!-- SEZIONE OPERATIVA -->
+      <div class="section-title">📋 Assegnazioni e Distribuzione</div>
+
       <div class="mini-card">
         <div class="mini-card-title">Camere per categoria</div>
         <div id="ov-camere">
@@ -469,9 +492,34 @@
           <div class="cat-row"><span class="cat-name">Economy (#91–120)</span><span class="cat-badge" id="ov-economy">—</span></div>
         </div>
       </div>
+
+      <div class="mini-card">
+        <div class="mini-card-title">Genere iscritti</div>
+        <div id="ov-genere">
+          <div class="cat-row"><span class="cat-name">Donne</span><span class="cat-badge" id="ov-donne">—</span></div>
+          <div class="cat-row"><span class="cat-name">Uomini</span><span class="cat-badge" id="ov-uomini">—</span></div>
+        </div>
+      </div>
+
+      <!-- SEZIONE FINANZIARIA -->
+      <div class="section-title">💰 Pacchetti e Pagamenti</div>
+
+      <div class="mini-card">
+        <div class="mini-card-title">Distribuzione pacchetti</div>
+        <div id="ov-pacchetti"><div class="empty-state"><p>Caricamento...</p></div></div>
+      </div>
+
       <div class="mini-card">
         <div class="mini-card-title">Stato pagamenti</div>
         <div id="ov-pagamenti"><div class="empty-state"><p>Caricamento...</p></div></div>
+      </div>
+
+      <!-- SEZIONE CAMERE MULTIPLE -->
+      <div class="section-title">🛏️  Camere Occupate</div>
+
+      <div class="mini-card" style="grid-column: 1 / -1;">
+        <div class="mini-card-title">Camere doppie/triple con ospiti</div>
+        <div id="ov-camere-dettaglio"><div class="empty-state"><p>Caricamento...</p></div></div>
       </div>
     </div>
 
@@ -519,9 +567,9 @@
       <div class="tbl-wrap">
         <table>
           <thead><tr>
-            <th>#</th><th>Nome</th><th>Email</th><th>Pacchetto</th>
+            <th>#</th><th>Data registrazione</th><th>Nome</th><th>Email</th><th>Pacchetto</th>
             <th>Ruolo</th><th>Stanza</th><th>Stato</th><th>Pagamento</th>
-            <th>Camera</th><th>Data</th><th>Azioni</th>
+            <th>Camera</th><th>Azioni</th>
           </tr></thead>
           <tbody id="tb-iscritti"></tbody>
         </table>
@@ -670,6 +718,7 @@
     var attesa = 0, accettati = 0, anticipi = 0, incasso = 0;
     var pkgCount = {}, pagCount = {};
     var numProgr = 0, deluxe = 0, std = 0, eco = 0;
+    var donne = 0, uomini = 0;
 
     allData.forEach(function(r) {
       var stato = (r.stato || '').toLowerCase();
@@ -684,6 +733,9 @@
       if (n >= 1 && n <= 50)  deluxe++;
       if (n >= 51 && n <= 90) std++;
       if (n >= 91)            eco++;
+      var genere = getGenere(r.nome);
+      if (genere === 'F') donne++;
+      if (genere === 'M') uomini++;
     });
 
     document.getElementById('ov-attesa').textContent    = attesa;
@@ -693,6 +745,27 @@
     document.getElementById('ov-deluxe').textContent    = deluxe + '/50';
     document.getElementById('ov-standard').textContent  = std + '/40';
     document.getElementById('ov-economy').textContent   = eco + '/30';
+    document.getElementById('ov-donne').textContent     = donne;
+    document.getElementById('ov-uomini').textContent    = uomini;
+
+    /* Camere doppie/triple con ospiti */
+    var camereByRoom = {};
+    allData.forEach(function(r) {
+      var camera = r.camera || r.numero_camera || '';
+      if (camera) {
+        if (!camereByRoom[camera]) camereByRoom[camera] = [];
+        camereByRoom[camera].push(r.nome);
+      }
+    });
+
+    var camereHtml = Object.keys(camereByRoom)
+      .filter(function(camera) { return camereByRoom[camera].length > 1; })
+      .map(function(camera) {
+        var nomi = camereByRoom[camera].join(', ');
+        return '<div class="cat-row"><span class="cat-name">Camera ' + camera + '</span><span class="cat-badge" style="font-size:0.85rem;text-align:right">' + nomi + '</span></div>';
+      })
+      .join('') || '<div class="cat-row"><span style="color:var(--muted)">Nessuna camera multipla assegnata</span></div>';
+    document.getElementById('ov-camere-dettaglio').innerHTML = camereHtml;
 
     var pkgHtml = Object.keys(pkgCount).map(function(k) {
       return '<div class="cat-row"><span class="cat-name">' + k + '</span><span class="cat-badge">' + pkgCount[k] + '</span></div>';
@@ -738,6 +811,7 @@
       var id = r.id || r.numero_progressivo;
       return '<tr>'
         + '<td>' + (r.numero_progressivo||'—') + '</td>'
+        + '<td style="font-size:0.9rem;color:var(--muted)">' + formatDateTime(r.data_iscrizione) + '</td>'
         + '<td class="wrap"><strong>' + (r.nome||'—') + '</strong>'
           + (r.email ? '<br><small style="color:var(--muted)">' + r.email + '</small>' : '') + '</td>'
         + '<td>' + (r.email||'—') + '</td>'
@@ -747,7 +821,6 @@
         + '<td>' + badgeStato(r.stato) + '</td>'
         + '<td>' + badgePag(r.pagamento) + '</td>'
         + '<td>' + (r.camera || '<span style="color:var(--muted)">—</span>') + '</td>'
-        + '<td>' + formatDate(r.data_iscrizione) + '</td>'
         + '<td><div class="action-group">'
           + (r.stato !== 'Accettato' && r.stato !== 'Rifiutato' ? '<button class="btn-sm btn-accetta" onclick="aggiornaStato(\'' + id + '\',\'Accettato\')">Accetta</button>' : '')
           + (r.stato !== 'Rifiutato' ? '<button class="btn-sm btn-rifiuta" onclick="aggiornaStato(\'' + id + '\',\'Rifiutato\')">Rifiuta</button>' : '')
@@ -757,7 +830,7 @@
           + '<button class="btn-sm btn-del" onclick="elimina(\'' + id + '\')">&#215;</button>'
         + '</div></td>'
         + '</tr>';
-    }).join('') || '<tr><td colspan="11" style="text-align:center;padding:40px;color:var(--muted)">Nessun risultato</td></tr>';
+    }).join('') || '<tr><td colspan="12" style="text-align:center;padding:40px;color:var(--muted)">Nessun risultato</td></tr>';
   }
 
   /* ============================================================
@@ -895,11 +968,27 @@
     if (!d) return '—';
     try { return new Date(d).toLocaleDateString('it-IT'); } catch(e) { return d; }
   }
+  function formatDateTime(d) {
+    if (!d) return '—';
+    try { return new Date(d).toLocaleString('it-IT'); } catch(e) { return d; }
+  }
+  function getGenere(nome) {
+    if (!nome) return null;
+    var nomeFirstWord = (nome.split(' ')[0] || '').toLowerCase();
+    var donne = ['maria', 'anna', 'elena', 'giulia', 'sara', 'lisa', 'francesca', 'laura', 'martina', 'chiara', 'federica', 'valentina', 'alessandra', 'barbara', 'cristina', 'diana', 'elisa', 'emilia', 'felicita', 'franca', 'gabriella', 'giuditta', 'graziella', 'grazia', 'helena', 'ilaria', 'immacolata', 'ines', 'inga', 'ingrid', 'iris', 'irma', 'isabella', 'italia', 'ivana', 'ivonne'];
+    var uomini = ['luca', 'marco', 'paolo', 'andrea', 'giovanni', 'antonio', 'luigi', 'giuseppe', 'carlo', 'diego', 'franco', 'giorgio', 'giulio', 'gregorio', 'guido', 'henrik', 'henry', 'herbert', 'herman', 'hermano', 'hermenegildo', 'hermes', 'hermino', 'hernandez', 'hernando'];
+    return donne.indexOf(nomeFirstWord) !== -1 ? 'F' : (uomini.indexOf(nomeFirstWord) !== -1 ? 'M' : null);
+  }
   function toast(msg) {
     var t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
     setTimeout(function() { t.classList.remove('show'); }, 3000);
   }
+
+  /* Carica i dati all'apertura della pagina */
+  document.addEventListener('DOMContentLoaded', function() {
+    loadAll();
+  });
 </script>
 </body>
 </html>

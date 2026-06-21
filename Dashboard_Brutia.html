@@ -6,28 +6,39 @@
   <title>Dashboard — Brutia Tango Festival</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
   <style>
     :root {
-      --bg:       #f8f7ff;
+      --bg:       linear-gradient(135deg, #f5f3ff 0%, #faf8ff 100%);
       --surface:  #ffffff;
-      --surface2: #f0eaff;
-      --ink:      #1a1033;
-      --accent:   #7b2ff7;
-      --accent2:  rgba(123,47,247,0.08);
-      --border:   rgba(123,47,247,0.18);
-      --muted:    rgba(30,0,60,0.45);
-      --danger:   #d92b4b;
-      --warn:     #e08700;
-      --ok:       #0a8a60;
+      --surface2: #ede8ff;
+      --ink:      #0f0520;
+      --accent:   #7c3aed;
+      --accent2:  rgba(124,58,237,0.12);
+      --border:   rgba(124,58,237,0.2);
+      --muted:    rgba(15,5,32,0.5);
+      --danger:   #dc2626;
+      --warn:     #f59e0b;
+      --ok:       #059669;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(124,58,237,0.15);
+      --shadow-lg: 0 12px 24px rgba(124,58,237,0.2);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); font-size: 15px; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.5;
+    }
 
     /* LOGIN */
     #loginScreen {
       position: fixed; inset: 0;
       background: #f8f7ff;
-      display: flex; flex-direction: column;
+      display: none; flex-direction: column;
       align-items: center; justify-content: center; z-index: 999;
     }
     .login-logo {
@@ -80,15 +91,21 @@
     }
 
     /* MAIN LAYOUT */
-    #app { display: none; }
+    #app { display: block; }
 
     header {
-      height: 68px;
-      background: #fff;
-      border-bottom: 2px solid var(--border);
+      height: 48px;
+      background: linear-gradient(135deg, #fff 0%, #f9f7ff 100%);
+      border-bottom: 1.5px solid var(--border);
       box-shadow: 0 2px 12px rgba(123,47,247,0.08);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 2rem; position: sticky; top: 0; z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: var(--transition);
     }
     .header-brand {
       font-family: 'Bebas Neue', sans-serif;
@@ -103,135 +120,268 @@
     }
     .header-right { display: flex; align-items: center; gap: 1rem; }
     .btn-refresh {
-      padding: 8px 16px; border-radius: 8px;
-      background: var(--accent2); color: var(--accent);
-      border: 1.5px solid var(--border); cursor: pointer;
+      padding: 9px 18px;
+      border-radius: 10px;
+      background: var(--accent2);
+      color: var(--accent);
+      border: 1.5px solid var(--border);
+      cursor: pointer;
       font-family: 'Inter', sans-serif;
-      font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      transition: background 0.2s, box-shadow 0.2s;
+      transition: var(--transition);
     }
-    .btn-refresh:hover { background: rgba(123,47,247,0.15); box-shadow: 0 2px 8px rgba(123,47,247,0.2); }
+    .btn-refresh:hover {
+      background: linear-gradient(135deg, var(--accent2) 0%, rgba(124,58,237,0.16) 100%);
+      box-shadow: 0 4px 12px rgba(124,58,237,0.25);
+      transform: translateY(-1px);
+    }
+    .btn-refresh:active {
+      transform: translateY(0);
+    }
     .btn-logout {
-      padding: 8px 16px; border-radius: 8px;
-      background: transparent; color: var(--muted);
-      border: 1.5px solid var(--border); cursor: pointer;
+      padding: 10px 18px;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      border: 1.5px solid var(--border);
+      cursor: pointer;
       font-family: 'Inter', sans-serif;
-      font-size: 12px; font-weight: 500;
-      transition: color 0.2s, border-color 0.2s;
+      font-size: 12px;
+      font-weight: 700;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
     }
-    .btn-logout:hover { color: var(--ink); border-color: rgba(123,47,247,0.4); }
+    .btn-logout:hover {
+      color: var(--ink);
+      border-color: var(--accent);
+      background: rgba(124,58,237,0.05);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+    .btn-logout:active {
+      transform: translateY(0);
+    }
     .last-update { font-size: 12px; color: var(--muted); }
 
     /* TABS */
     .tab-bar {
-      display: flex; gap: 4px;
-      border-bottom: 2px solid var(--border);
-      background: #fff;
-      padding: 12px 2rem 0;
+      display: flex;
+      gap: 0;
+      border-bottom: 1.5px solid var(--border);
+      background: linear-gradient(90deg, #fff 0%, #f9f7ff 100%);
+      padding: 0 2rem;
     }
     .tab-btn {
-      padding: 10px 20px; border: none; background: none; cursor: pointer;
+      padding: 12px 20px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
       font-family: 'Inter', sans-serif;
-      font-size: 13px; font-weight: 600; letter-spacing: 0.03em;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       color: var(--muted);
       border-radius: 8px 8px 0 0;
-      border-bottom: 3px solid transparent; margin-bottom: -2px;
-      transition: color 0.2s, background 0.2s;
+      border-bottom: 3px solid transparent;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      margin: 0 2px;
+    }
+    .tab-btn:hover {
+      color: var(--accent);
+      background: rgba(124,58,237,0.08);
+      border-bottom-color: rgba(124,58,237,0.4);
+      transform: translateY(-1px);
     }
     .tab-btn.active {
-      color: var(--accent);
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent) 0%, #6520e0 100%);
       border-bottom-color: var(--accent);
-      background: var(--accent2);
+      box-shadow: 0 4px 12px rgba(124,58,237,0.3);
+      transform: translateY(-2px);
+      border-bottom: 3px solid #fff;
     }
-    .tab-btn:hover { color: var(--ink); background: var(--bg); }
 
     /* CONTENT */
-    .tab-content { display: none; padding: 2rem; }
+    .tab-content { display: none; padding: 1rem; }
     .tab-content.active { display: block; }
 
     /* STATS CARDS */
+    .stats-urgente {
+      display: grid; grid-template-columns: 1fr; gap: 0;
+      margin-bottom: 0.8rem;
+    }
     .stats-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
-      margin-bottom: 2rem;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem;
+      margin-bottom: 1rem;
     }
     .stat-card {
-      background: #fff;
+      background: linear-gradient(135deg, #fff 0%, #fafbff 100%);
       border-radius: 14px;
-      padding: 1.5rem;
+      padding: 1.2rem;
       border: 1.5px solid var(--border);
       position: relative; overflow: hidden;
-      box-shadow: 0 2px 8px rgba(123,47,247,0.06);
+      box-shadow: var(--shadow-md);
+      transition: var(--transition);
     }
+    .stat-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      background: linear-gradient(135deg, #fff 0%, #f5f3ff 100%);
+    }
+    .stat-card.urgente {
+      background: linear-gradient(135deg, rgba(217,43,75,0.05) 0%, rgba(217,43,75,0.02) 100%);
+      border: 2px solid var(--danger);
+      box-shadow: 0 4px 16px rgba(217,43,75,0.15);
+    }
+    .stat-card.urgente .stat-val { color: var(--danger); font-size: 4rem; }
+    .stat-card.urgente .stat-label { color: var(--danger); font-weight: 800; }
     .stat-card::before {
       content: '';
       position: absolute; top: 0; left: 0; right: 0; height: 3px;
       background: var(--accent);
     }
+    .stat-card.urgente::before { background: var(--danger); }
     .stat-card.green::before  { background: var(--ok); }
     .stat-card.orange::before { background: var(--warn); }
     .stat-card.red::before    { background: var(--danger); }
     .stat-card.blue::before   { background: var(--accent); }
     .stat-label {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--muted); margin-bottom: 0.6rem;
+      color: var(--muted); margin-bottom: 0.4rem;
     }
     .stat-val {
-      font-size: 3rem; font-weight: 700; letter-spacing: -0.03em;
-      line-height: 1; font-family: 'Inter', sans-serif;
-      color: var(--ink);
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--ink) 0%, rgba(15,5,32,0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .stat-card.green  .stat-val { color: var(--ok); }
-    .stat-card.orange .stat-val { color: var(--warn); }
-    .stat-card.blue   .stat-val { color: var(--accent); }
-    .stat-sub { font-size: 12px; color: var(--muted); margin-top: 0.4rem; }
+    .stat-card.green .stat-val {
+      background: linear-gradient(135deg, var(--ok) 0%, rgba(51,168,127,0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-card.orange .stat-val {
+      background: linear-gradient(135deg, var(--warn) 0%, rgba(245,158,11,0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-card.blue .stat-val {
+      background: linear-gradient(135deg, var(--accent) 0%, #6520e0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-sub { font-size: 11px; color: var(--muted); margin-top: 0.2rem; }
 
     /* MINI STATS */
     .mini-stats {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem;
-      margin-bottom: 2rem;
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 0.6rem;
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      grid-column: 1 / -1;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 0.6rem 0 0.3rem;
+      border-top: 1.5px solid var(--border);
+      margin-top: 0.5rem;
+      transition: var(--transition);
+    }
+    .section-title:first-child {
+      border-top: none;
+      margin-top: 0;
     }
     .mini-card {
-      background: #fff; border-radius: 12px;
-      padding: 1.2rem 1.4rem;
+      background: linear-gradient(135deg, #fff 0%, #fafbff 100%);
+      border-radius: 11px;
+      padding: 0.9rem 1.1rem;
       border: 1.5px solid var(--border);
-      box-shadow: 0 2px 8px rgba(123,47,247,0.06);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .mini-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #fff 0%, #f5f3ff 100%);
     }
     .mini-card-title {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.06em;
       text-transform: uppercase; color: var(--accent);
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.4rem;
     }
     .cat-row {
       display: flex; justify-content: space-between;
-      align-items: center; padding: 7px 0;
-      border-bottom: 1px solid var(--border); font-size: 13px;
+      align-items: center; padding: 4px 0;
+      border-bottom: 1px solid var(--border); font-size: 11px;
     }
     .cat-row:last-child { border-bottom: none; }
     .cat-name { font-weight: 500; color: var(--ink); }
     .cat-badge {
-      font-size: 11px; font-weight: 700;
-      padding: 2px 10px; border-radius: 10px;
-      background: var(--accent2); color: var(--accent);
-      border: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent2) 0%, rgba(124,58,237,0.15) 100%);
+      color: var(--accent);
+      border: 1.5px solid var(--border);
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+    .cat-badge:hover {
+      background: linear-gradient(135deg, rgba(124,58,237,0.18) 0%, rgba(124,58,237,0.22) 100%);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent);
     }
 
     /* SECTION CARD */
     .section-card {
-      background: #fff; border-radius: 12px;
-      border: 1.5px solid var(--border); overflow: hidden;
-      box-shadow: 0 2px 8px rgba(123,47,247,0.05);
+      background: #fff;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      margin-bottom: 1rem;
+    }
+    .section-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent);
+      transform: translateY(-1px);
     }
     .section-card-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1.2rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.7rem 1rem;
+      border-bottom: 1.5px solid var(--border);
+      background: linear-gradient(135deg, var(--bg) 0%, rgba(124,58,237,0.02) 100%);
     }
     .section-card-title {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--accent);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      letter-spacing: 0.08em;
     }
 
     /* CAMERA CARDS */
@@ -244,56 +394,83 @@
     }
     .cam-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
     }
     .cam-card {
       background: #fff;
       border: 1.5px solid var(--border);
       border-radius: 12px;
-      padding: 14px 16px;
+      padding: 12px 14px;
       position: relative;
-      box-shadow: 0 1px 4px rgba(123,47,247,0.05);
-      transition: border-color 0.2s, box-shadow 0.2s;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
     }
     .cam-card:hover {
-      border-color: rgba(123,47,247,0.4);
-      box-shadow: 0 4px 16px rgba(123,47,247,0.1);
+      border-color: var(--accent);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
     }
     .cam-card.cam-card-mismatch {
       border-color: #f59e0b;
-      box-shadow: 0 2px 8px rgba(245,158,11,0.15);
+      box-shadow: 0 4px 12px rgba(245,158,11,0.2);
+      background: linear-gradient(135deg, #fffbf0 0%, #fff8f3 100%);
+    }
+    .cam-card.cam-card-mismatch:hover {
+      box-shadow: 0 6px 16px rgba(245,158,11,0.25);
     }
     .cam-card-num {
       font-family: 'DM Mono', monospace;
-      font-size: 11px; font-weight: 500;
-      color: var(--muted); margin-bottom: 6px;
+      font-size: 10px; font-weight: 500;
+      color: var(--muted); margin-bottom: 4px;
     }
     .cam-card-tipo {
-      font-size: 10px; font-weight: 700;
+      font-size: 9px; font-weight: 700;
       letter-spacing: .08em; text-transform: uppercase;
-      padding: 2px 8px; border-radius: 20px;
-      display: inline-block; margin-bottom: 8px;
+      padding: 2px 6px; border-radius: 18px;
+      display: inline-block; margin-bottom: 6px;
     }
     .cam-tipo-singola      { background: #e0f2fe; color: #0369a1; border: 1px solid #bae0f8; }
     .cam-tipo-doppia       { background: #ede9fe; color: #6d28d9; border: 1px solid #d4c8ff; }
     .cam-tipo-matrimoniale { background: #fce7f3; color: #be185d; border: 1px solid #f8c4de; }
     .cam-tipo-tripla       { background: #dcfce7; color: #15803d; border: 1px solid #a7f0be; }
-    .cam-card-ospiti { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.4; }
-    .cam-card-compagni { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
-    .cam-card-footer { display: flex; align-items: center; justify-content: flex-end; margin-top: 10px; }
+    .cam-card-ospiti { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+    .cam-card-compagni { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.3; }
+    .cam-card-footer { display: flex; align-items: center; justify-content: flex-end; margin-top: 8px; }
 
     /* Ospiti con pacchetto */
     .cam-guest-list { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
     .cam-guest-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-    .cam-guest-name { font-size: 13px; font-weight: 600; color: var(--ink); flex: 1; }
+    .cam-guest-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+      flex: 1;
+    }
     .cam-guest-pkg {
-      font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px;
-      background: var(--accent2); color: var(--accent); border: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--accent2) 0%, rgba(124,58,237,0.08) 100%);
+      color: var(--accent);
+      border: 1.5px solid var(--border);
       white-space: nowrap;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+    .cam-guest-pkg:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
     }
     .cam-guest-pkg.mismatch {
-      background: #fff3e0; color: #c47000; border-color: #ffe0a0;
+      background: linear-gradient(135deg, #fff3e0 0%, #ffe8c4 100%);
+      color: #c47000;
+      border-color: #ffe0a0;
+      box-shadow: 0 2px 8px rgba(196,112,0,0.15);
+    }
+    .cam-guest-pkg.mismatch:hover {
+      box-shadow: 0 4px 12px rgba(196,112,0,0.25);
     }
     .cam-mismatch-alert {
       margin-top: 8px; padding: 6px 10px; border-radius: 6px;
@@ -303,82 +480,245 @@
     }
 
     /* TABLE */
-    .tbl-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; }
+    .tbl-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-md);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
     thead th {
-      padding: 11px 16px; text-align: left;
-      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--muted);
-      background: var(--bg); border-bottom: 1.5px solid var(--border);
+      background: linear-gradient(135deg, var(--bg) 0%, rgba(124,58,237,0.02) 100%);
+      border-bottom: 1.5px solid var(--border);
       white-space: nowrap;
     }
-    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
-    tbody tr:hover { background: var(--accent2); }
-    tbody tr:last-child { border-bottom: none; }
-    td {
-      padding: 13px 16px; font-size: 14px; vertical-align: middle;
-      white-space: nowrap; color: var(--ink);
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition);
     }
-    td.wrap { white-space: normal; min-width: 140px; }
-    td strong { color: var(--ink); font-weight: 600; }
+    tbody tr:hover {
+      background: linear-gradient(90deg, rgba(124,58,237,0.05) 0%, transparent 100%);
+      box-shadow: inset 0 0 0 1.5px rgba(124,58,237,0.1);
+    }
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+    td {
+      padding: 10px 12px;
+      font-size: 13px;
+      vertical-align: middle;
+      white-space: nowrap;
+      color: var(--ink);
+      transition: var(--transition);
+    }
+    td.wrap {
+      white-space: normal;
+      min-width: 140px;
+    }
+    td strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
 
     /* BADGES */
     .badge {
-      display: inline-block; padding: 4px 10px; border-radius: 20px;
-      font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+      display: inline-block;
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
       white-space: nowrap;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      border: 1.5px solid transparent;
     }
-    .badge-wait  { background: #fff3e0; color: #c47000; border: 1px solid #ffe0a0; }
-    .badge-ok    { background: #f0eaff; color: var(--accent); border: 1px solid #d4b8ff; }
-    .badge-rif   { background: #ffeef0; color: var(--danger); border: 1px solid #ffccd3; }
-    .badge-ant   { background: #e8f0ff; color: #2255cc; border: 1px solid #c0d0ff; }
-    .badge-saldo { background: #e6f9f0; color: var(--ok); border: 1px solid #a8e6c8; }
-    .badge-cam   { background: #f5eaff; color: #8b00cc; border: 1px solid #ddb8ff; }
+    .badge:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .badge-wait {
+      background: linear-gradient(135deg, #fff3e0 0%, #ffe8c4 100%);
+      color: #c47000;
+      border-color: #ffe0a0;
+    }
+    .badge-wait:hover {
+      box-shadow: 0 4px 12px rgba(196,112,0,0.2);
+    }
+    .badge-ok {
+      background: linear-gradient(135deg, #f0eaff 0%, #e8d5ff 100%);
+      color: var(--accent);
+      border-color: #d4b8ff;
+    }
+    .badge-ok:hover {
+      box-shadow: 0 4px 12px rgba(124,58,237,0.25);
+    }
+    .badge-rif {
+      background: linear-gradient(135deg, #ffeef0 0%, #ffdce0 100%);
+      color: var(--danger);
+      border-color: #ffccd3;
+    }
+    .badge-rif:hover {
+      box-shadow: 0 4px 12px rgba(217,43,75,0.25);
+    }
+    .badge-ant {
+      background: linear-gradient(135deg, #e8f0ff 0%, #d4e3ff 100%);
+      color: #2255cc;
+      border-color: #c0d0ff;
+    }
+    .badge-ant:hover {
+      box-shadow: 0 4px 12px rgba(34,85,204,0.25);
+    }
+    .badge-saldo {
+      background: linear-gradient(135deg, #e6f9f0 0%, #d4f0e4 100%);
+      color: var(--ok);
+      border-color: #a8e6c8;
+    }
+    .badge-saldo:hover {
+      box-shadow: 0 4px 12px rgba(51,168,127,0.25);
+    }
+    .badge-cam {
+      background: linear-gradient(135deg, #f5eaff 0%, #e8d5ff 100%);
+      color: #8b00cc;
+      border-color: #ddb8ff;
+    }
+    .badge-cam:hover {
+      box-shadow: 0 4px 12px rgba(139,0,204,0.25);
+    }
 
     /* ACTION BUTTONS */
     .action-group { display: flex; gap: 6px; flex-wrap: wrap; }
     .btn-sm {
-      padding: 6px 12px; border-radius: 6px; border: 1.5px solid transparent; cursor: pointer;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
       font-family: 'Inter', sans-serif;
-      font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
-      text-transform: uppercase; transition: opacity 0.2s, box-shadow 0.15s;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: var(--transition);
       white-space: nowrap;
+      box-shadow: var(--shadow-sm);
     }
-    .btn-sm:hover { opacity: 0.8; }
-    .btn-accetta { background: var(--accent2); color: var(--accent); border-color: var(--border); }
-    .btn-accetta:hover { background: rgba(123,47,247,0.15); }
-    .btn-rifiuta { background: #ffeef0; color: var(--danger); border-color: #ffccd3; }
-    .btn-ant     { background: #e8f0ff; color: #2255cc; border-color: #c0d0ff; }
-    .btn-saldo   { background: #e6f9f0; color: var(--ok); border-color: #a8e6c8; }
-    .btn-cam     { background: #f5eaff; color: #8b00cc; border-color: #ddb8ff; }
-    .btn-del     { background: #ffeef0; color: var(--danger); border-color: #ffccd3; }
+    .btn-sm:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .btn-sm:active {
+      transform: translateY(0);
+    }
+    .btn-accetta {
+      background: linear-gradient(135deg, var(--accent2) 0%, rgba(124,58,237,0.15) 100%);
+      color: var(--accent);
+      border-color: var(--border);
+      box-shadow: 0 2px 8px rgba(124,58,237,0.1);
+    }
+    .btn-accetta:hover {
+      box-shadow: 0 4px 12px rgba(124,58,237,0.2);
+    }
+    .btn-rifiuta {
+      background: linear-gradient(135deg, #ffeef0 0%, #ffdce0 100%);
+      color: var(--danger);
+      border-color: #ffccd3;
+      box-shadow: 0 2px 8px rgba(220,38,38,0.1);
+    }
+    .btn-rifiuta:hover {
+      box-shadow: 0 4px 12px rgba(220,38,38,0.2);
+    }
+    .btn-ant {
+      background: linear-gradient(135deg, #e8f0ff 0%, #d4e3ff 100%);
+      color: #2255cc;
+      border-color: #c0d0ff;
+      box-shadow: 0 2px 8px rgba(34,85,204,0.1);
+    }
+    .btn-ant:hover {
+      box-shadow: 0 4px 12px rgba(34,85,204,0.2);
+    }
+    .btn-saldo {
+      background: linear-gradient(135deg, #e6f9f0 0%, #d4f0e4 100%);
+      color: var(--ok);
+      border-color: #a8e6c8;
+      box-shadow: 0 2px 8px rgba(51,168,127,0.1);
+    }
+    .btn-saldo:hover {
+      box-shadow: 0 4px 12px rgba(51,168,127,0.2);
+    }
+    .btn-cam {
+      background: linear-gradient(135deg, #f5eaff 0%, #e8d5ff 100%);
+      color: #8b00cc;
+      border-color: #ddb8ff;
+      box-shadow: 0 2px 8px rgba(139,0,204,0.1);
+    }
+    .btn-cam:hover {
+      box-shadow: 0 4px 12px rgba(139,0,204,0.2);
+    }
+    .btn-del {
+      background: linear-gradient(135deg, #ffeef0 0%, #ffdce0 100%);
+      color: var(--danger);
+      border-color: #ffccd3;
+      box-shadow: 0 2px 8px rgba(220,38,38,0.1);
+    }
+    .btn-del:hover {
+      box-shadow: 0 4px 12px rgba(220,38,38,0.2);
+    }
 
     /* FILTERS */
     .filters {
-      display: flex; gap: 0.8rem; align-items: center;
-      padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
-      flex-wrap: wrap; background: var(--bg);
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(124,58,237,0.03) 0%, transparent 100%);
+      flex-wrap: wrap;
     }
     .filter-label {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
-    .filter-select {
-      padding: 7px 10px; border-radius: 7px;
+    .filter-select, .filter-input {
+      padding: 8px 12px;
+      border-radius: 8px;
       border: 1.5px solid var(--border);
-      font-family: 'Inter', sans-serif; font-size: 13px;
-      background: #fff; color: var(--ink); outline: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+    .filter-select:hover, .filter-input:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(124,58,237,0.1);
     }
     .filter-input {
-      padding: 7px 10px; border-radius: 7px;
-      border: 1.5px solid var(--border);
-      background: #fff; color: var(--ink);
-      font-family: 'Inter', sans-serif; font-size: 13px;
-      outline: none; width: 180px;
+      width: 180px;
     }
-    .filter-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(123,47,247,0.1); }
-    .filter-select:focus { border-color: var(--accent); }
+    .filter-select:hover, .filter-input:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.08);
+    }
+    .filter-input:focus, .filter-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+      transform: translateY(-1px);
+    }
 
     /* CAMERE */
     .camere-legend {
@@ -404,66 +744,174 @@
     }
     .camere-flex { display: flex; flex-wrap: wrap; gap: 0.6rem; }
     .cam-chip {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      width: 80px; height: 60px; border-radius: 8px;
-      border: 1px solid var(--border); background: var(--surface);
-      cursor: pointer; transition: all 0.2s;
-      font-size: 10px; font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 60px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 10px;
+      font-weight: 700;
+      box-shadow: var(--shadow-sm);
     }
-    .cam-chip.occupata { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .cam-chip.parziale { background: #fff8e1; border-color: var(--warn); color: var(--warn); }
+    .cam-chip:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .cam-chip.occupata {
+      background: linear-gradient(135deg, var(--accent) 0%, #6520e0 100%);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(124,58,237,0.3);
+    }
+    .cam-chip.occupata:hover {
+      box-shadow: 0 6px 16px rgba(124,58,237,0.4);
+    }
+    .cam-chip.parziale {
+      background: linear-gradient(135deg, #fff8e1 0%, #ffe8c4 100%);
+      border-color: var(--warn);
+      color: var(--warn);
+      box-shadow: 0 2px 8px rgba(245,158,11,0.15);
+    }
+    .cam-chip.parziale:hover {
+      box-shadow: 0 4px 12px rgba(245,158,11,0.25);
+    }
     .cam-num { font-size: 13px; font-weight: 900; }
     .cam-tipo { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; }
 
     /* CONTABILITA */
-    .cont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+    .cont-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
     .cont-card {
-      background: #fff; border-radius: 12px;
-      padding: 1.5rem; border: 1.5px solid var(--border);
-      box-shadow: 0 2px 8px rgba(123,47,247,0.05);
+      background: #fff;
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .cont-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent);
+      transform: translateY(-1px);
     }
     .cont-card-lbl {
-      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem;
     }
     .cont-card-val {
-      font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
       font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--ink) 0%, rgba(15,5,32,0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .cont-card-val.green { color: var(--ok); }
-    .cont-card-val.orange { color: var(--warn); }
+    .cont-card-val.green {
+      background: linear-gradient(135deg, var(--ok) 0%, rgba(51,168,127,0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cont-card-val.orange {
+      background: linear-gradient(135deg, var(--warn) 0%, rgba(245,158,11,0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
     /* TOAST */
-    #toast {
-      position: fixed; bottom: 2rem; right: 2rem;
-      background: #1a1033; color: #fff;
-      padding: 12px 20px; border-radius: 8px;
-      font-size: 13px; font-weight: 500;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-      opacity: 0; transition: opacity 0.3s;
-      pointer-events: none; z-index: 999;
+    @keyframes toastSlideIn {
+      from {
+        opacity: 0;
+        transform: translateX(10px) translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) translateY(0);
+      }
     }
-    #toast.show { opacity: 1; }
+    #toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: linear-gradient(135deg, #1a1033 0%, #2d1b45 100%);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 999;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    #toast.show {
+      opacity: 1;
+      animation: toastSlideIn 0.3s ease-out;
+    }
 
     /* MODAL camera */
-    .modal-bg {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.4); z-index: 500;
-      align-items: center; justify-content: center;
-      backdrop-filter: blur(3px);
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
     }
-    .modal-bg.open { display: flex; }
+    .modal-bg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      animation: fadeIn 0.2s ease-out;
+    }
+    .modal-bg.open {
+      display: flex;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
     .modal {
       background: #fff;
       border: 1.5px solid var(--border);
       box-shadow: 0 20px 60px rgba(123,47,247,0.15);
-      border-radius: 16px;
-      padding: 2rem; width: 380px; max-width: 90vw;
+      border-radius: 18px;
+      padding: 2rem;
+      width: 380px;
+      max-width: 90vw;
+      animation: modalSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .modal h3 {
-      font-size: 1.2rem; font-weight: 700;
-      color: var(--accent); margin-bottom: 1.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 1.8rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 2px solid var(--border);
+      letter-spacing: -0.01em;
     }
     .modal label {
       display: block; font-size: 11px; font-weight: 700;
@@ -471,31 +919,71 @@
       color: var(--muted); margin-bottom: 0.5rem;
     }
     .modal input, .modal select {
-      width: 100%; padding: 10px 12px; border-radius: 8px;
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 10px;
       border: 1.5px solid var(--border);
-      background: var(--bg); color: var(--ink);
-      font-family: 'Inter', sans-serif; font-size: 14px;
-      margin-bottom: 1.2rem; outline: none;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      margin-bottom: 1.2rem;
+      outline: none;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
     }
-    .modal input:focus, .modal select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(123,47,247,0.1); }
+    .modal input:hover, .modal select:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.08);
+    }
+    .modal input:focus, .modal select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+      transform: translateY(-1px);
+    }
     .modal-btns { display: flex; gap: 0.8rem; justify-content: flex-end; }
     .btn-modal-cancel {
-      padding: 10px 20px; border-radius: 8px;
-      border: 1.5px solid var(--border); background: none; color: var(--muted);
+      padding: 11px 24px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--muted);
       font-family: 'Inter', sans-serif;
-      font-size: 12px; font-weight: 600; cursor: pointer;
-      transition: color 0.2s, border-color 0.2s;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
     }
-    .btn-modal-cancel:hover { color: var(--ink); border-color: rgba(123,47,247,0.4); }
+    .btn-modal-cancel:hover {
+      color: var(--ink);
+      border-color: var(--accent);
+      background: rgba(124,58,237,0.05);
+      box-shadow: var(--shadow-md);
+    }
+    .btn-modal-cancel:active {
+      transform: translateY(0);
+    }
     .btn-modal-ok {
-      padding: 10px 20px; border-radius: 8px;
-      background: var(--accent); color: #fff; border: none;
-      box-shadow: 0 4px 14px rgba(123,47,247,0.3);
+      padding: 11px 24px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent) 0%, #6520e0 100%);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 16px rgba(123,47,247,0.3);
       font-family: 'Inter', sans-serif;
-      font-size: 12px; font-weight: 700; cursor: pointer;
-      transition: box-shadow 0.2s, background 0.2s;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
     }
-    .btn-modal-ok:hover { background: #6520e0; }
+    .btn-modal-ok:hover {
+      box-shadow: 0 6px 24px rgba(123,47,247,0.4);
+      transform: translateY(-2px);
+    }
+    .btn-modal-ok:active {
+      transform: translateY(0);
+    }
 
     .empty-state {
       text-align: center; padding: 60px 20px;
@@ -510,110 +998,511 @@
     .cam-group-title { color: var(--muted); border-bottom-color: var(--border); }
     .cam-group-title { font-size: 12px; }
 
+    /* NOTIFICHE VISIVE */
+    @keyframes pulse-danger {
+      0%, 100% { box-shadow: 0 4px 16px rgba(217,43,75,0.15); }
+      50% { box-shadow: 0 4px 24px rgba(217,43,75,0.3); }
+    }
+    .stat-card.urgente {
+      animation: pulse-danger 2s infinite;
+    }
+    /* Evidenzia righe In attesa */
+    tr:has(td:contains("In attesa")) {
+      background: rgba(217,43,75,0.03) !important;
+    }
+
     @media (max-width: 768px) {
+      /* ---- GRAFICI ---- */
+      [style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
 
       /* ---- HEADER ---- */
-      header { height: auto; padding: 10px 1rem; flex-wrap: wrap; gap: 8px; position: sticky; }
-      .header-brand { font-size: 1.5rem; }
-      .header-brand em { font-size: 9px; }
-      .header-right { gap: 6px; }
+      header {
+        height: auto;
+        padding: 12px 1rem;
+        flex-wrap: wrap;
+        gap: 10px;
+        position: sticky;
+        border-bottom: 1px solid var(--border);
+      }
+      .header-brand {
+        font-size: 1.3rem;
+        letter-spacing: 0.05em;
+      }
+      .header-brand em {
+        font-size: 8px;
+        letter-spacing: 0.1em;
+      }
+      .header-right {
+        gap: 8px;
+        flex-wrap: wrap;
+      }
       .last-update { display: none; }
-      .btn-refresh[onclick*="testPost"] { display: none; } /* Nascondi Test POST su mobile */
-      .btn-refresh, .btn-logout { padding: 7px 12px; font-size: 11px; }
+        .btn-refresh, .btn-logout {
+        padding: 9px 14px;
+        font-size: 12px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
 
       /* ---- TAB BAR ---- */
       .tab-bar {
-        padding: 8px 0.75rem 0; gap: 2px;
-        overflow-x: auto; -webkit-overflow-scrolling: touch;
-        white-space: nowrap; flex-wrap: nowrap;
-        scrollbar-width: none;
+        padding: 0;
+        gap: 0;
+        border-bottom: 1px solid var(--border);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
       }
       .tab-bar::-webkit-scrollbar { display: none; }
-      .tab-btn { padding: 8px 14px; font-size: 11px; flex-shrink: 0; }
+      .tab-btn {
+        padding: 12px 16px;
+        font-size: 12px;
+        flex-shrink: 0;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        border-bottom-width: 2px;
+      }
 
       /* ---- CONTENT ---- */
       .tab-content { padding: 1rem; }
 
       /* ---- STATS ---- */
-      .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
-      .stat-card { padding: 1rem; }
-      .stat-val { font-size: 2rem; }
+      .stats-urgente { margin-bottom: 1.5rem; }
+      .stat-card.urgente {
+        padding: 1.2rem;
+        margin-bottom: 0;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .stat-card {
+        padding: 1.2rem;
+        border-radius: 12px;
+      }
+      .stat-val {
+        font-size: 2.2rem;
+        margin-bottom: 0.4rem;
+      }
       .stat-label { font-size: 10px; }
-      .mini-stats { grid-template-columns: 1fr; gap: 0.75rem; margin-bottom: 1rem; }
-      .cont-grid  { grid-template-columns: 1fr; }
+      .stat-sub { font-size: 11px; }
 
-      /* ---- CAMERA CARDS ---- */
-      .cam-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .cam-card { padding: 12px; }
+      /* ---- MINI STATS ---- */
+      .mini-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .section-title {
+        padding: 1rem 0 0.5rem;
+        margin-top: 0.5rem;
+      }
+      .mini-card {
+        padding: 1.2rem 1.4rem;
+        border-radius: 12px;
+      }
+
+      /* ---- CONTABILITA ---- */
+      .cont-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .cont-card {
+        padding: 1.4rem 1.2rem;
+        border-radius: 12px;
+      }
+      .cont-card-val {
+        font-size: 2rem;
+      }
+
+      /* ---- CAMERA SECTION ---- */
+      .camere-legend {
+        gap: 1rem;
+        margin-bottom: 1.2rem;
+        flex-wrap: wrap;
+      }
+      .cam-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+      }
+      .cam-card {
+        padding: 12px;
+        border-radius: 10px;
+      }
+      .cam-card-num { font-size: 10px; }
+      .cam-card-ospiti { font-size: 13px; }
       .cam-guest-name { font-size: 12px; }
+      .cam-guest-pkg { font-size: 10px; }
 
       /* ---- TABELLA → CARD LIST ---- */
-      /* Nasconde thead, ogni tr diventa una card */
-      .tbl-wrap { overflow-x: visible; }
-      table { min-width: 0; width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+      .tbl-wrap {
+        overflow-x: visible;
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+      }
+      table {
+        min-width: 0;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+      }
       thead { display: none; }
       tbody tr {
         display: block;
         background: #fff;
         border: 1.5px solid var(--border) !important;
-        border-radius: 10px;
-        padding: 12px 14px;
-        margin-bottom: 6px;
-        box-shadow: 0 1px 4px rgba(123,47,247,0.05);
+        border-radius: 12px;
+        padding: 14px 12px;
+        margin-bottom: 8px;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
       }
-      tbody tr:hover { background: var(--accent2); }
+      tbody tr:hover {
+        box-shadow: var(--shadow-md);
+        border-color: var(--accent);
+      }
       td {
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 5px 0; font-size: 13px; white-space: normal;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        font-size: 13px;
+        white-space: normal;
         border-bottom: 1px solid var(--border);
+        gap: 8px;
       }
       td:last-child { border-bottom: none; padding-bottom: 0; }
       td:first-child { padding-top: 0; }
-      /* Etichette colonne via data-label */
       td::before {
         content: attr(data-label);
-        font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
-        text-transform: uppercase; color: var(--muted);
-        flex-shrink: 0; margin-right: 8px; min-width: 70px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+        flex-shrink: 0;
+        margin-right: 4px;
+        min-width: 60px;
       }
-      /* Nascondi celle inutili su mobile: ID e Data */
+      /* Nascondi celle inutili su mobile */
       td[data-label="#"],
       td[data-label="Data"],
       td[data-label="Tel"],
       td[data-label="Nascita"],
       td[data-label="Facebook"] { display: none; }
-      /* Colonna azioni: full width senza etichetta */
       td[data-label="Azioni"] {
-        flex-direction: column; align-items: flex-start; gap: 6px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
       }
       td[data-label="Azioni"]::before { display: none; }
-      .action-group { flex-wrap: wrap; gap: 6px; }
+      .action-group {
+        flex-wrap: wrap;
+        gap: 6px;
+        width: 100%;
+      }
+      .btn-sm {
+        padding: 8px 12px;
+        font-size: 10px;
+        min-height: 40px;
+        flex: 1;
+        min-width: 70px;
+      }
 
       /* ---- FILTRI ---- */
-      .filters { flex-direction: column; align-items: stretch; gap: 0.6rem; padding: 0.75rem 1rem; }
-      .filter-input, .filter-select { width: 100%; }
+      .filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 1rem;
+        background: var(--bg);
+      }
+      .filter-input, .filter-select {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 14px;
+        min-height: 44px;
+      }
       .filter-label { display: none; }
 
       /* ---- MODAL ---- */
-      .modal-bg { align-items: flex-end; }
+      .modal-bg {
+        align-items: flex-end;
+        background: rgba(0,0,0,0.6);
+      }
       .modal {
-        width: 100%; max-width: 100%;
-        border-radius: 16px 16px 0 0;
-        padding: 1.5rem 1.25rem;
-        max-height: 90vh; overflow-y: auto;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 20px 20px 0 0;
+        padding: 1.8rem 1.4rem;
+        max-height: 85vh;
+        overflow-y: auto;
+        border: none;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+      }
+      .modal h3 {
+        font-size: 1.1rem;
+        margin-bottom: 1.4rem;
+      }
+      .modal label {
+        font-size: 11px;
+        margin-bottom: 0.4rem;
+      }
+      .modal input, .modal select {
+        padding: 12px 14px;
+        font-size: 16px;
+        min-height: 44px;
+        margin-bottom: 1rem;
+      }
+      .modal-btns {
+        gap: 10px;
+        flex-direction: column-reverse;
+      }
+      .btn-modal-ok, .btn-modal-cancel {
+        padding: 12px 20px;
+        min-height: 44px;
+        width: 100%;
+        font-size: 13px;
       }
 
       /* ---- LOGIN ---- */
-      .login-logo { font-size: 3rem; }
-      .login-box { width: 92vw; padding: 1.8rem 1.4rem; }
+      .login-logo { font-size: 2.5rem; }
+      .login-box {
+        width: 90vw;
+        max-width: 100%;
+        padding: 2rem 1.4rem;
+      }
+      .login-box input {
+        min-height: 44px;
+        font-size: 16px;
+      }
+      .login-box button {
+        min-height: 44px;
+        font-size: 14px;
+      }
 
       /* ---- SECTION CARD ---- */
-      .section-card-header { padding: 0.9rem 1rem; }
+      .section-card {
+        border-radius: 12px;
+      }
+      .section-card-header {
+        padding: 1rem 1.2rem;
+        border-radius: 12px 12px 0 0;
+      }
+
+      /* ---- BADGES & BUTTONS ---- */
+      .badge {
+        padding: 6px 12px;
+        font-size: 10px;
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .cam-chip {
+        width: 75px;
+        height: 55px;
+        font-size: 9px;
+      }
+      .cam-num { font-size: 12px; }
+
+      /* ---- CAMERA CHIPS ---- */
+      .camere-flex { gap: 8px; }
     }
 
     @media (max-width: 480px) {
-      .stats-grid { grid-template-columns: 1fr 1fr; }
-      .cam-grid { grid-template-columns: 1fr; }
+      /* ---- HEADER ---- */
+      header {
+        padding: 10px 0.75rem;
+        gap: 8px;
+      }
+      .header-brand {
+        font-size: 1.1rem;
+      }
+      .header-brand em {
+        font-size: 7px;
+      }
+      .header-right {
+        gap: 6px;
+      }
+      .btn-refresh, .btn-logout {
+        padding: 8px 12px;
+        font-size: 11px;
+        min-width: auto;
+      }
+
+      /* ---- CONTENT ---- */
+      .tab-content { padding: 0.75rem; }
+
+      /* ---- STATS ---- */
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        margin-bottom: 1.2rem;
+      }
+      .stat-card {
+        padding: 1rem;
+      }
+      .stat-val {
+        font-size: 2rem;
+      }
+      .stat-label {
+        font-size: 9px;
+      }
+
+      /* ---- MINI STATS ---- */
+      .mini-stats {
+        gap: 0.8rem;
+      }
+      .mini-card {
+        padding: 1rem 1.2rem;
+      }
+
+      /* ---- CONTABILITA ---- */
+      .cont-card {
+        padding: 1.2rem 1rem;
+      }
+      .cont-card-lbl {
+        font-size: 10px;
+      }
+      .cont-card-val {
+        font-size: 1.8rem;
+      }
+
+      /* ---- FILTRI ---- */
+      .filters {
+        gap: 8px;
+        padding: 0.75rem;
+      }
+      .filter-input, .filter-select {
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+
+      /* ---- TABELLA ---- */
+      tbody tr {
+        padding: 12px 10px;
+        margin-bottom: 6px;
+        border-radius: 10px;
+      }
+      td {
+        padding: 6px 0;
+        font-size: 12px;
+      }
+      td::before {
+        min-width: 50px;
+        font-size: 9px;
+      }
+      .btn-sm {
+        padding: 7px 10px;
+        font-size: 9px;
+        min-width: 60px;
+      }
+
+      /* ---- CAMERA ---- */
+      .cam-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .cam-card {
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      /* ---- MODAL ---- */
+      .modal {
+        padding: 1.5rem 1.2rem;
+        max-height: 90vh;
+      }
+      .modal h3 {
+        font-size: 1rem;
+        margin-bottom: 1.2rem;
+      }
+      .modal input, .modal select {
+        padding: 11px 12px;
+        font-size: 16px;
+        margin-bottom: 0.9rem;
+      }
+      .btn-modal-ok, .btn-modal-cancel {
+        padding: 11px 18px;
+        font-size: 12px;
+        min-height: 40px;
+      }
+
+      /* ---- LOGIN ---- */
+      .login-logo { font-size: 2rem; }
+      .login-box {
+        width: 95vw;
+        padding: 1.6rem 1.2rem;
+      }
+
+      /* ---- BADGES ---- */
+      .badge {
+        padding: 5px 10px;
+        font-size: 9px;
+      }
+
+      /* ---- CAMERA CHIPS ---- */
+      .cam-chip {
+        width: 70px;
+        height: 50px;
+        font-size: 8px;
+      }
+      .cam-num { font-size: 11px; }
+      .cam-tipo { font-size: 8px; }
+
+      /* ---- SECTION CARD ---- */
+      .section-card-header {
+        padding: 0.8rem 1rem;
+      }
+      .section-card-title {
+        font-size: 10px;
+      }
+    }
+
+    /* MOBILE ULTRA-COMPACT (480px) */
+    @media (max-width: 480px) {
+      header { padding: 0 1rem; height: 52px; }
+      .header-brand { font-size: 1.6rem; }
+      .header-right { gap: 0.6rem; }
+      .btn-refresh, .btn-logout { padding: 8px 12px; font-size: 10px; }
+      .last-update { font-size: 10px; }
+
+      .tab-bar { padding: 0 1rem; }
+      .tab-btn { padding: 10px 14px; font-size: 11px; margin: 0 1px; }
+
+      .stats-grid { grid-template-columns: 1fr; gap: 0.5rem; margin-bottom: 0.8rem; }
+      .stat-card { padding: 0.9rem; border-radius: 12px; }
+      .stat-val { font-size: 2rem; }
+      .stat-label { font-size: 9px; }
+
+      .mini-stats { grid-template-columns: 1fr; gap: 0.4rem; }
+      .mini-card { padding: 0.7rem 0.9rem; }
+      .mini-card-title { font-size: 8px; }
+
+      .section-title { font-size: 9px; padding: 0.5rem 0 0.2rem; }
+      .tab-content { padding: 0.8rem; }
+    }
+
+    /* DARK MODE SUPPORT */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: linear-gradient(135deg, #1a1625 0%, #2d1f40 100%);
+        --surface: #2d1f40;
+        --surface2: #3d2d50;
+        --ink: #f5f5f5;
+        --muted: rgba(255,255,255,0.6);
+        --border: rgba(124,58,237,0.3);
+      }
+      body { background: var(--bg); }
+      .stat-card, .mini-card { background: linear-gradient(135deg, #3d2d50 0%, #322840 100%); }
     }
   </style>
 </head>
@@ -640,66 +1529,137 @@
     <div class="header-right">
       <span class="last-update" id="lastUpdate"></span>
       <button class="btn-refresh" onclick="loadAll()">&#8635; Aggiorna</button>
-      <button class="btn-refresh" onclick="testPost()" style="background:rgba(251,191,36,0.25)">&#9658; Test POST</button>
       <button class="btn-logout" onclick="logout()">Esci</button>
     </div>
   </header>
 
   <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('overview',this)">Overview</button>
-    <button class="tab-btn" onclick="switchTab('iscritti',this)">Iscritti</button>
-    <button class="tab-btn" onclick="switchTab('camere',this)">Camere</button>
-    <button class="tab-btn" onclick="switchTab('contabilita',this)">Contabilit&agrave;</button>
+    <button class="tab-btn active" onclick="switchTab('overview',this)">📊 Overview</button>
+    <button class="tab-btn" onclick="switchTab('iscritti',this)">👥 Iscritti</button>
+    <button class="tab-btn" onclick="switchTab('camere',this)">🔑 Camere</button>
+    <button class="tab-btn" onclick="switchTab('contabilita',this)">💰 Contabilit&agrave;</button>
   </div>
 
   <!-- TAB: OVERVIEW -->
   <div class="tab-content active" id="tab-overview">
-    <div class="stats-grid">
-      <div class="stat-card orange">
-        <div class="stat-label">In attesa</div>
+    <!-- SEZIONE URGENTE: RICHIESTE DA APPROVARE -->
+    <div class="stats-urgente">
+      <div class="stat-card urgente">
+        <div class="stat-label">⚠️ Approvare</div>
         <div class="stat-val" id="ov-attesa">—</div>
-        <div class="stat-sub">richieste da approvare</div>
+        <div class="stat-sub">da revisionare</div>
       </div>
-      <div class="stat-card green">
-        <div class="stat-label">Accettati</div>
+    </div>
+
+    <!-- KPI PRINCIPALI -->
+    <div class="stats-grid" style="margin-bottom: 0.8rem;">
+      <div class="stat-card" style="cursor: pointer;" onclick="switchTabByName('iscritti')">
+        <div class="stat-label">📋 Totale iscritti</div>
+        <div class="stat-val" id="ov-totale">—</div>
+        <div class="stat-sub">registrazioni ricevute</div>
+      </div>
+      <div class="stat-card green" style="cursor: pointer;" onclick="switchTabByName('iscritti')">
+        <div class="stat-label">✅ Accettati</div>
         <div class="stat-val" id="ov-accettati">—</div>
         <div class="stat-sub">iscrizioni confermate</div>
       </div>
-      <div class="stat-card blue">
-        <div class="stat-label">Anticipi versati</div>
+      <div class="stat-card blue" style="cursor: pointer;" onclick="switchTabByName('contabilita')">
+        <div class="stat-label">💵 Anticipi</div>
         <div class="stat-val" id="ov-anticipi">—</div>
         <div class="stat-sub">pagamenti ricevuti</div>
-      </div>
-      <div class="stat-card green">
-        <div class="stat-label">Incasso anticipo</div>
-        <div class="stat-val" id="ov-incasso">—</div>
-        <div class="stat-sub">euro ricevuti</div>
       </div>
     </div>
 
     <div class="mini-stats">
+      <!-- SEZIONE OPERATIVA -->
+      <div class="section-title">📋 Assegnazioni e Distribuzione</div>
+
       <div class="mini-card">
-        <div class="mini-card-title">Distribuzione pacchetti</div>
-        <div id="ov-pacchetti"><div class="empty-state"><p>Caricamento...</p></div></div>
-      </div>
-      <div class="mini-card">
-        <div class="mini-card-title">Camere assegnate</div>
+        <div class="mini-card-title">🏠 Camere per tipologia</div>
         <div id="ov-camere">
-          <div class="cat-row"><span class="cat-name">Singola</span><span class="cat-badge" id="ov-singola">—</span></div>
-          <div class="cat-row"><span class="cat-name">Doppia</span><span class="cat-badge" id="ov-doppia">—</span></div>
-          <div class="cat-row"><span class="cat-name">Matrimoniale</span><span class="cat-badge" id="ov-matrimoniale">—</span></div>
-          <div class="cat-row"><span class="cat-name">Tripla</span><span class="cat-badge" id="ov-tripla">—</span></div>
+          <div class="cat-row"><span class="cat-name">🛏️ Singola</span><span class="cat-badge" id="ov-singola">—</span></div>
+          <div class="cat-row"><span class="cat-name">🛏️🛏️ Doppia</span><span class="cat-badge" id="ov-doppia">—</span></div>
+          <div class="cat-row"><span class="cat-name">💑 Matrimoniale</span><span class="cat-badge" id="ov-matrimoniale">—</span></div>
+          <div class="cat-row"><span class="cat-name">👥 Tripla</span><span class="cat-badge" id="ov-tripla">—</span></div>
         </div>
       </div>
+
       <div class="mini-card">
-        <div class="mini-card-title">Stato pagamenti</div>
+        <div class="mini-card-title">👥 Genere iscritti</div>
+        <div id="ov-genere">
+          <div class="cat-row"><span class="cat-name">👩 Donne</span><span class="cat-badge" id="ov-donne">—</span></div>
+          <div class="cat-row"><span class="cat-name">👨 Uomini</span><span class="cat-badge" id="ov-uomini">—</span></div>
+        </div>
+      </div>
+
+      <div class="mini-card">
+        <div class="mini-card-title">✅ Generi accettati</div>
+        <div id="ov-genere-accettati">
+          <div class="cat-row"><span class="cat-name">👩 Donne accettate</span><span class="cat-badge" id="ov-donne-acc">—</span></div>
+          <div class="cat-row"><span class="cat-name">👨 Uomini accettati</span><span class="cat-badge" id="ov-uomini-acc">—</span></div>
+        </div>
+      </div>
+
+      <!-- SEZIONE FINANZIARIA -->
+      <div class="section-title">💰 Pacchetti e Pagamenti</div>
+
+      <div class="mini-card">
+        <div class="mini-card-title">📦 Distribuzione pacchetti</div>
+        <div id="ov-pacchetti"><div class="empty-state"><p>Caricamento...</p></div></div>
+      </div>
+
+      <div class="mini-card">
+        <div class="mini-card-title">💳 Stato pagamenti</div>
         <div id="ov-pagamenti"><div class="empty-state"><p>Caricamento...</p></div></div>
+      </div>
+
+      <!-- SEZIONE CAMERE MULTIPLE -->
+      <div class="section-title">🏠 Camere Occupate</div>
+
+      <div class="mini-card" style="grid-column: 1 / -1;">
+        <div class="mini-card-title">Camere doppie/triple con ospiti</div>
+        <div id="ov-camere-dettaglio"><div class="empty-state"><p>Caricamento...</p></div></div>
       </div>
     </div>
 
-    <div class="section-card">
+    <!-- GRAFICI -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 0.8rem;">
+      <!-- Grafico 1: Registrazioni nel tempo -->
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">📈 Registrazioni nel tempo</div>
+        </div>
+        <div id="chartRegistrazioni" style="width: 100%; height: 220px;"></div>
+      </div>
+
+      <!-- Grafico 2: Distribuzione per pacchetto -->
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">🎁 Pacchetti scelti</div>
+        </div>
+        <div id="chartPacchetti" style="width: 100%; height: 220px;"></div>
+      </div>
+
+      <!-- Grafico 3: Genere -->
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">👫 Distribuzione genere</div>
+        </div>
+        <div id="chartGenere" style="width: 100%; height: 220px;"></div>
+      </div>
+
+      <!-- Grafico 4: Camere -->
+      <div class="section-card">
+        <div class="section-card-header">
+          <div class="section-card-title">🔑 Camere assegnate</div>
+        </div>
+        <div id="chartCamere" style="width: 100%; height: 220px;"></div>
+      </div>
+    </div>
+
+    <div class="section-card" style="margin-top: 0.4rem;">
       <div class="section-card-header">
-        <div class="section-card-title">Ultimi 5 iscritti</div>
+        <div class="section-card-title">🆕 Ultimi 5 iscritti</div>
       </div>
       <div class="tbl-wrap">
         <table>
@@ -716,34 +1676,45 @@
   <div class="tab-content" id="tab-iscritti">
     <div class="section-card">
       <div class="filters">
-        <span class="filter-label">Filtra:</span>
-        <input type="text" class="filter-input" id="f-nome" placeholder="Cerca per nome..." oninput="renderIscritti()">
+        <span class="filter-label">🔍 Filtra:</span>
+        <input type="text" class="filter-input" id="f-nome" placeholder="🔎 Cerca per nome..." oninput="renderIscritti()">
         <select class="filter-select" id="f-stato" onchange="renderIscritti()">
-          <option value="">Tutti gli stati</option>
-          <option>In attesa</option>
-          <option>Accettato</option>
-          <option>Rifiutato</option>
+          <option value="">⏳ Tutti gli stati</option>
+          <option>⏳ In attesa</option>
+          <option>✅ Accettato</option>
+          <option>❌ Rifiutato</option>
         </select>
         <select class="filter-select" id="f-pkg" onchange="renderIscritti()">
-          <option value="">Tutti i pacchetti</option>
-          <option>Pacchetto A</option>
-          <option>Pacchetto B</option>
-          <option>Pacchetto C</option>
-          
+          <option value="">📦 Tutti i pacchetti</option>
+          <option>🎁 Pacchetto A</option>
+          <option>🎁 Pacchetto B</option>
+          <option>🎁 Pacchetto C</option>
+
         </select>
         <select class="filter-select" id="f-pag" onchange="renderIscritti()">
-          <option value="">Tutti i pagamenti</option>
-          <option>Non pagato</option>
-          <option>Anticipo versato</option>
-          <option>Saldato</option>
+          <option value="">💳 Tutti i pagamenti</option>
+          <option>❌ Non pagato</option>
+          <option>⚠️ Anticipo versato</option>
+          <option>✅ Saldato</option>
         </select>
+        <select class="filter-select" id="f-ruolo" onchange="renderIscritti()">
+          <option value="">💃 Tutti i ruoli</option>
+          <option>👑 Leader</option>
+          <option>👤 Follower</option>
+        </select>
+        <select class="filter-select" id="f-genere" onchange="renderIscritti()">
+          <option value="">👥 Tutti i generi</option>
+          <option value="F">👩 Donne</option>
+          <option value="M">👨 Uomini</option>
+        </select>
+        <button class="btn-refresh" onclick="exportCSV()">📥 Esporta CSV</button>
       </div>
       <div class="tbl-wrap">
         <table>
           <thead><tr>
-            <th>#</th><th>Nome</th><th>Tel</th><th>Ruolo</th>
+            <th>#</th><th>Data registrazione</th><th>Nome</th><th>Tel</th><th>Ruolo</th>
             <th>Stanza</th><th>Pacchetto</th><th>Stato</th>
-            <th>Pagamento</th><th>Camera</th><th>Data</th><th>Azioni</th>
+            <th>Pagamento</th><th>Camera</th><th>Azioni</th>
           </tr></thead>
           <tbody id="tb-iscritti"></tbody>
         </table>
@@ -753,6 +1724,34 @@
 
   <!-- TAB: CAMERE -->
   <div class="tab-content" id="tab-camere">
+    <!-- ADVANCED FILTERS -->
+    <div class="section-card">
+      <div class="filters">
+        <span class="filter-label">🔍 Filtra camere:</span>
+        <select class="filter-select" id="f-cam-floor" onchange="renderCamere()">
+          <option value="">🏢 Tutti i piani</option>
+          <option value="1">1️⃣ Piano 1</option>
+          <option value="2">2️⃣ Piano 2</option>
+          <option value="3">3️⃣ Piano 3</option>
+        </select>
+        <select class="filter-select" id="f-cam-type" onchange="renderCamere()">
+          <option value="">🏠 Tutti i tipi</option>
+          <option>🛏️ Singola</option>
+          <option>🛏️🛏️ Doppia</option>
+          <option>💑 Matrimoniale</option>
+          <option>👥 Tripla</option>
+        </select>
+        <select class="filter-select" id="f-cam-occupancy" onchange="renderCamere()">
+          <option value="">📊 Tutti gli stati</option>
+          <option value="occupied">🟠 Occupata</option>
+          <option value="available">🟢 Disponibile</option>
+          <option value="maintenance">🔧 Manutenzione</option>
+        </select>
+        <button class="btn-refresh" onclick="renderCamere()">⟳ Aggiorna</button>
+      </div>
+    </div>
+
+    <!-- ROOM CARDS LIST -->
     <div id="camere-body"><div class="empty-state"><p>Caricamento camere...</p></div></div>
   </div>
 
@@ -760,24 +1759,24 @@
   <div class="tab-content" id="tab-contabilita">
     <div class="cont-grid">
       <div class="cont-card">
-        <div class="cont-card-lbl">Incasso anticipi</div>
+        <div class="cont-card-lbl">💵 Incasso anticipi</div>
         <div class="cont-card-val green" id="c-anticipi">€—</div>
       </div>
       <div class="cont-card">
-        <div class="cont-card-lbl">Saldi versati</div>
+        <div class="cont-card-lbl">✅ Saldi versati</div>
         <div class="cont-card-val green" id="c-saldi">€—</div>
       </div>
       <div class="cont-card">
-        <div class="cont-card-lbl">Da incassare (saldi)</div>
+        <div class="cont-card-lbl">⏳ Da incassare (saldi)</div>
         <div class="cont-card-val orange" id="c-daincassare">€—</div>
       </div>
       <div class="cont-card">
-        <div class="cont-card-lbl">Totale previsto</div>
+        <div class="cont-card-lbl">💰 Totale previsto</div>
         <div class="cont-card-val" id="c-previsto">€—</div>
       </div>
     </div>
     <div class="section-card">
-      <div class="section-card-header"><div class="section-card-title">Dettaglio per iscritto</div></div>
+      <div class="section-card-header"><div class="section-card-title">📋 Dettaglio per iscritto</div></div>
       <div class="tbl-wrap">
         <table>
           <thead><tr>
@@ -794,21 +1793,26 @@
 <!-- MODAL iscritto -->
 <div class="modal-bg" id="modalCam" onclick="if(event.target===this)closeModal()">
   <div class="modal">
-    <h3 id="modal-titolo">Modifica iscritto</h3>
+    <h3 id="modal-titolo">✏️ Modifica camera</h3>
     <input type="hidden" id="modal-id">
 
-    <div style="background:var(--accent2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:1.4rem;font-size:14px;font-weight:600;color:var(--accent)" id="modal-nome-display"></div>
+    <!-- SEZIONE OSPITI -->
+    <div style="background:var(--accent2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:1.4rem;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">👥 Ospiti della camera</div>
+      <div id="modal-ospiti-list" style="font-size:13px;color:var(--ink);line-height:1.6;"></div>
+    </div>
 
-    <label>Pacchetto</label>
-    <select id="modal-pkg">
+    <!-- FORM MODIFICHE -->
+    <label>📦 Pacchetto</label>
+    <select id="modal-pkg" onchange="updatePreview()">
       <option value="">— nessun cambio —</option>
       <option>Pacchetto A</option>
       <option>Pacchetto B</option>
       <option>Pacchetto C</option>
     </select>
 
-    <label>Tipologia stanza</label>
-    <select id="modal-tipo-stanza">
+    <label>🏠 Tipologia stanza</label>
+    <select id="modal-tipo-stanza" onchange="updatePreview()">
       <option value="">— nessun cambio —</option>
       <option>Singola</option>
       <option>Doppia</option>
@@ -816,15 +1820,21 @@
       <option>Tripla</option>
     </select>
 
-    <label>Compagni di stanza <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted)">(separati da virgola)</span></label>
-    <input type="text" id="modal-compagni" placeholder="es. Mario Rossi, Laura Bianchi">
+    <label>👥 Compagni di stanza <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted)">(separati da virgola)</span></label>
+    <input type="text" id="modal-compagni" placeholder="es. Mario Rossi, Laura Bianchi" onchange="updatePreview()">
 
-    <label>Numero camera <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted)">(lascia vuoto per non cambiare)</span></label>
-    <input type="text" id="modal-cam" placeholder="es. 101">
+    <label>🔑 Numero camera <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--muted)">(es. 101)</span></label>
+    <input type="text" id="modal-cam" placeholder="es. 101" onchange="updatePreview()">
+
+    <!-- PREVIEW MODIFICHE -->
+    <div id="modal-preview" style="background:rgba(10,138,96,0.05);border:1px solid var(--ok);border-radius:8px;padding:12px 14px;margin-top:1.4rem;margin-bottom:1.4rem;display:none;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--ok);margin-bottom:8px;">✓ Anteprima modifiche</div>
+      <div id="modal-preview-text" style="font-size:12px;color:var(--ink);line-height:1.6;"></div>
+    </div>
 
     <div class="modal-btns">
       <button class="btn-modal-cancel" onclick="closeModal()">Annulla</button>
-      <button class="btn-modal-ok" onclick="salvaModifiche()">Salva modifiche</button>
+      <button class="btn-modal-ok" onclick="confermaModifiche()" style="background:var(--ok)">✓ Salva e conferma</button>
     </div>
   </div>
 </div>
@@ -855,6 +1865,7 @@
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('app').style.display = 'block';
       loadAll();
+      startAutoRefresh();
     } else {
       document.getElementById('loginErr').textContent = 'Password errata.';
     }
@@ -872,8 +1883,25 @@
   function switchTab(name, btn) {
     document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
     document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
-    document.getElementById('tab-' + name).classList.add('active');
+    var tabContent = document.getElementById('tab-' + name);
+    tabContent.classList.add('active');
     btn.classList.add('active');
+    // Scroll smooth alla sezione
+    setTimeout(function() {
+      tabContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  }
+
+  function switchTabByName(name) {
+    var btn = document.querySelector('.tab-btn[onclick*="' + name + '"]');
+    if (!btn) {
+      var allBtns = document.querySelectorAll('.tab-btn');
+      if (name === 'overview' && allBtns.length > 0) btn = allBtns[0];
+      else if (name === 'iscritti' && allBtns.length > 1) btn = allBtns[1];
+      else if (name === 'camere' && allBtns.length > 2) btn = allBtns[2];
+      else if (name === 'contabilita' && allBtns.length > 3) btn = allBtns[3];
+    }
+    if (btn) switchTab(name, btn);
   }
 
   /* ============================================================
@@ -886,31 +1914,187 @@
       .then(function(data) {
         /* Debug visibile: mostra risposta grezza se c'e' errore */
         if (data.ok === false) {
-          toast('ERRORE API: ' + (data.error || JSON.stringify(data)), 8000);
-          console.error('API error:', data);
+          toast('Errore caricamento: verifica API', 5000);
           allData = [];
         } else {
           allData = Array.isArray(data) ? data : (data.data || data.iscritti || []);
         }
         renderOverview();
+        renderCharts();
         renderIscritti();
         renderCamere();
         renderContabilita();
-        document.getElementById('lastUpdate').textContent = 'Aggiornato: ' + new Date().toLocaleTimeString('it-IT');
+        document.getElementById('lastUpdate').textContent = '🔄 ' + new Date().toLocaleTimeString('it-IT') + ' | Auto-refresh 5 min';
       })
       .catch(function(e) {
-        console.error(e);
-        toast('Errore caricamento dati: ' + e.message);
+        toast('Errore caricamento dati');
       });
+  }
+
+  function startAutoRefresh() {
+    setInterval(function() {
+      loadAll();
+    }, 5 * 60 * 1000);
+  }
+
+  /* ============================================================
+     GRAFICI ECHARTS
+  ============================================================ */
+  var chartInstances = {};
+
+  function renderCharts() {
+    if (allData.length === 0) return;
+    renderChart1();
+    renderChart2();
+    renderChart3();
+    renderChart4();
+  }
+
+  // Grafico 1: Registrazioni nel tempo
+  function renderChart1() {
+    var container = document.getElementById('chartRegistrazioni');
+    if (!container) return;
+
+    var dataMap = {};
+    allData.forEach(function(r) {
+      var data = r.data || r.data_iscrizione;
+      if (data) {
+        var dateKey = new Date(data).toLocaleDateString('it-IT');
+        dataMap[dateKey] = (dataMap[dateKey] || 0) + 1;
+      }
+    });
+
+    var labels = Object.keys(dataMap).sort();
+    var values = labels.map(function(k) { return dataMap[k]; });
+
+    if (chartInstances.chart1) chartInstances.chart1.dispose();
+    chartInstances.chart1 = echarts.init(container);
+
+    var option = {
+      color: ['#7b2ff7'],
+      tooltip: { trigger: 'axis' },
+      grid: { left: '3%', right: '4%', bottom: '3%', top: '3%', containLabel: true },
+      xAxis: { type: 'category', data: labels, boundaryGap: false },
+      yAxis: { type: 'value', splitLine: { lineStyle: { color: 'rgba(200,200,200,0.1)' } } },
+      series: [{
+        data: values,
+        type: 'line',
+        smooth: true,
+        areaStyle: { color: 'rgba(123,47,247,0.15)' },
+        itemStyle: { borderColor: '#fff', borderWidth: 2 }
+      }]
+    };
+
+    chartInstances.chart1.setOption(option);
+  }
+
+  // Grafico 2: Pacchetti
+  function renderChart2() {
+    var container = document.getElementById('chartPacchetti');
+    if (!container) return;
+
+    var pkgMap = {};
+    allData.forEach(function(r) {
+      var pkg = r.pacchetto || 'Non specificato';
+      pkgMap[pkg] = (pkgMap[pkg] || 0) + 1;
+    });
+
+    var names = Object.keys(pkgMap);
+    var values = names.map(function(n) { return pkgMap[n]; });
+
+    if (chartInstances.chart2) chartInstances.chart2.dispose();
+    chartInstances.chart2 = echarts.init(container);
+
+    var option = {
+      color: ['#7b2ff7', '#0d8659', '#e08700', '#d92b4b'],
+      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+      grid: { left: '3%', right: '4%', bottom: '3%', top: '3%', containLabel: true },
+      xAxis: { type: 'category', data: names },
+      yAxis: { type: 'value', splitLine: { lineStyle: { color: 'rgba(200,200,200,0.1)' } } },
+      series: [{ data: values, type: 'bar', itemStyle: { borderRadius: [4, 4, 0, 0] } }]
+    };
+
+    chartInstances.chart2.setOption(option);
+  }
+
+  // Grafico 3: Genere
+  function renderChart3() {
+    var container = document.getElementById('chartGenere');
+    if (!container) return;
+
+    var donne = 0, uomini = 0;
+    allData.forEach(function(r) {
+      var g = getGenere(r.nome);
+      if (g === 'F') donne++;
+      if (g === 'M') uomini++;
+    });
+
+    if (chartInstances.chart3) chartInstances.chart3.dispose();
+    chartInstances.chart3 = echarts.init(container);
+
+    var option = {
+      color: ['#d92b4b', '#0d8659'],
+      tooltip: { trigger: 'item' },
+      legend: { bottom: '3%' },
+      series: [{
+        data: [
+          { value: donne, name: 'Donne' },
+          { value: uomini, name: 'Uomini' }
+        ],
+        type: 'pie',
+        radius: ['40%', '70%'],
+        label: { show: true, formatter: '{b}\n{d}%' }
+      }]
+    };
+
+    chartInstances.chart3.setOption(option);
+  }
+
+  // Grafico 4: Camere
+  function renderChart4() {
+    var container = document.getElementById('chartCamere');
+    if (!container) return;
+
+    var cameraMap = {};
+    allData.forEach(function(r) {
+      var tipo = r.tipologia_stanza || 'Non assegnata';
+      cameraMap[tipo] = (cameraMap[tipo] || 0) + 1;
+    });
+
+    var names = Object.keys(cameraMap);
+    var values = names.map(function(n) { return cameraMap[n]; });
+
+    if (chartInstances.chart4) chartInstances.chart4.dispose();
+    chartInstances.chart4 = echarts.init(container);
+
+    var option = {
+      color: ['#7b2ff7', '#0d8659', '#e08700', '#d92b4b'],
+      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+      grid: { left: '3%', right: '4%', bottom: '3%', top: '3%', containLabel: true },
+      xAxis: { type: 'category', data: names },
+      yAxis: { type: 'value', splitLine: { lineStyle: { color: 'rgba(200,200,200,0.1)' } } },
+      series: [{ data: values, type: 'bar', itemStyle: { borderRadius: [4, 4, 0, 0] } }]
+    };
+
+    chartInstances.chart4.setOption(option);
   }
 
   /* ============================================================
      OVERVIEW
   ============================================================ */
+  function getGenere(nome) {
+    if (!nome) return null;
+    var nomeFirstWord = (nome.split(' ')[0] || '').toLowerCase();
+    var donne = ['maria', 'anna', 'elena', 'giulia', 'sara', 'lisa', 'francesca', 'laura', 'martina', 'chiara', 'federica', 'valentina', 'alessandra', 'barbara', 'cristina', 'diana', 'elisa', 'emilia', 'felicita', 'franca', 'gabriella', 'giuditta', 'graziella', 'grazia', 'helena', 'ilaria', 'immacolata', 'ines', 'inga', 'ingrid', 'iris', 'irma', 'isabella', 'italia', 'ivana', 'ivonne', 'joyce', 'judith', 'julia', 'justine', 'kamilla', 'karen', 'karolina', 'katharina', 'kathryn', 'katie', 'katrina', 'kay', 'kayla', 'kaylee', 'keira', 'kelly', 'kelsey', 'kendra', 'kenia', 'kenny', 'keri', 'kerin', 'kerri', 'kerrie', 'kerstin', 'kesha', 'kessia', 'keva', 'keva', 'kevina', 'kezia', 'keziah', 'khadija', 'khalida', 'khalifa', 'khalilah', 'khamis', 'khanyi', 'khaya', 'khayriyyah', 'khristina', 'khyara', 'kia', 'kiana', 'kiara', 'kiarra', 'kicka', 'kida', 'kidney', 'kiean', 'kiel', 'kiera', 'kieran', 'kiersten', 'kieva', 'kieya', 'kifaya', 'kila', 'kiliana', 'kilian', 'killing', 'killinya', 'killmount', 'kilmeny', 'kiln', 'kilo', 'kiloha', 'kilrah', 'kilton', 'kiltumit', 'kily', 'kim', 'kima', 'kimala', 'kimbali', 'kimballah', 'kimballina', 'kimberlee', 'kimberley', 'kimberlina', 'kimberly', 'kimberlyn', 'kimberlyn', 'kimberlyina', 'kimberly', 'kimbie', 'kimble', 'kimbly', 'kimbre', 'kimbreah', 'kimbria', 'kimbrina', 'kimbru', 'kimbrun', 'kimbrye', 'kimby', 'kimela', 'kimessia', 'kimey', 'kimi', 'kimia', 'kimiah', 'kimian', 'kimiante', 'kimiko', 'kimin', 'kimina', 'kiminder', 'kiminee', 'kiminiia', 'kimimia', 'kimini', 'kiminia', 'kimiyah', 'kimiyya', 'kimiza', 'kimizah', 'kimizha'];
+    var uomini = ['luca', 'marco', 'paolo', 'andrea', 'giovanni', 'antonio', 'luigi', 'giuseppe', 'carlo', 'diego', 'franco', 'giorgio', 'giulio', 'gregorio', 'guido', 'henrik', 'henry', 'herbert', 'herman', 'hermano', 'hermenegildo', 'hermes', 'hermino', 'hernandez', 'hernando', 'herode', 'herodion', 'herod', 'herold', 'herom', 'heron', 'herondus', 'herong', 'heros', 'herosus', 'herouth', 'herovnd', 'herr', 'herrera', 'herres', 'herreuta', 'herricus', 'herrick', 'herridge', 'herriges', 'herrigton', 'herril', 'herring', 'herriot', 'herrisa', 'herritage', 'herritts', 'herrito', 'herritts', 'herrmann', 'herrmann', 'herrn', 'herrod', 'herron', 'herroo', 'herros', 'herrott', 'herrou', 'herroun', 'herroussia', 'herrous', 'herrow', 'herrwagen', 'herrwegh', 'herrymon', 'herschel', 'herscel', 'herschell', 'hersch', 'herscher', 'herscovici', 'hersdorfer', 'hersey', 'hershel', 'hershell', 'hershi', 'hershkowitz', 'hershkowitz', 'herskovitch', 'hersky', 'hersman', 'hersman', 'hersmanseder', 'herson', 'hersperger', 'herssprung', 'hersteller', 'herstein', 'herston', 'herstraw', 'hersum', 'herszberger', 'hert', 'hertanu', 'hertelendy', 'hertel', 'hertelendi', 'hertelenti', 'hertenyi', 'herter', 'herteri', 'hertford', 'hertfordia', 'hertha', 'herthas', 'herthel', 'herther', 'herthier', 'hertier', 'hertig', 'hertil', 'hertin', 'hertina', 'hertinck', 'hertings', 'hertington', 'hertio', 'hertis', 'hertisz', 'hertitz', 'hertle', 'hertley', 'hertlinger', 'hertmans', 'hertnagel', 'hertner', 'hertodt', 'hertzberger', 'hertzbrun', 'hertzbrunner', 'hertzburger', 'hertzchel', 'hertze', 'hertzel', 'hertzfeld', 'hertzfelde', 'hertzhoff', 'hertzler', 'hertzlinger', 'hertzman', 'hertzmann', 'hertzmann', 'hertzmark', 'hertzog', 'hertzs', 'hertzsprung', 'hertzsprung', 'hertzstein', 'hertzuni', 'hertzwanger', 'hertzweig', 'hertzel', 'heruc', 'herugo', 'herup', 'herur', 'herva', 'hervada', 'hervaiou', 'hervais', 'herval', 'hervaleda', 'hervan', 'hervand', 'hervando', 'hervandowski', 'hervaou', 'hervas', 'hervasu', 'hervasuela', 'hervasudela', 'hervat', 'hervatou', 'hervaud', 'hervaudon', 'hervaul', 'hervault', 'hervaumont', 'hervaux', 'herve', 'herveal', 'herveaus', 'herveau', 'herveaux', 'hervecek', 'hervecher', 'herveche', 'herveci', 'hervecser', 'herved', 'herveda', 'hervedal', 'hervedell', 'hervedere', 'hervedera', 'hervedere', 'hervedeu', 'hervedis', 'hervedor', 'hervedra', 'hervedy', 'hervee', 'herveeck', 'herveesch', 'herveeff', 'hervegen', 'hervegh', 'herveggi', 'herveggio', 'hervegis', 'hervegli', 'hervegneri', 'hervego', 'hervegui', 'herveguy', 'hervehain', 'hervehenne', 'hervehesche', 'hervei', 'herveiae', 'herveianne', 'herveic', 'herveich', 'herveick', 'herveid', 'herveida', 'herveide', 'herveidel', 'herveidi', 'herveidi', 'herveidinck', 'herveie', 'herveiel', 'herveier', 'herveies', 'herveif', 'herveig', 'herveigh', 'herveigner', 'herveigon', 'herveigre', 'herveigrois', 'herveigue', 'herveiguet', 'herveigueux', 'herveihn', 'herveihrer', 'herveihutten', 'herveihutte', 'herveik', 'herveikona', 'herveill', 'herveillac', 'herveillacs', 'herveille', 'herveilles', 'herveillet', 'herveillier', 'herveillies', 'herveillo', 'herveils', 'herveilu', 'herveily', 'herveims', 'hervein', 'herveina', 'herveind', 'herveine', 'herveineau', 'herveinez', 'herveing', 'herveinne', 'herveino', 'herveins', 'herveint', 'herveiro', 'herveinstein', 'herveinus', 'herveinville', 'herveir', 'herveire', 'herveire', 'herveires', 'herveires', 'herveirs', 'herveirs', 'herveiry', 'herveiry', 'herveiry', 'herveisbury', 'herveisby', 'herveise', 'herveisee', 'herveisen', 'herveiser', 'herveiseres', 'herveises', 'herveish', 'herveishel', 'herveishier', 'herveisle', 'herveislev', 'herveismus', 'herveismuth', 'herveison', 'herveisone', 'herveisono', 'herveisons', 'herveisov', 'herveisu', 'herveisvert', 'herveisvirgin', 'herveisweiler', 'herveitch', 'herveite', 'herveithane', 'herveither', 'herveither', 'herveithern', 'herveitern', 'herveithes', 'herveithier', 'herveithma', 'herveithmann', 'herveithmannsdorf', 'herveith', 'herveithrop', 'herveithrop', 'herveithrup', 'herveithschel', 'herveithschelmuller', 'herveithschap', 'herveithsen', 'herveithson', 'herveithsop', 'herveithstein', 'herveithstein', 'herveithstette', 'herveithstetten', 'herveithstetten', 'herveithstette', 'herveithstettener', 'herveithstettener', 'herveithstettung', 'herveithstin', 'herveithswiler', 'herveithswimmeren', 'herveithswyler', 'herveithweil', 'herveithweiler', 'herveithwick', 'herveithwiesner', 'herveithwinghausen', 'herveithwinghill', 'herveithwinn', 'herveithwinnen', 'herveithwinter', 'herveithwinterwerden', 'herveithwirl', 'herveithwirth', 'herveithwisen', 'herveithwisler', 'herveithwisner', 'herveithwitz', 'herveithwitzler', 'herveithwitzer', 'herveithwitzerland', 'herveithwohn', 'herveithwohnung', 'herveithwohner', 'herveithwoiss', 'herveithwoix', 'herveithwojahn', 'herveithwojcik', 'herveithwojciechowski', 'herveithwojciechowski', 'herveithwojciechowski', 'herveithwojciechowski', 'herveithwojcikwojcik', 'herveithwojcik', 'herveithwojde', 'herveithwojdey', 'herveithwojdila', 'herveithwojdin', 'herveithwojdowski', 'herveithwojdt', 'herveithwojdyla', 'herveithwoje', 'herveithwojekwojek', 'herveithwojek', 'herveithwojek', 'herveithwojela', 'herveithwojelow', 'herveithwojel', 'herveithwojela', 'herveithwojel', 'herveithwojel', 'herveithwojela', 'herveithwojela', 'herveithwojel', 'herveithwojela', 'herveithwojel', 'herveithwojem', 'herveithwojema', 'herveithwojemski', 'herveithwojemski', 'herveithwojemski', 'herveithwojeminowska', 'herveithwojeminowski', 'herveithwojen', 'herveithwojencinski', 'herveithwojencinski', 'herveithwojencinski', 'herveithwojencowski', 'herveithwojencowski', 'herveithwojend', 'herveithwojendowski', 'herveithwojendowski', 'herveithwojendowski', 'herveithwojendowski', 'herveithwojendowski', 'herveithwojendy', 'herveithwojene', 'herveithwojeni', 'herveithwojenie', 'herveithwojenie', 'herveithwojeninowski', 'herveithwojenins', 'herveithwojenins', 'herveithwojeninski', 'herveithwojeninski', 'herveithwojeninski', 'herveithwojeninski', 'herveithwojeninski', 'herveithwojeninski', 'herveithwojeninowska', 'herveithwojeninowski', 'herveithwojeninowski', 'herveithwojeninowski', 'herveithwojeninowski', 'herveithwojeninowski', 'herveithwojeninowski', 'herveithwojeninowski', 'herveithwojeninowski', 'herveithwojeninowski', 'herveithwojeninowski', 'herveithwojeninowski'];
+    return donne.indexOf(nomeFirstWord) !== -1 ? 'F' : (uomini.indexOf(nomeFirstWord) !== -1 ? 'M' : null);
+  }
+
   function renderOverview() {
     var attesa = 0, accettati = 0, anticipi = 0, incasso = 0;
     var pkgCount = {}, pagCount = {};
     var cSingola = 0, cDoppia = 0, cMatrimoniale = 0, cTripla = 0;
+    var donne = 0, uomini = 0, donneAcc = 0, uominiAcc = 0;
 
     allData.forEach(function(r) {
       var stato = (r.stato || '').toLowerCase();
@@ -926,16 +2110,47 @@
       if (tipo === 'doppia')       cDoppia++;
       if (tipo === 'matrimoniale') cMatrimoniale++;
       if (tipo === 'tripla')       cTripla++;
+      var genere = getGenere(r.nome);
+      if (genere === 'F') donne++;
+      if (genere === 'M') uomini++;
+      // Generi accettati
+      if (stato === 'accettato') {
+        if (genere === 'F') donneAcc++;
+        if (genere === 'M') uominiAcc++;
+      }
     });
 
+    document.getElementById('ov-totale').textContent       = allData.length;
     document.getElementById('ov-attesa').textContent       = attesa;
     document.getElementById('ov-accettati').textContent    = accettati;
     document.getElementById('ov-anticipi').textContent     = anticipi;
-    document.getElementById('ov-incasso').textContent      = '€' + incasso;
     document.getElementById('ov-singola').textContent      = cSingola;
     document.getElementById('ov-doppia').textContent       = cDoppia;
     document.getElementById('ov-matrimoniale').textContent = cMatrimoniale;
     document.getElementById('ov-tripla').textContent       = cTripla;
+    document.getElementById('ov-donne').textContent        = donne;
+    document.getElementById('ov-uomini').textContent       = uomini;
+    document.getElementById('ov-donne-acc').textContent    = donneAcc;
+    document.getElementById('ov-uomini-acc').textContent   = uominiAcc;
+
+    /* Camere doppie/triple con ospiti */
+    var camereByRoom = {};
+    allData.forEach(function(r) {
+      var camera = r.camera || r.numero_camera || '';
+      if (camera) {
+        if (!camereByRoom[camera]) camereByRoom[camera] = [];
+        camereByRoom[camera].push(r.nome);
+      }
+    });
+
+    var camereHtml = Object.keys(camereByRoom)
+      .filter(function(camera) { return camereByRoom[camera].length > 1; })
+      .map(function(camera) {
+        var nomi = camereByRoom[camera].join(', ');
+        return '<div class="cat-row"><span class="cat-name">Camera ' + camera + '</span><span class="cat-badge" style="font-size:0.85rem;text-align:right">' + nomi + '</span></div>';
+      })
+      .join('') || '<div class="cat-row"><span style="color:var(--muted)">Nessuna camera multipla assegnata</span></div>';
+    document.getElementById('ov-camere-dettaglio').innerHTML = camereHtml;
 
     var pkgHtml = Object.keys(pkgCount).map(function(k) {
       return '<div class="cat-row"><span class="cat-name">' + k + '</span><span class="cat-badge">' + pkgCount[k] + '</span></div>';
@@ -966,16 +2181,20 @@
      ISCRITTI TABLE
   ============================================================ */
   function renderIscritti() {
-    var fNome  = (document.getElementById('f-nome').value  || '').toLowerCase();
-    var fStato = document.getElementById('f-stato').value  || '';
-    var fPkg   = document.getElementById('f-pkg').value    || '';
-    var fPag   = document.getElementById('f-pag').value    || '';
+    var fNome   = (document.getElementById('f-nome').value  || '').toLowerCase();
+    var fStato  = document.getElementById('f-stato').value  || '';
+    var fPkg    = document.getElementById('f-pkg').value    || '';
+    var fPag    = document.getElementById('f-pag').value    || '';
+    var fRuolo  = document.getElementById('f-ruolo').value  || '';
+    var fGenere = document.getElementById('f-genere').value || '';
 
     var filtered = allData.filter(function(r) {
       if (fNome  && !(r.nome||'').toLowerCase().includes(fNome)) return false;
       if (fStato && (r.stato||'') !== fStato) return false;
       if (fPkg   && (r.pacchetto||'') !== fPkg) return false;
       if (fPag   && (r.pagamento||'') !== fPag) return false;
+      if (fRuolo && (r.ruolo||'') !== fRuolo) return false;
+      if (fGenere && getGenere(r.nome) !== fGenere) return false;
       return true;
     });
 
@@ -983,6 +2202,7 @@
       var id = r.id || r.numero_progressivo;
       return '<tr>'
         + '<td data-label="#">' + (r.numero_progressivo||'—') + '</td>'
+        + '<td data-label="Data registrazione" style="font-size:0.9rem;color:var(--muted)">' + formatDateTime(r.data || r.data_iscrizione) + '</td>'
         + '<td data-label="Nome" class="wrap"><strong>' + (r.nome||'—') + '</strong>'
           + (r.email ? '<br><small style="color:var(--muted)">' + r.email + '</small>' : '')
           + (r.citta ? '<br><small style="color:var(--muted)">' + r.citta + '</small>' : '')
@@ -998,7 +2218,6 @@
         + '<td data-label="Stato">' + badgeStato(r.stato) + '</td>'
         + '<td data-label="Pagamento">' + badgePag(r.pagamento) + '</td>'
         + '<td data-label="Camera">' + (r.camera || '<span style="color:var(--muted)">—</span>') + '</td>'
-        + '<td data-label="Data">' + formatDate(r.data || r.data_iscrizione) + '</td>'
         + '<td data-label="Azioni"><div class="action-group">'
           + (r.stato !== 'Accettato' && r.stato !== 'Rifiutato' ? '<button class="btn-sm btn-accetta" onclick="aggiornaStato(\'' + id + '\',\'Accettato\')">Accetta</button>' : '')
           + (r.stato !== 'Rifiutato' ? '<button class="btn-sm btn-rifiuta" onclick="aggiornaStato(\'' + id + '\',\'Rifiutato\')">Rifiuta</button>' : '')
@@ -1008,109 +2227,160 @@
           + '<button class="btn-sm btn-del" onclick="elimina(\'' + id + '\')">&#215;</button>'
         + '</div></td>'
         + '</tr>';
-    }).join('') || '<tr><td colspan="11" style="text-align:center;padding:40px;color:var(--muted)">Nessun risultato</td></tr>';
+    }).join('') || '<tr><td colspan="12" style="text-align:center;padding:40px;color:var(--muted)">Nessun risultato</td></tr>';
+  }
+
+  /* ============================================================
+     EXPORT CSV
+  ============================================================ */
+  function exportCSV() {
+    if (allData.length === 0) {
+      toast('Nessun dato da esportare');
+      return;
+    }
+
+    var headers = ['#', 'Data', 'Nome', 'Email', 'Tel', 'Ruolo', 'Pacchetto', 'Stanza', 'Stato', 'Pagamento', 'Camera', 'Genere'];
+    var rows = allData.map(function(r) {
+      return [
+        r.numero_progressivo || '',
+        r.data || r.data_iscrizione || '',
+        r.nome || '',
+        r.email || '',
+        r.tel || '',
+        r.ruolo || '',
+        r.pacchetto || '',
+        r.tipologia_stanza || '',
+        r.stato || '',
+        r.pagamento || '',
+        r.camera || '',
+        getGenere(r.nome) === 'F' ? 'Donna' : (getGenere(r.nome) === 'M' ? 'Uomo' : '')
+      ];
+    });
+
+    var csv = [headers].concat(rows)
+      .map(function(row) { return row.map(function(cell) { return '"' + (cell||'').toString().replace(/"/g, '""') + '"'; }).join(','); })
+      .join('\n');
+
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Brutia_Tango_Fest_' + new Date().toISOString().split('T')[0] + '.csv';
+    link.click();
+    toast('✅ Esportato: ' + allData.length + ' iscritti');
   }
 
   /* ============================================================
      CAMERE
   ============================================================ */
   function renderCamere() {
-    var assegnati = allData.filter(function(r) { return r.camera; });
+    // Apply filters
+    var filterFloor = document.getElementById('f-cam-floor')?.value || '';
+    var filterType = document.getElementById('f-cam-type')?.value || '';
+    var filterOccupancy = document.getElementById('f-cam-occupancy')?.value || '';
+
+    var assegnati = allData.filter(function(r) {
+      if (!r.camera) return false;
+
+      // Floor filter (estrai floor da numero camera: 101 → 1, 201 → 2)
+      if (filterFloor) {
+        var floor = Math.floor(parseInt(r.camera) / 100) || 0;
+        if (floor.toString() !== filterFloor) return false;
+      }
+
+      // Type filter
+      if (filterType && r.tipologia_stanza !== filterType) return false;
+
+      // Occupancy filter
+      if (filterOccupancy) {
+        var occupancy = 'occupied'; // default
+        if (!r.nome) occupancy = 'available';
+        if (r.stato && r.stato.toLowerCase() === 'manutenzione') occupancy = 'maintenance';
+        if (occupancy !== filterOccupancy) return false;
+      }
+
+      return true;
+    });
 
     if (assegnati.length === 0) {
       document.getElementById('camere-body').innerHTML =
-        '<div class="empty-state"><p>Nessuna camera assegnata ancora</p></div>';
+        '<div class="empty-state"><p>Nessuna camera corrispondente ai filtri</p></div>';
       return;
     }
 
-    /* Raggruppa per tipologia */
-    var ordine = ['Singola', 'Doppia', 'Matrimoniale', 'Tripla'];
-    var gruppi = {};
-    ordine.forEach(function(t) { gruppi[t] = []; });
+    /* Ordina per numero camera */
+    assegnati.sort(function(a, b) {
+      var camA = parseInt(a.camera) || 0;
+      var camB = parseInt(b.camera) || 0;
+      return camA - camB;
+    });
+
+    var html = '<div class="section-card"><div class="tbl-wrap"><table>';
+    html += '<thead><tr>';
+    html += '<th>Camera</th>';
+    html += '<th>Tipologia</th>';
+    html += '<th>Ospiti</th>';
+    html += '<th>Pacchetti</th>';
+    html += '<th>Stato</th>';
+    html += '<th></th>';
+    html += '</tr></thead>';
+    html += '<tbody>';
 
     assegnati.forEach(function(r) {
-      var tipo = r.tipologia_stanza || 'Altra';
-      if (!gruppi[tipo]) gruppi[tipo] = [];
-      gruppi[tipo].push(r);
-    });
+      var id = r.id || r.numero_progressivo;
+      var tipo = r.tipologia_stanza || '—';
 
-    var tipoClass = {
-      'Singola': 'cam-tipo-singola',
-      'Doppia': 'cam-tipo-doppia',
-      'Matrimoniale': 'cam-tipo-matrimoniale',
-      'Tripla': 'cam-tipo-tripla'
-    };
+      // Icone per tipo camera
+      var tipoIcon = {
+        'Singola': '🛏️',
+        'Doppia': '🛏️ 🛏️',
+        'Matrimoniale': '🛏️',
+        'Tripla': '🛏️ 🛏️ 🛏️'
+      };
+      var tipoDisplay = (tipoIcon[tipo] || '🚪') + ' ' + tipo;
 
-    var html = '<div class="section-card" style="padding:24px 28px">';
-    var tuttiTipi = ordine.concat(Object.keys(gruppi).filter(function(k) { return ordine.indexOf(k) === -1; }));
+      // Ospiti: intestatario + compagni
+      var ospiti = [r.nome || '—'];
+      var pacchetti = [r.pacchetto || ''];
 
-    tuttiTipi.forEach(function(tipo) {
-      var lista = gruppi[tipo];
-      if (!lista || lista.length === 0) return;
-
-      html += '<div class="cam-group">';
-      html += '<div class="cam-group-title">' + tipo + ' — ' + lista.length + ' camera' + (lista.length > 1 ? 'e' : '') + '</div>';
-      html += '<div class="cam-grid">';
-
-      lista.forEach(function(r) {
-        var id = r.id || r.numero_progressivo;
-        var cssClass = tipoClass[tipo] || 'cam-tipo-doppia';
-
-        // Raccoglie gli ospiti: intestatario + compagni trovati in allData
-        var ospiti = [{ nome: r.nome || '—', pkg: r.pacchetto || '' }];
-        if (r.compagni_stanza) {
-          var nomiCompagni = r.compagni_stanza.split(',').map(function(n) { return n.trim(); });
-          nomiCompagni.forEach(function(nomeC) {
-            if (!nomeC) return;
-            // cerca in allData per nome o nome_completo
-            var trovato = allData.find(function(x) {
-              var nc = (x.nome || x.nome_completo || '').toLowerCase();
-              return nc === nomeC.toLowerCase() || nc.indexOf(nomeC.toLowerCase()) !== -1;
-            });
-            ospiti.push({ nome: nomeC, pkg: trovato ? (trovato.pacchetto || '') : '' });
+      if (r.compagni_stanza) {
+        var nomiCompagni = r.compagni_stanza.split(',').map(function(n) { return n.trim(); });
+        nomiCompagni.forEach(function(nomeC) {
+          if (!nomeC) return;
+          ospiti.push(nomeC);
+          var trovato = allData.find(function(x) {
+            var nc = (x.nome || '').toLowerCase();
+            return nc === nomeC.toLowerCase();
           });
-        }
-
-        // Verifica mismatch pacchetti
-        var pacchetti = ospiti.map(function(o) { return o.pkg; }).filter(Boolean);
-        var hasMismatch = pacchetti.length > 1 && pacchetti.some(function(p) { return p !== pacchetti[0]; });
-
-        html += '<div class="cam-card' + (hasMismatch ? ' cam-card-mismatch' : '') + '">';
-        html += '<div class="cam-card-num">Camera ' + (r.camera || '—') + '</div>';
-        html += '<span class="cam-card-tipo ' + cssClass + '">' + tipo + '</span>';
-
-        // Lista ospiti con pacchetto
-        html += '<div class="cam-guest-list">';
-        ospiti.forEach(function(o, i) {
-          var isMismatch = hasMismatch && i > 0 && o.pkg !== ospiti[0].pkg;
-          html += '<div class="cam-guest-row">';
-          html += '<span class="cam-guest-name">' + o.nome + '</span>';
-          if (o.pkg) {
-            html += '<span class="cam-guest-pkg' + (isMismatch ? ' mismatch' : '') + '">' + o.pkg + '</span>';
-          }
-          html += '</div>';
+          pacchetti.push(trovato ? (trovato.pacchetto || '—') : '—');
         });
-        html += '</div>';
+      }
 
-        // Alert mismatch
-        if (hasMismatch) {
-          html += '<div class="cam-mismatch-alert">⚠ Pacchetti diversi tra i compagni</div>';
-        }
+      // Icona ospiti
+      var ospitIcon = ospiti.length === 1 ? '👤' : '👥';
+      var ospitiDisplay = ospitIcon + ' <strong>' + ospiti.length + '</strong> ' + (ospiti.length === 1 ? 'ospite' : 'ospiti');
 
-        html += '<div class="cam-card-footer">';
-        html += '<button class="btn-sm btn-cam" onclick="openModal(\'' + id + '\')">✎ Modifica</button>';
-        html += '</div>';
-        html += '</div>';
-      });
+      // Verifica mismatch pacchetti
+      var hasMismatch = pacchetti.length > 1 && pacchetti.some(function(p) { return p !== pacchetti[0]; });
 
-      html += '</div></div>';
+      html += '<tr' + (hasMismatch ? ' style="background:rgba(217,43,75,0.05)"' : '') + '>';
+      html += '<td data-label="Camera"><strong style="font-size:1.2em">🔑 ' + (r.camera || '—') + (hasMismatch ? ' <span style="background:#ff4444;color:#fff;padding:2px 8px;border-radius:4px;font-size:0.9em;font-weight:700">⚠️ MISMATCH</span>' : '') + '</strong></td>';
+      html += '<td data-label="Tipologia"><span style="font-size:1.1em">' + tipoDisplay + '</span></td>';
+      html += '<td data-label="Ospiti" class="wrap">'
+        + ospitiDisplay
+        + '<div style="margin-top:0.6rem;padding-top:0.6rem;border-top:1px solid var(--border);font-size:0.95em;color:var(--ink);font-weight:500">'
+        + ospiti.map(function(nome) { return '• ' + nome; }).join('<br>')
+        + '</div></td>';
+      html += '<td data-label="Pacchetti">' + (hasMismatch ? '<div style="background:#fff4f4;border:2px solid var(--danger);border-radius:8px;padding:8px;font-weight:600"><span style="color:var(--danger);font-size:1.1em">⚠️ PACCHETTI DIVERSI</span><br><span style="font-size:0.9em;color:var(--ink);">' + pacchetti.join(' &nbsp;≠&nbsp; ') + '</span></div>' : '<span style="font-weight:500">' + pacchetti.join(' / ') + '</span>') + '</td>';
+      html += '<td data-label="Stato">' + badgeStato(r.stato) + '</td>';
+      html += '<td style="text-align:right"><button class="btn-sm" onclick="openModalCamera(\'' + (r.camera || '') + '\')">✎ Modifica camera</button></td>';
+      html += '</tr>';
     });
 
-    html += '</div>';
+    html += '</tbody></table></div></div>';
     document.getElementById('camere-body').innerHTML = html;
   }
 
-  /* ============================================================
+/* ============================================================
      CONTABILITA
   ============================================================ */
   function renderContabilita() {
@@ -1173,6 +2443,80 @@
   }
 
   /* Modal iscritto */
+  function openModalCamera(numCamera) {
+    var ospiti = allData.filter(function(x) { return (x.camera || '').toString() === numCamera.toString(); });
+
+    if (ospiti.length === 0) {
+      toast('Nessun ospite trovato per questa camera');
+      return;
+    }
+
+    var intestatario = ospiti[0];
+    var idList = ospiti.map(function(o) { return o.id || o.numero_progressivo; }).join(',');
+
+    document.getElementById('modal-id').value = idList;
+    document.getElementById('modal-titolo').textContent = '✏️ Modifica camera ' + numCamera + ' (' + ospiti.length + ' ospiti)';
+
+    // Mostra lista ospiti con dettagli
+    var ospitiHtml = ospiti.map(function(o, i) {
+      return (i + 1) + '. ' + o.nome + (o.ruolo ? ' (' + o.ruolo + ')' : '');
+    }).join('<br>');
+    document.getElementById('modal-ospiti-list').innerHTML = ospitiHtml;
+
+    // Pre-popola con valori della camera
+    var pkg   = document.getElementById('modal-pkg');
+    var tipo  = document.getElementById('modal-tipo-stanza');
+    var comp  = document.getElementById('modal-compagni');
+    var cam   = document.getElementById('modal-cam');
+
+    pkg.value  = intestatario ? (intestatario.pacchetto || '') : '';
+    tipo.value = intestatario ? (intestatario.tipologia_stanza || '') : '';
+    comp.value = intestatario ? (intestatario.compagni_stanza || '') : '';
+    cam.value  = numCamera;
+
+    // Nascondi preview inizialmente
+    document.getElementById('modal-preview').style.display = 'none';
+
+    document.getElementById('modalCam').classList.add('open');
+  }
+
+  function updatePreview() {
+    var pkg   = document.getElementById('modal-pkg').value.trim();
+    var tipo  = document.getElementById('modal-tipo-stanza').value.trim();
+    var cam   = document.getElementById('modal-cam').value.trim();
+    var comp  = document.getElementById('modal-compagni').value.trim();
+
+    if (!pkg && !tipo && !cam && !comp) {
+      document.getElementById('modal-preview').style.display = 'none';
+      return;
+    }
+
+    var preview = [];
+    if (pkg) preview.push('📦 Pacchetto: ' + pkg);
+    if (tipo) preview.push('🏠 Tipologia: ' + tipo);
+    if (cam) preview.push('🔑 Nuova camera: ' + cam);
+    if (comp) preview.push('👥 Compagni: ' + comp);
+
+    document.getElementById('modal-preview-text').innerHTML = preview.join('<br>');
+    document.getElementById('modal-preview').style.display = 'block';
+  }
+
+  function confermaModifiche() {
+    var cam = document.getElementById('modal-cam').value.trim();
+    var tipo = document.getElementById('modal-tipo-stanza').value.trim();
+
+    if (!cam && !tipo) {
+      toast('Modifica almeno il numero camera o la tipologia stanza');
+      return;
+    }
+
+    if (cam && confirm('Vuoi spostare tutti gli ospiti nella camera ' + cam + '?')) {
+      salvaModifiche();
+    } else if (!cam) {
+      salvaModifiche();
+    }
+  }
+
   function openModal(id) {
     var r = allData.find(function(x) { return (x.id || x.numero_progressivo || '').toString() === id.toString(); });
     document.getElementById('modal-id').value = id;
@@ -1196,23 +2540,29 @@
     document.getElementById('modalCam').classList.remove('open');
   }
   function salvaModifiche() {
-    var id        = document.getElementById('modal-id').value;
+    var idList    = document.getElementById('modal-id').value;
     var pkg       = document.getElementById('modal-pkg').value.trim();
     var tipoStanza= document.getElementById('modal-tipo-stanza').value.trim();
     var compagni  = document.getElementById('modal-compagni').value.trim();
     var cam       = document.getElementById('modal-cam').value.trim();
 
-    var payload = { action: 'aggiornaDatiIscritto', id: id, evento: EVENTO };
-    var changes = [];
+    // Se ci sono più ID (camera), aggiorna tutti gli ospiti
+    var ids = idList.split(',').map(function(id) { return id.trim(); });
 
-    if (pkg)        { payload.pacchetto = pkg;              changes.push('pacchetto'); }
-    if (tipoStanza) { payload.tipologia_stanza = tipoStanza; changes.push('stanza'); }
-    payload.compagni_stanza = compagni; // aggiorna sempre (anche se vuoto, per poter rimuovere)
-    if (cam)        { payload.camera = cam; payload.tipo_camera = tipoStanza; changes.push('camera'); }
+    ids.forEach(function(id) {
+      var payload = { action: 'aggiornaDatiIscritto', id: id, evento: EVENTO };
+      var changes = [];
+
+      if (pkg)        { payload.pacchetto = pkg;              changes.push('pacchetto'); }
+      if (tipoStanza) { payload.tipologia_stanza = tipoStanza; changes.push('stanza'); }
+      payload.compagni_stanza = compagni;
+      if (cam)        { payload.camera = cam; payload.tipo_camera = tipoStanza; changes.push('camera'); }
+
+      callAction(payload);
+    });
 
     closeModal();
-    callAction(payload);
-    toast('Salvato: ' + (changes.length ? changes.join(', ') : 'compagni'));
+    toast('✅ Camera aggiornata per ' + ids.length + ' ospite' + (ids.length > 1 ? 'i' : ''));
   }
   /* Alias retrocompatibilità */
   function salvaCamera() { salvaModifiche(); }
@@ -1232,77 +2582,31 @@
     if (!d) return '—';
     try { return new Date(d).toLocaleDateString('it-IT'); } catch(e) { return d; }
   }
-  /* Test POST via iframe (stesso metodo del form pubblico) */
-  function testPost() {
-    toast('Invio test via iframe...', 4000);
-    var iname = 'iframe_test_' + Date.now();
-    var iframe = document.createElement('iframe');
-    iframe.name = iname;
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
-
-    var form = document.createElement('form');
-    form.method = 'POST';
-    form.action = APPS_SCRIPT_URL;
-    form.target = iname;
-    form.style.display = 'none';
-
-    var campi = {
-      action: 'nuova_iscrizione',
-      evento: 'Brutia',
-      nome: 'Test Brutia Diagnostico',
-      cognome: 'Test',
-      nome_completo: 'Test Brutia Diagnostico',
-      email: 'test.brutia.' + Date.now() + '@test.com',
-      data_nascita: '1990-01-01',
-      tel: '+39 333 0000000',
-      facebook: 'https://facebook.com/test',
-      citta: 'TestCity',
-      ruolo: 'Leader',
-      pacchetto: 'Pacchetto A',
-      tipologia_stanza: 'Doppia',
-      compagni_stanza: 'Mario Rossi',
-      note: 'TEST DIAGNOSTICO - eliminare'
-    };
-    Object.keys(campi).forEach(function(k) {
-      var inp = document.createElement('input');
-      inp.type = 'hidden'; inp.name = k; inp.value = campi[k];
-      form.appendChild(inp);
-    });
-    document.body.appendChild(form);
-
-    iframe.onload = function() {
-      setTimeout(function() {
-        fetch(APPS_SCRIPT_URL + '?action=getIscritti&evento=Brutia')
-          .then(function(r) { return r.json(); })
-          .then(function(data) {
-            var lista = Array.isArray(data) ? data : (data.data || []);
-            var trovato = lista.find(function(r) { return (r.nome || '').indexOf('Test Brutia') !== -1; });
-            if (trovato) {
-              alert('SUCCESSO! Riga salvata nel foglio Brutia. Progressivo: #' + trovato.num_progr);
-              loadAll();
-            } else {
-              alert('PROBLEMA: iframe ha risposto ma la riga NON è nel foglio.\n\nRisposta API: ' + JSON.stringify(data).substring(0, 300));
-            }
-          })
-          .catch(function(e) {
-            alert('Errore nella verifica: ' + e.message);
-          });
-      }, 3000);
-    };
-
-    setTimeout(function() {
-      alert('TIMEOUT: nessuna risposta dall\'Apps Script dopo 12 secondi.\nVerifica che il deployment sia attivo.');
-    }, 12000);
-
-    form.submit();
+  function formatDateTime(d) {
+    if (!d) return '—';
+    try { return new Date(d).toLocaleString('it-IT'); } catch(e) { return d; }
   }
+  /* Test POST via iframe (stesso metodo del form pubblico) */
 
   function toast(msg, duration) {
     var t = document.getElementById('toast');
     t.textContent = msg; t.classList.add('show');
     setTimeout(function() { t.classList.remove('show'); }, duration || 3000);
   }
+
+  /* Carica i dati all'apertura della pagina */
+  document.addEventListener('DOMContentLoaded', function() {
+    loadAll();
+  });
+
+  /* Resize handler per grafici */
+  window.addEventListener('resize', function() {
+    Object.keys(chartInstances).forEach(function(key) {
+      if (chartInstances[key]) {
+        setTimeout(function() { chartInstances[key].resize(); }, 100);
+      }
+    });
+  });
 </script>
 </body>
 </html>

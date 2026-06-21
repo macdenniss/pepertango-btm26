@@ -1816,9 +1816,6 @@
         </p>
       </div>
     </div>
-    <div class="ev-photo reveal" style="opacity:0.7">
-      <img src="https://static.wixstatic.com/media/1b1050_3fc82fffd1c14595ad774a2e578933c0~mv2.avif/v1/fill/w_1400,h_600,al_c,q_85,enc_avif,quality_auto/brutia.jpg" alt="Brutia Tango Fest">
-    </div>
 
     <!-- ANTEPRIMA EVENTO (PLACEHOLDER - INTERATTIVA) -->
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-bottom:60px">
@@ -1847,10 +1844,78 @@
       </div>
     </div>
 
+    <!-- BRUTIA · PACCHETTI -->
+    <span class="pkg-label reveal">Scegli il tuo pacchetto</span>
+    <div class="pkg-grid pkg-grid-4">
+      <div class="pkg-item reveal" data-pkg="Pacchetto 1" onclick="selectPkg(this,'btf26')">
+        <div style="color:rgba(123,47,247,.3);font-size:0.95rem">In arrivo</div>
+      </div>
+      <div class="pkg-item reveal d1" data-pkg="Pacchetto 2" onclick="selectPkg(this,'btf26')">
+        <div style="color:rgba(123,47,247,.3);font-size:0.95rem">In arrivo</div>
+      </div>
+      <div class="pkg-item reveal d2" data-pkg="Pacchetto 3" onclick="selectPkg(this,'btf26')">
+        <div style="color:rgba(123,47,247,.3);font-size:0.95rem">In arrivo</div>
+      </div>
+      <div class="pkg-item reveal d3" data-pkg="Pacchetto 4" onclick="selectPkg(this,'btf26')">
+        <div style="color:rgba(123,47,247,.3);font-size:0.95rem">In arrivo</div>
+      </div>
+    </div>
+
+    <!-- BRUTIA · TDJ -->
+    <section class="ev-sub alt" id="btf26-tdj">
+      <div class="ev-sub-header">
+        <span class="ev-sub-event-tag">Brutia Tango Fest</span>
+        <h3 class="ev-sub-title">I TDJ</h3>
+      </div>
+      <div class="tdj-grid">
+        <div class="tdj-card">
+          <div class="tdj-avatar"><img src="/IMG_1226.JPG" alt="TDJ"></div>
+          <div class="tdj-name">TDJ</div>
+          <div class="tdj-bio">Brutia Tango Fest</div>
+        </div>
+        <div class="tdj-card">
+          <div class="tdj-avatar"><img src="/IMG_1227.JPG" alt="TDJ"></div>
+          <div class="tdj-name">TDJ</div>
+          <div class="tdj-bio">Brutia Tango Fest</div>
+        </div>
+        <div class="tdj-card">
+          <div class="tdj-avatar"><img src="/IMG_1228.JPG" alt="TDJ"></div>
+          <div class="tdj-name">TDJ</div>
+          <div class="tdj-bio">Brutia Tango Fest</div>
+        </div>
+        <div class="tdj-card">
+          <div class="tdj-avatar"><img src="/IMG_1229.JPG" alt="TDJ"></div>
+          <div class="tdj-name">TDJ</div>
+          <div class="tdj-bio">Brutia Tango Fest</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BRUTIA · LOCATION + MAPPA -->
+    <section class="ev-sub" id="btf26-location">
+      <div class="ev-sub-header">
+        <span class="ev-sub-event-tag">Brutia Tango Fest</span>
+        <h3 class="ev-sub-title">Location &amp; Come raggiungerla</h3>
+      </div>
+      <div class="location-grid">
+        <div class="location-info">
+          <h4>Calabria</h4>
+          <p>La Brutia Tango Fest si svolge in una cornice suggestiva della Calabria. Un'esperienza tango immersa nella bellezza del territorio. Dettagli sulla location in arrivo.</p>
+          <p><strong>Come arrivare:</strong> Informazioni di dettaglio sugli accessi saranno comunicate prossimamente. Per informazioni scrivi a <a href="mailto:pepertango@gmail.com">pepertango@gmail.com</a></p>
+          <a href="https://maps.google.com/?q=Calabria" target="_blank" class="location-address">
+            <i class="fa-solid fa-location-dot"></i> Calabria
+          </a>
+        </div>
+        <div class="map-wrap">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1524543.3886254622!2d16.2!3d38.9!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x13139a23e123456%3A0xabcdef1234567890!2sCalabria!5e0!3m2!1sit!2sit!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </section>
+
     <span class="pkg-label reveal">Compila il modulo per iscriverti</span>
 
     <!-- FORM IN CIMA - CARD BASED DESIGN -->
-    <div class="form-section" id="bru-form" style="margin-top:40px;margin-bottom:60px">
+    <div class="form-section" id="bru-form" style="margin-top:40px;margin-bottom:60px;max-width:750px;margin-left:auto;margin-right:auto">
 
       <!-- Header semplice -->
       <div style="text-align:center;margin-bottom:24px">
@@ -2120,70 +2185,6 @@
       <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
       <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
       <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
-    </div>
-  </section>
-
-  <!-- BRUTIA · TDJ -->
-  <section class="ev-sub alt" id="brutia-tdj">
-    <div class="ev-sub-header">
-      <span class="ev-sub-event-tag">Brutia Tango Fest 2026 &mdash; TDJ TEAM</span>
-      <h3 class="ev-sub-title">I TDJ</h3>
-    </div>
-    <div class="tdj-grid">
-      <div class="tdj-card">
-        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
-        <div class="tdj-name">Ciccio Aiello</div>
-        <div class="tdj-bio">TDJ</div>
-      </div>
-      <div class="tdj-card">
-        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
-        <div class="tdj-name">Salvo D'Urso</div>
-        <div class="tdj-bio">TDJ</div>
-      </div>
-      <div class="tdj-card">
-        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
-        <div class="tdj-name">Lavinia Livi</div>
-        <div class="tdj-bio">TDJ</div>
-      </div>
-      <div class="tdj-card">
-        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
-        <div class="tdj-name">Alan Spotti</div>
-        <div class="tdj-bio">TDJ</div>
-      </div>
-      <div class="tdj-card">
-        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
-        <div class="tdj-name">Cristina Borgia</div>
-        <div class="tdj-bio">TDJ</div>
-      </div>
-      <div class="tdj-card">
-        <div class="tdj-avatar"><i class="fa-solid fa-headphones"></i></div>
-        <div class="tdj-name">Carmine Parise</div>
-        <div class="tdj-bio">TDJ</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BRUTIA · LOCATION + MAPPA -->
-  <section class="ev-sub" id="brutia-location">
-    <div class="ev-sub-header">
-      <span class="ev-sub-event-tag">Brutia Tango Fest</span>
-      <h3 class="ev-sub-title">Location &amp; Come raggiungerla</h3>
-    </div>
-    <div class="location-grid">
-      <div class="location-info">
-        <h4>Calabria — Location TBD</h4>
-        <p>Il Brutia Tango Fest 2026 si terrà nel cuore della Calabria, nella terra di Bruzio. La location definitiva sarà comunicata presto. Preparati a vivere il tango in una cornice autentica e suggestiva del Sud Italia.</p>
-        <p><strong>Come arrivare:</strong> Indicazioni dettagliate disponibili non appena la location sarà confermata. Seguici per aggiornamenti.</p>
-        <a href="https://maps.google.com/?q=Calabria,Italia" target="_blank" class="location-address">
-          <i class="fa-solid fa-location-dot"></i> Calabria, Italia
-        </a>
-      </div>
-      <div class="map-wrap">
-        <div class="map-placeholder">
-          <i class="fa-solid fa-map-location-dot"></i>
-          Location da confermare
-        </div>
-      </div>
     </div>
   </section>
 
@@ -2757,6 +2758,36 @@
       };
 
       self.send = function() {
+        // Verificha email prima di inviare
+        var email = (self.data.email || '').trim();
+        if (!email) {
+          self.showError('Email è obbligatoria.');
+          return;
+        }
+
+        g('sending').classList.add('active');
+
+        // Chiama API per verificare se email esiste già
+        var verificaUrl = APPS_SCRIPT_URL + '?action=verificaEmail&evento=' + encodeURIComponent(ev) + '&email=' + encodeURIComponent(email);
+        fetch(verificaUrl)
+          .then(function(r) { return r.json(); })
+          .then(function(d) {
+            g('sending').classList.remove('active');
+            if (d.exists === true) {
+              self.showError('⚠️ Questa email è già registrata. Puoi usarne un\'altra o contattaci per modificare i tuoi dati.');
+              return;
+            }
+            // Email non esiste, procedi con invio
+            self._submitForm();
+          })
+          .catch(function(e) {
+            g('sending').classList.remove('active');
+            // Se la verifica fallisce, procedi comunque (il server farà il controllo finale)
+            self._submitForm();
+          });
+      };
+
+      self._submitForm = function() {
         for (var i = 1; i <= self.TOT; i++) {
           var fs = g('fs' + i);
           if (fs) fs.classList.remove('active');
@@ -2782,7 +2813,8 @@
           compagno_ballo:   self.data.compagno_ballo     || '',
           tipologia_stanza: self.data.tipologia_stanza   || '',
           compagni_stanza:  (self.data.compagni_stanza || []).join(','),
-          note:             self.data.note               || ''
+          note:             self.data.note               || '',
+          skipEmail:        'false'
         };
         Object.keys(campi).forEach(function(k) {
           var inp = document.createElement('input');
@@ -2804,7 +2836,7 @@
           if (!d || typeof d !== 'object' || !('ok' in d)) return;
           done = true; cleanup();
           g('sending').classList.remove('active');
-          if (d.ok === false) { self.showError(d.error || 'Siè verificato un errore.'); }
+          if (d.ok === false) { self.showError(d.error || 'Si è verificato un errore.'); }
           else { self.ok(); }
         }
         window.addEventListener('message', msgHandler);

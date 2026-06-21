@@ -1436,6 +1436,83 @@
     .room-card-name { font-size: 0.9rem !important; margin-bottom: 2px !important; }
     .room-card-desc { font-size: 0.75rem !important; }
 
+    /* ============================================================
+       SELECTION STYLES — ROLE CARDS, ROOM CARDS, PKG CARDS
+    ============================================================ */
+    @keyframes selectPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes selectBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* Role Card (Leader/Follower/Entrambi) */
+    .role-card {
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .role-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 28px rgba(123,47,247,.4) !important;
+      border-color: #7b2ff7 !important;
+      border-width: 3px !important;
+    }
+    .role-card.sel {
+      background: #c4a3ff !important;
+      border-color: #7b2ff7 !important;
+      border-width: 3px !important;
+      box-shadow: 6px 6px 0 0 #2d0060 !important;
+      animation: selectBounce 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .role-card.sel div:first-child {
+      animation: selectPulse 0.4s ease;
+    }
+
+    /* Room Card (Singola/Doppia/Matrimoniale/Tripla) */
+    .room-card {
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .room-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 28px rgba(123,47,247,.4) !important;
+      border-color: #7b2ff7 !important;
+      border-width: 3px !important;
+      background: rgba(123,47,247,.08) !important;
+    }
+    .room-card.sel {
+      background: #c4a3ff !important;
+      border-color: #7b2ff7 !important;
+      border-width: 3px !important;
+      box-shadow: 6px 6px 0 0 #2d0060 !important;
+      animation: selectBounce 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .room-card.sel div:first-child {
+      animation: selectPulse 0.4s ease;
+    }
+
+    /* Pkg Card (Pacchetti) */
+    .pkg-card {
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pkg-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 28px rgba(123,47,247,.4) !important;
+      border-color: #7b2ff7 !important;
+    }
+    .pkg-card.sel {
+      background: #c4a3ff !important;
+      border-color: #7b2ff7 !important;
+      border-width: 3px !important;
+      box-shadow: 4px 4px 0 0 #7b2ff7 !important;
+      animation: selectBounce 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
     /* Extra mobile optimization for narrow screens */
     @media (max-width: 480px) {
       #bru-form { margin: 20px 3% 40px; padding: 24px 16px !important; }

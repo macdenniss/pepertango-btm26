@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile Layout Test</title>
+  <style>
+    body { margin: 0; padding: 10px; font-family: system-ui; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .test-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0; }
+    .box { background: #f0f0f0; padding: 20px; text-align: center; border: 1px solid #ddd; }
+    
+    @media (max-width: 768px) {
+      .test-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .test-grid { grid-template-columns: 1fr; }
+      .box { padding: 15px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Mobile Test Layout</h1>
+  <p>Resize browser to test responsive grid:</p>
+  <div class="test-grid">
+    <div class="box">Desktop (4 col)</div>
+    <div class="box">Tablet (2 col)</div>
+    <div class="box">Mobile (1 col)</div>
+    <div class="box">Check viewport</div>
+  </div>
+  <p>Open DevTools (F12) → Toggle device toolbar (Cmd+Shift+M on Mac) to test responsive design.</p>
+</body>
+</html>

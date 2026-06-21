@@ -1278,30 +1278,32 @@
     .nav-hamburger {
       display: none;
       flex-direction: column; justify-content: center; align-items: center;
-      gap: 5px; width: 40px; height: 40px;
-      background: none; border: 2px solid #fff; border-radius: 6px;
-      cursor: pointer; padding: 6px;
+      gap: 4px; width: 36px; height: 36px;
+      background: none; border: 2px solid #fff; border-radius: 4px;
+      cursor: pointer; padding: 5px;
     }
     .nav-hamburger span {
-      display: block; width: 22px; height: 2px;
-      background: #fff; border-radius: 2px;
+      display: block; width: 20px; height: 2px;
+      background: #fff; border-radius: 1px;
       transition: transform 0.25s, opacity 0.25s;
     }
-    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
     .nav-hamburger.open span:nth-child(2) { opacity: 0; }
-    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
     .nav-drawer {
       display: none;
-      position: fixed; top: 64px; left: 0; right: 0; z-index: 199;
+      position: fixed; top: 56px; left: 0; right: 0; z-index: 199;
       background: #111;
-      border-bottom: 3px solid var(--fg);
+      border-bottom: 2px solid var(--fg);
       flex-direction: column;
+      max-height: calc(100vh - 56px);
+      overflow-y: auto;
     }
     .nav-drawer.open { display: flex; }
     .nav-drawer a {
-      font-family: 'Kalam', cursive; font-size: 18px; font-weight: 700;
-      color: #fff; padding: 16px 5%;
+      font-family: 'Kalam', cursive; font-size: 16px; font-weight: 700;
+      color: #fff; padding: 14px 5%;
       border-bottom: 1px solid rgba(255,255,255,0.08);
       display: block;
     }
@@ -1313,99 +1315,177 @@
 
     /* TABLET + MOBILE (768px and below) */
     @media (max-width: 768px) {
-      html { font-size: 100%; }
+      html { font-size: 98%; }
 
       /* Navigation */
-      nav { height: 64px; padding: 0 4%; }
-      .nav-brand img { height: 44px; }
+      nav { height: 56px; padding: 0 3%; box-shadow: 0 2px 0 0 var(--fg); }
+      .nav-brand img { height: 36px; }
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
 
       /* Hero Section */
       .hero {
-        padding-top: 80px; padding-left: 4%; padding-right: 4%;
-        min-height: auto; padding-bottom: 48px;
+        padding-top: 70px; padding-left: 3%; padding-right: 3%;
+        min-height: auto; padding-bottom: 32px; background-attachment: fixed;
       }
-      .hero-hl { font-size: clamp(2.2rem, 9vw, 3.5rem); max-width: 100%; }
-      .hero-sub { font-size: 0.95rem; max-width: 100%; margin-top: 1rem; }
+      .hero-hl { font-size: clamp(1.8rem, 7vw, 3rem); max-width: 100%; line-height: 1.1; }
+      .hero-sub { font-size: 0.9rem; max-width: 100%; margin-top: 0.8rem; }
       .hero-pills { display: none; }
-      .hero-actions { flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
-      .hero-btn { justify-content: center; padding: 13px 20px; font-size: 15px; }
+      .hero-actions { flex-direction: column; gap: 0.5rem; margin-top: 1.2rem; }
+      .hero-btn { justify-content: center; padding: 11px 18px; font-size: 14px; }
       .hero-scroll { display: none; }
+      .hero-eyebrow { font-size: 13px; }
 
       /* Chi Siamo Section */
-      .chi-siamo { padding: 48px 4%; }
-      .chi-siamo-grid { grid-template-columns: 1fr; gap: 32px; }
+      .chi-siamo { padding: 40px 3%; }
+      .chi-siamo-grid { grid-template-columns: 1fr; gap: 24px; }
       .chi-siamo-img-wrap { display: none; }
+      .chi-siamo-hl { font-size: 1.6rem; }
 
       /* Event Sections */
-      .event-section { padding: 48px 4% 40px; }
-      .ev-head { grid-template-columns: 1fr; gap: 0; margin-bottom: 32px; }
-      .ev-head-hl { font-size: clamp(2rem, 8vw, 3rem); }
-      .ev-photo { aspect-ratio: 4/3; margin-bottom: 32px; }
+      .event-section { padding: 40px 3% 32px; }
+      .ev-head { grid-template-columns: 1fr; gap: 0; margin-bottom: 24px; }
+      .ev-head-hl { font-size: clamp(1.6rem, 6vw, 2.6rem); }
+      .ev-photo { aspect-ratio: 16/9; margin-bottom: 24px; border-width: 2px; box-shadow: 2px 2px 0 var(--fg); }
 
       /* Packages Grid */
-      .pkg-grid-4 { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .pkg-grid-4 { grid-template-columns: 1fr 1fr; gap: 8px; }
       .pkg-grid-3 { grid-template-columns: 1fr; }
-      .pkg-big-num { font-size: 3rem; }
-      .pkg-price { font-size: 1.6rem; }
+      .pkg-big-num { font-size: 2.5rem; }
+      .pkg-price { font-size: 1.4rem; }
+      .pkg-item { padding: 20px 16px; box-shadow: 2px 2px 0 var(--fg); }
 
       /* Event Sub-sections (Gallery, TDJ, Location) */
-      .ev-sub { padding: 40px 4%; }
-      .ev-sub-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; margin-bottom: 1.5rem; }
-      .ev-sub-title { font-size: 1.5rem; }
+      .ev-sub { padding: 32px 3%; }
+      .ev-sub-header { flex-direction: column; align-items: flex-start; gap: 0.3rem; margin-bottom: 1.2rem; }
+      .ev-sub-title { font-size: 1.3rem; }
 
       /* TDJ Grid */
-      .tdj-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
-      .tdj-card { padding: 14px 10px; }
-      .tdj-avatar { width: 64px; height: 64px; }
-      #page-brutia .tdj-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
-      #page-brutia .tdj-avatar { width: 80px; height: 80px; }
+      .tdj-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .tdj-card { padding: 10px 8px; box-shadow: 1px 1px 0 rgba(0,0,0,0.1); }
+      .tdj-avatar { width: 54px; height: 54px; }
+      #page-brutia .tdj-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      #page-brutia .tdj-avatar { width: 64px; height: 64px; }
 
       /* Gallery */
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
 
       /* Location */
       .location-grid { grid-template-columns: 1fr; }
 
       /* Forms */
-      .form-section { margin-top: 24px; border-radius: 12px; }
-      .form-label { padding: 12px 16px; }
-      #bru-form { margin: 30px 5% 50px; padding: 28px 20px !important; border-radius: 12px; max-width: calc(100% - 20px); }
-      #bru-form .bru-prog { padding: 14px 16px !important; }
-      #bru-form #b_body { padding: 16px 12px !important; }
-      #bru-form .fs-title { font-size: 1.2rem; }
+      .form-section { margin-top: 20px; border-radius: 8px; box-shadow: 2px 2px 0 var(--fg); }
+      .form-label { padding: 10px 14px; font-size: 12px; }
+      #bru-form { margin: 24px 3% 40px; padding: 20px 16px !important; border-radius: 8px; max-width: calc(100% - 12px); box-shadow: 2px 2px 0 var(--fg); }
+      #bru-form .bru-prog { padding: 12px 14px !important; gap: 6px !important; }
+      #bru-form #b_body { padding: 14px 10px !important; }
+      #bru-form .fs-title { font-size: 1.1rem; }
       #bru-form input, #bru-form select, #bru-form textarea { font-size: 16px !important; }
-      .room-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-      .pkg-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .room-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+      .pkg-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
 
       /* Contact Section */
-      .contatti-section { padding: 48px 4%; }
+      .contatti-section { padding: 40px 3%; }
 
       /* Footer */
-      footer { padding: 40px 4% 24px; }
-      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
-      .footer-cols { grid-template-columns: 1fr 1fr; gap: 20px; }
+      footer { padding: 32px 3% 20px; box-shadow: 0 -2px 0 var(--fg); }
+      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .footer-cols { grid-template-columns: 1fr 1fr; gap: 16px; font-size: 0.9rem; }
 
       /* Brutia Section */
-      #page-brutia .ev-sub.alt { padding: 40px 4%; }
+      #page-brutia .ev-sub.alt { padding: 32px 3%; }
+
+      /* Shadows */
+      .h-pill { box-shadow: 2px 2px 0 var(--fg); }
+      .ev-card { box-shadow: 2px 2px 0 var(--fg); }
     }
 
     /* SMALL MOBILE (480px and below) */
     @media (max-width: 480px) {
+      html { font-size: 95%; }
+
+      nav { height: 50px; padding: 0 3%; }
+      .nav-brand img { height: 32px; }
+
+      .hero { padding-top: 60px; padding-left: 3%; padding-right: 3%; padding-bottom: 24px; }
+      .hero-hl { font-size: clamp(1.5rem, 8vw, 2.4rem); }
+      .hero-sub { font-size: 0.85rem; margin-top: 0.6rem; }
+      .hero-btn { padding: 10px 16px; font-size: 13px; }
+
       /* Grid Columns */
-      .pkg-grid-4 { grid-template-columns: 1fr; }
-      .tdj-grid { grid-template-columns: repeat(2, 1fr); }
-      #page-brutia .tdj-grid { grid-template-columns: repeat(2, 1fr); }
-      .room-grid { grid-template-columns: 1fr; }
-      .pkg-grid { grid-template-columns: 1fr; }
-      .footer-cols { grid-template-columns: 1fr; }
+      .pkg-grid-4 { grid-template-columns: 1fr; gap: 6px; }
+      .pkg-grid-3 { grid-template-columns: 1fr; }
+      .tdj-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+      #page-brutia .tdj-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+      .room-grid { grid-template-columns: 1fr; gap: 6px; }
+      .pkg-grid { grid-template-columns: 1fr; gap: 6px; }
+      .footer-cols { grid-template-columns: 1fr; gap: 12px; }
 
       /* Typography */
-      .hero-hl { font-size: clamp(1.9rem, 10vw, 2.8rem); }
+      .hero-hl { font-size: clamp(1.4rem, 8vw, 2.2rem); }
+      .section-hl { font-size: clamp(1.5rem, 6vw, 2.4rem); }
+      .ev-head-hl { font-size: clamp(1.4rem, 6vw, 2.2rem); }
+      .pkg-big-num { font-size: 2rem; }
+      .pkg-price { font-size: 1.2rem; }
 
-      /* Forms */
-      #bru-form .bru-prog { overflow-x: auto; }
+      /* Sections */
+      .event-section { padding: 32px 3% 24px; }
+      .chi-siamo { padding: 32px 3%; }
+      .ev-sub { padding: 24px 3%; }
+      .contatti-section { padding: 32px 3%; }
+      footer { padding: 24px 3% 16px; }
+
+      /* Form adjustments */
+      #bru-form { margin: 20px 3% 32px; padding: 16px 12px !important; }
+      #bru-form .bru-prog { overflow-x: auto; padding: 10px 12px !important; }
+      #bru-form #b_body { padding: 12px 8px !important; }
+      #bru-form .fs-title { font-size: 1rem; }
+      .form-section { margin-top: 16px; }
+      .form-label { padding: 8px 12px; font-size: 11px; }
+
+      /* TDJ Avatar */
+      .tdj-avatar { width: 48px; height: 48px; }
+      #page-brutia .tdj-avatar { width: 56px; height: 56px; }
+
+      /* Cards */
+      .pkg-item { padding: 16px 12px; }
+      .ev-card { padding: 24px 18px; }
+    }
+
+    /* EXTRA SMALL (320px and below) */
+    @media (max-width: 320px) {
+      html { font-size: 93%; }
+
+      nav { height: 48px; }
+      .nav-brand img { height: 28px; }
+
+      .hero { padding-top: 56px; padding-bottom: 20px; }
+      .hero-hl { font-size: clamp(1.3rem, 7vw, 2rem); }
+      .hero-sub { font-size: 0.8rem; margin-top: 0.5rem; }
+      .hero-actions { gap: 0.4rem; margin-top: 1rem; }
+      .hero-btn { padding: 9px 14px; font-size: 12px; }
+
+      .section-hl { font-size: clamp(1.3rem, 5vw, 2rem); }
+      .ev-head-hl { font-size: clamp(1.2rem, 5vw, 2rem); }
+
+      /* Tight spacing */
+      .event-section { padding: 24px 3% 20px; }
+      .chi-siamo { padding: 24px 3%; }
+      .ev-sub { padding: 20px 3%; }
+      footer { padding: 20px 3% 12px; }
+
+      /* Form */
+      #bru-form { margin: 16px 2% 24px; padding: 14px 10px !important; }
+      #bru-form .fs-title { font-size: 0.95rem; }
+      #bru-form input, #bru-form select { font-size: 14px !important; }
+
+      /* Cards */
+      .pkg-item { padding: 14px 10px; }
+      .ev-card { padding: 20px 14px; }
+
+      /* Gallery */
+      .gallery-grid { gap: 4px; }
+      .tdj-grid { gap: 4px; }
     }
     /* ============================================================
        COMPACT FORM LAYOUT

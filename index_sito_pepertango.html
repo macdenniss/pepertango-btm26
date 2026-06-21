@@ -1443,6 +1443,23 @@
       #bru-form input, #bru-form select, #bru-form textarea { font-size: 16px !important; }
     }
   </style>
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX', {
+      'page_path': window.location.pathname,
+      'anonymize_ip': true
+    });
+
+    /* Track form submissions */
+    function trackFormSubmission(eventName, eventData) {
+      gtag('event', eventName, eventData);
+    }
+  </script>
 </head>
 <body>
 
@@ -2794,6 +2811,15 @@
         setTimeout(function() {
           if (!done) { done = true; cleanup(); self.ok(); }
         }, 10000);
+
+        /* Track form submission to GA4 */
+        var eventName = p === 'm' ? 'maratona_registration' : 'brutia_registration';
+        trackFormSubmission(eventName, {
+          'event_category': 'registration',
+          'event_label': self.data.pacchetto || 'unknown',
+          'value': self.data.email || 'direct'
+        });
+
         form.submit();
       };
 

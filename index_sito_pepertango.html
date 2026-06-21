@@ -3083,8 +3083,15 @@
     var bru = FormEngine({ p:'b', ev:'Brutia', pkg: PACCHETTI_BRU, tot:2 });
 
     function syncStanza(label) {
-      document.querySelectorAll('#b_fs2 .stanza-opt').forEach(function(o) { o.classList.remove('selected'); });
-      if (label) { label.classList.add('selected'); label.querySelector('input').checked = true; }
+      document.querySelectorAll('#b_fs2 .stanza-opt, #b_fs2 .room-card').forEach(function(o) {
+        o.classList.remove('selected');
+        o.classList.remove('sel');
+      });
+      if (label) {
+        label.classList.add('sel');
+        label.classList.add('selected');
+        label.querySelector('input').checked = true;
+      }
       var val = label ? label.querySelector('input').value : '';
       var maxC = { 'Singola':0, 'Doppia':1, 'Matrimoniale':1, 'Tripla':2 };
       var n = maxC[val] !== undefined ? maxC[val] : 0;

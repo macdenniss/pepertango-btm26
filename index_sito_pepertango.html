@@ -2834,7 +2834,7 @@
     document.addEventListener('DOMContentLoaded', updateCountdown);
 
     /* ---- Config ---- */
-    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6pqs5rvySS2_il_VAJLU07ucnIFdZ86RT6OWlhxVzDvb04REbJTt3ZXaziRvmDmTR/exec';
+    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqKWa6Vv8upjwiD5p_SvQ4rUd9TNymshgzlDxk1CePwC2WhCXA4_l7fo-YrFOm_wQeMA/exec';
 
     var PACCHETTI = {
       'Cala Jannita':     { prezzo:300, anticipo:150, saldo:150, notti:4 },
@@ -2959,6 +2959,23 @@
             var tel      = g('tel') ? g('tel').value.trim() : '';
             var facebook = g('facebook') ? g('facebook').value.trim() : '';
             var citta    = g('citta') ? g('citta').value.trim() : '';
+
+            // Validazione
+            var errors = [];
+            if (!nome) errors.push('Nome obbligatorio');
+            if (!cognome) errors.push('Cognome obbligatorio');
+            if (!email) errors.push('Email obbligatoria');
+            else if (!email.includes('@')) errors.push('Email non valida');
+            if (!nascita) errors.push('Data di nascita obbligatoria');
+            if (!tel) errors.push('Telefono obbligatorio');
+            if (!facebook) errors.push('Profilo Facebook obbligatorio');
+            if (!citta) errors.push('Città obbligatoria');
+
+            if (errors.length > 0) {
+              alert('⚠️ Errori:\n\n' + errors.join('\n'));
+              return false;
+            }
+
             self.data.nome           = nome;
             self.data.cognome        = cognome;
             self.data.nome_completo  = nome + ' ' + cognome;
@@ -2970,8 +2987,22 @@
           }
           if (s === 2) {
             var ruolo = g('ruolo');
-            if (ruolo) self.data.ruolo = ruolo.value;
             var st = document.querySelector('[name="b_stanza"]:checked');
+            var pkg = document.querySelector('[name="b_pkg"]:checked');
+            var compagnoCamera = g('compagno_camera') ? g('compagno_camera').value.trim() : '';
+
+            // Validazione
+            var errors = [];
+            if (!ruolo || !ruolo.value) errors.push('Ruolo obbligatorio');
+            if (!st) errors.push('Tipo di stanza obbligatorio');
+            if (!pkg) errors.push('Pacchetto obbligatorio');
+
+            if (errors.length > 0) {
+              alert('⚠️ Errori:\n\n' + errors.join('\n'));
+              return false;
+            }
+
+            if (ruolo) self.data.ruolo = ruolo.value;
             if (st) self.data.tipologia_stanza = st.value;
             var maxC2 = { 'Singola':0, 'Doppia':1, 'Matrimoniale':1, 'Tripla':2 };
             var nComp = maxC2[st ? st.value : ''] || 0;
@@ -2984,10 +3015,10 @@
               if (nomeV || cognV) compagni.push((nomeV + ' ' + cognV).trim());
             }
             self.data.compagni_stanza = compagni.join(', ');
-            var pkg = document.querySelector('[name="b_pkg"]:checked');
             if (pkg) self.data.pacchetto = pkg.value;
             var noteEl = g('note');
             if (noteEl) self.data.note = noteEl.value.trim();
+            self.data.compagno_camera = compagnoCamera;
           }
           return true;
         }
@@ -3099,17 +3130,8 @@
           if (fs) fs.classList.remove('active');
         }
         g('sending').classList.add('active');
-        var iname = 'iframe_' + p + '_' + Date.now();
-        var iframe = document.createElement('iframe');
-        iframe.name = iname; iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-        var form = document.createElement('form');
-        form.method = 'POST'; form.action = APPS_SCRIPT_URL;
-        form.target = iname; form.style.display = 'none';
-        var campi = {
-          action:           'nuova_iscrizione',
-          evento:           ev,
-          nome:             self.data.nome_completo      || '',
+        var dati = {
+          nome:             self.data.nome               || '',
           cognome:          self.data.cognome            || '',
           email:            self.data.email              || '',
           tel:              self.data.tel                || '',
@@ -3118,23 +3140,14 @@
           pacchetto:        self.data.pacchetto          || '',
           compagno_ballo:   self.data.compagno_ballo     || '',
           tipologia_stanza: self.data.tipologia_stanza   || '',
-          compagni_stanza:  (self.data.compagni_stanza || []).join(','),
+          compagni_stanza:  self.data.compagni_stanza    || '',
+          compagno_camera:  self.data.compagno_camera    || '',
+          facebook:         self.data.facebook           || '',
+          data_nascita:     self.data.data_nascita       || '',
           note:             self.data.note               || ''
         };
-        Object.keys(campi).forEach(function(k) {
-          var inp = document.createElement('input');
-          inp.type = 'hidden'; inp.name = k; inp.value = campi[k];
-          form.appendChild(inp);
-        });
-        document.body.appendChild(form);
         var done = false;
-        function cleanup() {
-          setTimeout(function() {
-            if (document.body.contains(form))   document.body.removeChild(form);
-            if (document.body.contains(iframe)) document.body.removeChild(iframe);
-          }, 1000);
-          window.removeEventListener('message', msgHandler);
-        }
+        function cleanup() { window.removeEventListener('message', msgHandler); }
         function msgHandler(e) {
           if (done) return;
           var d = e.data;
@@ -3145,8 +3158,29 @@
           else { self.ok(); }
         }
         window.addEventListener('message', msgHandler);
+
+        fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dati)
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(result) {
+          if (done) return;
+          done = true; cleanup();
+          g('sending').classList.remove('active');
+          if (result.success === false) { self.showError(result.error || 'Siè verificato un errore.'); }
+          else { self.ok(); }
+        })
+        .catch(function(err) {
+          if (done) return;
+          done = true; cleanup();
+          g('sending').classList.remove('active');
+          self.showError('Errore di connessione: ' + err.message);
+        });
+
         setTimeout(function() {
-          if (!done) { done = true; cleanup(); self.ok(); }
+          if (!done) { done = true; cleanup(); g('sending').classList.remove('active'); self.ok(); }
         }, 10000);
 
         /* Track form submission to GA4 */

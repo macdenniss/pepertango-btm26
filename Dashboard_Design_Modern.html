@@ -5,20 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Brutia Tango Fest — Dashboard</title>
   <script>
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqKWa6Vv8upjwiD5p_SvQ4rUd9TNymshgzlDxk1CePwC2WhCXA4_l7fo-YrFOm_wQeMA/exec';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzT54NkJs8euuo3h95-yUu41D-pb5NNk51ErdOS-iBbRDK3-J5fgRCZ9zSwYGkRhJT/exec';
     let allData = [];
 
     async function loadData() {
       try {
-        console.log('📥 Caricamento dati...', APPS_SCRIPT_URL);
         const response = await fetch(APPS_SCRIPT_URL);
         const data = await response.json();
-        console.log('✅ Dati caricati:', data);
         allData = data;
         updateDashboard();
       } catch (error) {
-        console.error('❌ Errore caricamento:', error);
-        document.body.innerHTML = '<h1>Errore: ' + error.message + '</h1>';
+        console.error('Errore caricamento dati:', error);
       }
     }
 
@@ -29,24 +26,16 @@
     }
 
     function updateStats() {
-      if (!allData.length) {
-        console.warn('Nessun dato disponibile');
-        return;
-      }
       const totalIscritti = allData.length;
       const pagati = allData.filter(r => r.pagamento === 'Saldato' || r.pagamento === 'Anticipo versato').length;
       const totalEntrate = pagati * 90;
       const leaders = allData.filter(r => r.ruolo === 'Leader').length;
+      const followers = allData.filter(r => r.ruolo === 'Follower').length;
 
-      const statValues = document.querySelectorAll('.stat-value');
-      const statMeta = document.querySelectorAll('.stat-meta');
-
-      if (statValues.length >= 3 && statMeta.length >= 1) {
-        statValues[0].textContent = totalIscritti;
-        statMeta[0].textContent = `${pagati} pagamenti ricevuti`;
-        statValues[1].textContent = '€' + totalEntrate;
-        statValues[2].textContent = leaders;
-      }
+      document.querySelectorAll('.stat-value')[0].textContent = totalIscritti;
+      document.querySelectorAll('.stat-meta')[0].textContent = `${pagati} pagamenti ricevuti`;
+      document.querySelectorAll('.stat-value')[1].textContent = '€' + totalEntrate;
+      document.querySelectorAll('.stat-value')[2].textContent = leaders;
     }
 
     function updateRooms() {
@@ -60,7 +49,7 @@
         }
       });
 
-      const roomsSection = document.getElementById('roomsSection');
+      const roomsSection = document.querySelectorAll('.section')[1];
       let html = '<h2 class="section-title">🏨 Gestione Camere Smart</h2>';
       const tipi = {'Doppia': [], 'Matrimoniale': [], 'Tripla': []};
       Object.values(rooms).forEach(r => { if (tipi[r.tipo]) tipi[r.tipo].push(r); });
@@ -77,12 +66,9 @@
           const statusBadge = occupancy === 0 ? '👤 Vuota' : occupancy < maxCapacity ? '⚠ Disponibile' : '✓ Piena';
           const statusClass = occupancy === maxCapacity ? 'status-matched' : occupancy === 0 ? 'status-single' : 'status-unmatched';
 
-          html += `<div class="room-card" style="cursor:pointer;"><div class="room-header"><div class="room-number">${r.numero}</div><div class="room-type">${tipo}</div></div><div class="room-occupancy"><div class="occupancy-indicator ${isFull ? 'full' : ''}"></div>${occupancy}/${maxCapacity}</div><div class="room-guests">`;
-          r.ospiti.forEach(g => {
-            var guestData = allData.find(x => x.nome === g.nome);
-            html += `<div class="guest-item"><div><div class="guest-name">${g.nome}</div><div class="guest-role">${guestData ? guestData.pacchetto : '—'}</div></div></div>`;
-          });
-          html += `</div><div class="room-status"><div class="status-badge ${statusClass}">${statusBadge}</div></div><button onclick="openEditRoomModal('${r.numero}')" style="width:100%;margin-top:10px;background:#BD081C;color:white;border:none;padding:8px;border-radius:6px;cursor:pointer;font-weight:600;font-size:0.9rem">✏️ Modifica</button></div>`;
+          html += `<div class="room-card"><div class="room-header"><div class="room-number">${r.numero}</div><div class="room-type">${tipo}</div></div><div class="room-occupancy"><div class="occupancy-indicator ${isFull ? 'full' : ''}"></div>${occupancy}/${maxCapacity}</div><div class="room-guests">`;
+          r.ospiti.forEach(g => html += `<div class="guest-item"><div><div class="guest-name">${g.nome}</div><div class="guest-role">${g.ruolo}</div></div></div>`);
+          html += `</div><div class="room-status"><div class="status-badge ${statusClass}">${statusBadge}</div></div></div>`;
         });
         html += '</div></div>';
       });
@@ -96,150 +82,9 @@
       allData.slice(0, 15).forEach(r => {
         const statusClass = (r.pagamento === 'Saldato' || r.pagamento === 'Anticipo versato') ? 'status-paid' : r.pagamento === 'Non pagato' ? 'status-pending' : 'status-refunded';
         const roleClass = r.ruolo === 'Leader' ? '' : 'follower';
-        const id = String(r.id || '').replace(/'/g, "\\'");
-        const nome = String(r.nome || '').replace(/'/g, "\\'");
-        html += `<tr><td>${r.nome || '—'}</td><td><span class="role-badge ${roleClass}">${r.ruolo === 'Leader' ? '🕺 Leader' : '💃 Follower'}</span></td><td>${r.camera || '—'}</td><td><span class="payment-status ${statusClass}">${r.pagamento || 'In attesa'}</span></td><td><button class="quick-action-btn" onclick="acceptRegistration('${id}', '${nome}')">✓ Accetta</button></td></tr>`;
+        html += `<tr><td>${r.nome || '—'}</td><td><span class="role-badge ${roleClass}">${r.ruolo === 'Leader' ? '🕺 Leader' : '💃 Follower'}</span></td><td>${r.camera || '—'}</td><td><span class="payment-status ${statusClass}">${r.pagamento || 'Non pagato'}</span></td><td><button class="quick-action-btn">Modifica</button></td></tr>`;
       });
       tbody.innerHTML = html;
-    }
-
-    function showNotification(type, title, message) {
-      var notif = document.getElementById('notification');
-      if (!notif) {
-        notif = document.createElement('div');
-        notif.id = 'notification';
-        notif.style.cssText = 'position:fixed;top:20px;right:20px;max-width:400px;padding:20px;border-radius:8px;font-weight:600;z-index:9999;animation:slideIn 0.3s ease-out;box-shadow:0 4px 12px rgba(0,0,0,0.15)';
-        document.body.appendChild(notif);
-        var style = document.createElement('style');
-        style.textContent = '@keyframes slideIn {from{transform:translateX(450px);opacity:0}to{transform:translateX(0);opacity:1}}';
-        document.head.appendChild(style);
-      }
-      notif.className = type === 'success' ? 'bg-success' : 'bg-error';
-      notif.style.background = type === 'success' ? '#4ade80' : '#ef4444';
-      notif.style.color = '#fff';
-      notif.innerHTML = `<div style="font-size:1.1rem;margin-bottom:4px">${title}</div><div style="font-size:0.95rem;opacity:0.95">${message}</div>`;
-      setTimeout(() => { notif.style.animation = 'slideOut 0.3s ease-out'; }, 4000);
-    }
-
-    function acceptRegistration(id, nome) {
-      if (!confirm(`Accettare ${nome}? Camera assegnata automaticamente.`)) return;
-      fetch(`${APPS_SCRIPT_URL}?action=aggiornaStato&id=${encodeURIComponent(id)}&stato=Accettato`)
-        .then(r => r.json())
-        .then(data => {
-          console.log('Risposta:', data);
-          if (data.success) {
-            showNotification('success', `✅ ${nome} accettato!`, data.message || 'Camera assegnata.');
-            setTimeout(loadData, 500);
-          } else {
-            showNotification('error', '❌ Errore nell\'accettazione', data.message || data.error || 'Errore sconosciuto');
-          }
-        })
-        .catch(e => {
-          console.error(e);
-          showNotification('error', '❌ Errore di connessione', e.message);
-        });
-    }
-
-    // ============================================================
-    // MODIFICA CAMERE
-    // ============================================================
-
-    function openEditRoomModal(cameraN) {
-      var room = allData.filter(r => r.camera == cameraN);
-      if (!room.length) return;
-
-      var modal = document.createElement('div');
-      modal.id = 'editRoomModal';
-      modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:10000;';
-
-      var maxCapacity = room[0].tipologia_stanza === 'Tripla' ? 3 : 2;
-      var availableUsers = allData.filter(r => r.stato === 'Accettato' && r.tipologia_stanza === room[0].tipologia_stanza && !room.find(x => x.id === r.id));
-
-      var html = `
-        <div style="background:white;border-radius:12px;padding:30px;max-width:500px;max-height:600px;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,0.2)">
-          <h2 style="margin:0 0 20px;color:#1a1a1a">✏️ Modifica Camera ${cameraN}</h2>
-          <p style="color:#666;margin:0 0 20px">Tipo: <strong>${room[0].tipologia_stanza}</strong> | Max: <strong>${maxCapacity}</strong> ospiti</p>
-
-          <div style="background:#f8f9fa;padding:15px;border-radius:8px;margin-bottom:20px">
-            <h3 style="margin:0 0 10px;font-size:0.95rem;color:#666">Ospiti attuali:</h3>
-            <div id="roomGuests" style="display:flex;flex-direction:column;gap:8px">
-      `;
-
-      room.forEach(guest => {
-        html += `
-          <div style="background:white;padding:10px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;border-left:3px solid #BD081C">
-            <div>
-              <div style="font-weight:600;color:#1a1a1a">${guest.nome}</div>
-              <div style="font-size:0.85rem;color:#666">${guest.pacchetto || '—'}</div>
-            </div>
-            <button onclick="removeGuestFromRoom('${cameraN}', '${guest.id}')" style="background:#ef4444;color:white;border:none;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:0.9rem">✕</button>
-          </div>
-        `;
-      });
-
-      html += `</div></div>`;
-
-      if (room.length < maxCapacity && availableUsers.length > 0) {
-        html += `
-          <div style="margin-bottom:20px">
-            <label style="display:block;margin-bottom:8px;font-weight:600;color:#1a1a1a">Aggiungi ospite:</label>
-            <select id="addGuestSelect" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;font-size:0.95rem">
-              <option value="">-- Seleziona un ospite --</option>
-        `;
-        availableUsers.forEach(user => {
-          html += `<option value="${user.id}">${user.nome} (${user.pacchetto})</option>`;
-        });
-        html += `</select></div>`;
-      }
-
-      html += `
-        <div style="display:flex;gap:10px;justify-content:flex-end">
-          <button onclick="closeEditRoomModal()" style="background:#e9ecef;color:#1a1a1a;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-weight:600">Annulla</button>
-          <button onclick="saveRoomChanges('${cameraN}')" style="background:#BD081C;color:white;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-weight:600">Salva</button>
-        </div>
-      </div>`;
-
-      modal.innerHTML = html;
-      document.body.appendChild(modal);
-    }
-
-    function closeEditRoomModal() {
-      var modal = document.getElementById('editRoomModal');
-      if (modal) modal.remove();
-    }
-
-    function removeGuestFromRoom(cameraN, guestId) {
-      var guestToRemove = allData.find(r => r.id === guestId);
-      if (!guestToRemove) return;
-
-      fetch(`${APPS_SCRIPT_URL}?action=removeGuestFromRoom&id=${encodeURIComponent(guestId)}&camera=`)
-        .then(r => r.json())
-        .then(data => {
-          if (data.success) {
-            openEditRoomModal(cameraN);
-            loadData();
-          }
-        });
-    }
-
-    function saveRoomChanges(cameraN) {
-      var selectEl = document.getElementById('addGuestSelect');
-      if (!selectEl || !selectEl.value) {
-        closeEditRoomModal();
-        loadData();
-        return;
-      }
-
-      var guestId = selectEl.value;
-      fetch(`${APPS_SCRIPT_URL}?action=addGuestToRoom&id=${encodeURIComponent(guestId)}&camera=${cameraN}`)
-        .then(r => r.json())
-        .then(data => {
-          if (data.success) {
-            showNotification('success', '✅ Camera aggiornata!', 'Ospite assegnato con successo');
-            closeEditRoomModal();
-            loadData();
-          }
-        });
     }
 
     document.addEventListener('DOMContentLoaded', loadData);
@@ -252,14 +97,14 @@
     }
 
     :root {
-      --dark-bg: #f8f9fa;
-      --dark-secondary: #e9ecef;
-      --dark-tertiary: #dee2e6;
+      --dark-bg: #2d3748;
+      --dark-secondary: #3f4a5f;
+      --dark-tertiary: #4a5568;
       --accent-red: #BD081C;
       --accent-gold: #d4a574;
-      --text-primary: #1a1a1a;
-      --text-secondary: #666666;
-      --border-color: #cccccc;
+      --text-primary: #f5f5f5;
+      --text-secondary: #b0b0b0;
+      --border-color: #5a6378;
       --success: #4ade80;
       --warning: #f97316;
       --danger: #ef4444;
@@ -273,6 +118,7 @@
       line-height: 1.6;
     }
 
+    /* Layout Principal */
     .container {
       display: grid;
       grid-template-columns: 280px 1fr;
@@ -280,8 +126,9 @@
       gap: 0;
     }
 
+    /* Sidebar */
     .sidebar {
-      background: linear-gradient(135deg, #f0f2f5 0%, #ffffff 100%);
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
       border-right: 1px solid var(--border-color);
       padding: 2rem 0;
       position: fixed;
@@ -350,6 +197,7 @@
       border-left-color: var(--accent-red);
     }
 
+    /* Main Content */
     .main-content {
       grid-column: 2;
       padding: 2rem;
@@ -357,6 +205,7 @@
       background: var(--dark-bg);
     }
 
+    /* Header */
     .header {
       display: flex;
       justify-content: space-between;
@@ -413,6 +262,7 @@
       border-color: var(--accent-red);
     }
 
+    /* Stats Grid */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -472,6 +322,7 @@
       margin-top: 0.75rem;
     }
 
+    /* Sezioni */
     .section {
       margin-bottom: 3rem;
     }
@@ -485,6 +336,7 @@
       display: inline-block;
     }
 
+    /* Gestione Camere */
     .rooms-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -590,7 +442,7 @@
       gap: 0.75rem;
       margin-bottom: 1.5rem;
       padding: 1rem;
-      background: rgba(0, 0, 0, 0.05);
+      background: rgba(0, 0, 0, 0.2);
       border-radius: 8px;
     }
 
@@ -641,6 +493,7 @@
       color: #6496c8;
     }
 
+    /* Tabella Iscritti */
     .table-wrapper {
       background: linear-gradient(135deg, var(--dark-secondary) 0%, var(--dark-tertiary) 100%);
       border: 1px solid var(--border-color);
@@ -655,7 +508,7 @@
     }
 
     thead {
-      background: rgba(0, 0, 0, 0.03);
+      background: rgba(0, 0, 0, 0.3);
       border-bottom: 2px solid var(--accent-red);
     }
 
@@ -742,10 +595,12 @@
       transform: scale(1.05);
     }
 
+    /* Responsive */
     @media (max-width: 1024px) {
       .container {
         grid-template-columns: 1fr;
       }
+
       .sidebar {
         width: 100%;
         height: auto;
@@ -754,41 +609,57 @@
         border-bottom: 1px solid var(--border-color);
         padding: 1.5rem;
       }
+
       .main-content {
         grid-column: 1;
       }
+
       .nav-menu {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 0.5rem;
         padding: 0;
       }
+
       .rooms-grid {
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       }
     }
 
     @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+
       .main-content {
         padding: 1rem;
       }
+
       .header {
         flex-direction: column;
         gap: 1rem;
         align-items: flex-start;
       }
+
       .stats-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
       }
+
+      .rooms-grid {
+        grid-template-columns: 1fr;
+      }
+
       table {
         font-size: 0.8rem;
       }
+
       th, td {
         padding: 0.75rem;
       }
     }
 
+    /* Animazioni */
     @keyframes slideIn {
       from {
         opacity: 0;
@@ -806,16 +677,28 @@
       animation: slideIn 0.6s ease-out forwards;
     }
 
+    .stat-card:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+
+    .stat-card:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+
+    /* Scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
     }
+
     ::-webkit-scrollbar-track {
       background: var(--dark-secondary);
     }
+
     ::-webkit-scrollbar-thumb {
       background: var(--border-color);
       border-radius: 4px;
     }
+
     ::-webkit-scrollbar-thumb:hover {
       background: var(--accent-red);
     }
@@ -823,6 +706,7 @@
 </head>
 <body>
   <div class="container">
+    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
         <div class="logo">💃 BRUTIA</div>
@@ -831,32 +715,46 @@
       <nav>
         <ul class="nav-menu">
           <li class="nav-item">
-            <a href="Dashboard_Brutia.html" class="nav-link active">📊 Dashboard</a>
+            <a href="#" class="nav-link active">
+              <span>📊</span> Dashboard
+            </a>
           </li>
           <li class="nav-item">
-            <a href="iscritti.html" class="nav-link">👥 Iscritti</a>
+            <a href="#" class="nav-link">
+              <span>👥</span> Iscritti
+            </a>
           </li>
           <li class="nav-item">
-            <a href="pagamenti.html" class="nav-link">💳 Pagamenti</a>
+            <a href="#" class="nav-link">
+              <span>💳</span> Pagamenti
+            </a>
           </li>
           <li class="nav-item">
-            <a href="camere.html" class="nav-link">🔑 Camere</a>
+            <a href="#" class="nav-link">
+              <span>🔑</span> Camere
+            </a>
           </li>
           <li class="nav-item">
-            <a href="statistiche.html" class="nav-link">📈 Statistiche</a>
+            <a href="#" class="nav-link">
+              <span>📈</span> Statistiche
+            </a>
           </li>
           <li class="nav-item">
-            <a href="impostazioni.html" class="nav-link">⚙️ Impostazioni</a>
+            <a href="#" class="nav-link">
+              <span>⚙️</span> Impostazioni
+            </a>
           </li>
         </ul>
       </nav>
     </aside>
 
+    <!-- Main Content -->
     <main class="main-content">
+      <!-- Header -->
       <div class="header">
         <div>
           <h1 class="header-title">Dashboard</h1>
-          <p style="color: var(--text-secondary); margin-top: 0.5rem;">Brutia Tango Fest 2026</p>
+          <p style="color: var(--text-secondary); margin-top: 0.5rem;">Benvenuto a Brutia Tango Fest 2026</p>
         </div>
         <div class="header-actions">
           <button class="btn btn-secondary">📥 Esporta</button>
@@ -864,38 +762,231 @@
         </div>
       </div>
 
+      <!-- Stats Grid -->
       <div class="stats-grid">
-        <div class="stat-card" onclick="window.location.href='iscritti.html'" style="cursor:pointer;">
+        <div class="stat-card">
           <div class="stat-label">Totale Iscritti</div>
-          <div class="stat-value">0</div>
-          <div class="stat-progress"><div class="stat-progress-bar" style="width: 0%;"></div></div>
-          <div class="stat-meta">Caricamento...</div>
+          <div class="stat-value">247</div>
+          <div class="stat-progress">
+            <div class="stat-progress-bar" style="width: 65%;"></div>
+          </div>
+          <div class="stat-meta">↑ 12% rispetto al mese scorso</div>
         </div>
-        <div class="stat-card" onclick="window.location.href='pagamenti.html'" style="cursor:pointer;">
+
+        <div class="stat-card">
           <div class="stat-label">Entrate Totali</div>
-          <div class="stat-value">€0</div>
-          <div class="stat-progress"><div class="stat-progress-bar" style="width: 0%;"></div></div>
-          <div class="stat-meta">Caricamento...</div>
+          <div class="stat-value">€14.820</div>
+          <div class="stat-progress">
+            <div class="stat-progress-bar" style="width: 72%;"></div>
+          </div>
+          <div class="stat-meta">Di 23 pagamenti ricevuti</div>
         </div>
-        <div class="stat-card" onclick="window.location.href='statistiche.html'" style="cursor:pointer;">
-          <div class="stat-label">Leader</div>
-          <div class="stat-value">0</div>
-          <div class="stat-progress"><div class="stat-progress-bar" style="width: 0%;"></div></div>
-          <div class="stat-meta">Caricamento...</div>
+
+        <div class="stat-card">
+          <div class="stat-label">Bilanciamento Genere</div>
+          <div style="display: flex; gap: 1rem; margin: 1rem 0;">
+            <div style="flex: 1;">
+              <div style="font-size: 1.2rem; font-weight: 700; color: var(--accent-red);">128</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Leader 🕺</div>
+            </div>
+            <div style="flex: 1;">
+              <div style="font-size: 1.2rem; font-weight: 700; color: var(--accent-gold);">119</div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Follower 💃</div>
+            </div>
+          </div>
+          <div class="stat-progress">
+            <div class="stat-progress-bar" style="width: 52%;"></div>
+          </div>
         </div>
       </div>
 
-      <section class="section" id="roomsSection">
+      <!-- Gestione Camere -->
+      <section class="section">
         <h2 class="section-title">🏨 Gestione Camere Smart</h2>
+
+        <!-- Doppia -->
+        <div class="room-section">
+          <div class="room-category-title">🛏️ Camere Doppie (Max 2 ospiti)</div>
+          <div class="rooms-grid">
+            <div class="room-card">
+              <div class="room-header">
+                <div class="room-number">201</div>
+                <div class="room-type">Doppia</div>
+              </div>
+              <div class="room-occupancy">
+                <div class="occupancy-indicator full"></div>
+                2/2 occupazione
+              </div>
+              <div class="room-guests">
+                <div class="guest-item">
+                  <div>
+                    <div class="guest-name">Marco Rossi</div>
+                    <div class="guest-role">Leader</div>
+                  </div>
+                </div>
+                <div class="guest-item">
+                  <div>
+                    <div class="guest-name">Giulia Bianchi</div>
+                    <div class="guest-role">Follower</div>
+                  </div>
+                </div>
+              </div>
+              <div class="room-status">
+                <div class="status-badge status-matched">✓ Abbinati</div>
+              </div>
+            </div>
+
+            <div class="room-card">
+              <div class="room-header">
+                <div class="room-number">202</div>
+                <div class="room-type">Doppia</div>
+              </div>
+              <div class="room-occupancy">
+                <div class="occupancy-indicator"></div>
+                1/2 occupazione
+              </div>
+              <div class="room-guests">
+                <div class="guest-item">
+                  <div>
+                    <div class="guest-name">Francesco Verdi</div>
+                    <div class="guest-role">Leader</div>
+                  </div>
+                </div>
+              </div>
+              <div class="room-status">
+                <div class="status-badge status-unmatched">⚠ In Attesa di Compagno</div>
+              </div>
+            </div>
+
+            <div class="room-card">
+              <div class="room-header">
+                <div class="room-number">203</div>
+                <div class="room-type">Doppia</div>
+              </div>
+              <div class="room-occupancy">
+                <div class="occupancy-indicator full"></div>
+                2/2 occupazione
+              </div>
+              <div class="room-guests">
+                <div class="guest-item">
+                  <div>
+                    <div class="guest-name">Sofia Ferrari</div>
+                    <div class="guest-role">Follower</div>
+                  </div>
+                </div>
+                <div class="guest-item">
+                  <div>
+                    <div class="guest-name">Andrea Conti</div>
+                    <div class="guest-role">Leader</div>
+                  </div>
+                </div>
+              </div>
+              <div class="room-status">
+                <div class="status-badge status-matched">✓ Abbinati</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Matrimoniale -->
+        <div class="room-section">
+          <div class="room-category-title">💑 Camere Matrimoniali (Max 2 ospiti)</div>
+          <div class="rooms-grid">
+            <div class="room-card">
+              <div class="room-header">
+                <div class="room-number">301</div>
+                <div class="room-type">Matrimoniale</div>
+              </div>
+              <div class="room-occupancy">
+                <div class="occupancy-indicator full"></div>
+                2/2 occupazione
+              </div>
+              <div class="room-guests">
+                <div class="guest-item">
+                  <div>
+                    <div class="guest-name">Elena Rossi</div>
+                    <div class="guest-role">Follower</div>
+                  </div>
+                </div>
+                <div class="guest-item">
+                  <div>
+                    <div class="guest-name">Carlo Gallo</div>
+                    <div class="guest-role">Leader</div>
+                  </div>
+                </div>
+              </div>
+              <div class="room-status">
+                <div class="status-badge status-matched">✓ Abbinati</div>
+              </div>
+            </div>
+
+            <div class="room-card">
+              <div class="room-header">
+                <div class="room-number">302</div>
+                <div class="room-type">Matrimoniale</div>
+              </div>
+              <div class="room-occupancy">
+                <div class="occupancy-indicator"></div>
+                1/2 occupazione
+              </div>
+              <div class="room-guests">
+                <div class="guest-item">
+                  <div>
+                    <div class="guest-name">Alessia Martino</div>
+                    <div class="guest-role">Follower</div>
+                  </div>
+                </div>
+              </div>
+              <div class="room-status">
+                <div class="status-badge status-single">👤 Posizionamento Singolo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tripla -->
+        <div class="room-section">
+          <div class="room-category-title">👥 Camere Triple (Max 3 ospiti)</div>
+          <div class="rooms-grid">
+            <div class="room-card">
+              <div class="room-header">
+                <div class="room-number">401</div>
+                <div class="room-type">Tripla</div>
+              </div>
+              <div class="room-occupancy">
+                <div class="occupancy-indicator"></div>
+                2/3 occupazione
+              </div>
+              <div class="room-guests">
+                <div class="guest-item">
+                  <div>
+                    <div class="guest-name">Luisa Bianchi</div>
+                    <div class="guest-role">Follower</div>
+                  </div>
+                </div>
+                <div class="guest-item">
+                  <div>
+                    <div class="guest-name">Roberto Neri</div>
+                    <div class="guest-role">Leader</div>
+                  </div>
+                </div>
+              </div>
+              <div class="room-status">
+                <div class="status-badge status-unmatched">⚠ Posto Disponibile</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
+      <!-- Tabella Iscritti -->
       <section class="section">
-        <h2 class="section-title">👥 Iscritti e Stato</h2>
+        <h2 class="section-title">👥 Iscritti e Stato Pagamenti</h2>
         <div class="table-wrapper">
           <table>
             <thead>
               <tr>
-                <th>Nome</th>
+                <th>Nome Partecipante</th>
                 <th>Ruolo</th>
                 <th>Camera</th>
                 <th>Pagamento</th>
@@ -903,7 +994,41 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td colspan="5" style="text-align:center; padding: 2rem;">Caricamento dati...</td></tr>
+              <tr>
+                <td>Marco Rossi</td>
+                <td><span class="role-badge">🕺 Leader</span></td>
+                <td>201</td>
+                <td><span class="payment-status status-paid">✓ Pagato</span></td>
+                <td><button class="quick-action-btn">Modifica</button></td>
+              </tr>
+              <tr>
+                <td>Giulia Bianchi</td>
+                <td><span class="role-badge follower">💃 Follower</span></td>
+                <td>201</td>
+                <td><span class="payment-status status-paid">✓ Pagato</span></td>
+                <td><button class="quick-action-btn">Modifica</button></td>
+              </tr>
+              <tr>
+                <td>Francesco Verdi</td>
+                <td><span class="role-badge">🕺 Leader</span></td>
+                <td>202</td>
+                <td><span class="payment-status status-pending">⏳ In Attesa</span></td>
+                <td><button class="quick-action-btn">Modifica</button></td>
+              </tr>
+              <tr>
+                <td>Sofia Ferrari</td>
+                <td><span class="role-badge follower">💃 Follower</span></td>
+                <td>203</td>
+                <td><span class="payment-status status-refunded">↩ Rimborsato</span></td>
+                <td><button class="quick-action-btn">Modifica</button></td>
+              </tr>
+              <tr>
+                <td>Andrea Conti</td>
+                <td><span class="role-badge">🕺 Leader</span></td>
+                <td>203</td>
+                <td><span class="payment-status status-paid">✓ Pagato</span></td>
+                <td><button class="quick-action-btn">Modifica</button></td>
+              </tr>
             </tbody>
           </table>
         </div>

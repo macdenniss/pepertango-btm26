@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iscritti — Brutia Tango Fest</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #f8f9fa;
+      --text: #1a1a1a;
+      --border: #cccccc;
+      --red: #BD081C;
+      --gold: #d4a574;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+    .sidebar {
+      background: linear-gradient(135deg, #f0f2f5 0%, #ffffff 100%);
+      border-right: 1px solid var(--border);
+      padding: 2rem 0;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      width: 280px;
+      overflow-y: auto;
+    }
+    .sidebar-header {
+      padding: 0 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--red), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+    .tagline {
+      font-size: 0.75rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .nav-menu {
+      list-style: none;
+      padding: 0 1rem;
+    }
+    .nav-item { margin-bottom: 0.5rem; }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      color: #666;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      border-left: 3px solid transparent;
+    }
+    .nav-link:hover {
+      background: #e9ecef;
+      color: var(--text);
+      border-left-color: var(--red);
+    }
+    .nav-link.active {
+      background: rgba(189, 8, 28, 0.1);
+      color: var(--red);
+      border-left-color: var(--red);
+    }
+    .main { grid-column: 2; padding: 2rem; overflow-y: auto; }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--red);
+      padding-bottom: 1rem;
+    }
+    .header h1 { font-size: 2rem; }
+    .back-btn {
+      padding: 0.75rem 1.5rem;
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .back-btn:hover { background: #a20619; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    th {
+      background: #f0f0f0;
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid var(--border);
+      color: var(--red);
+    }
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    tr:hover { background: #f9f9f9; }
+    .badge {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .badge-leader { background: rgba(189,8,28,0.1); color: var(--red); }
+    .badge-follower { background: rgba(212,165,116,0.1); color: var(--gold); }
+    .badge-paid { background: rgba(74,222,128,0.1); color: #4ade80; }
+    .badge-pending { background: rgba(249,115,22,0.1); color: #f97316; }
+    .loading { text-align: center; padding: 2rem; }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">💃 BRUTIA</div>
+      <div class="tagline">Tango Fest</div>
+    </div>
+    <nav>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="Dashboard_Brutia.html" class="nav-link">📊 Dashboard</a></li>
+        <li class="nav-item"><a href="iscritti.html" class="nav-link active">👥 Iscritti</a></li>
+        <li class="nav-item"><a href="pagamenti.html" class="nav-link">💳 Pagamenti</a></li>
+        <li class="nav-item"><a href="camere.html" class="nav-link">🔑 Camere</a></li>
+        <li class="nav-item"><a href="statistiche.html" class="nav-link">📈 Statistiche</a></li>
+        <li class="nav-item"><a href="impostazioni.html" class="nav-link">⚙️ Impostazioni</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="container">
+      <div class="header">
+        <h1>👥 Iscritti</h1>
+      </div>
+    <table id="table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Telefono</th>
+          <th>Città</th>
+          <th>Ruolo</th>
+          <th>Camera</th>
+          <th>Pagamento</th>
+          <th>Stato</th>
+          <th>Azione</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <tr><td colspan="8" class="loading">Caricamento...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqKWa6Vv8upjwiD5p_SvQ4rUd9TNymshgzlDxk1CePwC2WhCXA4_l7fo-YrFOm_wQeMA/exec';
+
+    async function loadData() {
+      try {
+        const response = await fetch(APPS_SCRIPT_URL);
+        const data = await response.json();
+        displayTable(data);
+      } catch (error) {
+        document.getElementById('tbody').innerHTML = `<tr><td colspan="8" class="loading">Errore: ${error.message}</td></tr>`;
+      }
+    }
+
+    function displayTable(data) {
+      const tbody = document.getElementById('tbody');
+      let html = '';
+      data.forEach(r => {
+        const id = String(r.id || '').replace(/'/g, "\\'");
+        const nome = String(r.nome || '').replace(/'/g, "\\'");
+        html += `<tr>
+          <td>${r.nome || '—'}</td>
+          <td>${r.email || '—'}</td>
+          <td>${r.tel || '—'}</td>
+          <td>${r.citta || '—'}</td>
+          <td><span class="badge ${r.ruolo === 'Leader' ? 'badge-leader' : 'badge-follower'}">${r.ruolo || '—'}</span></td>
+          <td>${r.camera || '—'}</td>
+          <td><span class="badge ${r.pagamento === 'Saldato' || r.pagamento === 'Anticipo versato' ? 'badge-paid' : 'badge-pending'}">${r.pagamento || 'In attesa'}</span></td>
+          <td>${r.stato || 'In attesa'}</td>
+          <td><button onclick="acceptRegistration('${id}', '${nome}')" style="padding: 0.5rem 1rem; background: #BD081C; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">✓ Accetta</button></td>
+        </tr>`;
+      });
+      tbody.innerHTML = html || '<tr><td colspan="9" class="loading">Nessun iscritto</td></tr>';
+    }
+
+    function acceptRegistration(id, nome) {
+      if (!confirm(`Accettare ${nome}? Camera assegnata automaticamente.`)) return;
+      fetch(`${APPS_SCRIPT_URL}?action=aggiornaStato&id=${encodeURIComponent(id)}&stato=Accettato`)
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            alert(`✅ ${nome} accettato!\n${data.message || 'Camera assegnata.'}`);
+            loadData();
+          } else {
+            alert(`❌ Errore: ${data.message || data.error}`);
+          }
+        })
+        .catch(e => alert(`❌ Errore: ${e.message}`));
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

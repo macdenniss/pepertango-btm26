@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camera — Brutia Tango Fest</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --bg: #f8f9fa; --text: #1a1a1a; --red: #BD081C; --gold: #d4a574; --border: #cccccc; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 100vh;
+    }
+    .sidebar {
+      background: linear-gradient(135deg, #f0f2f5 0%, #ffffff 100%);
+      border-right: 1px solid var(--border);
+      padding: 2rem 0;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      width: 280px;
+      overflow-y: auto;
+    }
+    .sidebar-header { padding: 0 1.5rem 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--red), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+    .tagline { font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 2px; }
+    .nav-menu { list-style: none; padding: 0 1rem; }
+    .nav-item { margin-bottom: 0.5rem; }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      color: #666;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      border-left: 3px solid transparent;
+    }
+    .nav-link:hover { background: #e9ecef; color: var(--text); border-left-color: var(--red); }
+    .nav-link.active { background: rgba(189, 8, 28, 0.1); color: var(--red); border-left-color: var(--red); }
+    .main { grid-column: 2; padding: 2rem; overflow-y: auto; }
+    .container { max-width: 800px; margin: 0 auto; }
+    .header { margin-bottom: 2rem; border-bottom: 2px solid var(--red); padding-bottom: 1rem; }
+    .info-box { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .room-number { font-size: 3rem; font-weight: 700; color: var(--gold); margin-bottom: 1rem; }
+    .room-details { display: grid; gap: 1.5rem; margin-bottom: 2rem; }
+    .detail-item { border-bottom: 1px solid #eee; padding-bottom: 1rem; }
+    .detail-label { color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .detail-value { font-size: 1.2rem; font-weight: 600; color: var(--text); }
+    .guests-list { list-style: none; }
+    .guest-item { background: #f9f9f9; padding: 1rem; border-radius: 6px; margin-bottom: 0.5rem; }
+    .guest-name { font-weight: 600; }
+    .guest-role { color: #999; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">💃 BRUTIA</div>
+      <div class="tagline">Tango Fest</div>
+    </div>
+    <nav>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="Dashboard_Brutia.html" class="nav-link">📊 Dashboard</a></li>
+        <li class="nav-item"><a href="iscritti.html" class="nav-link">👥 Iscritti</a></li>
+        <li class="nav-item"><a href="pagamenti.html" class="nav-link">💳 Pagamenti</a></li>
+        <li class="nav-item"><a href="camere.html" class="nav-link active">🔑 Camere</a></li>
+        <li class="nav-item"><a href="statistiche.html" class="nav-link">📈 Statistiche</a></li>
+        <li class="nav-item"><a href="impostazioni.html" class="nav-link">⚙️ Impostazioni</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <div class="container">
+      <div class="header">
+        <h1>🏨 Camera</h1>
+      </div>
+
+      <div class="info-box" id="content">
+        <div style="text-align:center; padding: 2rem;">Caricamento...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxqKWa6Vv8upjwiD5p_SvQ4rUd9TNymshgzlDxk1CePwC2WhCXA4_l7fo-YrFOm_wQeMA/exec';
+
+    async function loadData() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const numero = params.get('numero');
+
+        const response = await fetch(APPS_SCRIPT_URL);
+        const data = await response.json();
+
+        const guests = data.filter(r => r.camera == numero);
+        if (guests.length === 0) {
+          document.getElementById('content').innerHTML = '<div style="text-align:center; padding: 2rem;">Camera non trovata</div>';
+          return;
+        }
+
+        const first = guests[0];
+        const tipo = first.tipologia_stanza || '—';
+        const maxCapacity = tipo === 'Tripla' ? 3 : 2;
+
+        let html = `
+          <div class="room-number">${numero}</div>
+          <div class="room-details">
+            <div class="detail-item">
+              <div class="detail-label">Tipo</div>
+              <div class="detail-value">${tipo}</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">Occupazione</div>
+              <div class="detail-value">${guests.length}/${maxCapacity}</div>
+            </div>
+          </div>
+          <div class="detail-label">Ospiti</div>
+          <ul class="guests-list">
+            ${guests.map(g => `<li class="guest-item">
+              <div class="guest-name">${g.nome}</div>
+              <div class="guest-role">${g.ruolo}</div>
+            </li>`).join('')}
+          </ul>
+        `;
+        document.getElementById('content').innerHTML = html;
+      } catch (error) {
+        document.getElementById('content').innerHTML = `<div style="text-align:center; padding: 2rem;">Errore: ${error.message}</div>`;
+      }
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

@@ -4,12 +4,11 @@
 
 window.ADMIN_CONFIG = {
   // URL del Google Apps Script endpoint
-  // Ottieni questo valore dal tuo Google Apps Script > Deploy > New deployment
-  SCRIPT_URL: 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec',
+  SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxWr75bCEn7ilkVjtVMMy9LhliaEYBEP3H02TTs0GtWMvrJYJMvfw-RjgUohvUva9Rdyg/exec',
 
-  // Token di autenticazione (opzionale, ma fortemente raccomandato)
-  // Genera un token casuale e impostalo nel Google Apps Script
-  AUTH_TOKEN: 'your-secure-token-here',
+  // Token di autenticazione - Genera con setupAuthToken() nello Apps Script
+  // IMPORTANTE: Esegui setupAuthToken() nello Apps Script editor per generare il token
+  AUTH_TOKEN: 'GENERA_CON_setupAuthToken_NELLO_APPS_SCRIPT',
 };
 
 // Carica la configurazione nel global scope

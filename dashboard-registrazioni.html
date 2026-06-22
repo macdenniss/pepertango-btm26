@@ -900,6 +900,46 @@
     </div>
   </div>
 
+  <!-- MODAL MODIFICA REGISTRAZIONE -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">Modifica Registrazione</div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Nome</label>
+          <input type="text" id="editNome" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cognome</label>
+          <input type="text" id="editCognome" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="editEmail" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Telefono</label>
+          <input type="tel" id="editTel" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Città</label>
+          <input type="text" id="editCitta" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ruolo</label>
+          <select id="editRuolo" class="form-input">
+            <option value="Leader">🕺 Leader</option>
+            <option value="Follower">💃 Follower</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('editModal')">Annulla</button>
+        <button class="btn btn-primary" onclick="saveEdit()">Salva</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbynG4xNxc47wU6MbDkF7jwGg4z2evJN8RdLxCXyS6Nxt5PwpAEVYtEno-6rJ1Bu6hUc/exec';
     let allData = [];
@@ -978,7 +1018,9 @@
           <td>
             <button class="btn btn-sm btn-success" onclick="quickApprove('${r.id}')">✓ Approva</button>
             <button class="btn btn-sm btn-secondary" onclick="openAssignModal('${r.id}', '${r.nome} ${r.cognome}')">📍 Camera</button>
+            <button class="btn btn-sm btn-secondary" onclick="openEditModal('${r.id}')">✏️ Modifica</button>
             <button class="btn btn-sm btn-warning" onclick="rejectUser('${r.id}')">✕ Rifiuta</button>
+            <button class="btn btn-sm btn-warning" onclick="deleteUser('${r.id}')">🗑️ Elimina</button>
           </td>
         `;
         tbody.appendChild(row);
@@ -1005,7 +1047,9 @@
           <td><strong>${r.camera || '-'}</strong></td>
           <td><small>${r.data_approvazione || '-'}</small></td>
           <td>
-            <button class="btn btn-sm btn-secondary" onclick="openChangeRoomModal('${r.id}', '${r.nome} ${r.cognome}')">🔄 Cambia</button>
+            <button class="btn btn-sm btn-secondary" onclick="openChangeRoomModal('${r.id}', '${r.nome} ${r.cognome}')">🔄 Cambia Camera</button>
+            <button class="btn btn-sm btn-secondary" onclick="openEditModal('${r.id}')">✏️ Modifica</button>
+            <button class="btn btn-sm btn-warning" onclick="deleteUser('${r.id}')">🗑️ Elimina</button>
           </td>
         `;
         tbody.appendChild(row);
@@ -1112,6 +1156,22 @@
       document.getElementById('changeRoomModal').classList.add('active');
     }
 
+    function openEditModal(userId) {
+      const user = allData.find(u => u.id === userId);
+      if (!user) {
+        showError('Utente non trovato');
+        return;
+      }
+      currentUser = { id: userId, name: `${user.nome} ${user.cognome}` };
+      document.getElementById('editNome').value = user.nome || '';
+      document.getElementById('editCognome').value = user.cognome || '';
+      document.getElementById('editEmail').value = user.email || '';
+      document.getElementById('editTel').value = user.tel || '';
+      document.getElementById('editCitta').value = user.citta || '';
+      document.getElementById('editRuolo').value = user.ruolo || 'Follower';
+      document.getElementById('editModal').classList.add('active');
+    }
+
     function closeModal(modalId) {
       document.getElementById(modalId).classList.remove('active');
     }
@@ -1174,6 +1234,71 @@
           loadData();
         } else {
           showError(result.message || 'Errore nella modifica');
+        }
+      } catch (err) {
+        showError(`Errore: ${err.message}`);
+      }
+    }
+
+    async function saveEdit() {
+      const nome = document.getElementById('editNome').value.trim();
+      const cognome = document.getElementById('editCognome').value.trim();
+      const email = document.getElementById('editEmail').value.trim();
+      const tel = document.getElementById('editTel').value.trim();
+      const citta = document.getElementById('editCitta').value.trim();
+      const ruolo = document.getElementById('editRuolo').value;
+
+      if (!nome || !cognome) {
+        alert('Nome e cognome sono obbligatori');
+        return;
+      }
+
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            action: 'editUser',
+            id: currentUser.id,
+            nome: nome,
+            cognome: cognome,
+            email: email,
+            tel: tel,
+            citta: citta,
+            ruolo: ruolo
+          })
+        });
+        const result = await res.json();
+        if (result.success) {
+          showToast('✓ Registrazione modificata');
+          closeModal('editModal');
+          loadData();
+        } else {
+          showError(result.message || 'Errore nella modifica');
+        }
+      } catch (err) {
+        showError(`Errore: ${err.message}`);
+      }
+    }
+
+    async function deleteUser(userId) {
+      if (!confirm('Sei sicuro di voler eliminare questa registrazione? Non potrai annullare questa azione.')) return;
+
+      try {
+        const res = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            action: 'deleteUser',
+            id: userId
+          })
+        });
+        const result = await res.json();
+        if (result.success) {
+          showToast('✓ Registrazione eliminata');
+          loadData();
+        } else {
+          showError(result.message || 'Errore nell\'eliminazione');
         }
       } catch (err) {
         showError(`Errore: ${err.message}`);

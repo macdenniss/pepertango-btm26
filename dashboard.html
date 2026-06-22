@@ -278,8 +278,8 @@
     <h2>🏨 Camere Assegnate</h2>
     <div id="roomsContainer" class="rooms-grid"></div>
 
-    <h2>👥 In Attesa di Accettazione</h2>
-    <div id="pendingCards" class="cards-grid"></div>
+    <h2>📊 Analisi Dettagliata</h2>
+    <div id="metricsCards" class="cards-grid"></div>
 
     <h2>✅ Tutti gli Iscritti</h2>
     <table id="allTable" style="display:none;">
@@ -360,47 +360,47 @@
         `).join('');
       document.getElementById('roomsContainer').innerHTML = roomsHTML || '<p style="color:#6b7280">Nessuna camera assegnata</p>';
 
-      // Pending cards
-      const pendingData = data.filter(r => r.stato === 'In attesa');
-      const pendingCardsHTML = pendingData.map(r => {
-        const pkg = getPackageInfo(r.pacchetto);
-        return `
-          <div class="card">
+      // Metrics cards (totals by categories)
+      const metrics = [
+        // Pacchetti
+        ...Object.keys(PACKAGES).map(pkg => ({
+          title: pkg.split(' — ')[0],
+          count: data.filter(r => r.pacchetto === pkg).length,
+          emoji: PACKAGES[pkg].emoji,
+          color: '#059669'
+        })),
+        // Ruoli
+        { title: 'Leader', count: leaders, emoji: '🕺', color: '#8b5cf6' },
+        { title: 'Follower', count: data.length - leaders, emoji: '💃', color: '#f59e0b' },
+        // Tipologie stanza
+        ...['Singola', 'Doppia', 'Matrimoniale', 'Tripla'].map(tipo => ({
+          title: tipo,
+          count: data.filter(r => r.tipologia_stanza === tipo).length,
+          emoji: tipo === 'Singola' ? '🛏️' : tipo === 'Doppia' ? '🛏️🛏️' : tipo === 'Matrimoniale' ? '👫' : '👥',
+          color: '#3b82f6'
+        })),
+        // Stati
+        { title: 'Accettati', count: accepted, emoji: '✅', color: '#10b981' },
+        { title: 'In Attesa', count: pending, emoji: '⏳', color: '#ef4444' }
+      ];
+
+      const metricsHTML = metrics
+        .filter(m => m.count > 0)
+        .map(m => `
+          <div class="card" style="border-top-color: ${m.color}">
             <div class="card-header">
-              <div class="card-name">${r.nome} ${r.cognome}</div>
-              <span class="card-role ${r.ruolo === 'Follower' ? 'follower' : ''}">
-                ${r.ruolo === 'Leader' ? '🕺 Leader' : '💃 Follower'}
-              </span>
+              <div class="card-name">${m.emoji} ${m.title}</div>
             </div>
-
-            <div class="card-package">
-              ${pkg.emoji} ${r.pacchetto}
+            <div style="font-size:48px;font-weight:700;color:${m.color};text-align:center;padding:20px 0">
+              ${m.count}
             </div>
-
-            <div class="card-info">
-              <div class="card-info-item">
-                <span>📧 Email:</span>
-                <span style="text-align:right;color:#1a1a1a">${r.email || '—'}</span>
-              </div>
-              <div class="card-info-item">
-                <span>📞 Telefono:</span>
-                <span style="text-align:right;color:#1a1a1a">${r.telefono || '—'}</span>
-              </div>
-              <div class="card-info-item">
-                <span>🏠 Stanza:</span>
-                <span style="text-align:right;color:#1a1a1a">${r.tipologia_stanza || '—'}</span>
-              </div>
-            </div>
-
-            <div class="card-actions">
-              <button onclick="acceptUser('${r.id}', '${r.nome}')">✓ Accetta</button>
-              <button class="secondary" onclick="viewDetails('${r.id}')">📋 Dettagli</button>
+            <div style="text-align:center;font-size:13px;color:#6b7280">
+              ${m.count === 1 ? 'persona' : 'persone'}
             </div>
           </div>
-        `;
-      }).join('');
+        `).join('');
 
-      document.getElementById('pendingCards').innerHTML = pendingCardsHTML || '<p style="color:#6b7280;grid-column:1/-1;text-align:center;padding:40px">Nessuno in attesa ✨</p>';
+      document.getElementById('metricsCards').innerHTML = metricsHTML;
 
       // All table
       const allHTML = data.map(r => `

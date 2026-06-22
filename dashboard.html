@@ -248,40 +248,49 @@
 </head>
 <body>
   <div class="container">
+    <!-- HEADER -->
     <header>
       <h1>🎭 Brutia Tango Fest 2026</h1>
-      <p class="subtitle">Dashboard Iscritti + Gestione Camere</p>
+      <p class="subtitle">Dashboard Gestione Iscritti</p>
     </header>
-
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-label">Totale Iscritti</div>
-        <div class="stat-value" id="totalCount">—</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Leader</div>
-        <div class="stat-value" id="leaderCount">—</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Accettati</div>
-        <div class="stat-value" id="acceptedCount">—</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">In Attesa</div>
-        <div class="stat-value" id="pendingCount">—</div>
-      </div>
-    </div>
 
     <div id="error" class="error" style="display:none;"></div>
     <div id="loading" class="loading">⏳ Caricamento dati...</div>
 
-    <h2>🏨 Camere Assegnate</h2>
-    <div id="roomsContainer" class="rooms-grid"></div>
+    <!-- SEZIONE 1: KPI PRINCIPALI -->
+    <h2 style="margin-top:40px;border-top:2px solid #f0f4f8;padding-top:30px">📊 Metriche Principali</h2>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">👥 Totale Iscritti</div>
+        <div class="stat-value" id="totalCount">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">✅ Accettati</div>
+        <div class="stat-value" id="acceptedCount">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">⏳ In Attesa</div>
+        <div class="stat-value" id="pendingCount">—</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">🏨 Camere Occupate</div>
+        <div class="stat-value" id="roomCount">—</div>
+      </div>
+    </div>
 
-    <h2>📊 Analisi Dettagliata</h2>
+    <!-- SEZIONE 2: BREAKDOWN DETTAGLIATO -->
+    <h2 style="margin-top:50px">🔍 Breakdown Dettagliato</h2>
+    <p style="color:#6b7280;margin-bottom:24px;font-size:13px">Visualizza la distribuzione per pacchetti, ruoli, tipologie stanza e stati</p>
     <div id="metricsCards" class="cards-grid"></div>
 
-    <h2>✅ Tutti gli Iscritti</h2>
+    <!-- SEZIONE 3: GESTIONE CAMERE -->
+    <h2 style="margin-top:50px">🏨 Camere Assegnate</h2>
+    <p style="color:#6b7280;margin-bottom:24px;font-size:13px">Visualizza tutte le camere e gli ospiti assegnati</p>
+    <div id="roomsContainer" class="rooms-grid"></div>
+
+    <!-- SEZIONE 4: TABELLA COMPLETA -->
+    <h2 style="margin-top:50px">📋 Elenco Completo Iscritti</h2>
+    <p style="color:#6b7280;margin-bottom:24px;font-size:13px">Vista completa di tutti gli iscritti con filtri per stato, pacchetto e camera</p>
     <table id="allTable" style="display:none;">
       <thead>
         <tr>
@@ -289,6 +298,7 @@
           <th>Cognome</th>
           <th>Ruolo</th>
           <th>Pacchetto</th>
+          <th>Stanza</th>
           <th>Stato</th>
           <th>Camera</th>
         </tr>
@@ -328,11 +338,12 @@
       const leaders = data.filter(r => r.ruolo === 'Leader').length;
       const accepted = data.filter(r => r.stato === 'Accettato').length;
       const pending = data.filter(r => r.stato === 'In attesa').length;
+      const rooms = new Set(data.filter(r => r.camera).map(r => r.camera)).size;
 
       document.getElementById('totalCount').textContent = data.length;
-      document.getElementById('leaderCount').textContent = leaders;
       document.getElementById('acceptedCount').textContent = accepted;
       document.getElementById('pendingCount').textContent = pending;
+      document.getElementById('roomCount').textContent = rooms;
 
       // Rooms by number
       const rooms = {};
@@ -408,9 +419,10 @@
           <td>${r.nome}</td>
           <td>${r.cognome}</td>
           <td><span class="badge ${r.ruolo === 'Leader' ? 'leader' : 'follower'}">
-            ${r.ruolo === 'Leader' ? '🕺' : '💃'}
+            ${r.ruolo === 'Leader' ? '🕺 Leader' : '💃 Follower'}
           </span></td>
-          <td>${r.pacchetto || '—'}</td>
+          <td>${r.pacchetto ? r.pacchetto.split(' — ')[0] : '—'}</td>
+          <td>${r.tipologia_stanza || '—'}</td>
           <td><span class="badge ${r.stato === 'Accettato' ? 'accettato' : 'attesa'}">
             ${r.stato || '—'}
           </span></td>

@@ -106,3 +106,35 @@ function getNextAvailableRoom(tipologia, data) {
 
   return nextRoom;
 }
+
+function addTestData() {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = ss.getSheetByName(SHEET_NAME);
+
+  const testData = [
+    ['id1', new Date(), 'Marco', 'Rossi', 'marco@email.com', '3201234567', 'Roma', 'Leader', 'Full Pass 4 giorni — €200', '', '', 'Doppia', '', 'marco_fb', '1990-05-15', 'Test 1', 'Accettato', 201, 'Saldato'],
+    ['id2', new Date(), 'Alessia', 'Bianchi', 'alessia@email.com', '3209876543', 'Milano', 'Follower', 'Full Pass 4 giorni — €200', '', '', 'Doppia', 'Marco Rossi', 'alessia_fb', '1992-08-22', 'Test 2', 'Accettato', 201, 'Saldato'],
+    ['id3', new Date(), 'Luca', 'Verdi', 'luca@email.com', '3215551234', 'Firenze', 'Leader', 'Weekend 2 giorni — €100', '', '', 'Matrimoniale', '', 'luca_fb', '1988-03-10', 'Test 3', 'Accettato', 301, 'Saldato'],
+    ['id4', new Date(), 'Sofia', 'Neri', 'sofia@email.com', '3218889999', 'Bologna', 'Follower', 'Weekend 2 giorni — €100', '', '', 'Matrimoniale', 'Luca Verdi', 'sofia_fb', '1995-12-05', 'Test 4', 'Accettato', 301, 'Anticipo versato'],
+    ['id5', new Date(), 'Giovanni', 'Galli', 'giovanni@email.com', '3224445678', 'Torino', 'Leader', 'Full Pass 4 giorni — €200', '', '', 'Tripla', '', 'giovanni_fb', '1985-07-30', 'Test 5', 'Accettato', 401, 'Saldato'],
+    ['id6', new Date(), 'Francesca', 'Moretti', 'francesca@email.com', '3235556789', 'Napoli', 'Follower', 'Full Pass 4 giorni — €200', '', '', 'Tripla', 'Giovanni Galli', 'francesca_fb', '1993-11-18', 'Test 6', 'Accettato', 401, 'Saldato'],
+    ['id7', new Date(), 'Andrea', 'Ferretti', 'andrea@email.com', '3246667890', 'Genova', 'Leader', 'Weekend 2 giorni — €100', '', '', 'Singola', '', 'andrea_fb', '1989-02-14', 'Test 7', 'Accettato', 101, 'Non pagato'],
+    ['id8', new Date(), 'Beatrice', 'Lombardi', 'beatrice@email.com', '3257778901', 'Padova', 'Follower', 'Full Pass 4 giorni — €200', '', '', 'Tripla', 'Giovanni Galli', 'beatrice_fb', '1994-09-25', 'Test 8', 'In attesa', '', ''],
+    ['id9', new Date(), 'Matteo', 'Rizzo', 'matteo@email.com', '3268889012', 'Venezia', 'Leader', 'Full Pass 4 giorni — €200', '', '', 'Doppia', '', 'matteo_fb', '1987-04-08', 'Test 9', 'In attesa', '', ''],
+    ['id10', new Date(), 'Giulia', 'Conti', 'giulia@email.com', '3279990123', 'Bologna', 'Follower', 'Weekend 2 giorni — €100', '', '', 'Matrimoniale', '', 'giulia_fb', '1996-06-17', 'Test 10', 'In attesa', '', ''],
+  ];
+
+  for (const row of testData) {
+    sheet.appendRow(row);
+  }
+
+  return 'Aggiunti 10 test data';
+}
+
+function clearTestData() {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  const range = sheet.getRange(2, 1, sheet.getLastRow() - 1, 19);
+  range.clearContent();
+  return 'Dati cancellati';
+}

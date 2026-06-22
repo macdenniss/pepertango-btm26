@@ -4,7 +4,7 @@
 
 window.ADMIN_CONFIG = {
   // URL del Google Apps Script endpoint
-  SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbxWr75bCEn7ilkVjtVMMy9LhliaEYBEP3H02TTs0GtWMvrJYJMvfw-RjgUohvUva9Rdyg/exec',
+  SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwI0NiLJN4Flf4W9gfZaanVVvH1TUxH4LOswC8Dg2iYgN-kzP6TN6xkEDyZhJWYDGyuuA/exec',
 
   // Token di autenticazione - Genera con setupAuthToken() nello Apps Script
   // IMPORTANTE: Esegui setupAuthToken() nello Apps Script editor per generare il token

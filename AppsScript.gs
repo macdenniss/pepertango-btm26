@@ -15,6 +15,8 @@ const SAFE_FIELDS = ['id', 'nome', 'cognome', 'ruolo', 'pacchetto', 'tipologia_s
 // ============================================
 function doGet(e) {
   // Only allow getAll via GET; all mutations go to doPost
+  e = e || {};
+  e.parameter = e.parameter || {};
   const action = e.parameter.action || 'getAll';
 
   try {
@@ -30,6 +32,9 @@ function doGet(e) {
 
 function doPost(e) {
   // Validate token on EVERY mutation
+  e = e || {};
+  e.parameter = e.parameter || {};
+
   if (!validateToken(e)) {
     logError('doPost', 'Invalid or missing AUTH_TOKEN');
     return errorResponse('Unauthorized: invalid token', 401);
@@ -72,7 +77,15 @@ function validateToken(e) {
     console.warn('⚠️ SAFE_MODE: ADMIN_TOKEN not configured. Run setupAuthToken()');
     return false;
   }
-  const token = e.parameter.token || (e.postData && JSON.parse(e.postData.contents)?.token);
+  let token = e.parameter.token;
+  if (!token && e.postData && e.postData.contents) {
+    try {
+      const parsed = JSON.parse(e.postData.contents);
+      token = parsed.token;
+    } catch (err) {
+      // postData is not JSON, ignore
+    }
+  }
   return token === ADMIN_TOKEN;
 }
 

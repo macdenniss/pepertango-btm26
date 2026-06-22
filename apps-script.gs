@@ -16,9 +16,9 @@ function doGet() {
         email: data[i][4] || '',
         ruolo: data[i][7] || '',
         pacchetto: data[i][8] || '',
-        tipologia_stanza: data[i][11] || '',
-        stato: data[i][16] || '',
-        camera: data[i][17] || ''
+        tipologia_stanza: data[i][10] || '',
+        stato: data[i][15] || '',
+        camera: data[i][16] || ''
       });
     }
     return ContentService.createTextOutput(JSON.stringify(result))
@@ -65,15 +65,15 @@ function acceptUser(userId) {
         .setMimeType(ContentService.MimeType.JSON);
     }
 
-    // Update stato to Accettato
-    sheet.getRange(rowIdx + 1, 17).setValue('Accettato');
+    // Update stato to Accettato (column P = 16)
+    sheet.getRange(rowIdx + 1, 16).setValue('Accettato');
 
     // Assign room
-    const tipologia = data[rowIdx][11] || '';
+    const tipologia = data[rowIdx][10] || '';
     const nextCamera = getNextAvailableRoom(tipologia, data);
 
     if (nextCamera) {
-      sheet.getRange(rowIdx + 1, 18).setValue(nextCamera);
+      sheet.getRange(rowIdx + 1, 17).setValue(nextCamera);
     }
 
     return ContentService.createTextOutput(JSON.stringify({
@@ -95,7 +95,7 @@ function getNextAvailableRoom(tipologia, data) {
 
   const occupied = {};
   for (let i = 1; i < data.length; i++) {
-    const room = data[i][17];
+    const room = data[i][16];
     if (room) occupied[room] = (occupied[room] || 0) + 1;
   }
 

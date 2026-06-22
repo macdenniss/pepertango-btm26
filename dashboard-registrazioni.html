@@ -1060,9 +1060,10 @@
       const roomsByNumber = {};
       allData.filter(r => r.camera).forEach(r => {
         if (!roomsByNumber[r.camera]) {
-          roomsByNumber[r.camera] = { guests: [], type: r.tipologia_stanza };
+          roomsByNumber[r.camera] = { guests: [], type: r.tipologia_stanza, packages: [] };
         }
-        roomsByNumber[r.camera].guests.push({ nome: r.nome, cognome: r.cognome, ruolo: r.ruolo });
+        roomsByNumber[r.camera].guests.push({ nome: r.nome, cognome: r.cognome, ruolo: r.ruolo, pacchetto: r.pacchetto });
+        roomsByNumber[r.camera].packages.push(r.pacchetto);
       });
 
       const grid = document.getElementById('roomsGrid');
@@ -1076,22 +1077,32 @@
         const room = roomsByNumber[roomNum];
         const occupancy = (room.guests.length / 2) * 100;
         const occupancyClass = occupancy >= 75 ? 'badge-occupancy-high' : occupancy >= 50 ? 'badge-occupancy-medium' : 'badge-occupancy-low';
+        const hasPackageMismatch = new Set(room.packages).size > 1;
 
         const card = document.createElement('div');
         card.className = 'room-card';
+        card.style.borderColor = hasPackageMismatch ? 'var(--accent-warning)' : 'var(--border-subtle)';
+        card.style.backgroundColor = hasPackageMismatch ? 'rgba(245, 158, 11, 0.05)' : 'var(--bg-surface)';
+
         card.innerHTML = `
           <div class="room-header">
             <div>
               <div class="room-number">${roomNum}</div>
               <div class="room-type">${room.type}</div>
             </div>
-            <span class="badge ${occupancyClass}">${room.guests.length}/2</span>
+            <div style="display: flex; gap: 8px; flex-direction: column; align-items: flex-end;">
+              <span class="badge ${occupancyClass}">${room.guests.length}/2</span>
+              ${hasPackageMismatch ? '<span class="badge badge-occupancy-medium" style="background: rgba(245, 158, 11, 0.2); color: #92400e;">⚠️ Pacchetti misti</span>' : ''}
+            </div>
           </div>
           <div class="room-occupancy-bar">
             <div class="room-occupancy-bar-fill" style="width: ${Math.min(occupancy, 100)}%;"></div>
           </div>
           <div class="room-guests">
-            ${room.guests.map(g => `<div class="guest-item"><div class="guest-name">${g.nome} ${g.cognome}</div><div class="guest-role">${g.ruolo === 'Leader' ? '🕺' : '💃'}</div></div>`).join('')}
+            ${room.guests.map(g => {
+              const pkg = PACKAGES[g.pacchetto];
+              return `<div class="guest-item"><div class="guest-name">${g.nome} ${g.cognome}</div><div class="guest-role">${g.ruolo === 'Leader' ? '🕺' : '💃'} ${g.ruolo} • ${pkg?.emoji} ${g.pacchetto?.split(' - ')[0]}</div></div>`;
+            }).join('')}
           </div>
         `;
         grid.appendChild(card);
@@ -1185,6 +1196,14 @@
         return;
       }
 
+      const currentUser = allData.find(u => u.id === currentUser.id);
+      const roommatesWithDifferentPackage = checkPackageCompatibility(roomNumber, currentUser.pacchetto);
+
+      if (roommatesWithDifferentPackage.length > 0) {
+        const warning = `⚠️ ATTENZIONE! Nella camera ${roomNumber} ci sono già ospiti con pacchetti diversi:\n\n${roommatesWithDifferentPackage.map(r => `${r.nome} ${r.cognome} - ${r.pacchetto}`).join('\n')}\n\nVuoi comunque assegnare questa camera?`;
+        if (!confirm(warning)) return;
+      }
+
       try {
         const res = await fetch(SCRIPT_URL, {
           method: 'POST',
@@ -1207,6 +1226,14 @@
       } catch (err) {
         showError(`Errore: ${err.message}`);
       }
+    }
+
+    function checkPackageCompatibility(roomNumber, userPackage) {
+      return allData.filter(r =>
+        r.camera === roomNumber &&
+        r.pacchetto !== userPackage &&
+        r.stato === 'Accettato'
+      );
     }
 
     async function saveRoomChange() {

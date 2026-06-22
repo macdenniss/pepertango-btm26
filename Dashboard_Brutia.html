@@ -56,7 +56,7 @@
           if (!rooms[r.camera]) {
             rooms[r.camera] = {numero: r.camera, tipo: r.tipologia_stanza || '—', ospiti: [], stato: r.stato};
           }
-          rooms[r.camera].ospiti.push({nome: r.nome, ruolo: r.ruolo});
+          rooms[r.camera].ospiti.push({nome: r.nome, pacchetto: r.pacchetto});
         }
       });
 
@@ -79,8 +79,7 @@
 
           html += `<div class="room-card" style="cursor:pointer;"><div class="room-header"><div class="room-number">${r.numero}</div><div class="room-type">${tipo}</div></div><div class="room-occupancy"><div class="occupancy-indicator ${isFull ? 'full' : ''}"></div>${occupancy}/${maxCapacity}</div><div class="room-guests">`;
           r.ospiti.forEach(g => {
-            var guestData = allData.find(x => x.nome === g.nome);
-            html += `<div class="guest-item"><div><div class="guest-name">${g.nome}</div><div class="guest-role">${guestData ? guestData.pacchetto : '—'}</div></div></div>`;
+            html += `<div class="guest-item"><div><div class="guest-name">${g.nome}</div><div class="guest-role">${g.pacchetto || '—'}</div></div></div>`;
           });
           html += `</div><div class="room-status"><div class="status-badge ${statusClass}">${statusBadge}</div></div><button onclick="openEditRoomModal('${r.numero}')" style="width:100%;margin-top:10px;background:#BD081C;color:white;border:none;padding:8px;border-radius:6px;cursor:pointer;font-weight:600;font-size:0.9rem">✏️ Modifica</button></div>`;
         });

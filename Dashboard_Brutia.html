@@ -122,7 +122,7 @@
 
     function acceptRegistration(id, nome) {
       if (!confirm(`Accettare ${nome}? Camera assegnata automaticamente.`)) return;
-      fetch(`${APPS_SCRIPT_URL}?action=aggiornaStato&id=${encodeURIComponent(id)}&stato=Accettato`)
+      fetch(`${APPS_SCRIPT_URL}?action=aggiornaStato&id=${encodeURIComponent(id)}&stato=Accettato`, {method: 'POST'})
         .then(r => r.json())
         .then(data => {
           console.log('Risposta:', data);

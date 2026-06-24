@@ -150,6 +150,7 @@ body{font-family:'Inter',sans-serif;background:#f5f7fa;color:#2C2C2C;}
     </div>
     <div class="header-buttons">
       <button class="btn btn-primary" onclick="aggiorna()"><i class="fa-solid fa-rotate"></i> Aggiorna</button>
+      <button class="btn btn-secondary" onclick="azzera()"><i class="fa-solid fa-trash"></i> Azzera</button>
       <button class="btn btn-secondary" onclick="esportaCSV()"><i class="fa-solid fa-download"></i> CSV</button>
       <button class="btn btn-secondary" onclick="esportaPerHotel()"><i class="fa-solid fa-hotel"></i> Per Hotel</button>
       <button class="btn btn-secondary" onclick="sincronizzaSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> Sync Sheet</button>
@@ -494,17 +495,15 @@ function aggiorna() {
   renderStatistiche();
 }
 
-function ricaricaDemo() {
+function azzera() {
+  if (!confirm('⚠️ Sei sicuro? Cancellerai tutti i dati locali e ricaricherai dal server.')) {
+    return;
+  }
   localStorage.removeItem('brutiaIscritti');
   sessionStorage.removeItem('brutiaIscritti');
-  loadDemoData();
-  salvaLocalmente();
-  renderDashboard();
-  renderIscritti();
-  renderCamere();
-  renderStatistiche();
-  console.log('✨ Demo data ricaricati!');
-  alert('✅ Demo data ricaricati');
+  allData = [];
+  caricaDati(true);
+  console.log('🗑️ Dati azzerati e ricaricati dal server');
 }
 
 function loadDemoData() {

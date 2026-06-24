@@ -70,6 +70,7 @@
       height: 62px;
       width: auto;
       display: block;
+      filter: brightness(0) invert(1);
     }
     .nav-links {
       display: flex; gap: 0; list-style: none; height: 100%;
@@ -1483,10 +1484,9 @@
     <a href="#" onclick="showPage('home');return false;" class="nav-brand"><img src="logo_pepertango.png" alt="PeperTango"></a>
     <ul class="nav-links">
       <li><a href="#" onclick="showPage('home');return false;" data-page="home">Home</a></li>
-      <li><a href="#" onclick="showPage('mtp27');return false;" data-page="mtp27">Maratona Tango Piccante</a></li>
-      <li><a href="#" onclick="showPage('brutia');return false;" data-page="brutia">Brutia Tango Fest</a></li>
       <li><a href="#" onclick="showPage('contatti');return false;" data-page="contatti">Contatti</a></li>
       <li><a href="#" onclick="showPage('shop');return false;" data-page="shop">Shop</a></li>
+      <li><a href="dashboard-iscritti.html">Area Iscritti</a></li>
       <li><a href="#" onclick="showPage('privacy');return false;" data-page="privacy">Privacy</a></li>
     </ul>
     <button class="nav-hamburger" id="navHamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -1495,10 +1495,9 @@
   </nav>
   <div class="nav-drawer" id="navDrawer">
     <a href="#" onclick="showPage('home');toggleMenu();return false;">Home</a>
-    <a href="#" onclick="showPage('mtp27');toggleMenu();return false;">Maratona Tango Piccante</a>
-    <a href="#" onclick="showPage('brutia');toggleMenu();return false;">Brutia Tango Fest</a>
     <a href="#" onclick="showPage('contatti');toggleMenu();return false;">Contatti</a>
     <a href="#" onclick="showPage('shop');toggleMenu();return false;">Shop</a>
+    <a href="dashboard-iscritti.html">Area Iscritti</a>
   </div>
 
   <!-- PAGE: HOME -->
@@ -1814,6 +1813,7 @@
         <p class="ev-head-body">
           Un evento tango esclusivo con lezioni, milonghe e momenti di condivisione in una cornice suggestiva. Dettagli in arrivo.
         </p>
+        <button style="display:inline-block;margin-top:2rem;padding:24px 60px;background:#7b2ff7;color:#fff;border:none;border-radius:12px;font-family:'Kalam',cursive;font-size:1.4rem;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:4px 4px 0px 0px #2d2d2d;text-transform:uppercase;letter-spacing:2px" onclick="document.getElementById('bru-form').scrollIntoView({behavior:'smooth'})" onmouseover="this.style.transform='translate(-3px,-3px)';this.style.boxShadow='8px 8px 0px 0px #2d2d2d'" onmouseout="this.style.transform='translate(0,0)';this.style.boxShadow='4px 4px 0px 0px #2d2d2d'">Iscriviti ora</button>
       </div>
     </div>
 
@@ -1955,7 +1955,7 @@
             </div>
             <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px;grid-column:1/-1">
               <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem">Email *</label>
-              <input type="email" class="fi-ed" id="b_email" placeholder="andrea@email.com" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
+              <input type="email" class="fi-ed" id="b_email" name="email" placeholder="andrea@email.com" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
             </div>
             <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px">
               <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Data di nascita </b><b>/ </b><i>Date of birth</i> *</label>
@@ -2122,9 +2122,8 @@
             <span style="color:#2d0060">Autorizzo la pubblicazione di foto e video dell'evento in cui potrei comparire (facoltativo)</span>
           </label>
 
-          <div class="form-nav-ed" style="gap:16px;justify-content:space-between">
-            <button class="btn-prev-ed" onclick="bru.prev()" style="padding:16px 40px;background:#fff;border:2px solid #7b2ff7;color:#7b2ff7;border-radius:12px;cursor:pointer;font-weight:600">&larr; Indietro</button>
-            <button class="btn-next-ed" style="padding:32px 80px;font-size:22px;background:#7b2ff7;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:600" onclick="bru.next()">Invia &rarr;</button>
+          <div class="form-nav-ed" style="gap:16px;justify-content:center">
+            <button class="btn-next-ed" style="padding:48px 120px;font-size:28px;background:#7b2ff7;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:700;transition:all 0.2s;box-shadow:4px 4px 0px 0px #2d2d2d" onclick="bru.next()" onmouseover="this.style.transform='translate(-3px,-3px)';this.style.boxShadow='8px 8px 0px 0px #2d2d2d'" onmouseout="this.style.transform='translate(0,0)';this.style.boxShadow='4px 4px 0px 0px #2d2d2d'">Invia Iscrizione &rarr;</button>
           </div>
         </div>
 
@@ -2513,7 +2512,7 @@
     }
 
     /* ---- Config ---- */
-    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw6pqs5rvySS2_il_VAJLU07ucnIFdZ86RT6OWlhxVzDvb04REbJTt3ZXaziRvmDmTR/exec';
+    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_B2wSvnovFOBT2PbTk0x_VCNl_uVm4BapTRGfxxqPEj4YFCwHJe_Iyq4K2AOra2ykDw/exec';
 
     var PACCHETTI = {
       'Cala Jannita':     { prezzo:300, anticipo:150, saldo:150, notti:4 },
@@ -2522,9 +2521,10 @@
       'Porto di Maratea': { prezzo:150, anticipo:150, saldo:0,   notti:2 }
     };
     var PACCHETTI_BRU = {
-      'Pacchetto A': { prezzo:0, anticipo:0, saldo:0, notti:3 },
-      'Pacchetto B': { prezzo:0, anticipo:0, saldo:0, notti:2 },
-      'Pacchetto C': { prezzo:0, anticipo:0, saldo:0, notti:1 }
+      '2 NOTTI/two nights':   { prezzo:180, anticipo:90, saldo:90, notti:2 },
+      '3 NOTTI/three nights': { prezzo:220, anticipo:110, saldo:110, notti:3 },
+      '4 NOTTI/four nights':  { prezzo:260, anticipo:130, saldo:130, notti:4 },
+      'MILONGHE':             { prezzo:100, anticipo:50, saldo:50, notti:0 }
     };
 
     /* ---- Helpers ---- */
@@ -2758,33 +2758,7 @@
       };
 
       self.send = function() {
-        // Verificha email prima di inviare
-        var email = (self.data.email || '').trim();
-        if (!email) {
-          self.showError('Email è obbligatoria.');
-          return;
-        }
-
-        g('sending').classList.add('active');
-
-        // Chiama API per verificare se email esiste già
-        var verificaUrl = APPS_SCRIPT_URL + '?action=verificaEmail&evento=' + encodeURIComponent(ev) + '&email=' + encodeURIComponent(email);
-        fetch(verificaUrl)
-          .then(function(r) { return r.json(); })
-          .then(function(d) {
-            g('sending').classList.remove('active');
-            if (d.exists === true) {
-              self.showError('⚠️ Questa email è già registrata. Puoi usarne un\'altra o contattaci per modificare i tuoi dati.');
-              return;
-            }
-            // Email non esiste, procedi con invio
-            self._submitForm();
-          })
-          .catch(function(e) {
-            g('sending').classList.remove('active');
-            // Se la verifica fallisce, procedi comunque (il server farà il controllo finale)
-            self._submitForm();
-          });
+        self._submitForm();
       };
 
       self._submitForm = function() {
@@ -2793,57 +2767,33 @@
           if (fs) fs.classList.remove('active');
         }
         g('sending').classList.add('active');
-        var iname = 'iframe_' + p + '_' + Date.now();
-        var iframe = document.createElement('iframe');
-        iframe.name = iname; iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-        var form = document.createElement('form');
-        form.method = 'POST'; form.action = APPS_SCRIPT_URL;
-        form.target = iname; form.style.display = 'none';
-        var campi = {
-          action:           'nuova_iscrizione',
-          evento:           ev,
-          nome:             self.data.nome_completo      || '',
-          cognome:          self.data.cognome            || '',
-          email:            self.data.email              || '',
-          tel:              self.data.tel                || '',
-          citta:            self.data.citta              || '',
-          ruolo:            self.data.ruolo              || '',
-          pacchetto:        self.data.pacchetto          || '',
-          compagno_ballo:   self.data.compagno_ballo     || '',
-          tipologia_stanza: self.data.tipologia_stanza   || '',
-          compagni_stanza:  (self.data.compagni_stanza || []).join(','),
-          note:             self.data.note               || '',
-          skipEmail:        'false'
-        };
-        Object.keys(campi).forEach(function(k) {
-          var inp = document.createElement('input');
-          inp.type = 'hidden'; inp.name = k; inp.value = campi[k];
-          form.appendChild(inp);
-        });
-        document.body.appendChild(form);
-        var done = false;
-        function cleanup() {
-          setTimeout(function() {
-            if (document.body.contains(form))   document.body.removeChild(form);
-            if (document.body.contains(iframe)) document.body.removeChild(iframe);
-          }, 1000);
-          window.removeEventListener('message', msgHandler);
-        }
-        function msgHandler(e) {
-          if (done) return;
-          var d = e.data;
-          if (!d || typeof d !== 'object' || !('ok' in d)) return;
-          done = true; cleanup();
-          g('sending').classList.remove('active');
-          if (d.ok === false) { self.showError(d.error || 'Si è verificato un errore.'); }
-          else { self.ok(); }
-        }
-        window.addEventListener('message', msgHandler);
-        setTimeout(function() {
-          if (!done) { done = true; cleanup(); self.ok(); }
-        }, 10000);
-        form.submit();
+
+        var formData = new FormData();
+        formData.append('action', 'nuova_iscrizione');
+        formData.append('evento', ev);
+        formData.append('nome', self.data.nome || '');
+        formData.append('cognome', self.data.cognome || '');
+        formData.append('email', self.data.email || '');
+        formData.append('tel', self.data.tel || '');
+        formData.append('citta', self.data.citta || '');
+        formData.append('ruolo', self.data.ruolo || '');
+        formData.append('pacchetto', self.data.pacchetto || '');
+        formData.append('compagno_ballo', self.data.compagno_ballo || '');
+        formData.append('tipologia_stanza', self.data.tipologia_stanza || '');
+        formData.append('compagni_stanza', (self.data.compagni_stanza || []).join(', '));
+        formData.append('note', self.data.note || '');
+
+        fetch(APPS_SCRIPT_URL, { method: 'POST', body: formData })
+          .then(function(res) { return res.json(); })
+          .then(function(data) {
+            g('sending').classList.remove('active');
+            if (data.ok) { self.ok(); }
+            else { self.showError(data.error || 'Errore nell\'invio.'); }
+          })
+          .catch(function(err) {
+            g('sending').classList.remove('active');
+            self.ok();
+          });
       };
 
       self.ok = function() {
@@ -2922,14 +2872,19 @@
 
     /* ---- Virtual pages ---- */
     function showPage(name) {
+      var activeName = name;
+      if (name === 'home') {
+        activeName = 'brutia';
+      }
       document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-      var target = document.getElementById('page-' + name);
+      var target = document.getElementById('page-' + activeName);
       if (target) { target.classList.add('active'); }
       window.scrollTo(0, 0);
       /* highlight active nav link */
       document.querySelectorAll('.nav-links a[data-page]').forEach(function(a) {
-        a.style.background = a.dataset.page === name ? 'var(--accent)' : '';
-        a.style.color = a.dataset.page === name ? '#fff' : '';
+        var isMatch = a.dataset.page === name || (name === 'home' && a.dataset.page === 'brutia') || (name === 'brutia' && a.dataset.page === 'home');
+        a.style.background = isMatch ? 'var(--accent)' : '';
+        a.style.color = isMatch ? '#fff' : '';
       });
     }
     /* init: active nav highlight for home */

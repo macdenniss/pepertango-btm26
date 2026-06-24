@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brutia Tango Fest — Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#f5f7fa;color:#2C2C2C;}
+
+:root{
+  --accent:#1A3A6B;
+  --accent-mid:#2556A0;
+  --accent-light:#EEF2F7;
+  --accent-border:#BFD0EC;
+}
+
+.header{
+  background:#fff;border-bottom:2px solid var(--accent-border);
+  padding:1.5rem 2rem;box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.header-top{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;
+}
+
+.header-title{display:flex;align-items:center;gap:1rem;}
+.header-title img{height:40px;filter:brightness(0) invert(1);}
+.header-title h1{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--accent);}
+
+.header-buttons{display:flex;gap:0.5rem;}
+.btn{
+  padding:10px 20px;border-radius:6px;border:none;font-weight:600;
+  cursor:pointer;transition:all 0.2s;font-size:0.85rem;text-transform:uppercase;
+}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:var(--accent-mid);transform:translateY(-2px);}
+.btn-secondary{background:var(--accent-light);color:var(--accent);border:2px solid var(--accent);}
+.btn-secondary:hover{background:var(--accent-border);}
+
+.tabs{
+  display:flex;gap:0;border-bottom:2px solid var(--accent-border);
+}
+.tab{
+  padding:12px 24px;background:transparent;border:none;cursor:pointer;
+  color:var(--accent);font-weight:600;transition:all 0.2s;position:relative;
+}
+.tab:hover{background:var(--accent-light);}
+.tab.active{
+  color:var(--accent);
+}
+.tab.active::after{
+  content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:var(--accent);
+}
+
+.container{padding:2rem;max-width:1400px;margin:0 auto;}
+
+.content{display:none;}
+.content.active{display:block;}
+
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-bottom:2rem;}
+.stat-card{
+  background:#fff;border:2px solid var(--accent-border);border-radius:10px;
+  padding:1.5rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.stat-card h2{font-size:0.85rem;color:#7a7a7a;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;}
+.stat-card .value{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--accent);}
+
+.table-container{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.table-header{
+  background:var(--accent-light);padding:1rem;display:flex;gap:1rem;
+  border-bottom:2px solid var(--accent-border);font-weight:600;color:var(--accent);
+}
+.table-row{
+  padding:1rem;border-bottom:1px solid var(--accent-light);display:flex;gap:1rem;
+  transition:background 0.2s;
+}
+.table-row:hover{background:var(--accent-light);}
+.table-col{flex:1;}
+.table-col.small{flex:0.8;}
+
+.badge{
+  display:inline-block;padding:4px 12px;border-radius:20px;font-size:0.75rem;
+  font-weight:700;text-transform:uppercase;
+}
+.badge-success{background:#d4edda;color:#155724;}
+.badge-warning{background:#fff3cd;color:#856404;}
+
+.filters{display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.filter-input,.filter-select{
+  padding:10px 12px;border:2px solid var(--accent-border);border-radius:6px;
+  font-family:'Inter',sans-serif;font-size:0.9rem;
+}
+
+.camera-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.5rem;}
+.camera-card{
+  background:#fff;border:2px solid var(--accent-border);border-radius:10px;
+  padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.camera-card h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--accent);margin-bottom:1rem;}
+.persona{padding:0.8rem;background:var(--accent-light);border-radius:6px;margin-bottom:0.5rem;font-size:0.9rem;}
+
+.empty{padding:2rem;text-align:center;color:#aaa;}
+
+.row-actions{display:flex;gap:0.5rem;}
+.action-btn{
+  padding:4px 12px;border:none;border-radius:4px;cursor:pointer;font-size:0.75rem;
+  font-weight:600;transition:all 0.2s;
+}
+.action-accept{background:#d4edda;color:#155724;}
+.action-accept:hover{background:#28a745;color:#fff;}
+.action-reject{background:#f8d7da;color:#721c24;}
+.action-reject:hover{background:#dc3545;color:#fff;}
+.action-edit{background:#e7f3ff;color:#004085;}
+.action-edit:hover{background:#0056b3;color:#fff;}
+
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;}
+.modal.active{display:flex;}
+.modal-content{background:#fff;border-radius:10px;padding:2rem;max-width:500px;width:90%;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
+.modal-header h2{font-family:'Playfair Display',serif;color:var(--accent);}
+.close-btn{background:none;border:none;font-size:1.5rem;cursor:pointer;color:#aaa;}
+.close-btn:hover{color:var(--accent);}
+.form-group{margin-bottom:1rem;}
+.form-group label{display:block;font-weight:600;margin-bottom:0.5rem;color:var(--accent);}
+.form-group input,.form-group select{
+  width:100%;padding:10px;border:2px solid var(--accent-border);
+  border-radius:6px;font-family:'Inter',sans-serif;font-size:0.9rem;
+}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--accent);}
+.modal-actions{display:flex;gap:1rem;justify-content:flex-end;margin-top:2rem;}
+
+@media(max-width:900px){
+  .tabs{overflow-x:auto;}
+  .tab{padding:10px 16px;font-size:0.85rem;}
+  .row-actions{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="header-title">
+      <img src="https://static.wixstatic.com/media/1b1050_6c383ee430aa46b2a2a0b732569d60c7~mv2.png" alt="Logo">
+      <h1>Brutia Tango Fest 2026</h1>
+    </div>
+    <div class="header-buttons">
+      <button class="btn btn-primary" onclick="aggiorna()"><i class="fa-solid fa-rotate"></i> Aggiorna</button>
+      <button class="btn btn-secondary" onclick="esportaCSV()"><i class="fa-solid fa-download"></i> CSV</button>
+      <button class="btn btn-secondary" onclick="esportaPerHotel()"><i class="fa-solid fa-hotel"></i> Per Hotel</button>
+      <button class="btn btn-secondary" onclick="sincronizzaSheet()"><i class="fa-solid fa-cloud-arrow-up"></i> Sync Sheet</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('dashboard')">📊 Dashboard</button>
+    <button class="tab" onclick="showTab('iscritti')">👥 Iscritti</button>
+    <button class="tab" onclick="showTab('camere')">🛏️ Camere</button>
+    <button class="tab" onclick="showTab('statistiche')">📈 Statistiche</button>
+  </div>
+</div>
+
+<div class="container">
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="content active">
+    <div class="stat-grid">
+      <div class="stat-card">
+        <h2>Iscritti</h2>
+        <div class="value" id="total-iscritti">0</div>
+      </div>
+      <div class="stat-card">
+        <h2>Accettati</h2>
+        <div class="value" id="total-accettati">0</div>
+      </div>
+      <div class="stat-card">
+        <h2>In Attesa</h2>
+        <div class="value" id="total-attesa">0</div>
+      </div>
+      <div class="stat-card">
+        <h2>Incasso</h2>
+        <div class="value" id="total-incasso">€0</div>
+      </div>
+    </div>
+    <h2 style="margin-bottom:1rem;">Ultimi Iscritti</h2>
+    <div class="table-container">
+      <div id="dashboard-table"></div>
+    </div>
+  </div>
+
+  <!-- ISCRITTI -->
+  <div id="iscritti" class="content">
+    <h2 style="margin-bottom:1rem;">Gestione Iscritti</h2>
+    <div class="filters">
+      <input type="text" class="filter-input" placeholder="🔍 Cerca nome, email..." id="search-input" oninput="filterIscritti()">
+      <select class="filter-select" id="stato-filter" onchange="filterIscritti()">
+        <option value="">Tutti gli stati</option>
+        <option value="Accettato">Accettati</option>
+        <option value="In attesa">In attesa</option>
+      </select>
+    </div>
+    <div class="table-container">
+      <div id="iscritti-table"></div>
+    </div>
+  </div>
+
+  <!-- CAMERE -->
+  <div id="camere" class="content">
+    <h2 style="margin-bottom:1rem;">Assegnazione Camere</h2>
+    <div class="camera-grid" id="camera-grid"></div>
+  </div>
+
+  <!-- STATISTICHE -->
+  <div id="statistiche" class="content">
+    <h2 style="margin-bottom:1rem;">Statistiche Evento</h2>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <h2>Leader</h2>
+        <div class="value" id="stat-leader">0</div>
+      </div>
+      <div class="stat-card">
+        <h2>Follower</h2>
+        <div class="value" id="stat-follower">0</div>
+      </div>
+      <div class="stat-card">
+        <h2>Pagati</h2>
+        <div class="value" id="stat-pagati">0</div>
+      </div>
+      <div class="stat-card">
+        <h2>Non Pagati</h2>
+        <div class="value" id="stat-non-pagati">0</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL MODIFICA CAMERA -->
+<div id="cameraMd" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Modifica Camera <span id="mdl-camera-num"></span></h2>
+      <button class="close-btn" onclick="closeCameraModal()">&times;</button>
+    </div>
+    <div id="mdl-camera-content"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeCameraModal()">Annulla</button>
+      <button class="btn btn-primary" onclick="salvaCameraModifiche()">Salva</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDIT ISCRITTO -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Modifica Iscritto</h2>
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+    </div>
+    <form onsubmit="salvaIscritto(event)">
+      <div class="form-group">
+        <label>Nome Cognome</label>
+        <input type="text" id="edit-nome" readonly>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="edit-email" readonly>
+      </div>
+      <div class="form-group">
+        <label>Stato</label>
+        <select id="edit-stato">
+          <option value="In attesa">In attesa</option>
+          <option value="Accettato">Accettato</option>
+          <option value="Rifiutato">Rifiutato</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tipo Camera</label>
+        <select id="edit-camera">
+          <option value="">Nessuna</option>
+          <option value="Singola">Singola</option>
+          <option value="Doppia">Doppia</option>
+          <option value="Matrimoniale">Matrimoniale</option>
+          <option value="Tripla">Tripla</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Numero Camera Hotel</label>
+        <input type="text" id="edit-numero-camera" placeholder="es: 101, 202, 305">
+      </div>
+      <div class="form-group">
+        <label>Pagamento</label>
+        <select id="edit-pagamento">
+          <option value="Non pagato">Non pagato</option>
+          <option value="Anticipo versato">Anticipo versato</option>
+          <option value="Saldato">Saldato</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeModal()">Annulla</button>
+        <button type="submit" class="btn btn-primary">Salva</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbz_B2wSvnovFOBT2PbTk0x_VCNl_uVm4BapTRGfxxqPEj4YFCwHJe_Iyq4K2AOra2ykDw/exec';
+const PKG_INFO = {
+  '2 notti': { prezzo:200, anticipo:100 },
+  '3 notti': { prezzo:220, anticipo:110 },
+  '4 notti': { prezzo:260, anticipo:130 }
+};
+
+let allData = [];
+let currentEditIndex = null;
+
+function openModal(index) {
+  const r = allData[index];
+  currentEditIndex = index;
+  document.getElementById('edit-nome').value = r.nome + ' ' + r.cognome;
+  document.getElementById('edit-email').value = r.email;
+  document.getElementById('edit-stato').value = r.stato;
+  document.getElementById('edit-camera').value = r.tipologia_stanza || '';
+  document.getElementById('edit-numero-camera').value = r.numero_camera_hotel || '';
+  document.getElementById('edit-pagamento').value = r.pagamento;
+  document.getElementById('editModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('editModal').classList.remove('active');
+  currentEditIndex = null;
+}
+
+function salvaIscritto(e) {
+  e.preventDefault();
+  const stato = document.getElementById('edit-stato').value;
+  const camera = document.getElementById('edit-camera').value;
+  const numeroCameraHotel = document.getElementById('edit-numero-camera').value;
+  const pagamento = document.getElementById('edit-pagamento').value;
+
+  allData[currentEditIndex].stato = stato;
+  allData[currentEditIndex].pagamento = pagamento;
+
+  if (stato === 'Accettato' && camera && numeroCameraHotel) {
+    const numCamera = getNextCameraNumber(camera);
+    allData[currentEditIndex].tipologia_stanza = camera;
+    allData[currentEditIndex].numero_camera = numCamera;
+    allData[currentEditIndex].numero_camera_hotel = numeroCameraHotel;
+
+    inviaMailAccettazione(allData[currentEditIndex]);
+  } else {
+    allData[currentEditIndex].tipologia_stanza = '';
+    allData[currentEditIndex].numero_camera = null;
+    allData[currentEditIndex].numero_camera_hotel = '';
+  }
+
+  closeModal();
+  renderIscritti();
+  renderDashboard();
+  renderCamere();
+  renderStatistiche();
+  salvaLocalmente();
+}
+
+function inviaMailAccettazione(iscritto) {
+  const msg = `Caro ${iscritto.nome},\n\nCongratulazioni! La tua registrazione a Brutia Tango Fest è stata accettata.\n\nDettagli:\n- Camera: ${iscritto.tipologia_stanza} ${iscritto.numero_camera_hotel}\n- Pacchetto: ${iscritto.pacchetto}\n- Data evento: 27-29 Novembre 2026\n\nTi aspettiamo!\n\nBrutia Tango Fest`;
+
+  console.log('📧 Mail di accettazione:', msg);
+  console.log('📧 A:', iscritto.email);
+}
+
+function sincronizzaSheet() {
+  if (!allData.length) {
+    alert('Nessun iscritto da sincronizzare');
+    return;
+  }
+
+  const msg = `📤 Sincronizzando ${allData.length} iscritti...`;
+  console.log(msg);
+
+  let sincronizzati = 0;
+  allData.forEach(iscritto => {
+    const formData = new FormData();
+    formData.append('action', 'nuova_iscrizione');
+    formData.append('data', new Date().toLocaleString('it-IT'));
+    formData.append('nome', iscritto.nome);
+    formData.append('cognome', iscritto.cognome);
+    formData.append('email', iscritto.email);
+    formData.append('tel', iscritto.tel || '');
+    formData.append('citta', iscritto.citta || '');
+    formData.append('ruolo', iscritto.ruolo || '');
+    formData.append('pacchetto', iscritto.pacchetto || '');
+    formData.append('compagno_ballo', iscritto.compagno_ballo || '');
+    formData.append('tipologia_stanza', iscritto.tipologia_stanza || '');
+    formData.append('numero_camera_hotel', iscritto.numero_camera_hotel || '');
+    formData.append('compagni_stanza', iscritto.compagni_stanza || '');
+    formData.append('note', iscritto.note || '');
+    formData.append('evento', iscritto.evento || 'Brutia Tango Fest');
+    formData.append('stato', iscritto.stato || 'In attesa');
+    formData.append('pagamento', iscritto.pagamento || 'Non pagato');
+
+    fetch(API, { method: 'POST', body: formData })
+      .then(() => sincronizzati++)
+      .catch(err => console.error('Errore sync:', err));
+  });
+
+  setTimeout(() => {
+    renderDashboard();
+    renderIscritti();
+    renderCamere();
+    renderStatistiche();
+    alert(`✅ ${allData.length} iscritti sincronizzati con Google Sheet!`);
+  }, 1000);
+}
+
+function getNextCameraNumber(tipoCamera) {
+  const usedNumbers = allData
+    .filter(r => r.tipologia_stanza === tipoCamera && r.numero_camera)
+    .map(r => r.numero_camera);
+  const maxNum = usedNumbers.length > 0 ? Math.max(...usedNumbers) : 0;
+  return maxNum + 1;
+}
+
+function showTab(tabId) {
+  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function caricaDati(forceServer = false) {
+  // Sempre tentare il fetch dal server per primo
+  fetch(API + '?action=get_iscritti')
+    .then(r => r.json())
+    .then(res => {
+      if (res.ok && res.data && res.data.length > 0) {
+        allData = res.data;
+        salvaLocalmente(); // Salva i dati dal server localmente
+        console.log('📥 Dati caricati da Google Sheet:', allData.length);
+      } else {
+        // Se server non ritorna dati, usa localStorage o dati test
+        let saved = localStorage.getItem('brutiaIscritti') || sessionStorage.getItem('brutiaIscritti');
+        if (saved) {
+          allData = JSON.parse(saved);
+          console.log('📦 Dati caricati da localStorage');
+        } else {
+          loadDemoData();
+          console.log('🧪 Dati di test caricati');
+        }
+      }
+      renderDashboard();
+      renderIscritti();
+      renderCamere();
+      renderStatistiche();
+    })
+    .catch(err => {
+      // Se fetch fallisce, usa localStorage come fallback
+      console.warn('⚠️ Errore fetch Google Sheet:', err);
+      let saved = localStorage.getItem('brutiaIscritti') || sessionStorage.getItem('brutiaIscritti');
+      if (saved) {
+        allData = JSON.parse(saved);
+        console.log('📦 Fallback: dati caricati da localStorage');
+      } else {
+        loadDemoData();
+        console.log('🧪 Fallback: dati di test caricati');
+      }
+      renderDashboard();
+      renderIscritti();
+      renderCamere();
+      renderStatistiche();
+    });
+}
+
+function salvaLocalmente() {
+  try {
+    localStorage.setItem('brutiaIscritti', JSON.stringify(allData));
+  } catch (e) {
+    try {
+      sessionStorage.setItem('brutiaIscritti', JSON.stringify(allData));
+      console.log('💾 Dati salvati in sessionStorage (localStorage non disponibile)');
+    } catch (e2) {
+      console.error('⚠️ Nessun storage disponibile');
+    }
+  }
+}
+
+function aggiorna() {
+  renderDashboard();
+  renderIscritti();
+  renderCamere();
+  renderStatistiche();
+}
+
+function ricaricaDemo() {
+  localStorage.removeItem('brutiaIscritti');
+  sessionStorage.removeItem('brutiaIscritti');
+  loadDemoData();
+  salvaLocalmente();
+  renderDashboard();
+  renderIscritti();
+  renderCamere();
+  renderStatistiche();
+  console.log('✨ Demo data ricaricati!');
+  alert('✅ Demo data ricaricati');
+}
+
+function loadDemoData() {
+  allData = [
+    // SINGOLE - ACCETTATI
+    {data:'25/06/2026 08:00',nome:'Valentina',cognome:'Neri',data_nascita:'08/03/1998',email:'valentina.neri@test.it',tel:'334345678',citta:'Venezia',ruolo:'Follower',pacchetto:'2 notti',compagno_ballo:'',tipologia_stanza:'Singola',numero_camera:1,numero_camera_hotel:'1',compagni_stanza:'',note:'Solo',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Saldato'},
+    {data:'25/06/2026 08:30',nome:'Francesca',cognome:'Marini',data_nascita:'12/05/1996',email:'francesca.marini@test.it',tel:'334345679',citta:'Firenze',ruolo:'Follower',pacchetto:'3 notti',compagno_ballo:'',tipologia_stanza:'Singola',numero_camera:2,numero_camera_hotel:'2',compagni_stanza:'',note:'',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Anticipo versato'},
+
+    // DOPPIE - ACCETTATI - PAGATO
+    {data:'25/06/2026 10:30',nome:'Marco',cognome:'Rossi',data_nascita:'15/03/1990',email:'marco.rossi@test.it',tel:'333123456',citta:'Milano',ruolo:'Leader',pacchetto:'3 notti',compagno_ballo:'Laura Bianchi',tipologia_stanza:'Doppia',numero_camera:1,numero_camera_hotel:'101',compagni_stanza:'Laura',note:'Prima volta',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Saldato'},
+    {data:'25/06/2026 11:15',nome:'Laura',cognome:'Bianchi',data_nascita:'22/07/1992',email:'laura.bianchi@test.it',tel:'333234567',citta:'Roma',ruolo:'Follower',pacchetto:'3 notti',compagno_ballo:'Marco Rossi',tipologia_stanza:'Doppia',numero_camera:1,numero_camera_hotel:'101',compagni_stanza:'Marco',note:'',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Saldato'},
+
+    // DOPPIA - IN ATTESA
+    {data:'23/06/2026 09:00',nome:'Alessandro',cognome:'Ferrari',data_nascita:'05/12/1985',email:'alex.ferrari@test.it',tel:'333567890',citta:'Bologna',ruolo:'Leader',pacchetto:'2 notti',compagno_ballo:'Giulia Moretti',tipologia_stanza:'Doppia',numero_camera:2,numero_camera_hotel:'102',compagni_stanza:'Giulia',note:'',evento:'Brutia Tango Fest',stato:'In attesa',pagamento:'Non pagato'},
+    {data:'23/06/2026 10:30',nome:'Giulia',cognome:'Moretti',data_nascita:'14/08/1993',email:'giulia.moretti@test.it',tel:'333678901',citta:'Napoli',ruolo:'Follower',pacchetto:'2 notti',compagno_ballo:'Alessandro Ferrari',tipologia_stanza:'Doppia',numero_camera:2,numero_camera_hotel:'102',compagni_stanza:'Alessandro',note:'',evento:'Brutia Tango Fest',stato:'In attesa',pagamento:'Non pagato'},
+
+    // DOPPIA - ACCETTATA
+    {data:'24/06/2026 11:00',nome:'Tommaso',cognome:'Gallo',data_nascita:'20/08/1991',email:'tommaso.gallo@test.it',tel:'333567891',citta:'Napoli',ruolo:'Leader',pacchetto:'4 notti',compagno_ballo:'Elisa Rosa',tipologia_stanza:'Doppia',numero_camera:3,numero_camera_hotel:'103',compagni_stanza:'Elisa',note:'',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Saldato'},
+    {data:'24/06/2026 12:00',nome:'Elisa',cognome:'Rosa',data_nascita:'15/09/1994',email:'elisa.rosa@test.it',tel:'333567892',citta:'Napoli',ruolo:'Follower',pacchetto:'4 notti',compagno_ballo:'Tommaso Gallo',tipologia_stanza:'Doppia',numero_camera:3,numero_camera_hotel:'103',compagni_stanza:'Tommaso',note:'',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Saldato'},
+
+    // MATRIMONIALI - ACCETTATI
+    {data:'24/06/2026 14:45',nome:'Giorgio',cognome:'Verdi',data_nascita:'08/11/1988',email:'giorgio.verdi@test.it',tel:'333345678',citta:'Torino',ruolo:'Leader',pacchetto:'4 notti',compagno_ballo:'Francesca Romano',tipologia_stanza:'Matrimoniale',numero_camera:1,numero_camera_hotel:'201',compagni_stanza:'Francesca',note:'Esperti',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Saldato'},
+    {data:'24/06/2026 16:20',nome:'Francesca',cognome:'Romano',data_nascita:'30/01/1995',email:'francesca.romano@test.it',tel:'333456789',citta:'Firenze',ruolo:'Follower',pacchetto:'4 notti',compagno_ballo:'Giorgio Verdi',tipologia_stanza:'Matrimoniale',numero_camera:1,numero_camera_hotel:'201',compagni_stanza:'Giorgio',note:'',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Saldato'},
+
+    // MATRIMONIALE - IN ATTESA
+    {data:'17/06/2026 13:20',nome:'Matteo',cognome:'Nero',data_nascita:'31/10/1986',email:'matteo.nero@test.it',tel:'334456789',citta:'Bari',ruolo:'Leader',pacchetto:'2 notti',compagno_ballo:'Silvia Grigio',tipologia_stanza:'Matrimoniale',numero_camera:2,numero_camera_hotel:'202',compagni_stanza:'Silvia',note:'',evento:'Brutia Tango Fest',stato:'In attesa',pagamento:'Non pagato'},
+    {data:'17/06/2026 14:00',nome:'Silvia',cognome:'Grigio',data_nascita:'23/06/1995',email:'silvia.grigio@test.it',tel:'334567890',citta:'Lecce',ruolo:'Follower',pacchetto:'2 notti',compagno_ballo:'Matteo Nero',tipologia_stanza:'Matrimoniale',numero_camera:2,numero_camera_hotel:'202',compagni_stanza:'Matteo',note:'',evento:'Brutia Tango Fest',stato:'In attesa',pagamento:'Non pagato'},
+
+    // MATRIMONIALE - ACCETTATA
+    {data:'24/06/2026 15:00',nome:'Andrea',cognome:'Ricci',data_nascita:'18/07/1989',email:'andrea.ricci@test.it',tel:'333456790',citta:'Roma',ruolo:'Leader',pacchetto:'3 notti',compagno_ballo:'Beatrice Costa',tipologia_stanza:'Matrimoniale',numero_camera:3,numero_camera_hotel:'203',compagni_stanza:'Beatrice',note:'',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Anticipo versato'},
+    {data:'24/06/2026 16:00',nome:'Beatrice',cognome:'Costa',data_nascita:'25/12/1993',email:'beatrice.costa@test.it',tel:'333456791',citta:'Roma',ruolo:'Follower',pacchetto:'3 notti',compagno_ballo:'Andrea Ricci',tipologia_stanza:'Matrimoniale',numero_camera:3,numero_camera_hotel:'203',compagni_stanza:'Andrea',note:'',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Anticipo versato'},
+
+    // TRIPLA - ACCETTATA
+    {data:'22/06/2026 13:00',nome:'Pietro',cognome:'Giallo',data_nascita:'12/05/1991',email:'pietro.giallo@test.it',tel:'333890123',citta:'Genova',ruolo:'Leader',pacchetto:'4 notti',compagno_ballo:'Sara Blu',tipologia_stanza:'Tripla',numero_camera:1,numero_camera_hotel:'301',compagni_stanza:'Sara',note:'Con amico',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Anticipo versato'},
+    {data:'22/06/2026 14:00',nome:'Sara',cognome:'Blu',data_nascita:'28/02/1994',email:'sara.blu@test.it',tel:'333901234',citta:'Venezia',ruolo:'Follower',pacchetto:'4 notti',compagno_ballo:'Pietro Giallo',tipologia_stanza:'Tripla',numero_camera:1,numero_camera_hotel:'301',compagni_stanza:'Pietro',note:'',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Anticipo versato'},
+    {data:'22/06/2026 15:00',nome:'Mario',cognome:'Marrone',data_nascita:'17/09/1989',email:'mario.marrone@test.it',tel:'333012345',citta:'Palermo',ruolo:'Leader',pacchetto:'4 notti',compagno_ballo:'',tipologia_stanza:'Tripla',numero_camera:1,numero_camera_hotel:'301',compagni_stanza:'Pietro, Sara',note:'Amico di Pietro',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Anticipo versato'},
+
+    // TRIPLA - IN ATTESA
+    {data:'23/06/2026 14:00',nome:'Davide',cognome:'Colombo',data_nascita:'10/04/1988',email:'davide.colombo@test.it',tel:'333012346',citta:'Milano',ruolo:'Leader',pacchetto:'3 notti',compagno_ballo:'Lucia Ferrara',tipologia_stanza:'Tripla',numero_camera:2,numero_camera_hotel:'302',compagni_stanza:'Lucia',note:'',evento:'Brutia Tango Fest',stato:'In attesa',pagamento:'Non pagato'},
+    {data:'23/06/2026 15:00',nome:'Lucia',cognome:'Ferrara',data_nascita:'19/06/1995',email:'lucia.ferrara@test.it',tel:'333012347',citta:'Milano',ruolo:'Follower',pacchetto:'3 notti',compagno_ballo:'Davide Colombo',tipologia_stanza:'Tripla',numero_camera:2,numero_camera_hotel:'302',compagni_stanza:'Davide',note:'',evento:'Brutia Tango Fest',stato:'In attesa',pagamento:'Non pagato'},
+    {data:'23/06/2026 16:00',nome:'Enrico',cognome:'Gatti',data_nascita:'08/08/1990',email:'enrico.gatti@test.it',tel:'333012348',citta:'Milano',ruolo:'Leader',pacchetto:'3 notti',compagno_ballo:'',tipologia_stanza:'Tripla',numero_camera:2,numero_camera_hotel:'302',compagni_stanza:'Davide, Lucia',note:'Amico di Davide',evento:'Brutia Tango Fest',stato:'In attesa',pagamento:'Non pagato'},
+
+    // OSPITI SENZA CAMERA
+    {data:'21/06/2026 12:30',nome:'Roberto',cognome:'Verdi',data_nascita:'06/07/1987',email:'roberto.verdi@test.it',tel:'334234567',citta:'Messina',ruolo:'Leader',pacchetto:'4 notti',compagno_ballo:'',tipologia_stanza:'',numero_camera:null,numero_camera_hotel:'',compagni_stanza:'',note:'In attesa di assegnazione',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Saldato'},
+    {data:'21/06/2026 13:00',nome:'Luca',cognome:'Russo',data_nascita:'14/07/1992',email:'luca.russo@test.it',tel:'334678901',citta:'Palermo',ruolo:'Leader',pacchetto:'3 notti',compagno_ballo:'',tipologia_stanza:'',numero_camera:null,numero_camera_hotel:'',compagni_stanza:'',note:'',evento:'Brutia Tango Fest',stato:'Accettato',pagamento:'Anticipo versato'},
+
+    // IN ATTESA - SENZA CAMERA
+    {data:'20/06/2026 10:00',nome:'Davide',cognome:'Costa',data_nascita:'27/04/1989',email:'davide.costa@test.it',tel:'333789012',citta:'Palermo',ruolo:'Leader',pacchetto:'3 notti',compagno_ballo:'',tipologia_stanza:'',numero_camera:null,numero_camera_hotel:'',compagni_stanza:'',note:'Cercasi follower',evento:'Brutia Tango Fest',stato:'In attesa',pagamento:'Non pagato'},
+
+    // RIFIUTATI
+    {data:'15/06/2026 09:00',nome:'Carlo',cognome:'Viola',data_nascita:'21/01/1985',email:'carlo.viola@test.it',tel:'334789012',citta:'Bari',ruolo:'Leader',pacchetto:'3 notti',compagno_ballo:'Marta Fucsia',tipologia_stanza:'Doppia',numero_camera:null,numero_camera_hotel:'',compagni_stanza:'Marta',note:'',evento:'Brutia Tango Fest',stato:'Rifiutato',pagamento:'Non pagato'},
+    {data:'15/06/2026 10:00',nome:'Marta',cognome:'Fucsia',data_nascita:'11/11/1993',email:'marta.fucsia@test.it',tel:'334890123',citta:'Bari',ruolo:'Follower',pacchetto:'3 notti',compagno_ballo:'Carlo Viola',tipologia_stanza:'Doppia',numero_camera:null,numero_camera_hotel:'',compagni_stanza:'Carlo',note:'',evento:'Brutia Tango Fest',stato:'Rifiutato',pagamento:'Non pagato'},
+    {data:'20/06/2026 11:00',nome:'Elena',cognome:'Rossi',data_nascita:'19/11/1996',email:'elena.rossi@test.it',tel:'334123456',citta:'Catania',ruolo:'Follower',pacchetto:'3 notti',compagno_ballo:'',tipologia_stanza:'',numero_camera:null,numero_camera_hotel:'',compagni_stanza:'',note:'Cambio idea',evento:'Brutia Tango Fest',stato:'Rifiutato',pagamento:'Non pagato'},
+  ];
+}
+
+function renderDashboard() {
+  const totale = allData.length;
+  const accettati = allData.filter(r => r.stato === 'Accettato').length;
+  const attesa = allData.filter(r => r.stato === 'In attesa').length;
+  const incasso = allData.filter(r => r.pagamento === 'Anticipo versato' || r.pagamento === 'Saldato')
+    .reduce((s,r) => s + (PKG_INFO[r.pacchetto]?.anticipo || 0), 0);
+
+  document.getElementById('total-iscritti').textContent = totale;
+  document.getElementById('total-accettati').textContent = accettati;
+  document.getElementById('total-attesa').textContent = attesa;
+  document.getElementById('total-incasso').textContent = '€' + incasso.toLocaleString('it-IT');
+
+  const last5 = allData.slice(0, 5);
+  document.getElementById('dashboard-table').innerHTML = last5.length ?
+    `<div class="table-header">
+      <div class="table-col">Data</div>
+      <div class="table-col">Cognome</div>
+      <div class="table-col">Nome</div>
+      <div class="table-col">Data Nascita</div>
+      <div class="table-col">Città</div>
+      <div class="table-col small">Stato</div>
+    </div>` + last5.map(r => `
+    <div class="table-row">
+      <div class="table-col">${r.data || '—'}</div>
+      <div class="table-col"><strong>${r.cognome}</strong></div>
+      <div class="table-col">${r.nome}</div>
+      <div class="table-col">${r.data_nascita || '—'}</div>
+      <div class="table-col">${r.citta || '—'}</div>
+      <div class="table-col small"><span class="badge ${r.stato==='Accettato'?'badge-success':'badge-warning'}">${r.stato}</span></div>
+    </div>
+    `).join('') + `<div style="padding:1rem;text-align:center;background:#EEF2F7;border-top:1px solid #BFD0EC;">
+      <small>Gestisci le registrazioni nella scheda <strong>Iscritti</strong></small>
+    </div>` : '<div class="empty">Nessun iscritto</div>';
+}
+
+function renderIscritti() {
+  const search = (document.getElementById('search-input')?.value || '').toLowerCase();
+  const stato = document.getElementById('stato-filter')?.value || '';
+
+  let filtered = [];
+  allData.forEach((r, idx) => {
+    if (search && !(r.nome + r.email + r.pacchetto).toLowerCase().includes(search)) return;
+    if (stato && r.stato !== stato) return;
+    filtered.push({...r, _idx: idx});
+  });
+
+  document.getElementById('iscritti-table').innerHTML = filtered.length ?
+    `<div class="table-header">
+      <div class="table-col">Data</div>
+      <div class="table-col">Cognome</div>
+      <div class="table-col">Nome</div>
+      <div class="table-col">Data Nascita</div>
+      <div class="table-col">Città</div>
+      <div class="table-col small">Stato</div>
+      <div class="table-col small">Azioni</div>
+    </div>` + filtered.map(r => `
+    <div class="table-row">
+      <div class="table-col">${r.data || '—'}</div>
+      <div class="table-col"><strong style="color:${!r.compagno_ballo ? '#ff1493' : '#000'}">${r.cognome}</strong></div>
+      <div class="table-col" style="color:${!r.compagno_ballo ? '#ff1493' : '#000'}">${r.nome}</div>
+      <div class="table-col">${r.data_nascita || '—'}</div>
+      <div class="table-col">${r.citta || '—'}</div>
+      <div class="table-col small"><span class="badge ${r.stato==='Accettato'?'badge-success':'badge-warning'}">${r.stato}</span></div>
+      <div class="table-col small">
+        <div class="row-actions">
+          <button class="action-btn action-accept" onclick="accettaIscritto(${r._idx})" ${r.stato==='Accettato'?'disabled style="opacity:0.5;cursor:not-allowed;"':''}>✓</button>
+          <button class="action-btn action-reject" onclick="rifiutaIscritto(${r._idx})" ${r.stato==='Rifiutato'?'disabled style="opacity:0.5;cursor:not-allowed;"':''}>✗</button>
+          <button class="action-btn action-edit" onclick="openModal(${r._idx})">✏️</button>
+        </div>
+      </div>
+    </div>
+    `).join('') : '<div class="empty">Nessun risultato</div>';
+}
+
+function filterIscritti() {
+  renderIscritti();
+}
+
+function accettaIscritto(idx) {
+  const iscritto = allData[idx];
+  iscritto.stato = 'Accettato';
+
+  // Cerca il compagno di camera
+  if (iscritto.compagno_ballo) {
+    const compagno = allData.find(r => (r.nome + ' ' + r.cognome).toLowerCase() === iscritto.compagno_ballo.toLowerCase());
+
+    if (compagno) {
+      if (compagno.stato === 'Accettato') {
+        // Compagno accettato → sincronizza camera
+        if (compagno.numero_camera_hotel) {
+          // Compagno ha camera → usa quella
+          iscritto.tipologia_stanza = compagno.tipologia_stanza;
+          iscritto.numero_camera_hotel = compagno.numero_camera_hotel;
+          iscritto.numero_camera = compagno.numero_camera;
+        } else {
+          // Compagno accettato ma senza camera → assegna nuova a entrambi
+          assegnaCameraAutomatica(idx);
+          compagno.tipologia_stanza = iscritto.tipologia_stanza;
+          compagno.numero_camera_hotel = iscritto.numero_camera_hotel;
+          compagno.numero_camera = iscritto.numero_camera;
+        }
+      } else {
+        // Compagno non accettato → assegna camera in attesa di sincronizzazione
+        assegnaCameraAutomatica(idx);
+      }
+    } else {
+      // Compagno non trovato → assegna camera
+      assegnaCameraAutomatica(idx);
+    }
+  } else {
+    // Nessun compagno → assegna camera
+    if (!iscritto.tipologia_stanza) {
+      iscritto.tipologia_stanza = 'Doppia';
+    }
+    assegnaCameraAutomatica(idx);
+  }
+
+  inviaMailAccettazione(iscritto);
+
+  // Resetta filtri
+  document.getElementById('search-input').value = '';
+  document.getElementById('stato-filter').value = '';
+
+  renderIscritti();
+  renderDashboard();
+  renderCamere();
+  renderStatistiche();
+  salvaLocalmente();
+
+  alert(`✅ ${iscritto.nome} ${iscritto.cognome} accettato!\n📧 Mail inviata\n🛏️ Camera: ${iscritto.tipologia_stanza} ${iscritto.numero_camera_hotel}`);
+}
+
+function assegnaCameraAutomatica(idx) {
+  const iscritto = allData[idx];
+  if (!iscritto.tipologia_stanza) {
+    iscritto.tipologia_stanza = 'Doppia';
+  }
+  iscritto.numero_camera = getNextCameraNumber(iscritto.tipologia_stanza);
+
+  // Assegna numero camera hotel basato sul tipo e numero progressivo
+  const baseNum = { 'Singola': 1, 'Doppia': 100, 'Matrimoniale': 200, 'Tripla': 300 };
+  const base = baseNum[iscritto.tipologia_stanza] || 100;
+  const occupate = allData.filter(r => r.tipologia_stanza === iscritto.tipologia_stanza && r.numero_camera_hotel)
+    .map(r => parseInt(r.numero_camera_hotel));
+  let num = base + 1;
+  while (occupate.includes(num)) num++;
+  iscritto.numero_camera_hotel = num.toString();
+
+  verificaPacchetti(idx);
+}
+
+function verificaPacchetti(idx) {
+  const iscritto = allData[idx];
+
+  allData.forEach((r, i) => {
+    if (i !== idx && r.numero_camera_hotel === iscritto.numero_camera_hotel && r.pacchetto !== iscritto.pacchetto) {
+      alert(`⚠️ ATTENZIONE!\n\nCamera ${iscritto.numero_camera_hotel}:\n- ${iscritto.nome}: ${iscritto.pacchetto}\n- ${r.nome}: ${r.pacchetto}\n\nPackage diversi!`);
+    }
+  });
+}
+
+function rifiutaIscritto(idx) {
+  allData[idx].stato = 'Rifiutato';
+  renderIscritti();
+  renderDashboard();
+  salvaLocalmente();
+}
+
+function renderCamere() {
+  const tipi = ['Singola', 'Doppia', 'Matrimoniale', 'Tripla'];
+  const map = {};
+
+  allData.filter(r => r.tipologia_stanza && r.numero_camera_hotel).forEach(r => {
+    if (!map[r.tipologia_stanza]) map[r.tipologia_stanza] = [];
+    map[r.tipologia_stanza].push(r);
+  });
+
+  let html = '';
+  tipi.forEach(tipo => {
+    const iscritti = map[tipo] || [];
+
+    html += `<div style="margin-bottom:2rem;border:2px solid #BFD0EC;border-radius:10px;padding:1.5rem;">
+      <h3 style="color:#1A3A6B;margin-bottom:1rem;">🛏️ ${tipo}</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:1rem;">`;
+
+    if (iscritti.length === 0) {
+      html += `<div style="grid-column:1/-1;text-align:center;color:#aaa;padding:2rem;">Nessuna camera assegnata</div>`;
+    } else {
+      iscritti.forEach(r => {
+        const nomi = r.nome + ' ' + r.cognome;
+        html += `<div style="background:#ffcccc;border:2px solid #BFD0EC;border-radius:8px;padding:1rem;text-align:center;cursor:pointer;min-height:120px;display:flex;flex-direction:column;justify-content:center;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="modificaCamera('${r.numero_camera_hotel}')">
+          <div style="font-weight:700;margin-bottom:0.5rem;color:#1A3A6B;">${r.numero_camera_hotel}</div>
+          <div style="font-size:0.85rem;color:#333;font-weight:500;word-wrap:break-word;">${nomi}</div>
+        </div>`;
+      });
+    }
+
+    html += `</div></div>`;
+  });
+
+  // Ospiti senza camera
+  const ospiti = allData.filter(r => r.stato === 'Accettato' && !r.numero_camera_hotel);
+
+  if (ospiti.length > 0) {
+    html += `<div style="margin-bottom:2rem;border:2px solid #ffcc00;border-radius:10px;padding:1.5rem;background:#fffef0;">
+      <h3 style="color:#cc9900;margin-bottom:1rem;">👤 Ospiti Senza Camera (${ospiti.length})</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;">`;
+
+    ospiti.forEach(o => {
+      const nomi = o.nome + ' ' + o.cognome;
+      html += `
+        <div style="background:#fff;border:2px solid #ffcc00;border-radius:8px;padding:1rem;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-weight:700;color:#333;margin-bottom:0.5rem;">${nomi}</div>
+            <div style="font-size:0.85rem;color:#666;">
+              <div>📧 ${o.email}</div>
+              <div>📱 ${o.tel}</div>
+              <div>🎭 ${o.ruolo}</div>
+              <div>🎫 ${o.pacchetto}</div>
+            </div>
+          </div>
+          <button onclick="assegnaACamera('${o.nome}', '${o.cognome}')" class="btn btn-primary" style="margin-top:1rem;width:100%;padding:8px;">
+            <i class="fa-solid fa-door-open"></i> Assegna Camera
+          </button>
+        </div>
+      `;
+    });
+
+    html += `</div></div>`;
+  }
+
+  document.getElementById('camera-grid').innerHTML = html;
+}
+
+function assegnaACamera(nome, cognome) {
+  const ospite = allData.find(r => r.nome === nome && r.cognome === cognome);
+  if (!ospite) return;
+
+  // Prompt per il numero camera
+  const numero = prompt(`Inserisci numero camera per ${nome} ${cognome}:`);
+  if (!numero) return;
+
+  ospite.numero_camera_hotel = numero;
+  if (!ospite.tipologia_stanza) ospite.tipologia_stanza = 'Doppia';
+
+  salvaLocalmente();
+  renderCamere();
+  console.log(`✅ ${nome} assegnato a camera ${numero}`);
+}
+
+function modificaCamera(numero_camera) {
+  const persone = allData.filter(r => r.numero_camera_hotel === numero_camera);
+  const cameraMd = document.getElementById('cameraMd');
+  const mdlNum = document.getElementById('mdl-camera-num');
+  const mdlContent = document.getElementById('mdl-camera-content');
+
+  mdlNum.textContent = numero_camera;
+
+  // Ospiti disponibili (accettati senza camera)
+  const ospiti = allData.filter(r => {
+    const haCamera = r.numero_camera_hotel && r.numero_camera_hotel.toString().trim();
+    const isInQuesto = persone.find(p => p.nome === r.nome && p.cognome === r.cognome);
+    return r.stato === 'Accettato' && !haCamera && !isInQuesto;
+  });
+
+  console.log('Ospiti disponibili:', ospiti.length, ospiti.map(o => `${o.nome} ${o.cognome} (cam: ${o.numero_camera_hotel})`));
+
+  let html = `
+    <div style="background:#e8f4f8;border:2px solid #BFD0EC;border-radius:8px;padding:1rem;margin-bottom:1.5rem;">
+      <label style="font-weight:600;color:#1A3A6B;display:block;margin-bottom:0.5rem;">Aggiungi Ospite</label>
+      <div style="display:grid;grid-template-columns:1fr 80px;gap:0.5rem;">
+        <select id="ospite-select" style="padding:8px;border:1px solid #BFD0EC;border-radius:4px;font-size:0.9rem;">
+          <option value="">-- Seleziona ospite --</option>
+          ${ospiti.map(o => `<option value="${o.nome}|${o.cognome}">${o.nome} ${o.cognome}</option>`).join('')}
+        </select>
+        <button type="button" onclick="aggiungiOspiteAlModal()" class="btn btn-primary" style="padding:8px;font-size:0.85rem;"><i class="fa-solid fa-plus"></i></button>
+      </div>
+      ${ospiti.length === 0 ? '<div style="font-size:0.85rem;color:#666;margin-top:0.5rem;">Nessun ospite disponibile</div>' : ''}
+    </div>
+  `;
+
+  html += '<div style="margin-bottom:1.5rem;" id="persone-container">';
+  persone.forEach((p, idx) => {
+    html += `
+      <div style="background:#f5f7fa;border:1px solid #BFD0EC;border-radius:8px;padding:1rem;margin-bottom:1rem;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 40px;gap:0.5rem;align-items:end;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label style="font-size:0.85rem;">Nome</label>
+            <input type="text" id="cam-nome-${idx}" value="${p.nome}" style="width:100%;padding:8px;border:1px solid #BFD0EC;border-radius:4px;font-size:0.9rem;">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label style="font-size:0.85rem;">Cognome</label>
+            <input type="text" id="cam-cognome-${idx}" value="${p.cognome}" style="width:100%;padding:8px;border:1px solid #BFD0EC;border-radius:4px;font-size:0.9rem;">
+          </div>
+          <button type="button" onclick="rimuoviDaCamera('${numero_camera}', ${idx})" class="btn btn-secondary" style="padding:6px 12px;"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+    `;
+  });
+  html += '</div>';
+
+  mdlContent.innerHTML = html;
+  cameraMd.classList.add('active');
+
+  // Salva i dati temporaneamente per salvataModifiche
+  window.cameraDaModificare = { numero_camera, persone, count: persone.length };
+}
+
+function aggiungiOspiteAlModal() {
+  const select = document.getElementById('ospite-select');
+  const value = select.value;
+  if (!value) return;
+
+  const [nome, cognome] = value.split('|');
+  const ospite = allData.find(r => r.nome === nome && r.cognome === cognome);
+
+  if (!ospite) return;
+
+  const numero_camera = window.cameraDaModificare.numero_camera;
+  ospite.numero_camera_hotel = numero_camera;
+
+  // Rilancia il modal per aggiornare la visualizzazione
+  modificaCamera(numero_camera);
+}
+
+function closeCameraModal() {
+  document.getElementById('cameraMd').classList.remove('active');
+  window.cameraDaModificare = null;
+}
+
+function salvaCameraModifiche() {
+  if (!window.cameraDaModificare) return;
+
+  const { numero_camera, persone, count } = window.cameraDaModificare;
+
+  for (let i = 0; i < count; i++) {
+    const nome = document.getElementById(`cam-nome-${i}`)?.value;
+    const cognome = document.getElementById(`cam-cognome-${i}`)?.value;
+    if (nome && cognome) {
+      persone[i].nome = nome;
+      persone[i].cognome = cognome;
+    }
+  }
+
+  salvaLocalmente();
+  renderCamere();
+  closeCameraModal();
+  console.log('✅ Camera modificata');
+}
+
+function rimuoviDaCamera(numero_camera, idx) {
+  const persone = allData.filter(r => r.numero_camera_hotel === numero_camera);
+  if (persone[idx]) {
+    persone[idx].numero_camera_hotel = '';
+    persone[idx].numero_camera = null;
+    persone[idx].tipologia_stanza = '';
+    salvaLocalmente();
+    modificaCamera(numero_camera);
+    console.log(`👤 Rimosso da camera ${numero_camera}`);
+  }
+}
+
+function renderStatistiche() {
+  const leader = allData.filter(r => r.ruolo === 'Leader').length;
+  const follower = allData.filter(r => r.ruolo === 'Follower').length;
+  const pagati = allData.filter(r => r.pagamento === 'Anticipo versato' || r.pagamento === 'Saldato').length;
+  const non_pagati = allData.filter(r => r.pagamento === 'Non pagato').length;
+
+  document.getElementById('stat-leader').textContent = leader;
+  document.getElementById('stat-follower').textContent = follower;
+  document.getElementById('stat-pagati').textContent = pagati;
+  document.getElementById('stat-non-pagati').textContent = non_pagati;
+}
+
+function esportaCSV() {
+  const cols = ['Nome', 'Cognome', 'Email', 'Ruolo', 'Pacchetto', 'Camera', 'Stato', 'Pagamento'];
+  const rows = allData.map(r => [r.nome, r.cognome, r.email, r.ruolo, r.pacchetto, r.tipologia_stanza, r.stato, r.pagamento]);
+  const csv = [cols, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = `Brutia_Tango_Fest_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+function esportaPerHotel() {
+  const accettatiConCamera = allData.filter(r => r.stato === 'Accettato' && r.tipologia_stanza && r.numero_camera_hotel);
+
+  if (!accettatiConCamera.length) {
+    alert('Nessun iscritto accettato con camera assegnata!');
+    return;
+  }
+
+  const cols = ['Cognome', 'Nome', 'Tipo Camera', 'Numero Camera', 'Pacchetto', 'Data Arrivo', 'Data Partenza', 'Note'];
+  const rows = accettatiConCamera.map(r => [
+    r.cognome,
+    r.nome,
+    r.tipologia_stanza,
+    r.numero_camera_hotel || '—',
+    r.pacchetto,
+    '27/11/2026',
+    '30/11/2026',
+    r.note || ''
+  ]);
+
+  const csv = [cols, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = `Assegnazioni_Camere_Hotel_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+window.addEventListener('load', () => {
+  // Test storage
+  try {
+    localStorage.setItem('test', 'works');
+    console.log('✅ localStorage FUNZIONA');
+    localStorage.removeItem('test');
+  } catch (e) {
+    console.log('❌ localStorage NON FUNZIONA');
+  }
+
+  try {
+    sessionStorage.setItem('test', 'works');
+    console.log('✅ sessionStorage FUNZIONA');
+    sessionStorage.removeItem('test');
+  } catch (e) {
+    console.log('❌ sessionStorage NON FUNZIONA');
+  }
+
+  // ponytail: ?reset svuota storage, altrimenti mantiene i cambiamenti
+  if (new URLSearchParams(window.location.search).has('reset')) {
+    localStorage.removeItem('brutiaIscritti');
+    sessionStorage.removeItem('brutiaIscritti');
+    console.log('🔄 Storage svuotato, dati di test ricaricati');
+  }
+
+  caricaDati();
+});
+</script>
+
+</body>
+</html>

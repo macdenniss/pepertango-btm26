@@ -87,6 +87,19 @@
       background: var(--accent);
       color: #fff;
     }
+    /* Shop link evidenziato */
+    .nav-links a[data-page="shop"] {
+      font-size: 20px;
+      color: var(--accent);
+      animation: shopPulse 2s ease-in-out infinite;
+    }
+    .nav-links a[data-page="shop"]:hover {
+      animation: none;
+    }
+    @keyframes shopPulse {
+      0%, 100% { color: var(--accent); text-shadow: 0 0 8px rgba(255,77,77,.4); }
+      50%       { color: #fff;          text-shadow: none; }
+    }
 
     /* ============================================================
        HERO
@@ -652,12 +665,22 @@
     .shop-footer { display: flex; align-items: center; justify-content: space-between; }
     .shop-price { font-family: 'Kalam', cursive; font-size: 1.2rem; font-weight: 700; color: var(--fg); }
     .shop-add {
-      width: 32px; height: 32px; border-radius: 50%;
+      padding: 7px 14px; border-radius: var(--r-wobbly-sm);
       background: var(--accent); border: 2px solid var(--fg);
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 1rem; box-shadow: 2px 2px 0 0 var(--fg); transition: all 0.1s;
+      cursor: pointer; display: flex; align-items: center; gap: 5px;
+      color: #fff; font-family: 'Patrick Hand', cursive; font-size: 13px; font-weight: 700;
+      box-shadow: 2px 2px 0 0 var(--fg); transition: all 0.1s; white-space: nowrap;
     }
     .shop-add:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 0 var(--fg); }
+    /* Overlay hover sulle card */
+    .shop-card:hover .shop-img::after {
+      content: 'Scopri';
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,.3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Kalam', cursive; font-size: 1.1rem; font-weight: 700; color: #fff;
+      letter-spacing: 1px;
+    }
     .shop-note { margin-top: 36px; text-align: center; font-family: 'Patrick Hand', cursive; font-size: 13px; color: rgba(45,45,45,.4); }
     .shop-note a { color: var(--accent); text-decoration: underline; }
     /* Badge "Su ordinazione" sulle card */

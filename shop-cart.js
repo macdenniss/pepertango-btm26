@@ -745,7 +745,7 @@ function shopRenderGrid(filterCat) {
       +   '<div class="shop-footer">'
       +     '<span class="shop-price">&euro;' + p.price + '</span>'
       +     '<button class="shop-add" onclick="event.stopPropagation();productOpen(\'' + p.id + '\')" aria-label="Scegli variante">'
-      +       '<i class="fa-solid fa-plus"></i>'
+      +       'Scegli <i class="fa-solid fa-arrow-right" style="font-size:10px"></i>'
       +     '</button>'
       +   '</div>'
       + '</div>'
@@ -791,6 +791,75 @@ function loadShopProducts() {
     .catch(function() {
       _loadFromPrintful(); // store bloccato o errore di rete
     });
+}
+
+// Traduzioni italiane per nomi e descrizioni prodotti Printful/Shopify
+var _IT_NAMES = {
+  'mug with color inside':       'Tazza con Interno Colorato',
+  'classic unisex t-shirt':      'T-shirt Unisex Classic',
+  'unisex heavy cotton tee':     'T-shirt Unisex Heavy Cotton',
+  'bella + canvas unisex t-shirt': 'T-shirt Unisex Bella+Canvas',
+  'unisex t-shirt':              'T-shirt Unisex',
+  'hoodie':                      'Felpa con Cappuccio',
+  'unisex hoodie':               'Felpa con Cappuccio Unisex',
+  'pullover hoodie':             'Felpa Pullover',
+  'zip hoodie':                  'Felpa con Zip',
+  'sweatshirt':                  'Felpa Girocollo',
+  'eco tote bag':                'Borsa Tote Ecologica',
+  'tote bag':                    'Borsa Tote',
+  'water bottle':                'Borraccia',
+  'phone case':                  'Cover Smartphone',
+  'snap case':                   'Cover Rigida Smartphone',
+  'tough case':                  'Cover Rinforzata Smartphone',
+  'sticker':                     'Sticker',
+  'poster':                      'Poster',
+  'canvas':                      'Stampa su Tela',
+  'hat':                         'Cappellino',
+  'cap':                         'Cappellino',
+  'dad hat':                     'Cappellino Dad',
+  'beanie':                      'Berretto',
+  'socks':                       'Calzini',
+  'leggings':                    'Leggings',
+  'tank top':                    'Canotta'
+};
+
+var _IT_DESC = {
+  mug:      'Tazza in ceramica di alta qualità con design esclusivo PeperTango. Perfetta per il tuo caffè o tè.',
+  tshirt:   'T-shirt in cotone con stampa PeperTango. Disponibile in più colori e taglie.',
+  hoodie:   'Felpa confortevole con cappuccio e stampa PeperTango. Ideale per le serate di tango.',
+  felpa:    'Felpa di alta qualità con design PeperTango. Morbida e duratura.',
+  tote:     'Borsa tote ecologica con stampa PeperTango. Pratica e resistente per ogni occasione.',
+  bottle:   'Borraccia con design PeperTango. Perfetta per mantenerti idratato in pista.',
+  phone:    'Cover per smartphone con stampa PeperTango. Proteggi il tuo telefono con stile.',
+  poster:   'Poster di alta qualità con grafica PeperTango. Ideale per decorare il tuo spazio.',
+  sticker:  'Sticker PeperTango resistente e impermeabile. Personalizza i tuoi oggetti.',
+  default:  'Prodotto esclusivo PeperTango in edizione limitata. Ogni acquisto sostiene la nostra passione per il tango.'
+};
+
+function _italianizeName(title) {
+  var tl = (title || '').toLowerCase().trim();
+  // Cerca corrispondenza esatta
+  if (_IT_NAMES[tl]) return _IT_NAMES[tl];
+  // Cerca corrispondenza parziale
+  for (var k in _IT_NAMES) {
+    if (tl.indexOf(k) !== -1) return _IT_NAMES[k];
+  }
+  // Capitalizza prima lettera e restituisci originale
+  return title;
+}
+
+function _italianizeDesc(title) {
+  var tl = (title || '').toLowerCase();
+  if (tl.indexOf('mug') !== -1 || tl.indexOf('tazza') !== -1) return _IT_DESC.mug;
+  if (tl.indexOf('hoodie') !== -1 || tl.indexOf('zip') !== -1 || tl.indexOf('pullover') !== -1) return _IT_DESC.hoodie;
+  if (tl.indexOf('sweatshirt') !== -1 || tl.indexOf('felpa') !== -1) return _IT_DESC.felpa;
+  if (tl.indexOf('shirt') !== -1 || tl.indexOf('tee') !== -1) return _IT_DESC.tshirt;
+  if (tl.indexOf('tote') !== -1 || tl.indexOf('bag') !== -1) return _IT_DESC.tote;
+  if (tl.indexOf('bottle') !== -1 || tl.indexOf('borraccia') !== -1) return _IT_DESC.bottle;
+  if (tl.indexOf('phone') !== -1 || tl.indexOf('case') !== -1 || tl.indexOf('cover') !== -1) return _IT_DESC.phone;
+  if (tl.indexOf('poster') !== -1) return _IT_DESC.poster;
+  if (tl.indexOf('sticker') !== -1) return _IT_DESC.sticker;
+  return _IT_DESC.default;
 }
 
 // Mappa i prodotti Shopify nel formato interno
@@ -839,13 +908,13 @@ function _mapShopifyProducts(products) {
 
     return {
       id:               'sh-' + p.id,
-      name:             p.title || '',
+      name:             _italianizeName(p.title || ''),
       category:         category,
       price:            minPrice,
       sizeLabel:        sizeOptionName,
       thumbnail:        p.images && p.images[0] ? p.images[0].src : '',
       badge:            null,
-      description:      (p.body_html || '').replace(/<[^>]+>/g, '').substring(0, 120),
+      description:      _italianizeDesc(p.title || ''),
       material:         '',
       sizes:            sizes,
       colors:           colors,

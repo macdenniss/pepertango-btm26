@@ -91,7 +91,8 @@ function cartAdd(productId, color, size, qty) {
       color:      color,
       size:       size,
       qty:        qty,
-      icon:       product.icon
+      icon:       product.icon      || '',
+      thumbnail:  product.thumbnail || ''
     });
   }
 
@@ -163,8 +164,12 @@ function cartRender() {
     if (item.size)  info.push(item.size);
     var variantEsc = item.variantKey.replace(/'/g, "\\'");
 
+    var cartIconHtml = item.thumbnail
+      ? '<img src="' + item.thumbnail + '" alt="" style="width:100%;height:100%;object-fit:contain;border-radius:6px">'
+      : '<i class="' + (item.icon || 'fa-solid fa-shirt') + '"></i>';
+
     return '<div class="cart-item">'
-      + '<div class="cart-item-icon"><i class="' + item.icon + '"></i></div>'
+      + '<div class="cart-item-icon">' + cartIconHtml + '</div>'
       + '<div class="cart-item-info">'
       +   '<div class="cart-item-name">' + item.name + '</div>'
       +   (info.length ? '<div class="cart-item-variant">' + info.join(' · ') + '</div>' : '')
@@ -238,9 +243,19 @@ function productOpen(productId) {
   }
   selectedQty = 1;
 
-  // Popola il modal
-  var iconEl = document.getElementById('pmIcon');
-  if (iconEl) iconEl.className = product.icon + ' pm-icon-i';
+  // Popola il modal — immagine (Printful) o icona (statico)
+  var pmIconDiv = document.querySelector('#productModal .pm-icon');
+  if (pmIconDiv) {
+    if (product.thumbnail) {
+      pmIconDiv.innerHTML = '<img src="' + product.thumbnail + '" alt="' + product.name
+        + '" style="width:100%;height:100%;object-fit:contain;border-radius:12px">';
+      pmIconDiv.style.cssText = 'width:100%;height:180px;border-radius:12px;background:#f8f8f8;'
+        + 'display:flex;align-items:center;justify-content:center;margin-bottom:16px;overflow:hidden';
+    } else {
+      pmIconDiv.style.cssText = '';
+      pmIconDiv.innerHTML = '<i id="pmIcon" class="' + (product.icon || 'fa-solid fa-shirt') + ' pm-icon-i"></i>';
+    }
+  }
 
   var badgeEl = document.getElementById('pmBadge');
   if (badgeEl) {
@@ -546,9 +561,10 @@ function checkoutSubmit() {
     })
   };
 
+  // Content-Type text/plain evita il CORS preflight su Apps Script
   fetch(SHOP_SCRIPT_URL, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload)
   })
   .then(function(res) { return res.json(); })
@@ -625,12 +641,12 @@ function shopRenderGrid(filterCat) {
 
     // Contenuto immagine: foto reale Printful o icona fallback
     var imgContent = p.thumbnail
-      ? '<img src="' + p.thumbnail + '" alt="' + p.name + '" style="width:100%;height:100%;object-fit:cover;border-radius:0">'
+      ? '<img src="' + p.thumbnail + '" alt="' + p.name + '" style="width:100%;height:100%;object-fit:contain;padding:10px;box-sizing:border-box">'
       : '<i class="' + (p.icon || 'fa-solid fa-shirt') + '" style="color:' + palette.icon + ';font-size:4.5rem"></i>';
 
     return '<div class="shop-card" data-cat="' + p.category + '" onclick="productOpen(\'' + p.id + '\')">'
       // — immagine prodotto —
-      + '<div class="shop-img" style="background:' + (p.thumbnail ? '#fff' : palette.bg) + ';padding:0;overflow:hidden">'
+      + '<div class="shop-img" style="background:' + (p.thumbnail ? '#f8f8f8' : palette.bg) + ';padding:0;overflow:hidden">'
       +   imgContent
       +   (p.badge ? '<span class="shop-img-badge">' + p.badge + '</span>' : '')
       +   '<span class="shop-pod-pill">Su ordinazione</span>'

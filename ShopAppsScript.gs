@@ -48,6 +48,11 @@ function doGet(e) {
     return getOrders();
   }
 
+  // Catalogo prodotti da Printful (chiamata dal frontend)
+  if (action === 'getProducts') {
+    return getPrintfulProducts();
+  }
+
   // Redirect Stripe (success/cancel) — rimanda al sito
   return ContentService.createTextOutput('OK');
 }
@@ -95,6 +100,111 @@ function getOrders() {
     return jsonResponse({ success: false, error: err.toString() });
   }
 }
+
+// ============================================================
+// PRINTFUL: Catalogo prodotti del negozio
+// Cachato 10 minuti in CacheService per non martellare le API
+// ============================================================
+
+function getPrintfulProducts() {
+  try {
+    // Cache 10 minuti
+    var cache  = CacheService.getScriptCache();
+    var cached = cache.get('printful_products_v1');
+    if (cached) {
+      return jsonResponse(JSON.parse(cached));
+    }
+
+    var API_KEY = SHOP_PROPS.getProperty('PRINTFUL_API_KEY');
+    if (!API_KEY) {
+      return jsonResponse({ success: false, error: 'PRINTFUL_API_KEY non configurata' });
+    }
+
+    var headers = { 'Authorization': 'Bearer ' + API_KEY };
+
+    // 1. Lista prodotti del negozio
+    var listResp = UrlFetchApp.fetch('https://api.printful.com/store/products', {
+      headers: headers,
+      muteHttpExceptions: true
+    });
+    var listData = JSON.parse(listResp.getContentText());
+    if (listData.code !== 200) {
+      return jsonResponse({ success: false, error: 'Printful API ' + listData.code + ': ' + (listData.result || '') });
+    }
+
+    var productList = listData.result || [];
+    var products    = [];
+
+    // 2. Dettagli (varianti + prezzi) per ogni prodotto
+    for (var i = 0; i < productList.length; i++) {
+      var p = productList[i];
+      if (p.is_ignored) continue;
+
+      var detailResp = UrlFetchApp.fetch('https://api.printful.com/store/products/' + p.id, {
+        headers: headers,
+        muteHttpExceptions: true
+      });
+      var detailData = JSON.parse(detailResp.getContentText());
+      if (detailData.code !== 200) continue;
+
+      var syncProduct  = detailData.result.sync_product  || {};
+      var syncVariants = detailData.result.sync_variants || [];
+
+      // Estrai taglie, colori e prezzi dalle varianti
+      // Il nome variante Printful è solitamente "Prodotto - Colore / Taglia"
+      var sizesMap  = {};
+      var colorsMap = {};
+      var prices    = [];
+
+      syncVariants.forEach(function(v) {
+        if (v.retail_price) prices.push(parseFloat(v.retail_price));
+
+        // Tenta il parsing "Colore / Taglia" dalla fine del nome variante
+        var nameParts = (v.name || '').split(' / ');
+        if (nameParts.length >= 2) {
+          var sizeToken  = nameParts[nameParts.length - 1].trim();
+          var colorToken = nameParts[nameParts.length - 2].split(' - ');
+          colorToken     = colorToken[colorToken.length - 1].trim();
+          if (sizeToken)  sizesMap[sizeToken]  = true;
+          if (colorToken) colorsMap[colorToken] = true;
+        }
+      });
+
+      var minPrice = prices.length ? Math.min.apply(null, prices) : 0;
+
+      products.push({
+        id:          String(p.id),
+        name:        syncProduct.name || p.name,
+        category:    'abbigliamento',     // default; aggiorna in shop-products.js se serve
+        price:       Math.round(minPrice * 100) / 100,
+        thumbnail:   syncProduct.thumbnail_url || p.thumbnail_url || '',
+        badge:       null,
+        description: '',
+        material:    '',
+        sizes:       Object.keys(sizesMap),
+        colors:      Object.keys(colorsMap).map(function(c) { return { name: c, hex: '#888888' }; }),
+        variants:    syncVariants.map(function(v) {
+          return { id: v.id, name: v.name, price: parseFloat(v.retail_price || 0) };
+        })
+      });
+    }
+
+    var result = { success: true, products: products };
+
+    // Metti in cache (max 100KB — tronca se troppo grande)
+    try {
+      var resultStr = JSON.stringify(result);
+      if (resultStr.length < 90000) cache.put('printful_products_v1', resultStr, 600);
+    } catch(e) {}
+
+    return jsonResponse(result);
+
+  } catch (err) {
+    console.error('[getPrintfulProducts]', err);
+    return jsonResponse({ success: false, error: err.toString() });
+  }
+}
+
 
 // ============================================================
 // STRIPE: Crea sessione di checkout

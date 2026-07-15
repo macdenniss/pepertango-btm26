@@ -611,21 +611,27 @@ function shopRenderGrid(filterCat) {
   }
 
   grid.innerHTML = products.map(function(p) {
-    var palette     = PRODUCT_COLORS[p.id] || { bg: 'var(--muted)', icon: 'rgba(45,45,45,.2)' };
+    var palette     = PRODUCT_COLORS[p.id] || { bg: '#f5f5f5', icon: 'rgba(45,45,45,.2)' };
     var catLabel    = p.category === 'abbigliamento' ? 'Abbigliamento' : 'Gadget';
-    var hasSize     = p.sizes.length > 0;
-    var hasColor    = p.colors.length > 1;
+    var hasSize     = p.sizes && p.sizes.length > 0;
+    var hasColor    = p.colors && p.colors.length > 1;
 
     // Riga varianti (taglie / colori disponibili)
     var variantHints = [];
     if (hasSize)  variantHints.push(p.sizes.join(' · '));
     if (hasColor) variantHints.push(p.colors.length + ' colori');
-    var variantText = variantHints.length ? variantHints.join(' &nbsp;|&nbsp; ') : p.material.split('—')[0].trim();
+    var matText     = (p.material || '').split('—')[0].trim();
+    var variantText = variantHints.length ? variantHints.join(' &nbsp;|&nbsp; ') : (matText || '&nbsp;');
+
+    // Contenuto immagine: foto reale Printful o icona fallback
+    var imgContent = p.thumbnail
+      ? '<img src="' + p.thumbnail + '" alt="' + p.name + '" style="width:100%;height:100%;object-fit:cover;border-radius:0">'
+      : '<i class="' + (p.icon || 'fa-solid fa-shirt') + '" style="color:' + palette.icon + ';font-size:4.5rem"></i>';
 
     return '<div class="shop-card" data-cat="' + p.category + '" onclick="productOpen(\'' + p.id + '\')">'
       // — immagine prodotto —
-      + '<div class="shop-img" style="background:' + palette.bg + '">'
-      +   '<i class="' + p.icon + '" style="color:' + palette.icon + ';font-size:4.5rem"></i>'
+      + '<div class="shop-img" style="background:' + (p.thumbnail ? '#fff' : palette.bg) + ';padding:0;overflow:hidden">'
+      +   imgContent
       +   (p.badge ? '<span class="shop-img-badge">' + p.badge + '</span>' : '')
       +   '<span class="shop-pod-pill">Su ordinazione</span>'
       + '</div>'
@@ -655,13 +661,42 @@ function filterShop(btn, cat) {
 
 
 // ============================================================
-// 8. INIT — si avvia quando il DOM è pronto
+// 8. CARICAMENTO PRODOTTI DA PRINTFUL
+// ============================================================
+
+// Carica il catalogo prodotti dall'endpoint Apps Script (Printful).
+// In caso di errore o risposta vuota, ricade sui prodotti statici di shop-products.js.
+function loadShopProducts() {
+  var grid = document.getElementById('shopGrid');
+  if (grid) {
+    grid.innerHTML = '<p style="font-family:\'Patrick Hand\',cursive;color:rgba(45,45,45,.4);padding:40px 0;text-align:center">'
+      + '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px"></i>Caricamento prodotti…</p>';
+  }
+
+  fetch(SHOP_SCRIPT_URL + '?action=getProducts')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data && data.success && data.products && data.products.length > 0) {
+        // Sovrascrive il catalogo statico con i prodotti reali di Printful
+        SHOP_PRODUCTS = data.products;
+      }
+      shopRenderGrid();
+    })
+    .catch(function(err) {
+      console.warn('[shop] Printful fetch fallita, uso catalogo statico:', err);
+      shopRenderGrid();
+    });
+}
+
+
+// ============================================================
+// 9. INIT — si avvia quando il DOM è pronto
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', function() {
-  cartLoad();       // carica carrello salvato
-  shopRenderGrid(); // renderizza tutti i prodotti
-  checkStripeReturn(); // gestisce redirect da Stripe Checkout
+  cartLoad();           // carica carrello salvato
+  loadShopProducts();   // carica prodotti da Printful (con fallback statico)
+  checkStripeReturn();  // gestisce redirect da Stripe Checkout
 });
 
 // Controlla se si ritorna dalla pagina di pagamento Stripe

@@ -9,6 +9,9 @@
 // Store Shopify (cs6dmc-ub.myshopify.com)
 var SHOPIFY_STORE    = 'cs6dmc-ub.myshopify.com';
 
+// Token pubblico Storefront API (visibile nel meta-tag della vetrina Shopify)
+var SHOPIFY_STOREFRONT_TOKEN = '196ffc816c275cb8f3dc6a5270c192cc';
+
 // Fallback: Apps Script con Printful (usato se Shopify non è ancora live)
 var SHOP_SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbw0NYSyNEXneEFS4PmS7XKJqChHcc-FP399vmlru3g9t0hr-2lXBtgfju6ZXGsCphP9/exec';
 
@@ -371,8 +374,15 @@ function pmAddToCart() {
     shopifyVariantId = (matched || currentProduct.shopifyVariants[0]).id;
   }
 
-  // Salva temporaneamente sul prodotto per cartAdd
-  currentProduct._selectedVariantId = shopifyVariantId;
+  // Prodotto Shopify → portare direttamente al carrello Shopify (con articolo già aggiunto)
+  if (shopifyVariantId) {
+    productClose();
+    window.location.href = 'https://' + SHOPIFY_STORE + '/cart/' + shopifyVariantId + ':' + selectedQty;
+    return;
+  }
+
+  // Fallback: carrello locale (prodotti Printful senza corrispondenza Shopify)
+  currentProduct._selectedVariantId = null;
   cartAdd(currentProduct.id, selectedColor, selectedSize, selectedQty);
   delete currentProduct._selectedVariantId;
   productClose();
@@ -390,24 +400,59 @@ function checkoutOpen() {
   if (cart.length === 0) return;
   cartClose();
 
-  // Costruisce l'URL carrello Shopify: /cart/VARIANTID:QTY,VARIANTID:QTY
+  // Costruisce i line items per Shopify
   var parts = [];
-  var missingVariant = false;
-
   cart.forEach(function(item) {
     if (item.shopifyVariantId) {
       parts.push(item.shopifyVariantId + ':' + item.qty);
-    } else {
-      missingVariant = true;
     }
   });
 
   if (parts.length > 0) {
-    // Redirect a Shopify checkout
-    window.open('https://' + SHOPIFY_STORE + '/cart/' + parts.join(','), '_blank');
-  } else if (missingVariant) {
-    // Prodotti non ancora da Shopify (store non pubblicato): vai allo store
-    window.open('https://' + SHOPIFY_STORE, '_blank');
+    // Usa Storefront API per creare un checkout Shopify e ottieni l'URL diretto
+    var lineItems = cart
+      .filter(function(item) { return item.shopifyVariantId; })
+      .map(function(item) {
+        return {
+          variantId: 'gid://shopify/ProductVariant/' + item.shopifyVariantId,
+          quantity: item.qty
+        };
+      });
+
+    var mutation = 'mutation checkoutCreate($input: CheckoutCreateInput!) {'
+      + '  checkoutCreate(input: $input) {'
+      + '    checkout { webUrl }'
+      + '    userErrors { field message }'
+      + '  }'
+      + '}';
+
+    fetch('https://' + SHOPIFY_STORE + '/api/2024-01/graphql.json', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_TOKEN
+      },
+      body: JSON.stringify({ query: mutation, variables: { input: { lineItems: lineItems } } })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var checkout = data.data && data.data.checkoutCreate && data.data.checkoutCreate.checkout;
+      if (checkout && checkout.webUrl) {
+        // Svuota carrello locale e vai al checkout Shopify
+        cartClear();
+        window.location.href = checkout.webUrl;
+      } else {
+        // Fallback: URL carrello diretto
+        window.location.href = 'https://' + SHOPIFY_STORE + '/cart/' + parts.join(',');
+      }
+    })
+    .catch(function() {
+      // Fallback: URL carrello diretto
+      window.location.href = 'https://' + SHOPIFY_STORE + '/cart/' + parts.join(',');
+    });
+  } else {
+    // Nessun prodotto Shopify nel carrello → vai allo store
+    window.location.href = 'https://' + SHOPIFY_STORE;
   }
 }
 

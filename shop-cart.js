@@ -17,7 +17,7 @@
 
 // URL del deploy Google Apps Script (ShopAppsScript.gs)
 // Sostituisci con il tuo URL dopo il deploy come Web App
-var SHOP_SCRIPT_URL = 'https://script.google.com/macros/s/INSERISCI_IL_TUO_SCRIPT_ID/exec';
+var SHOP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyX3avxi3DBLO28RDOufIXvMcskUZdGq5EgYmDglomEA1RqjGcpKVHECb-I6Ytv_ic/exec';
 
 
 // ============================================================

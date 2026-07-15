@@ -1474,6 +1474,319 @@
     .room-card-icon { font-size: 1.2rem !important; margin-bottom: 6px !important; }
     .room-card-name { font-size: 0.9rem !important; margin-bottom: 2px !important; }
     .room-card-desc { font-size: 0.75rem !important; }
+
+    /* ============================================================
+       SHOP — NAV CART BUTTON
+    ============================================================ */
+    .nav-right {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-cart-btn {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px;
+      background: none; border: 2px solid #fff; border-radius: 6px;
+      color: #fff; font-size: 1.1rem;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .nav-cart-btn:hover { background: var(--accent); border-color: var(--accent); }
+    .nav-cart-badge {
+      position: absolute; top: -6px; right: -6px;
+      background: var(--accent); color: #fff;
+      font-family: 'Patrick Hand', cursive; font-size: 10px; font-weight: 700;
+      min-width: 18px; height: 18px; border-radius: 999px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 4px; border: 2px solid #111;
+    }
+
+    /* ============================================================
+       SHOP — CART OVERLAY + DRAWER
+    ============================================================ */
+    #cartOverlay {
+      display: none; position: fixed; inset: 0; z-index: 900;
+      background: rgba(0,0,0,.45);
+    }
+    #cartOverlay.open { display: block; }
+    #cartDrawer {
+      position: fixed; top: 0; right: -420px; bottom: 0; z-index: 901;
+      width: 380px; max-width: 95vw;
+      background: #fff; border-left: 3px solid var(--fg);
+      box-shadow: -6px 0 0 0 var(--fg);
+      display: flex; flex-direction: column;
+      transition: right 0.3s var(--ease);
+    }
+    #cartDrawer.open { right: 0; }
+    .cart-header {
+      padding: 20px 20px 16px;
+      border-bottom: 2px solid var(--muted);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cart-header h3 {
+      font-family: 'Kalam', cursive; font-size: 1.3rem; font-weight: 700;
+    }
+    .cart-close {
+      background: none; border: none; font-size: 1.4rem;
+      cursor: pointer; color: var(--fg); padding: 4px;
+    }
+    #cartItems {
+      flex: 1; overflow-y: auto; padding: 16px 20px;
+    }
+    #cartEmpty {
+      text-align: center; padding: 40px 0;
+      font-family: 'Patrick Hand', cursive; color: rgba(45,45,45,.4);
+      font-size: 0.95rem;
+    }
+    #cartEmpty i { font-size: 2.5rem; margin-bottom: 12px; display: block; }
+    .cart-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 0; border-bottom: 1px solid var(--muted);
+    }
+    .cart-item-icon {
+      width: 44px; height: 44px; border-radius: 8px;
+      background: var(--muted); display: flex; align-items: center;
+      justify-content: center; font-size: 1.2rem; flex-shrink: 0;
+    }
+    .cart-item-info { flex: 1; min-width: 0; }
+    .cart-item-name { font-family: 'Kalam', cursive; font-size: 0.9rem; font-weight: 700; }
+    .cart-item-variant { font-size: 0.75rem; color: rgba(45,45,45,.5); margin-top: 2px; }
+    .cart-item-price { font-family: 'Kalam', cursive; font-size: 0.85rem; color: var(--accent); margin-top: 4px; }
+    .cart-item-qty {
+      display: flex; align-items: center; gap: 6px;
+    }
+    .cart-qty-btn {
+      width: 26px; height: 26px; border-radius: 50%;
+      border: 2px solid var(--fg); background: none;
+      font-size: 1rem; cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+      line-height: 1;
+    }
+    .cart-qty-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .cart-qty-val { font-family: 'Kalam', cursive; font-size: 0.9rem; min-width: 20px; text-align: center; }
+    #cartFooter {
+      padding: 16px 20px; border-top: 2px solid var(--muted);
+      display: none;
+    }
+    .cart-total-row {
+      display: flex; justify-content: space-between;
+      font-family: 'Kalam', cursive; font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 14px;
+    }
+    #cartTotal { color: var(--accent); }
+    .cart-cta {
+      display: block; width: 100%; padding: 14px;
+      background: var(--accent); color: #fff;
+      font-family: 'Kalam', cursive; font-size: 1rem; font-weight: 700;
+      border: 2px solid var(--fg); border-radius: var(--r-wobbly-sm);
+      box-shadow: var(--shadow); cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .cart-cta:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow-lg); }
+
+    /* ============================================================
+       SHOP — PRODUCT MODAL
+    ============================================================ */
+    #productModal {
+      display: none; position: fixed; inset: 0; z-index: 950;
+      background: rgba(0,0,0,.55);
+      align-items: center; justify-content: center;
+    }
+    #productModal.open { display: flex; }
+    .pm-box {
+      background: #fff; border: 3px solid var(--fg);
+      border-radius: var(--r-wobbly-md);
+      box-shadow: var(--shadow-lg);
+      width: 480px; max-width: 95vw;
+      max-height: 90vh; overflow-y: auto;
+      position: relative; padding: 28px;
+    }
+    .pm-close {
+      position: absolute; top: 14px; right: 14px;
+      background: none; border: none; font-size: 1.4rem;
+      cursor: pointer; color: var(--fg); padding: 4px;
+    }
+    .pm-icon {
+      width: 80px; height: 80px; border-radius: 16px;
+      background: var(--muted); display: flex;
+      align-items: center; justify-content: center;
+      font-size: 2.2rem; margin-bottom: 14px;
+    }
+    .pm-badge-wrap { margin-bottom: 8px; }
+    .pm-badge {
+      display: inline-block; background: var(--accent); color: #fff;
+      font-family: 'Kalam', cursive; font-size: 11px; font-weight: 700;
+      padding: 2px 10px; border-radius: 4px; border: 2px solid var(--fg);
+    }
+    #pmName {
+      font-family: 'Kalam', cursive; font-size: 1.4rem; font-weight: 700;
+      margin-bottom: 6px;
+    }
+    #pmPrice {
+      font-family: 'Kalam', cursive; font-size: 1.5rem; color: var(--accent);
+      margin-bottom: 12px;
+    }
+    #pmDesc { font-size: 0.9rem; color: rgba(45,45,45,.7); margin-bottom: 14px; }
+    #pmMaterial { font-size: 0.8rem; color: rgba(45,45,45,.45); margin-bottom: 16px; }
+    .pm-section-label {
+      font-family: 'Kalam', cursive; font-size: 0.85rem; font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .pm-colors-list { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .pm-color {
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 2px solid #2d2d2d; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; transition: transform 0.1s;
+    }
+    .pm-color:hover { transform: scale(1.15); }
+    .pm-color.active { box-shadow: 0 0 0 3px var(--accent); }
+    .pm-sizes-list { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .pm-size {
+      min-width: 40px; padding: 6px 10px;
+      border: 2px solid var(--fg); border-radius: 6px;
+      background: none; font-family: 'Patrick Hand', cursive; font-size: 0.85rem;
+      cursor: pointer; transition: all 0.1s;
+    }
+    .pm-size:hover, .pm-size.active {
+      background: var(--fg); color: #fff;
+    }
+    .pm-qty-row {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    }
+    .pm-qty-btn {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 2px solid var(--fg); background: none;
+      font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pm-qty-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+    #pmQty { font-family: 'Kalam', cursive; font-size: 1rem; min-width: 24px; text-align: center; }
+    .pm-add-btn {
+      display: block; width: 100%; padding: 14px;
+      background: var(--accent); color: #fff;
+      font-family: 'Kalam', cursive; font-size: 1.05rem; font-weight: 700;
+      border: 2px solid var(--fg); border-radius: var(--r-wobbly-sm);
+      box-shadow: var(--shadow); cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .pm-add-btn:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow-lg); }
+
+    /* ============================================================
+       SHOP — CHECKOUT MODAL
+    ============================================================ */
+    #checkoutModal {
+      display: none; position: fixed; inset: 0; z-index: 960;
+      background: rgba(0,0,0,.6);
+      align-items: center; justify-content: center;
+    }
+    #checkoutModal.open { display: flex; }
+    .co-box {
+      background: #fff; border: 3px solid var(--fg);
+      border-radius: var(--r-wobbly-md);
+      box-shadow: var(--shadow-lg);
+      width: 520px; max-width: 95vw;
+      max-height: 92vh; overflow-y: auto;
+      position: relative; display: flex; flex-direction: column;
+    }
+    .co-header {
+      padding: 22px 28px 16px;
+      border-bottom: 2px solid var(--muted);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .co-header h3 { font-family: 'Kalam', cursive; font-size: 1.2rem; font-weight: 700; }
+    .co-close {
+      background: none; border: none; font-size: 1.3rem;
+      cursor: pointer; color: var(--fg);
+    }
+    .co-progress {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 14px 28px;
+      border-bottom: 2px solid var(--muted);
+    }
+    .co-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--muted); border: 2px solid var(--fg);
+      transition: all 0.2s;
+    }
+    .co-dot.active { background: var(--accent); width: 12px; height: 12px; }
+    .co-dot.done { background: var(--fg); }
+    .co-dot-line { width: 30px; height: 2px; background: var(--muted); }
+    .co-body { padding: 24px 28px; flex: 1; }
+    .co-body h4 {
+      font-family: 'Kalam', cursive; font-size: 1.05rem; font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .co-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .co-field { display: flex; flex-direction: column; gap: 5px; }
+    .co-field label { font-size: 0.8rem; font-family: 'Patrick Hand', cursive; color: rgba(45,45,45,.6); }
+    .co-field input, .co-field select {
+      border: 2px solid var(--fg); border-radius: 6px;
+      padding: 8px 10px; font-family: 'Patrick Hand', cursive; font-size: 0.9rem;
+      background: #fff; color: var(--fg);
+    }
+    .co-field input:focus, .co-field select:focus { outline: none; border-color: var(--accent); }
+    .co-field.full { grid-column: 1 / -1; }
+    #coError {
+      display: none; background: #fff0f0; border: 2px solid var(--accent);
+      border-radius: 6px; padding: 10px 12px;
+      font-family: 'Patrick Hand', cursive; font-size: 0.85rem; color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .co-summary-item {
+      display: flex; justify-content: space-between;
+      padding: 8px 0; border-bottom: 1px solid var(--muted);
+      font-family: 'Patrick Hand', cursive; font-size: 0.9rem;
+    }
+    .co-summary-item small { color: rgba(45,45,45,.5); font-size: 0.8rem; }
+    .co-si-price { font-family: 'Kalam', cursive; font-weight: 700; }
+    .co-total-row {
+      display: flex; justify-content: space-between;
+      font-family: 'Kalam', cursive; font-size: 1.1rem; font-weight: 700;
+      margin-top: 14px; padding-top: 14px;
+      border-top: 2px solid var(--fg);
+    }
+    #co_summaryShipping {
+      margin-top: 16px; padding: 12px;
+      background: var(--yellow); border: 2px solid var(--fg);
+      border-radius: 8px; font-size: 0.85rem;
+    }
+    .co-success {
+      text-align: center; padding: 30px 0;
+    }
+    .co-success i { font-size: 3rem; color: #2a6b2a; margin-bottom: 16px; display: block; }
+    .co-success h4 { font-family: 'Kalam', cursive; font-size: 1.3rem; margin-bottom: 10px; }
+    .co-success p { font-size: 0.9rem; color: rgba(45,45,45,.6); margin-bottom: 20px; }
+    .co-success-close {
+      padding: 12px 28px;
+      background: var(--fg); color: #fff;
+      font-family: 'Kalam', cursive; font-size: 1rem;
+      border: 2px solid var(--fg); border-radius: var(--r-wobbly-sm);
+      box-shadow: var(--shadow); cursor: pointer;
+    }
+    #coFooter {
+      padding: 16px 28px; border-top: 2px solid var(--muted);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .co-btn-prev {
+      background: none; border: 2px solid var(--fg);
+      border-radius: var(--r-wobbly-sm); padding: 10px 22px;
+      font-family: 'Kalam', cursive; font-size: 0.95rem;
+      cursor: pointer; box-shadow: var(--shadow-sm);
+    }
+    .co-btn-prev:hover { background: var(--muted); }
+    .co-btn-next {
+      background: var(--accent); color: #fff;
+      border: 2px solid var(--fg); border-radius: var(--r-wobbly-sm);
+      padding: 12px 28px;
+      font-family: 'Kalam', cursive; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; box-shadow: var(--shadow);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .co-btn-next:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow-lg); }
+
+    @media (max-width: 600px) {
+      .co-row { grid-template-columns: 1fr; }
+      #cartDrawer { width: 100%; border-left: none; border-top: 3px solid var(--fg); }
+    }
   </style>
 </head>
 <body>
@@ -1489,9 +1802,15 @@
       <li><a href="#" onclick="showPage('shop');return false;" data-page="shop">Shop</a></li>
       <li><a href="#" onclick="showPage('privacy');return false;" data-page="privacy">Privacy</a></li>
     </ul>
-    <button class="nav-hamburger" id="navHamburger" onclick="toggleMenu()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav-right">
+      <button class="nav-cart-btn" id="navCartBtn" onclick="cartOpen()" aria-label="Carrello">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="nav-cart-badge" id="cartCount" style="display:none">0</span>
+      </button>
+      <button class="nav-hamburger" id="navHamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
   <div class="nav-drawer" id="navDrawer">
     <a href="#" onclick="showPage('home');toggleMenu();return false;">Home</a>
@@ -2210,100 +2529,7 @@
       <button class="shop-cat" onclick="filterShop(this,'abbigliamento')">Abbigliamento</button>
       <button class="shop-cat" onclick="filterShop(this,'gadget')">Gadget</button>
     </div>
-    <div class="shop-grid reveal d1">
-      <!-- ABBIGLIAMENTO -->
-      <div class="shop-card" data-cat="abbigliamento">
-        <div class="shop-img">
-          <i class="fa-solid fa-shirt" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
-          <span class="shop-img-badge">Abbigliamento</span>
-        </div>
-        <div class="shop-body">
-          <div class="shop-cat-tag">Abbigliamento</div>
-          <div class="shop-name">T-Shirt PeperTango</div>
-          <div class="shop-desc">100% cotone organico. Logo PeperTango stampato. Colori: nero, rosso, bianco.</div>
-          <div class="shop-footer">
-            <span class="shop-price">&euro;35</span>
-            <button class="shop-add" onclick="shopNotify('T-Shirt PeperTango')"><i class="fa-solid fa-plus"></i></button>
-          </div>
-        </div>
-      </div>
-      <div class="shop-card" data-cat="abbigliamento">
-        <div class="shop-img">
-          <i class="fa-solid fa-vest" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
-          <span class="shop-img-badge">Abbigliamento</span>
-        </div>
-        <div class="shop-body">
-          <div class="shop-cat-tag">Abbigliamento</div>
-          <div class="shop-name">Felpa PeperTango</div>
-          <div class="shop-desc">Felpa girocollo unisex. Logo stampato sul petto. S / M / L / XL / XXL.</div>
-          <div class="shop-footer">
-            <span class="shop-price">&euro;55</span>
-            <button class="shop-add" onclick="shopNotify('Felpa PeperTango')"><i class="fa-solid fa-plus"></i></button>
-          </div>
-        </div>
-      </div>
-      <div class="shop-card" data-cat="abbigliamento">
-        <div class="shop-img">
-          <i class="fa-solid fa-baseball-bat-ball" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
-          <span class="shop-img-badge">Abbigliamento</span>
-        </div>
-        <div class="shop-body">
-          <div class="shop-cat-tag">Abbigliamento</div>
-          <div class="shop-name">Cappellino PeperTango</div>
-          <div class="shop-desc">Berretto con visiera ricamato. Taglia unica regolabile.</div>
-          <div class="shop-footer">
-            <span class="shop-price">&euro;28</span>
-            <button class="shop-add" onclick="shopNotify('Cappellino PeperTango')"><i class="fa-solid fa-plus"></i></button>
-          </div>
-        </div>
-      </div>
-      <!-- GADGET -->
-      <div class="shop-card" data-cat="gadget">
-        <div class="shop-img">
-          <i class="fa-solid fa-bag-shopping" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
-          <span class="shop-img-badge">Gadget</span>
-        </div>
-        <div class="shop-body">
-          <div class="shop-cat-tag">Gadget</div>
-          <div class="shop-name">Tote Bag</div>
-          <div class="shop-desc">Shopper in cotone naturale con logo PeperTango serigrafato.</div>
-          <div class="shop-footer">
-            <span class="shop-price">&euro;18</span>
-            <button class="shop-add" onclick="shopNotify('Tote Bag PeperTango')"><i class="fa-solid fa-plus"></i></button>
-          </div>
-        </div>
-      </div>
-      <div class="shop-card" data-cat="gadget">
-        <div class="shop-img">
-          <i class="fa-solid fa-mug-hot" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
-          <span class="shop-img-badge">Gadget</span>
-        </div>
-        <div class="shop-body">
-          <div class="shop-cat-tag">Gadget</div>
-          <div class="shop-name">Mug PeperTango</div>
-          <div class="shop-desc">Tazza in ceramica 330ml con logo. Lavabile in lavastoviglie.</div>
-          <div class="shop-footer">
-            <span class="shop-price">&euro;16</span>
-            <button class="shop-add" onclick="shopNotify('Mug PeperTango')"><i class="fa-solid fa-plus"></i></button>
-          </div>
-        </div>
-      </div>
-      <div class="shop-card" data-cat="gadget">
-        <div class="shop-img">
-          <i class="fa-solid fa-image" style="color:rgba(255,255,255,.2);font-size:3rem"></i>
-          <span class="shop-img-badge">Gadget</span>
-        </div>
-        <div class="shop-body">
-          <div class="shop-cat-tag">Gadget</div>
-          <div class="shop-name">Poster Festival</div>
-          <div class="shop-desc">Stampa artistica 50x70 cm. Carta opaca 200g. Edizione limitata.</div>
-          <div class="shop-footer">
-            <span class="shop-price">&euro;25</span>
-            <button class="shop-add" onclick="shopNotify('Poster Festival PeperTango')"><i class="fa-solid fa-plus"></i></button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="shopGrid" class="shop-grid reveal d1"></div>
     <p class="shop-note">
       <i class="fa-solid fa-truck"></i> Spedizione in tutta Italia &mdash; prodotti realizzati su ordinazione tramite Printful.<br>
       Per info scrivi a <a href="mailto:pepertango@gmail.com">pepertango@gmail.com</a>
@@ -2625,6 +2851,9 @@
             var tel      = g('tel') ? g('tel').value.trim() : '';
             var facebook = g('facebook') ? g('facebook').value.trim() : '';
             var citta    = g('citta') ? g('citta').value.trim() : '';
+            if (!nome)                          { alert('Inserisci il nome.'); return false; }
+            if (!cognome)                       { alert('Inserisci il cognome.'); return false; }
+            if (!email || !email.includes('@')) { alert('Email non valida.'); return false; }
             self.data.nome           = nome;
             self.data.cognome        = cognome;
             self.data.nome_completo  = nome + ' ' + cognome;
@@ -2935,5 +3164,197 @@
     /* init: active nav highlight for home */
     document.addEventListener('DOMContentLoaded', function() { showPage('home'); });
   </script>
+
+  <!-- ============================================================
+       SHOP: OVERLAY + CART DRAWER
+  ============================================================ -->
+  <div id="cartOverlay" onclick="cartClose()"></div>
+  <div id="cartDrawer" role="dialog" aria-label="Carrello">
+    <div class="cart-header">
+      <h3><i class="fa-solid fa-bag-shopping" style="margin-right:8px"></i>Carrello</h3>
+      <button class="cart-close" onclick="cartClose()" aria-label="Chiudi">&times;</button>
+    </div>
+    <div id="cartItems">
+      <div id="cartEmpty">
+        <i class="fa-solid fa-bag-shopping"></i>
+        Il carrello è vuoto
+      </div>
+    </div>
+    <div id="cartFooter">
+      <div class="cart-total-row">
+        <span>Totale</span>
+        <span id="cartTotal">€0</span>
+      </div>
+      <button class="cart-cta" onclick="checkoutOpen()">
+        <i class="fa-solid fa-lock" style="margin-right:8px"></i>Procedi al checkout
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SHOP: MODAL PRODOTTO
+  ============================================================ -->
+  <div id="productModal" role="dialog" aria-modal="true" onclick="if(event.target===this)productClose()">
+    <div class="pm-box">
+      <button class="pm-close" onclick="productClose()" aria-label="Chiudi">&times;</button>
+      <div class="pm-icon"><i id="pmIcon" class="pm-icon-i"></i></div>
+      <div class="pm-badge-wrap">
+        <span class="pm-badge" id="pmBadge" style="display:none"></span>
+      </div>
+      <div id="pmName"></div>
+      <div id="pmPrice"></div>
+      <div id="pmDesc"></div>
+      <div id="pmMaterial"></div>
+
+      <!-- Colori -->
+      <div id="pmColors">
+        <div class="pm-section-label">Colore</div>
+        <div class="pm-colors-list" id="pmColorsList"></div>
+      </div>
+
+      <!-- Taglie -->
+      <div id="pmSizes">
+        <div class="pm-section-label">Taglia</div>
+        <div class="pm-sizes-list" id="pmSizesList"></div>
+      </div>
+
+      <!-- Quantità -->
+      <div class="pm-section-label">Quantità</div>
+      <div class="pm-qty-row">
+        <button class="pm-qty-btn" onclick="pmChangeQty(-1)">&#8722;</button>
+        <span id="pmQty">1</span>
+        <button class="pm-qty-btn" onclick="pmChangeQty(1)">+</button>
+      </div>
+
+      <button class="pm-add-btn" onclick="pmAddToCart()">
+        <i class="fa-solid fa-bag-shopping" style="margin-right:8px"></i>Aggiungi al carrello
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SHOP: MODAL CHECKOUT (3 step + conferma)
+  ============================================================ -->
+  <div id="checkoutModal" role="dialog" aria-modal="true">
+    <div class="co-box">
+
+      <!-- Header -->
+      <div class="co-header">
+        <h3>Checkout</h3>
+        <button class="co-close" onclick="checkoutClose()" aria-label="Chiudi">&times;</button>
+      </div>
+
+      <!-- Progress dots (solo 3 step visibili; step 4 = success) -->
+      <div class="co-progress" id="co_progressBar">
+        <div class="co-dot active" id="co_dot1"></div>
+        <div class="co-dot-line"></div>
+        <div class="co-dot" id="co_dot2"></div>
+        <div class="co-dot-line"></div>
+        <div class="co-dot" id="co_dot3"></div>
+      </div>
+
+      <!-- Errore di validazione (condiviso tra step) -->
+      <div style="padding:0 28px"><div id="coError"></div></div>
+
+      <!-- Step 1: dati personali -->
+      <div class="co-body" id="co_step1">
+        <h4>Chi sei?</h4>
+        <div class="co-row">
+          <div class="co-field">
+            <label>Nome *</label>
+            <input type="text" id="co_nome" placeholder="Mario" autocomplete="given-name">
+          </div>
+          <div class="co-field">
+            <label>Cognome *</label>
+            <input type="text" id="co_cognome" placeholder="Rossi" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="co-row">
+          <div class="co-field full">
+            <label>Email *</label>
+            <input type="email" id="co_email" placeholder="mario@example.com" autocomplete="email">
+          </div>
+        </div>
+        <div class="co-row">
+          <div class="co-field full">
+            <label>Telefono</label>
+            <input type="tel" id="co_tel" placeholder="+39 333 000 0000" autocomplete="tel">
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: indirizzo spedizione -->
+      <div class="co-body" id="co_step2" style="display:none">
+        <h4>Dove spediamo?</h4>
+        <div class="co-row">
+          <div class="co-field full">
+            <label>Via e numero civico *</label>
+            <input type="text" id="co_via" placeholder="Via Roma 12" autocomplete="street-address">
+          </div>
+        </div>
+        <div class="co-row">
+          <div class="co-field">
+            <label>CAP *</label>
+            <input type="text" id="co_cap" placeholder="00100" autocomplete="postal-code" maxlength="10">
+          </div>
+          <div class="co-field">
+            <label>Città *</label>
+            <input type="text" id="co_citta" placeholder="Roma" autocomplete="address-level2">
+          </div>
+        </div>
+        <div class="co-row">
+          <div class="co-field full">
+            <label>Paese</label>
+            <select id="co_paese" autocomplete="country-name">
+              <option value="Italia">Italia</option>
+              <option value="Svizzera">Svizzera</option>
+              <option value="Germania">Germania</option>
+              <option value="Francia">Francia</option>
+              <option value="Spagna">Spagna</option>
+              <option value="Altro">Altro</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: riepilogo -->
+      <div class="co-body" id="co_step3" style="display:none">
+        <h4>Riepilogo ordine</h4>
+        <div id="co_summaryItems"></div>
+        <div class="co-total-row">
+          <span>Totale</span>
+          <span id="co_summaryTotal"></span>
+        </div>
+        <div id="co_summaryShipping"></div>
+        <p style="margin-top:14px;font-size:0.78rem;color:rgba(45,45,45,.45)">
+          Il pagamento verrà elaborato in modo sicuro. Riceverai una conferma via email.
+        </p>
+      </div>
+
+      <!-- Step 4: successo -->
+      <div class="co-body" id="co_step4" style="display:none">
+        <div class="co-success">
+          <i class="fa-solid fa-circle-check"></i>
+          <h4>Ordine ricevuto!</h4>
+          <p>Grazie per il tuo acquisto. Ti contatteremo a breve per confermare l'ordine e comunicarti i dettagli del pagamento.</p>
+          <button class="co-success-close" onclick="checkoutClose()">Chiudi</button>
+        </div>
+      </div>
+
+      <!-- Footer navigazione -->
+      <div id="coFooter">
+        <button class="co-btn-prev" id="coBtnPrev" onclick="checkoutPrev()" style="display:none">Indietro</button>
+        <button class="co-btn-next" id="coBtnNext" onclick="checkoutNext()">Continua</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SHOP SCRIPTS
+  ============================================================ -->
+  <script src="shop-products.js"></script>
+  <script src="shop-cart.js"></script>
+
 </body>
 </html>

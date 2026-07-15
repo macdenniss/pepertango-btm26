@@ -10,7 +10,14 @@
 //   checkoutOpen() / checkoutClose()  — apre/chiude il checkout
 //   shopRenderGrid(cat)               — renderizza la griglia prodotti
 //   filterShop(btn, cat)              — filtra per categoria (override)
+//
+// DROPSHIPPING FLOW:
+//   Checkout → ShopAppsScript.gs → Stripe Checkout → webhook → Printful
 // ============================================================
+
+// URL del deploy Google Apps Script (ShopAppsScript.gs)
+// Sostituisci con il tuo URL dopo il deploy come Web App
+var SHOP_SCRIPT_URL = 'https://script.google.com/macros/s/INSERISCI_IL_TUO_SCRIPT_ID/exec';
 
 
 // ============================================================
@@ -502,68 +509,62 @@ function checkoutRenderSummary() {
   }
 }
 
-// Invia l'ordine via FormSubmit (email a pepertango@gmail.com) + mostra conferma
+// Avvia il checkout Stripe: invia il carrello all'Apps Script
+// che crea la sessione Stripe e restituisce l'URL di pagamento.
 function checkoutSubmit() {
 
-  // Costruisce il testo del riepilogo ordine
-  var itemLines = cart.map(function(item) {
-    var info = [];
-    if (item.color && item.color !== 'Standard' && item.color !== 'Multicolore' && item.color !== 'Naturale') info.push(item.color);
-    if (item.size) info.push(item.size);
-    return '- ' + item.name + ' x' + item.qty
-      + (info.length ? ' (' + info.join(', ') + ')' : '')
-      + ' — €' + (item.price * item.qty);
-  }).join('\n');
-
-  var orderText = [
-    'NUOVO ORDINE PEPERTANGO STORE',
-    '==============================',
-    'Cliente:  ' + checkoutData.nome + ' ' + checkoutData.cognome,
-    'Email:    ' + checkoutData.email,
-    'Tel:      ' + (checkoutData.tel || 'non fornito'),
-    '',
-    'Spedizione:',
-    checkoutData.via + ', ' + checkoutData.cap + ' ' + checkoutData.citta
-      + ', ' + (checkoutData.paese || 'Italia'),
-    '',
-    'Prodotti:',
-    itemLines,
-    '',
-    'TOTALE ORDINE: €' + cartTotal(),
-    '',
-    '(Produzione print-on-demand via Printful — rispondere entro 24h)'
-  ].join('\n');
-
-  // Disabilita il bottone per evitare doppi invii
   var nextBtn = document.getElementById('coBtnNext');
-  if (nextBtn) { nextBtn.disabled = true; nextBtn.textContent = 'Invio in corso...'; }
+  if (nextBtn) { nextBtn.disabled = true; nextBtn.textContent = 'Reindirizzamento...'; }
 
-  // Invia via FormSubmit AJAX (nessuna API key richiesta)
-  fetch('https://formsubmit.co/ajax/pepertango@gmail.com', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify({
-      _subject: 'Nuovo Ordine Store — ' + checkoutData.nome + ' ' + checkoutData.cognome,
-      name:     checkoutData.nome + ' ' + checkoutData.cognome,
-      email:    checkoutData.email,
-      message:  orderText,
-      _template: 'basic',
-      _captcha:  'false'
+  var payload = {
+    action: 'createCheckout',
+    customer: {
+      nome:    checkoutData.nome,
+      cognome: checkoutData.cognome,
+      email:   checkoutData.email,
+      tel:     checkoutData.tel || ''
+    },
+    address: {
+      via:    checkoutData.via,
+      cap:    checkoutData.cap,
+      citta:  checkoutData.citta,
+      paese:  checkoutData.paese || 'Italia'
+    },
+    items: cart.map(function(item) {
+      var variant = [item.color, item.size].filter(function(v) {
+        return v && v !== 'Standard' && v !== 'Multicolore' && v !== 'Naturale';
+      }).join(' / ');
+      return {
+        id:      item.id,
+        name:    item.name,
+        color:   item.color  || '',
+        size:    item.size   || '',
+        price:   item.price,
+        qty:     item.qty,
+        variant: variant
+      };
     })
+  };
+
+  fetch(SHOP_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
   })
   .then(function(res) { return res.json(); })
-  .then(function() {
-    // Successo: mostra step 4 e svuota carrello
-    checkoutStep = 4;
-    checkoutRenderStep();
-    cartClear();
+  .then(function(data) {
+    if (data.url) {
+      // Svuota il carrello prima del redirect (il pagamento è su Stripe)
+      cartClear();
+      window.location.href = data.url;
+    } else {
+      coShowError('Errore: ' + (data.error || 'Riprova tra qualche istante.'));
+      if (nextBtn) { nextBtn.disabled = false; nextBtn.textContent = 'Completa ordine'; }
+    }
   })
   .catch(function() {
-    // In caso di errore di rete mostriamo comunque la conferma
-    // (l'ordine può essere recuperato manualmente dal cliente)
-    checkoutStep = 4;
-    checkoutRenderStep();
-    cartClear();
+    coShowError('Errore di rete. Controlla la connessione e riprova.');
+    if (nextBtn) { nextBtn.disabled = false; nextBtn.textContent = 'Completa ordine'; }
   });
 }
 
@@ -582,6 +583,18 @@ function coHideError() {
 // 7. GRIGLIA PRODOTTI
 // ============================================================
 
+// Palette colori per ogni prodotto (sfondo card immagine)
+var PRODUCT_COLORS = {
+  'tshirt':     { bg: 'linear-gradient(135deg,#ff6b6b 0%,#ff4d4d 100%)',    icon: 'rgba(255,255,255,0.9)' },
+  'felpa':      { bg: 'linear-gradient(135deg,#ff9f7f 0%,#e06030 100%)',    icon: 'rgba(255,255,255,0.9)' },
+  'hoodie':     { bg: 'linear-gradient(135deg,#3a3a3a 0%,#1a1a1a 100%)',    icon: 'rgba(255,255,255,0.75)' },
+  'cappellino': { bg: 'linear-gradient(135deg,#6aab6a 0%,#3d7a3d 100%)',    icon: 'rgba(255,255,255,0.9)' },
+  'tote':       { bg: 'linear-gradient(135deg,#e0d5be 0%,#c8b99a 100%)',    icon: 'rgba(45,45,45,0.45)' },
+  'mug':        { bg: 'linear-gradient(135deg,#7b5040 0%,#4a2e22 100%)',    icon: 'rgba(255,255,255,0.85)' },
+  'poster':     { bg: 'linear-gradient(135deg,#4a80d0 0%,#1f5099 100%)',    icon: 'rgba(255,255,255,0.9)' },
+  'sticker':    { bg: 'linear-gradient(135deg,#ffd93d 0%,#ff6b6b 100%)',    icon: 'rgba(45,45,45,0.5)' }
+};
+
 // Renderizza i prodotti nel div#shopGrid, filtrando per categoria
 function shopRenderGrid(filterCat) {
   filterCat = filterCat || 'all';
@@ -598,26 +611,33 @@ function shopRenderGrid(filterCat) {
   }
 
   grid.innerHTML = products.map(function(p) {
-    // Testo varianti sotto il nome
+    var palette     = PRODUCT_COLORS[p.id] || { bg: 'var(--muted)', icon: 'rgba(45,45,45,.2)' };
+    var catLabel    = p.category === 'abbigliamento' ? 'Abbigliamento' : 'Gadget';
+    var hasSize     = p.sizes.length > 0;
+    var hasColor    = p.colors.length > 1;
+
+    // Riga varianti (taglie / colori disponibili)
     var variantHints = [];
-    if (p.sizes.length > 0)  variantHints.push(p.sizes.length + ' taglie');
-    if (p.colors.length > 1) variantHints.push(p.colors.length + ' colori');
-    var variantText = variantHints.length ? variantHints.join(' · ') : p.material.split('—')[0].trim();
+    if (hasSize)  variantHints.push(p.sizes.join(' · '));
+    if (hasColor) variantHints.push(p.colors.length + ' colori');
+    var variantText = variantHints.length ? variantHints.join(' &nbsp;|&nbsp; ') : p.material.split('—')[0].trim();
 
-    var catLabel = p.category === 'abbigliamento' ? 'Abbigliamento' : 'Gadget';
-
-    return '<div class="shop-card" data-cat="' + p.category + '" onclick="productOpen(\'' + p.id + '\')" style="cursor:pointer">'
-      + '<div class="shop-img">'
-      +   '<i class="' + p.icon + '" style="color:rgba(45,45,45,.18);font-size:3.5rem"></i>'
+    return '<div class="shop-card" data-cat="' + p.category + '" onclick="productOpen(\'' + p.id + '\')">'
+      // — immagine prodotto —
+      + '<div class="shop-img" style="background:' + palette.bg + '">'
+      +   '<i class="' + p.icon + '" style="color:' + palette.icon + ';font-size:4.5rem"></i>'
       +   (p.badge ? '<span class="shop-img-badge">' + p.badge + '</span>' : '')
+      +   '<span class="shop-pod-pill">Su ordinazione</span>'
       + '</div>'
+      // — body —
       + '<div class="shop-body">'
       +   '<div class="shop-cat-tag">' + catLabel + '</div>'
       +   '<div class="shop-name">' + p.name + '</div>'
       +   '<div class="shop-desc">' + variantText + '</div>'
+      +   '<div class="shop-delivery"><i class="fa-solid fa-clock" style="font-size:10px"></i> 3–7 gg produzione &nbsp;·&nbsp; spedizione tracciata</div>'
       +   '<div class="shop-footer">'
       +     '<span class="shop-price">&euro;' + p.price + '</span>'
-      +     '<button class="shop-add" onclick="event.stopPropagation();productOpen(\'' + p.id + '\')" aria-label="Aggiungi al carrello">'
+      +     '<button class="shop-add" onclick="event.stopPropagation();productOpen(\'' + p.id + '\')" aria-label="Scegli variante">'
       +       '<i class="fa-solid fa-plus"></i>'
       +     '</button>'
       +   '</div>'
@@ -641,4 +661,27 @@ function filterShop(btn, cat) {
 document.addEventListener('DOMContentLoaded', function() {
   cartLoad();       // carica carrello salvato
   shopRenderGrid(); // renderizza tutti i prodotti
+  checkStripeReturn(); // gestisce redirect da Stripe Checkout
 });
+
+// Controlla se si ritorna dalla pagina di pagamento Stripe
+function checkStripeReturn() {
+  var params = new URLSearchParams(window.location.search);
+
+  if (params.get('shop_success') === '1') {
+    // Pagamento completato — mostra la pagina shop con banner successo
+    if (typeof showPage === 'function') showPage('shop');
+    var banner = document.getElementById('shopSuccessBanner');
+    if (banner) {
+      banner.style.display = 'flex';
+      setTimeout(function() { banner.style.display = 'none'; }, 7000);
+    }
+    history.replaceState({}, '', window.location.pathname);
+  }
+
+  if (params.get('shop_cancel') === '1') {
+    // Utente ha annullato il pagamento — torna allo shop
+    if (typeof showPage === 'function') showPage('shop');
+    history.replaceState({}, '', window.location.pathname);
+  }
+}

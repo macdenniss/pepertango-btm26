@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brutia Tango Fest — Area Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* ============================================================
+       DESIGN SYSTEM — COOL TECH ADMIN THEME
+       ============================================================ */
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      
+      --accent: #7c3aed; /* Brutia Purple */
+      --accent-hover: #6d28d9;
+      --accent-light: #f5f3ff;
+      --accent-border: #ddd6fe;
+
+      --success: #10b981;
+      --success-light: #ecfdf5;
+      --success-border: #a7f3d0;
+      
+      --warning: #f59e0b;
+      --warning-light: #fffbeb;
+      --warning-border: #fde68a;
+
+      --danger: #ef4444;
+      --danger-light: #fef2f2;
+      --danger-border: #fca5a5;
+      
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      
+      --radius: 8px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+    .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .header-brand img {
+      height: 42px;
+      width: auto;
+    }
+    .header-brand h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover {
+      background: var(--accent-light);
+      color: var(--accent);
+      border-color: var(--accent-border);
+    }
+    .btn-danger {
+      background: var(--danger-light);
+      color: var(--danger);
+      border-color: var(--danger-border);
+    }
+    .btn-danger:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    /* Tabs */
+    .tabs-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .tab-btn {
+      padding: 10px 20px;
+      background: transparent;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.15s ease;
+    }
+    .tab-btn:hover {
+      color: var(--accent);
+    }
+    .tab-btn.active {
+      color: var(--accent);
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    /* ============================================================
+       CONTAINER
+       ============================================================ */
+    .main-container {
+      max-width: 1400px;
+      width: 95%;
+      margin: 2rem auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ============================================================
+       KPI CARDS
+       ============================================================ */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--accent);
+    }
+    .kpi-card.kpi-success::before { background: var(--success); }
+    .kpi-card.kpi-warning::before { background: var(--warning); }
+    .kpi-card.kpi-danger::before { background: var(--danger); }
+    
+    .kpi-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--text-secondary);
+    }
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .kpi-sub {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* ============================================================
+       FILTERS
+       ============================================================ */
+    .filter-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-sm);
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      min-width: 200px;
+    }
+    .filter-group.search-group { flex: 2; }
+    .filter-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    .filter-control {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      width: 100%;
+      background-color: var(--bg);
+    }
+    .filter-control:focus {
+      border-color: var(--accent);
+      background-color: #fff;
+    }
+
+    /* ============================================================
+       TABLE
+       ============================================================ */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .table-responsive {
+      overflow-x: auto;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.875rem;
+    }
+    th {
+      background: #f8fafc;
+      padding: 12px 16px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: middle;
+    }
+    tr:hover td {
+      background-color: #f8fafc;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge-success { background: var(--success-light); color: var(--success); border: 1px solid var(--success-border); }
+    .badge-warning { background: var(--warning-light); color: var(--warning); border: 1px solid var(--warning-border); }
+    .badge-danger { background: var(--danger-light); color: var(--danger); border: 1px solid var(--danger-border); }
+    .badge-neutral { background: var(--bg); color: var(--text-secondary); border: 1px solid var(--border); }
+
+    /* Action Buttons in Row */
+    .action-group {
+      display: flex;
+      gap: 6px;
+    }
+    .action-icon-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.15s ease;
+    }
+    .action-icon-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-light);
+    }
+    .action-icon-btn.delete:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+      background: var(--danger-light);
+    }
+
+    /* ============================================================
+       CAMERE GRID
+       ============================================================ */
+    .camera-type-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .camera-type-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .camera-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.25rem;
+    }
+    .camera-card-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      min-height: 110px;
+    }
+    .camera-card-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent-border);
+      background: var(--surface);
+    }
+    .camera-num {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+    }
+    .camera-occupant {
+      font-size: 0.8rem;
+      background: #fff;
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      word-break: break-word;
+    }
+    .camera-card-item.full {
+      border-left: 4px solid var(--success);
+    }
+    .camera-card-item.partial {
+      border-left: 4px solid var(--warning);
+    }
+    .camera-card-item.empty {
+      border-left: 4px solid var(--text-secondary);
+      opacity: 0.7;
+    }
+
+    /* ============================================================
+       MODAL DIALOG
+       ============================================================ */
+    dialog {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      max-width: 550px;
+      width: 90%;
+      margin: auto;
+      background: var(--surface);
+      box-shadow: var(--shadow-lg);
+      outline: none;
+    }
+    dialog::backdrop {
+      background-color: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(2px);
+    }
+    .dialog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    .dialog-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--accent);
+    }
+    .dialog-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+    }
+    .dialog-close:hover { color: var(--accent); }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .dialog-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 1rem;
+    }
+    .dialog-form-group label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+    .dialog-control {
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .dialog-control:focus {
+      border-color: var(--accent);
+    }
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      padding-top: 15px;
+    }
+
+    /* Loader overlay on actions */
+    .sync-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255, 255, 255, 0.7);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .sync-spinner {
+      font-size: 2.5rem;
+      animation: spin 1s linear infinite;
+      color: var(--accent);
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Notification toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #1e293b;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      z-index: 1001;
+      display: none;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOADING OVERLAY -->
+  <div class="sync-overlay" id="sync-overlay">
+    <div class="sync-spinner"><i class="fa-solid fa-spinner"></i></div>
+    <div style="font-weight:600;font-size:1.1rem" id="sync-text">Sincronizzazione in corso...</div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast">Notifica</div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-container">
+      <div class="header-brand">
+        <img src="logo_pepertango.png" alt="Logo">
+        <h1>Brutia Tango Fest — Area Admin Staff</h1>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="caricaDati(true)"><i class="fa-solid fa-rotate"></i> Aggiorna</button>
+        <button class="btn btn-secondary" onclick="esportaCSV()"><i class="fa-solid fa-download"></i> Scarica CSV</button>
+        <button class="btn btn-secondary" onclick="esportaPerHotel()"><i class="fa-solid fa-hotel"></i> Per Hotel</button>
+      </div>
+    </div>
+    
+    <div class="tabs-container">
+      <button class="tab-btn active" id="tab-btn-iscritti" onclick="switchTab('iscritti')"><i class="fa-solid fa-users"></i> Gestione Iscritti</button>
+      <button class="tab-btn" id="tab-btn-camere" onclick="switchTab('camere')"><i class="fa-solid fa-bed"></i> Mappa Camere</button>
+      <button class="tab-btn" id="tab-btn-stats" onclick="switchTab('stats')"><i class="fa-solid fa-chart-line"></i> Statistiche</button>
+      <button class="tab-btn" id="tab-btn-shop" onclick="switchTab('shop');loadShopOrders()"><i class="fa-solid fa-bag-shopping"></i> Ordini Shop</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <div class="main-container">
+
+    <!-- KPI STATS -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-title">Registrazioni Totali</span>
+        <span class="kpi-value" id="kpi-totale">0</span>
+        <span class="kpi-sub">Iscritti nei fogli</span>
+      </div>
+      <div class="kpi-card kpi-success">
+        <span class="kpi-title">Accettati</span>
+        <span class="kpi-value" id="kpi-accettati">0</span>
+        <span class="kpi-sub">Partecipazione confermata</span>
+      </div>
+      <div class="kpi-card kpi-warning">
+        <span class="kpi-title">In Attesa</span>
+        <span class="kpi-value" id="kpi-attesa">0</span>
+        <span class="kpi-sub">Da bilanciare/approvare</span>
+      </div>
+      <div class="kpi-card kpi-success">
+        <span class="kpi-title">Incasso Atteso</span>
+        <span class="kpi-value" id="kpi-incasso-atteso">€0</span>
+        <span class="kpi-sub">Basato su quote iscritti</span>
+      </div>
+      <div class="kpi-card kpi-success">
+        <span class="kpi-title">Incasso Reale</span>
+        <span class="kpi-value" id="kpi-incasso-reale">€0</span>
+        <span class="kpi-sub">Pagamenti registrati (anticipi + saldi)</span>
+      </div>
+    </div>
+
+    <!-- TAB: ISCRITTI -->
+    <div class="tab-content active" id="content-iscritti">
+      <!-- FILTERS -->
+      <div class="filter-panel">
+        <div class="filter-group search-group">
+          <span class="filter-label">Cerca</span>
+          <input type="text" class="filter-control" placeholder="🔍 Cerca nome, cognome, email o città..." id="search-input" oninput="applicaFiltri()">
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Stato Iscrizione</span>
+          <select class="filter-control" id="filter-stato" onchange="applicaFiltri()">
+            <option value="">Tutti gli stati</option>
+            <option value="Accettato">Accettati</option>
+            <option value="In attesa">In attesa</option>
+            <option value="Rifiutato">Rifiutati</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Stato Pagamento</span>
+          <select class="filter-control" id="filter-pagamento" onchange="applicaFiltri()">
+            <option value="">Tutti i pagamenti</option>
+            <option value="Non pagato">Non pagati</option>
+            <option value="Anticipo versato">Anticipo versato</option>
+            <option value="Saldato">Saldati</option>
+          </select>
+        </div>
+        <div class="filter-group" style="min-width:130px;flex:0.5">
+          <span class="filter-label">Ruolo</span>
+          <select class="filter-control" id="filter-ruolo" onchange="applicaFiltri()">
+            <option value="">Tutti</option>
+            <option value="Leader">Leader</option>
+            <option value="Follower">Follower</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- TABLE CARD -->
+      <div class="table-card">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Nome e Cognome</th>
+                <th>Città</th>
+                <th>Ruolo</th>
+                <th>Pacchetto</th>
+                <th>Tipologia Stanza</th>
+                <th>Camera</th>
+                <th>Stato</th>
+                <th>Pagamento</th>
+                <th style="text-align:center">Azioni</th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+              <tr>
+                <td colspan="10" style="text-align:center;padding:40px;color:var(--text-secondary)">
+                  <i class="fa-solid fa-spinner fa-spin" style="margin-right:8px"></i> Caricamento iscritti in corso...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: CAMERE -->
+    <div class="tab-content" id="content-camere">
+      <div id="camere-container">
+        <!-- Generato dinamicamente via JS -->
+      </div>
+    </div>
+
+    <!-- TAB: STATISTISTICHE -->
+    <div class="tab-content" id="content-stats">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-title">Leader</span>
+          <span class="kpi-value" id="stat-leader">0</span>
+          <span class="kpi-sub" id="stat-leader-sub">0% del totale</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-title">Follower</span>
+          <span class="kpi-value" id="stat-follower">0</span>
+          <span class="kpi-sub" id="stat-follower-sub">0% del totale</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-title">Senza Camera (Accettati)</span>
+          <span class="kpi-value" id="stat-no-room">0</span>
+          <span class="kpi-sub">Richiedono stanza ma non assegnata</span>
+        </div>
+      </div>
+
+      <div class="info-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div class="info-card" style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px">
+          <div class="info-card-header"><i class="fa-solid fa-cubes"></i> Pacchetti Scelti</div>
+          <div id="stat-packages" style="display:flex;flex-direction:column;gap:12px;margin-top:10px"></div>
+        </div>
+        <div class="info-card" style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px">
+          <div class="info-card-header"><i class="fa-solid fa-bed"></i> Tipologie Stanze Richieste</div>
+          <div id="stat-rooms" style="display:flex;flex-direction:column;gap:12px;margin-top:10px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: ORDINI SHOP -->
+    <div class="tab-content" id="content-shop">
+
+      <!-- KPI ordini -->
+      <div class="kpi-grid" id="shop-kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-title">Ordini Totali</span>
+          <span class="kpi-value" id="shop-kpi-total">—</span>
+          <span class="kpi-sub">Dal lancio shop</span>
+        </div>
+        <div class="kpi-card kpi-success">
+          <span class="kpi-title">Fatturato</span>
+          <span class="kpi-value" id="shop-kpi-revenue">—</span>
+          <span class="kpi-sub">Totale incassato</span>
+        </div>
+        <div class="kpi-card kpi-warning">
+          <span class="kpi-title">In Attesa Pagamento</span>
+          <span class="kpi-value" id="shop-kpi-pending">—</span>
+          <span class="kpi-sub">Carrelli abbandonati o incompleti</span>
+        </div>
+        <div class="kpi-card kpi-success">
+          <span class="kpi-title">Evasi (Printful)</span>
+          <span class="kpi-value" id="shop-kpi-fulfilled">—</span>
+          <span class="kpi-sub">Ordini inoltrati a Printful</span>
+        </div>
+      </div>
+
+      <!-- Filtri + azioni -->
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-secondary shop-filter-btn active" data-status="all" onclick="filterShopOrders('all',this)">Tutti</button>
+          <button class="btn btn-secondary shop-filter-btn" data-status="pending" onclick="filterShopOrders('pending',this)">⏳ In attesa</button>
+          <button class="btn btn-secondary shop-filter-btn" data-status="paid" onclick="filterShopOrders('paid',this)">💳 Pagati</button>
+          <button class="btn btn-secondary shop-filter-btn" data-status="fulfilled" onclick="filterShopOrders('fulfilled',this)">✅ Evasi</button>
+          <button class="btn btn-secondary shop-filter-btn" data-status="printful_error" onclick="filterShopOrders('printful_error',this)">❌ Errore</button>
+        </div>
+        <button class="btn btn-secondary" onclick="loadShopOrders()"><i class="fa-solid fa-rotate"></i> Aggiorna</button>
+      </div>
+
+      <!-- Tabella ordini -->
+      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
+        <div id="shop-orders-loading" style="padding:40px;text-align:center;color:var(--text-secondary)">
+          <i class="fa-solid fa-spinner fa-spin" style="font-size:1.5rem;margin-bottom:12px;display:block"></i>
+          Caricamento ordini...
+        </div>
+        <div id="shop-orders-empty" style="display:none;padding:40px;text-align:center;color:var(--text-secondary)">
+          <i class="fa-solid fa-box-open" style="font-size:2rem;margin-bottom:12px;display:block;opacity:.3"></i>
+          Nessun ordine trovato.
+        </div>
+        <div id="shop-orders-table-wrap" style="display:none;overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:0.875rem">
+            <thead style="background:var(--bg)">
+              <tr>
+                <th style="padding:12px 16px;text-align:left;font-weight:600;color:var(--text-secondary);border-bottom:1px solid var(--border)">Data</th>
+                <th style="padding:12px 16px;text-align:left;font-weight:600;color:var(--text-secondary);border-bottom:1px solid var(--border)">Cliente</th>
+                <th style="padding:12px 16px;text-align:left;font-weight:600;color:var(--text-secondary);border-bottom:1px solid var(--border)">Prodotti</th>
+                <th style="padding:12px 16px;text-align:right;font-weight:600;color:var(--text-secondary);border-bottom:1px solid var(--border)">Totale</th>
+                <th style="padding:12px 16px;text-align:center;font-weight:600;color:var(--text-secondary);border-bottom:1px solid var(--border)">Stato</th>
+                <th style="padding:12px 16px;text-align:left;font-weight:600;color:var(--text-secondary);border-bottom:1px solid var(--border)">Printful ID</th>
+              </tr>
+            </thead>
+            <tbody id="shop-orders-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /content-shop -->
+
+  </div>
+
+  <!-- NATIVE EDIT DIALOG -->
+  <dialog id="edit-dialog" closedby="any">
+    <div class="dialog-header">
+      <h2>Modifica Scheda Iscritto</h2>
+      <button class="dialog-close" onclick="closeEditDialog()">&times;</button>
+    </div>
+    <form id="edit-form" onsubmit="salvaModificheIscritto(event)">
+      <input type="hidden" id="edit-id">
+      
+      <div class="form-row">
+        <div class="dialog-form-group">
+          <label>Nome</label>
+          <input type="text" class="dialog-control" id="edit-nome" required>
+        </div>
+        <div class="dialog-form-group">
+          <label>Cognome</label>
+          <input type="text" class="dialog-control" id="edit-cognome" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="dialog-form-group">
+          <label>Ruolo</label>
+          <select class="dialog-control" id="edit-ruolo">
+            <option value="Leader">Leader</option>
+            <option value="Follower">Follower</option>
+          </select>
+        </div>
+        <div class="dialog-form-group">
+          <label>Pacchetto</label>
+          <select class="dialog-control" id="edit-pacchetto">
+            <option value="2 NOTTI/two nights">2 NOTTI (180€)</option>
+            <option value="3 NOTTI/three nights">3 NOTTI (220€)</option>
+            <option value="4 NOTTI/four nights">4 NOTTI (260€)</option>
+            <option value="MILONGHE">MILONGHE (100€)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="dialog-form-group">
+          <label>Tipologia Stanza</label>
+          <select class="dialog-control" id="edit-tipologia-stanza" onchange="syncCompagniStanzaField()">
+            <option value="">Nessuna (Milonghe / Esterno)</option>
+            <option value="Singola">Singola</option>
+            <option value="Doppia">Doppia</option>
+            <option value="Matrimoniale">Matrimoniale</option>
+            <option value="Tripla">Tripla</option>
+          </select>
+        </div>
+        <div class="dialog-form-group">
+          <label>Camera Assegnata</label>
+          <input type="text" class="dialog-control" id="edit-camera" placeholder="es: BTF-101">
+        </div>
+      </div>
+
+      <div class="dialog-form-group">
+        <label>Compagno di ballo</label>
+        <input type="text" class="dialog-control" id="edit-compagno-ballo">
+      </div>
+
+      <div class="dialog-form-group" id="edit-group-compagni-stanza">
+        <label>Compagni di stanza (separati da virgola)</label>
+        <input type="text" class="dialog-control" id="edit-compagni-stanza" placeholder="Nome Cognome, Altro Nome">
+      </div>
+
+      <div class="form-row">
+        <div class="dialog-form-group">
+          <label>Stato Iscrizione</label>
+          <select class="dialog-control" id="edit-stato">
+            <option value="In attesa">In attesa</option>
+            <option value="Accettato">Accettato</option>
+            <option value="Rifiutato">Rifiutato</option>
+          </select>
+        </div>
+        <div class="dialog-form-group">
+          <label>Stato Pagamento</label>
+          <select class="dialog-control" id="edit-pagamento">
+            <option value="Non pagato">Non pagato</option>
+            <option value="Anticipo versato">Anticipo versato</option>
+            <option value="Saldato">Saldato</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeEditDialog()">Annulla</button>
+        <button type="submit" class="btn btn-primary">Salva Modifiche</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============================================================
+       JAVASCRIPT CODE
+       ============================================================ -->
+  <script>
+    // Configurazione endpoint Apps Script
+    const API = 'https://script.google.com/macros/s/AKfycbz_B2wSvnovFOBT2PbTk0x_VCNl_uVm4BapTRGfxxqPEj4YFCwHJe_Iyq4K2AOra2ykDw/exec';
+    
+    // Configurazione prezzi per il calcolo delle statistiche
+    const PREZZI_PACCHETTI = {
+      '2 NOTTI/two nights': { totale: 180, anticipo: 90 },
+      '3 NOTTI/three nights': { totale: 220, anticipo: 110 },
+      '4 NOTTI/four nights': { totale: 260, anticipo: 130 },
+      'MILONGHE': { totale: 100, anticipo: 50 }
+    };
+
+    let allData = [];
+    let filteredData = [];
+
+    // ============================================================
+    // SHOP ORDERS — URL del ShopAppsScript deployato
+    // Aggiorna con il tuo URL dopo il deploy di ShopAppsScript.gs
+    // ============================================================
+    const SHOP_API = 'https://script.google.com/macros/s/INSERISCI_SHOP_SCRIPT_ID/exec';
+
+    var allShopOrders = [];
+
+    function loadShopOrders() {
+      document.getElementById('shop-orders-loading').style.display = 'block';
+      document.getElementById('shop-orders-empty').style.display   = 'none';
+      document.getElementById('shop-orders-table-wrap').style.display = 'none';
+
+      fetch(SHOP_API + '?action=getOrders')
+        .then(r => r.json())
+        .then(data => {
+          if (data.success && Array.isArray(data.orders)) {
+            allShopOrders = data.orders;
+            renderShopOrders(allShopOrders);
+            updateShopKpis(allShopOrders);
+          } else {
+            document.getElementById('shop-orders-loading').style.display = 'none';
+            document.getElementById('shop-orders-empty').style.display = 'block';
+            document.getElementById('shop-orders-empty').innerHTML =
+              '<i class="fa-solid fa-triangle-exclamation" style="font-size:2rem;margin-bottom:12px;display:block;opacity:.3"></i>' +
+              'Errore nel caricamento. Controlla che SHOP_API sia configurato.';
+          }
+        })
+        .catch(() => {
+          document.getElementById('shop-orders-loading').style.display = 'none';
+          document.getElementById('shop-orders-empty').style.display = 'block';
+          document.getElementById('shop-orders-empty').innerHTML =
+            '<i class="fa-solid fa-plug-circle-xmark" style="font-size:2rem;margin-bottom:12px;display:block;opacity:.3"></i>' +
+            'Impossibile contattare lo Shop API.<br><small>Aggiorna SHOP_API con l\'URL del deploy ShopAppsScript.gs</small>';
+        });
+    }
+
+    function renderShopOrders(orders) {
+      document.getElementById('shop-orders-loading').style.display = 'none';
+
+      if (!orders || orders.length === 0) {
+        document.getElementById('shop-orders-empty').style.display = 'block';
+        document.getElementById('shop-orders-table-wrap').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('shop-orders-empty').style.display = 'none';
+      document.getElementById('shop-orders-table-wrap').style.display = 'block';
+
+      const statusBadge = {
+        'pending':        '<span style="background:#fef3c7;color:#92400e;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600">⏳ In attesa</span>',
+        'paid':           '<span style="background:#dbeafe;color:#1e40af;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600">💳 Pagato</span>',
+        'fulfilled':      '<span style="background:#d1fae5;color:#065f46;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600">✅ Evaso</span>',
+        'printful_error': '<span style="background:#fee2e2;color:#991b1b;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600">❌ Errore</span>'
+      };
+
+      document.getElementById('shop-orders-tbody').innerHTML = orders.map((o, i) => `
+        <tr style="border-bottom:1px solid var(--border);${i % 2 === 0 ? '' : 'background:var(--bg)'}">
+          <td style="padding:12px 16px;color:var(--text-secondary);font-size:12px;white-space:nowrap">${o.data || '—'}</td>
+          <td style="padding:12px 16px">
+            <div style="font-weight:600">${o.cliente || '—'}</div>
+            <div style="font-size:12px;color:var(--text-secondary)">${o.email || ''}</div>
+          </td>
+          <td style="padding:12px 16px;font-size:12px;max-width:220px">${o.prodotti || '—'}</td>
+          <td style="padding:12px 16px;text-align:right;font-weight:700">€${o.totale || '—'}</td>
+          <td style="padding:12px 16px;text-align:center">${statusBadge[o.stato] || o.stato || '—'}</td>
+          <td style="padding:12px 16px;font-size:12px;color:var(--text-secondary)">${o.printful_id || '—'}</td>
+        </tr>
+      `).join('');
+    }
+
+    function updateShopKpis(orders) {
+      const total     = orders.length;
+      const paid      = orders.filter(o => o.stato === 'paid' || o.stato === 'fulfilled').length;
+      const pending   = orders.filter(o => o.stato === 'pending').length;
+      const fulfilled = orders.filter(o => o.stato === 'fulfilled').length;
+      const revenue   = orders
+        .filter(o => o.stato === 'paid' || o.stato === 'fulfilled')
+        .reduce((s, o) => s + (parseFloat(o.totale) || 0), 0);
+
+      document.getElementById('shop-kpi-total').textContent     = total;
+      document.getElementById('shop-kpi-revenue').textContent   = '€' + revenue.toFixed(2);
+      document.getElementById('shop-kpi-pending').textContent   = pending;
+      document.getElementById('shop-kpi-fulfilled').textContent = fulfilled;
+    }
+
+    function filterShopOrders(status, btn) {
+      document.querySelectorAll('.shop-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filtered = status === 'all'
+        ? allShopOrders
+        : allShopOrders.filter(o => o.stato === status);
+      renderShopOrders(filtered);
+    }
+
+    // Carica i dati all'avvio
+    window.addEventListener('load', () => {
+      caricaDati();
+    });
+
+    // Cambia Tab attivo
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      document.getElementById(`tab-btn-${tabId}`).classList.add('active');
+      document.getElementById(`content-${tabId}`).classList.add('active');
+
+      if (tabId === 'camere') {
+        renderCamereGrid();
+      } else if (tabId === 'stats') {
+        renderStatisticheDettagliate();
+      }
+    }
+
+    // Mostra un messaggio toast di notifica
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3000);
+    }
+
+    // Attiva/disattiva loader di sincronizzazione
+    function setLoader(show, text = 'Sincronizzazione in corso...') {
+      const overlay = document.getElementById('sync-overlay');
+      const textEl = document.getElementById('sync-text');
+      textEl.textContent = text;
+      overlay.style.display = show ? 'flex' : 'none';
+    }
+
+    // Carica i dati dal Google Sheets tramite API
+    function caricaDati(forceRefresh = false) {
+      setLoader(true, 'Caricamento dati dal Google Sheet...');
+      
+      const url = `${API}?action=getIscritti&evento=Brutia&t=${Date.now()}`;
+      
+      fetch(url)
+        .then(response => response.json())
+        .then(res => {
+          setLoader(false);
+          if (res.ok && res.data) {
+            allData = res.data;
+            applicaFiltri();
+            if (forceRefresh) showToast('Dati aggiornati con successo!');
+          } else {
+            showToast('Errore nel caricamento dei dati: ' + (res.error || 'Risposta non valida'));
+            caricaDemoFallback();
+          }
+        })
+        .catch(err => {
+          setLoader(false);
+          console.error(err);
+          showToast('Connessione API fallita. Caricati dati di test offline.');
+          caricaDemoFallback();
+        });
+    }
+
+    // Dati fittizi se l'API non è disponibile (offline o testing)
+    function caricaDemoFallback() {
+      allData = [
+        {id:'1719220000000',nome:'Marco',cognome:'Rossi',ruolo:'Leader',pacchetto:'3 NOTTI/three nights',tipologia_stanza:'Doppia',camera:'BTF-101',compagni_stanza:'Laura Bianchi',compagno_ballo:'Laura Bianchi',stato:'Accettato',pagamento:'Saldato',citta:'Milano',data:'24/06/2026 10:30'},
+        {id:'1719220000001',nome:'Laura',cognome:'Bianchi',ruolo:'Follower',pacchetto:'3 NOTTI/three nights',tipologia_stanza:'Doppia',camera:'BTF-101',compagni_stanza:'Marco Rossi',compagno_ballo:'Marco Rossi',stato:'Accettato',pagamento:'Saldato',citta:'Roma',data:'24/06/2026 10:45'},
+        {id:'1719220000002',nome:'Giorgio',cognome:'Verdi',ruolo:'Leader',pacchetto:'4 NOTTI/four nights',tipologia_stanza:'Matrimoniale',camera:'BTF-201',compagni_stanza:'Francesca Romano',compagno_ballo:'Francesca Romano',stato:'Accettato',pagamento:'Anticipo versato',citta:'Torino',data:'23/06/2026 14:00'},
+        {id:'1719220000003',nome:'Francesca',cognome:'Romano',ruolo:'Follower',pacchetto:'4 NOTTI/four nights',tipologia_stanza:'Matrimoniale',camera:'BTF-201',compagni_stanza:'Giorgio Verdi',compagno_ballo:'Giorgio Verdi',stato:'Accettato',pagamento:'Anticipo versato',citta:'Firenze',data:'23/06/2026 14:15'},
+        {id:'1719220000004',nome:'Roberto',cognome:'Costa',ruolo:'Leader',pacchetto:'2 NOTTI/two nights',tipologia_stanza:'Singola',camera:'BTF-301',compagni_stanza:'',compagno_ballo:'',stato:'Accettato',pagamento:'Non pagato',citta:'Palermo',data:'22/06/2026 09:00'},
+        {id:'1719220000005',nome:'Elena',cognome:'Galli',ruolo:'Follower',pacchetto:'3 NOTTI/three nights',tipologia_stanza:'Tripla',camera:'BTF-401',compagni_stanza:'Sara Neri, Giulia Conti',compagno_ballo:'',stato:'In attesa',pagamento:'Non pagato',citta:'Bari',data:'21/06/2026 11:30'},
+        {id:'1719220000006',nome:'Sara',cognome:'Neri',ruolo:'Follower',pacchetto:'3 NOTTI/three nights',tipologia_stanza:'Tripla',camera:'BTF-401',compagni_stanza:'Elena Galli, Giulia Conti',compagno_ballo:'',stato:'In attesa',pagamento:'Non pagato',citta:'Napoli',data:'21/06/2026 11:45'},
+        {id:'1719220000007',nome:'Luca',cognome:'Bianchi',ruolo:'Leader',pacchetto:'MILONGHE',tipologia_stanza:'',camera:'',compagni_stanza:'',compagno_ballo:'',stato:'Accettato',pagamento:'Saldato',citta:'Cosenza',data:'20/06/2026 18:00'}
+      ];
+      applicaFiltri();
+    }
+
+    // Calcola e aggiorna i KPI box in alto
+    function ricalcolaKPI() {
+      document.getElementById('kpi-totale').textContent = allData.length;
+      
+      const accettati = allData.filter(r => r.stato === 'Accettato').length;
+      document.getElementById('kpi-accettati').textContent = accettati;
+      
+      const attesa = allData.filter(r => r.stato === 'In attesa').length;
+      document.getElementById('kpi-attesa').textContent = attesa;
+
+      // Calcola incasso totale atteso
+      let incassoAtteso = 0;
+      let incassoReale = 0;
+
+      allData.forEach(r => {
+        const info = PREZZI_PACCHETTI[r.pacchetto];
+        if (!info) return;
+
+        if (r.stato === 'Accettato') {
+          incassoAtteso += info.totale;
+          
+          if (r.pagamento === 'Saldato') {
+            incassoReale += info.totale;
+          } else if (r.pagamento === 'Anticipo versato') {
+            incassoReale += info.anticipo;
+          }
+        }
+      });
+
+      document.getElementById('kpi-incasso-atteso').textContent = `€${incassoAtteso}`;
+      document.getElementById('kpi-incasso-reale').textContent = `€${incassoReale}`;
+    }
+
+    // Applica i filtri impostati sui dati in tabella
+    function applicaFiltri() {
+      const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
+      const statoVal = document.getElementById('filter-stato').value;
+      const pagamentoVal = document.getElementById('filter-pagamento').value;
+      const ruoloVal = document.getElementById('filter-ruolo').value;
+
+      filteredData = allData.filter(r => {
+        // Filtro ricerca
+        const nomeCompleto = `${r.nome} ${r.cognome}`.toLowerCase();
+        const matchesSearch = !searchVal || 
+                              nomeCompleto.includes(searchVal) || 
+                              (r.email && r.email.toLowerCase().includes(searchVal)) || 
+                              (r.citta && r.citta.toLowerCase().includes(searchVal));
+
+        // Filtro stato
+        const matchesStato = !statoVal || r.stato === statoVal;
+
+        // Filtro pagamento
+        const matchesPagamento = !pagamentoVal || r.pagamento === pagamentoVal;
+
+        // Filtro ruolo
+        const matchesRuolo = !ruoloVal || r.ruolo === ruoloVal;
+
+        return matchesSearch && matchesStato && matchesPagamento && matchesRuolo;
+      });
+
+      renderTabellaIscritti();
+      ricalcolaKPI();
+    }
+
+    // Escapa testo utente prima di inserirlo come innerHTML (previene XSS memorizzato)
+    function escapeHtml(str) {
+      return String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    // Escapa un id per l'uso dentro un attributo onclick="...('ID')" (contesto HTML-attr + JS-string)
+    function escapeJsAttr(str) {
+      return String(str ?? '')
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '&quot;');
+    }
+
+    // Renderizza le righe degli iscritti nella tabella
+    function renderTabellaIscritti() {
+      const tbody = document.getElementById('table-body');
+      
+      if (filteredData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text-secondary)">Nessun iscritto corrisponde ai filtri impostati.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filteredData.map((r, idx) => {
+        let badgeStato = 'badge-neutral';
+        if (r.stato === 'Accettato') badgeStato = 'badge-success';
+        else if (r.stato === 'In attesa') badgeStato = 'badge-warning';
+        else if (r.stato === 'Rifiutato') badgeStato = 'badge-danger';
+
+        let badgePagamento = 'badge-neutral';
+        if (r.pagamento === 'Saldato') badgePagamento = 'badge-success';
+        else if (r.pagamento === 'Anticipo versato') badgePagamento = 'badge-warning';
+        else if (r.pagamento === 'Non pagato') badgePagamento = 'badge-danger';
+
+        return `
+          <tr>
+            <td style="font-size:0.8rem;color:var(--text-secondary)">${escapeHtml((r.data || '').split(' ')[0])}</td>
+            <td style="font-weight:600">${escapeHtml(r.nome)} ${escapeHtml(r.cognome)}</td>
+            <td>${escapeHtml(r.citta) || '—'}</td>
+            <td>${escapeHtml(r.ruolo)}</td>
+            <td style="font-size:0.8rem;font-weight:500">${escapeHtml((r.pacchetto || '').split('/')[0])}</td>
+            <td>${escapeHtml(r.tipologia_stanza) || '—'}</td>
+            <td style="font-weight:600;color:var(--accent)">${escapeHtml(r.camera) || '—'}</td>
+            <td><span class="badge ${badgeStato}">${escapeHtml(r.stato || 'In attesa')}</span></td>
+            <td><span class="badge ${badgePagamento}">${escapeHtml(r.pagamento || 'Non pagato')}</span></td>
+            <td>
+              <div class="action-group">
+                <button class="action-icon-btn" title="Modifica" onclick="openEditDialog(${idx})">
+                  <i class="fa-solid fa-pencil"></i>
+                </button>
+                ${r.stato !== 'Accettato' ? `
+                  <button class="action-icon-btn" style="color:var(--success)" title="Approva/Accetta" onclick="liveAggiornaStato('${escapeJsAttr(r.id)}', 'Accettato')">
+                    <i class="fa-solid fa-check"></i>
+                  </button>
+                ` : ''}
+                ${r.stato === 'In attesa' ? `
+                  <button class="action-icon-btn" style="color:var(--danger)" title="Rifiuta" onclick="liveAggiornaStato('${escapeJsAttr(r.id)}', 'Rifiutato')">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                ` : ''}
+                <button class="action-icon-btn delete" title="Elimina" onclick="liveEliminaIscritto('${escapeJsAttr(r.id)}')">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // ============================================================
+    // LIVE ACTION API MUTATIONS (GET requests per bypassare CORS)
+    // ============================================================
+    
+    // Aggiorna lo stato (Accettato / Rifiutato) e sincronizza
+    function liveAggiornaStato(id, nuovoStato) {
+      if (nuovoStato === 'Rifiutato' && !confirm('Sei sicuro di voler rifiutare questa iscrizione?')) return;
+      
+      setLoader(true, `Aggiornamento stato in "${nuovoStato}"...`);
+      const url = `${API}?action=aggiornaStato&id=${id}&stato=${encodeURIComponent(nuovoStato)}&evento=Brutia&t=${Date.now()}`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(res => {
+          if (res.ok) {
+            // Aggiorna in locale per evitare caricamento completo
+            const iscritto = allData.find(r => r.id === id);
+            if (iscritto) {
+              iscritto.stato = nuovoStato;
+              if (nuovoStato === 'Accettato') {
+                showToast(`Iscrizione approvata! Se configurato, la camera è stata assegnata automaticamente.`);
+              } else {
+                showToast(`Iscrizione impostata come Rifiutata.`);
+              }
+            }
+            applicaFiltri();
+            setLoader(false);
+          } else {
+            setLoader(false);
+            showToast('Errore: ' + res.error);
+          }
+        })
+        .catch(err => {
+          setLoader(false);
+          console.error(err);
+          showToast('Connessione di rete fallita. Impossibile aggiornare lo stato.');
+        });
+    }
+
+    // Elimina iscritto dal foglio
+    function liveEliminaIscritto(id) {
+      const target = allData.find(r => r.id === id);
+      const nome = target ? `${target.nome} ${target.cognome}` : 'questo iscritto';
+      if (!confirm(`⚠️ ATTENZIONE: Sei sicuro di voler ELIMINARE definitivamente l'iscrizione di ${nome}? Questa azione cancellerà la riga dal foglio Google Sheet.`)) return;
+
+      setLoader(true, `Eliminazione di ${nome}...`);
+      const url = `${API}?action=eliminaIscrizione&id=${id}&evento=Brutia&t=${Date.now()}`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(res => {
+          if (res.ok) {
+            allData = allData.filter(r => r.id !== id);
+            applicaFiltri();
+            setLoader(false);
+            showToast(`Iscrizione di ${nome} eliminata.`);
+          } else {
+            setLoader(false);
+            showToast('Errore: ' + res.error);
+          }
+        })
+        .catch(err => {
+          setLoader(false);
+          console.error(err);
+          showToast('Connessione di rete fallita. Impossibile eliminare.');
+        });
+    }
+
+    // ============================================================
+    // EDIT DIALOG FORM GESTIONE
+    // ============================================================
+    const editDialog = document.getElementById('edit-dialog');
+
+    function openEditDialog(filteredIndex) {
+      const r = filteredData[filteredIndex];
+      
+      document.getElementById('edit-id').value = r.id;
+      document.getElementById('edit-nome').value = r.nome;
+      document.getElementById('edit-cognome').value = r.cognome;
+      document.getElementById('edit-ruolo').value = r.ruolo;
+      document.getElementById('edit-pacchetto').value = r.pacchetto;
+      document.getElementById('edit-tipologia-stanza').value = r.tipologia_stanza || '';
+      document.getElementById('edit-camera').value = r.camera || '';
+      document.getElementById('edit-compagno-ballo').value = r.compagno_ballo || '';
+      document.getElementById('edit-compagni-stanza').value = r.compagni_stanza || '';
+      document.getElementById('edit-stato').value = r.stato || 'In attesa';
+      document.getElementById('edit-pagamento').value = r.pagamento || 'Non pagato';
+
+      syncCompagniStanzaField();
+      
+      editDialog.showModal();
+    }
+
+    // Chiude il modal
+    function closeEditDialog() {
+      editDialog.close();
+    }
+
+    // Mostra/nasconde il campo compagni di stanza a seconda della stanza selezionata
+    function syncCompagniStanzaField() {
+      const tipoStanza = document.getElementById('edit-tipologia-stanza').value;
+      const groupCompagni = document.getElementById('edit-group-compagni-stanza');
+      if (tipoStanza === 'Singola' || !tipoStanza) {
+        groupCompagni.style.display = 'none';
+      } else {
+        groupCompagni.style.display = 'flex';
+      }
+    }
+
+    // Fallback click outside dialog to close
+    if (!('closedBy' in HTMLDialogElement.prototype)) {
+      editDialog.addEventListener('click', (event) => {
+        if (event.target !== editDialog) return;
+        const rect = editDialog.getBoundingClientRect();
+        const isDialogContent = (
+          rect.top <= event.clientY &&
+          event.clientY <= rect.top + rect.height &&
+          rect.left <= event.clientX &&
+          event.clientX <= rect.left + rect.width
+        );
+        if (isDialogContent) return;
+        editDialog.close();
+      });
+    }
+
+    // Invia i dati modificati all'Apps Script per il salvataggio live
+    function salvaModificheIscritto(e) {
+      e.preventDefault();
+
+      const id = document.getElementById('edit-id').value;
+      const nome = document.getElementById('edit-nome').value.trim();
+      const cognome = document.getElementById('edit-cognome').value.trim();
+      const ruolo = document.getElementById('edit-ruolo').value;
+      const pacchetto = document.getElementById('edit-pacchetto').value;
+      const tipologia_stanza = document.getElementById('edit-tipologia-stanza').value;
+      const camera = document.getElementById('edit-camera').value.trim();
+      const compagno_ballo = document.getElementById('edit-compagno-ballo').value.trim();
+      const compagni_stanza = document.getElementById('edit-compagni-stanza').value.trim();
+      const stato = document.getElementById('edit-stato').value;
+      const pagamento = document.getElementById('edit-pagamento').value;
+
+      setLoader(true, 'Salvataggio modifiche in corso...');
+      
+      // Costruisci parametri
+      let params = `action=aggiornaDatiIscritto&id=${id}&evento=Brutia`;
+      params += `&nome=${encodeURIComponent(nome)}`;
+      params += `&cognome=${encodeURIComponent(cognome)}`;
+      params += `&ruolo=${encodeURIComponent(ruolo)}`;
+      params += `&pacchetto=${encodeURIComponent(pacchetto)}`;
+      params += `&tipologia_stanza=${encodeURIComponent(tipologia_stanza)}`;
+      params += `&camera=${encodeURIComponent(camera)}`;
+      params += `&compagno_ballo=${encodeURIComponent(compagno_ballo)}`;
+      params += `&compagni_stanza=${encodeURIComponent(compagni_stanza)}`;
+      params += `&stato=${encodeURIComponent(stato)}`;
+      params += `&pagamento=${encodeURIComponent(pagamento)}`;
+
+      const url = `${API}?${params}&t=${Date.now()}`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(res => {
+          setLoader(false);
+          if (res.ok) {
+            // Aggiorna array locale
+            const idx = allData.findIndex(r => r.id === id);
+            if (idx !== -1) {
+              allData[idx] = {
+                ...allData[idx],
+                nome, cognome, ruolo, pacchetto, tipologia_stanza, camera, compagno_ballo, compagni_stanza, stato, pagamento
+              };
+            }
+            applicaFiltri();
+            closeEditDialog();
+            showToast('Scheda iscritto aggiornata!');
+          } else {
+            showToast('Errore: ' + res.error);
+          }
+        })
+        .catch(err => {
+          setLoader(false);
+          console.error(err);
+          showToast('Connessione di rete fallita. Impossibile salvare.');
+        });
+    }
+
+
+    // ============================================================
+    // TAB CAMERE GRID RENDERER
+    // ============================================================
+    function renderCamereGrid() {
+      const container = document.getElementById('camere-container');
+      container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-secondary)"><i class="fa-solid fa-spinner fa-spin"></i> Generazione mappa camere...</div>';
+
+      const stanzeTipi = ['Singola', 'Doppia', 'Matrimoniale', 'Tripla'];
+      const capCamere = { 'Singola': 1, 'Doppia': 2, 'Matrimoniale': 2, 'Tripla': 3 };
+
+      // Raggruppa iscritti accettati per camera
+      const camereMappa = {};
+      
+      allData.forEach(r => {
+        if (r.stato === 'Accettato' && r.camera) {
+          const cNum = r.camera.trim();
+          if (!camereMappa[cNum]) {
+            camereMappa[cNum] = {
+              numero: cNum,
+              tipo: r.tipologia_stanza || 'Standard',
+              ospiti: []
+            };
+          }
+          camereMappa[cNum].ospiti.push(`${escapeHtml(r.nome)} ${escapeHtml(r.cognome)} (${escapeHtml(r.ruolo)})`);
+        }
+      });
+
+      let html = '';
+
+      stanzeTipi.forEach(tipo => {
+        // Filtra le camere assegnate per questa tipologia
+        const camereTipo = Object.values(camereMappa).filter(c => c.tipo.toLowerCase() === tipo.toLowerCase());
+        const cap = capCamere[tipo] || 2;
+
+        html += `
+          <div class="camera-type-section">
+            <div class="camera-type-title">
+              <span>🛏️ Tipologia: ${tipo}</span>
+              <span style="font-size:0.9rem;font-family:'Inter',sans-serif;font-weight:500;color:var(--text-secondary)">Camere occupate: ${camereTipo.length}</span>
+            </div>
+            <div class="camera-grid">
+        `;
+
+        if (camereTipo.length === 0) {
+          html += `<div style="grid-column:1/-1;text-align:center;color:var(--text-secondary);padding:20px;font-size:0.9rem">Nessuna camera di questa tipologia assegnata al momento.</div>`;
+        } else {
+          camereTipo.forEach(c => {
+            const count = c.ospiti.length;
+            let statusClass = 'empty';
+            if (count >= cap) statusClass = 'full';
+            else if (count > 0) statusClass = 'partial';
+
+            html += `
+              <div class="camera-card-item ${statusClass}" onclick="filtraTabellaPerCamera('${escapeJsAttr(c.numero)}')">
+                <div class="camera-num">
+                  <span>${escapeHtml(c.numero)}</span>
+                  <span style="font-size:0.8rem;color:var(--text-secondary)">${count}/${cap} pax</span>
+                </div>
+                ${c.ospiti.map(osp => `<div class="camera-occupant">${osp}</div>`).join('')}
+              </div>
+            `;
+          });
+        }
+
+        html += `
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // Cliccando su una camera, filtra la lista iscritti per visualizzare solo chi ci alloggia
+    function filtraTabellaPerCamera(cameraNum) {
+      switchTab('iscritti');
+      document.getElementById('search-input').value = cameraNum;
+      applicaFiltri();
+    }
+
+
+    // ============================================================
+    // TAB STATISTICHE DETTAGLIATE
+    // ============================================================
+    function renderStatisticheDettagliate() {
+      // 1. Leader vs Follower
+      const leaders = allData.filter(r => r.ruolo === 'Leader').length;
+      const followers = allData.filter(r => r.ruolo === 'Follower').length;
+      const total = leaders + followers || 1;
+
+      document.getElementById('stat-leader').textContent = leaders;
+      document.getElementById('stat-leader-sub').textContent = `${Math.round((leaders / total) * 100)}% degli iscritti`;
+
+      document.getElementById('stat-follower').textContent = followers;
+      document.getElementById('stat-follower-sub').textContent = `${Math.round((followers / total) * 100)}% degli iscritti`;
+
+      // 2. Senza camera
+      const noRoomCount = allData.filter(r => r.stato === 'Accettato' && r.tipologia_stanza && !r.camera).length;
+      document.getElementById('stat-no-room').textContent = noRoomCount;
+
+      // 3. Distribuzione Pacchetti Scelti
+      const pkgCounts = {};
+      allData.forEach(r => {
+        if (!r.pacchetto) return;
+        const name = r.pacchetto.split('/')[0];
+        pkgCounts[name] = (pkgCounts[name] || 0) + 1;
+      });
+
+      let pkgHtml = '';
+      Object.entries(pkgCounts).sort((a,b) => b[1] - a[1]).forEach(([name, count]) => {
+        pkgHtml += `
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding:8px 0;font-size:0.95rem">
+            <span>${escapeHtml(name)}</span>
+            <span style="font-weight:700">${count} iscritti</span>
+          </div>
+        `;
+      });
+      document.getElementById('stat-packages').innerHTML = pkgHtml || '<div style="color:var(--text-secondary)">Nessun pacchetto registrato.</div>';
+
+      // 4. Distribuzione Stanza Richiesta
+      const roomCounts = {};
+      allData.forEach(r => {
+        const name = r.tipologia_stanza || 'Nessuna stanza';
+        roomCounts[name] = (roomCounts[name] || 0) + 1;
+      });
+
+      let roomHtml = '';
+      Object.entries(roomCounts).sort((a,b) => b[1] - a[1]).forEach(([name, count]) => {
+        roomHtml += `
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding:8px 0;font-size:0.95rem">
+            <span>${escapeHtml(name)}</span>
+            <span style="font-weight:700">${count} richieste</span>
+          </div>
+        `;
+      });
+      document.getElementById('stat-rooms').innerHTML = roomHtml || '<div style="color:var(--text-secondary)">Nessun dato.</div>';
+    }
+
+
+    // ============================================================
+    // ESPORTAZIONE DATI
+    // ============================================================
+    
+    // Esporta CSV completo
+    function esportaCSV() {
+      if (allData.length === 0) {
+        showToast('Nessun dato da esportare.');
+        return;
+      }
+
+      const headers = ['ID', 'Data Iscrizione', 'Nome', 'Cognome', 'Email', 'Telefono', 'Città', 'Paese', 'Ruolo', 'Pacchetto', 'Camera', 'Tipo Camera', 'Compagno Ballo', 'Compagni Stanza', 'Stato', 'Pagamento', 'Note'];
+      
+      const rows = allData.map(r => [
+        r.id || '',
+        r.data || '',
+        r.nome || '',
+        r.cognome || '',
+        r.email || '',
+        r.tel || '',
+        r.citta || '',
+        r.paese || '',
+        r.ruolo || '',
+        r.pacchetto || '',
+        r.camera || '',
+        r.tipo_camera || '',
+        r.compagno_ballo || '',
+        r.compagni_stanza || '',
+        r.stato || '',
+        r.pagamento || '',
+        r.note || ''
+      ]);
+
+      const csvContent = [headers, ...rows]
+        .map(e => e.map(val => `"${val.toString().replace(/"/g, '""')}"`).join(','))
+        .join('\n');
+
+      const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Brutia_Tango_Fest_Iscritti_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Esporta CSV formattato per l'Hotel
+    function esportaPerHotel() {
+      const accettatiConCamera = allData.filter(r => r.stato === 'Accettato' && r.tipologia_stanza && r.camera);
+
+      if (accettatiConCamera.length === 0) {
+        showToast('Nessun iscritto accettato con camera assegnata trovato.');
+        return;
+      }
+
+      const headers = ['Cognome', 'Nome', 'Tipo Camera', 'Numero Camera', 'Pacchetto', 'Data Arrivo', 'Data Partenza', 'Note Speciali'];
+      
+      const rows = accettatiConCamera.map(r => [
+        r.cognome || '',
+        r.nome || '',
+        r.tipologia_stanza || '',
+        r.camera || '',
+        (r.pacchetto || '').split('/')[0],
+        '27/11/2026', // Data arrivo fissa o da pacchetto
+        '30/11/2026', // Data partenza fissa o da pacchetto
+        r.note || ''
+      ]);
+
+      const csvContent = [headers, ...rows]
+        .map(e => e.map(val => `"${val.toString().replace(/"/g, '""')}"`).join(','))
+        .join('\n');
+
+      const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Brutia_Assegnazione_Camere_Hotel_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+
+</body>
+</html>

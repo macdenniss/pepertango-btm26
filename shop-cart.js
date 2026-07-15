@@ -1,23 +1,16 @@
 // ============================================================
-// PEPERTANGO STORE — Logica carrello + checkout
+// PEPERTANGO STORE — Carrello + integrazione Shopify
 //
-// Dipende da: shop-products.js (SHOP_PRODUCTS)
-// Carica DOPO shop-products.js nel HTML.
-//
-// Funzioni principali:
-//   cartOpen() / cartClose()          — apre/chiude il drawer
-//   productOpen(id)                   — apre il modal prodotto
-//   checkoutOpen() / checkoutClose()  — apre/chiude il checkout
-//   shopRenderGrid(cat)               — renderizza la griglia prodotti
-//   filterShop(btn, cat)              — filtra per categoria (override)
-//
-// DROPSHIPPING FLOW:
-//   Checkout → ShopAppsScript.gs → Stripe Checkout → webhook → Printful
+// FLOW:
+//   Prodotti: Shopify /products.json → fallback Printful (Apps Script) → fallback statico
+//   Checkout: redirect a Shopify cart → Shopify gestisce pagamento → Printful fulfillment
 // ============================================================
 
-// URL del deploy Google Apps Script (ShopAppsScript.gs)
-// Sostituisci con il tuo URL dopo il deploy come Web App
-var SHOP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0NYSyNEXneEFS4PmS7XKJqChHcc-FP399vmlru3g9t0hr-2lXBtgfju6ZXGsCphP9/exec';
+// Store Shopify (cs6dmc-ub.myshopify.com)
+var SHOPIFY_STORE    = 'cs6dmc-ub.myshopify.com';
+
+// Fallback: Apps Script con Printful (usato se Shopify non è ancora live)
+var SHOP_SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbw0NYSyNEXneEFS4PmS7XKJqChHcc-FP399vmlru3g9t0hr-2lXBtgfju6ZXGsCphP9/exec';
 
 
 // ============================================================
@@ -84,15 +77,16 @@ function cartAdd(productId, color, size, qty) {
     existing.qty += qty;
   } else {
     cart.push({
-      variantKey: variantKey,
-      id:         productId,
-      name:       product.name,
-      price:      product.price,
-      color:      color,
-      size:       size,
-      qty:        qty,
-      icon:       product.icon      || '',
-      thumbnail:  product.thumbnail || ''
+      variantKey:        variantKey,
+      id:                productId,
+      name:              product.name,
+      price:             product.price,
+      color:             color,
+      size:              size,
+      qty:               qty,
+      icon:              product.icon             || '',
+      thumbnail:         product.thumbnail        || '',
+      shopifyVariantId:  product._selectedVariantId || null  // impostato da pmAddToCart
     });
   }
 
@@ -361,7 +355,26 @@ function pmChangeQty(delta) {
 // Aggiunge al carrello dal modal
 function pmAddToCart() {
   if (!currentProduct) return;
+
+  // Trova lo Shopify variant ID corrispondente a colore + taglia selezionati
+  var shopifyVariantId = null;
+  if (currentProduct.shopifyVariants && currentProduct.shopifyVariants.length > 0) {
+    var matched = null;
+    for (var i = 0; i < currentProduct.shopifyVariants.length; i++) {
+      var v = currentProduct.shopifyVariants[i];
+      var opts = [v.option1, v.option2, v.option3].filter(Boolean);
+      var colorOk = !selectedColor || opts.indexOf(selectedColor) !== -1;
+      var sizeOk  = !selectedSize  || opts.indexOf(selectedSize)  !== -1;
+      if (colorOk && sizeOk) { matched = v; break; }
+    }
+    // Fallback alla prima variante se nessuna corrisponde esattamente
+    shopifyVariantId = (matched || currentProduct.shopifyVariants[0]).id;
+  }
+
+  // Salva temporaneamente sul prodotto per cartAdd
+  currentProduct._selectedVariantId = shopifyVariantId;
   cartAdd(currentProduct.id, selectedColor, selectedSize, selectedQty);
+  delete currentProduct._selectedVariantId;
   productClose();
 }
 
@@ -374,18 +387,27 @@ var checkoutStep = 1;
 var checkoutData = {};
 
 function checkoutOpen() {
-  if (cart.length === 0) {
-    alert('Il carrello è vuoto!');
-    return;
-  }
-  cartClose(); // chiude il drawer prima
-  checkoutStep = 1;
-  checkoutData = {};
-  checkoutRenderStep();
-  var modal = document.getElementById('checkoutModal');
-  if (modal) {
-    modal.classList.add('open');
-    document.body.style.overflow = 'hidden';
+  if (cart.length === 0) return;
+  cartClose();
+
+  // Costruisce l'URL carrello Shopify: /cart/VARIANTID:QTY,VARIANTID:QTY
+  var parts = [];
+  var missingVariant = false;
+
+  cart.forEach(function(item) {
+    if (item.shopifyVariantId) {
+      parts.push(item.shopifyVariantId + ':' + item.qty);
+    } else {
+      missingVariant = true;
+    }
+  });
+
+  if (parts.length > 0) {
+    // Redirect a Shopify checkout
+    window.open('https://' + SHOPIFY_STORE + '/cart/' + parts.join(','), '_blank');
+  } else if (missingVariant) {
+    // Prodotti non ancora da Shopify (store non pubblicato): vai allo store
+    window.open('https://' + SHOPIFY_STORE, '_blank');
   }
 }
 
@@ -677,30 +699,91 @@ function filterShop(btn, cat) {
 
 
 // ============================================================
-// 8. CARICAMENTO PRODOTTI DA PRINTFUL
+// 8. CARICAMENTO PRODOTTI
+// Priorità: 1) Shopify products.json  2) Printful via Apps Script  3) statico
 // ============================================================
 
-// Carica il catalogo prodotti dall'endpoint Apps Script (Printful).
-// In caso di errore o risposta vuota, ricade sui prodotti statici di shop-products.js.
+var _shopLoaderText = '<p style="font-family:\'Patrick Hand\',cursive;color:rgba(45,45,45,.4);'
+  + 'padding:40px 0;text-align:center"><i class="fa-solid fa-spinner fa-spin" '
+  + 'style="margin-right:8px"></i>Caricamento prodotti…</p>';
+
 function loadShopProducts() {
   var grid = document.getElementById('shopGrid');
-  if (grid) {
-    grid.innerHTML = '<p style="font-family:\'Patrick Hand\',cursive;color:rgba(45,45,45,.4);padding:40px 0;text-align:center">'
-      + '<i class="fa-solid fa-spinner fa-spin" style="margin-right:8px"></i>Caricamento prodotti…</p>';
-  }
+  if (grid) grid.innerHTML = _shopLoaderText;
 
+  // 1. Prova Shopify (store deve essere pubblico)
+  fetch('https://' + SHOPIFY_STORE + '/products.json?limit=50')
+    .then(function(r) {
+      if (!r.ok) throw new Error('shopify_locked');
+      return r.json();
+    })
+    .then(function(data) {
+      if (data && data.products && data.products.length > 0) {
+        SHOP_PRODUCTS = _mapShopifyProducts(data.products);
+        shopRenderGrid();
+      } else {
+        _loadFromPrintful(); // store vuoto, prova Printful
+      }
+    })
+    .catch(function() {
+      _loadFromPrintful(); // store bloccato o errore di rete
+    });
+}
+
+// Mappa i prodotti Shopify nel formato interno
+function _mapShopifyProducts(products) {
+  return products.map(function(p) {
+    var sizes = [], colors = [];
+
+    (p.options || []).forEach(function(opt) {
+      var n = (opt.name || '').toLowerCase();
+      if (n === 'size' || n === 'taglia' || n === 'dimensione') {
+        sizes = opt.values || [];
+      } else if (n === 'color' || n === 'colore' || n === 'colour') {
+        colors = (opt.values || []).map(function(c) { return { name: c, hex: '#888' }; });
+      }
+    });
+
+    // Se Shopify ha una sola opzione "Title" (prodotto senza varianti), ignora
+    if ((p.options || []).length === 1 && p.options[0].name === 'Title') {
+      sizes = []; colors = [];
+    }
+
+    var prices = (p.variants || []).map(function(v) { return parseFloat(v.price || 0); });
+    var minPrice = prices.length ? Math.min.apply(null, prices) : 0;
+
+    return {
+      id:               'sh-' + p.id,
+      name:             p.title || '',
+      category:         'abbigliamento',
+      price:            minPrice,
+      thumbnail:        p.images && p.images[0] ? p.images[0].src : '',
+      badge:            null,
+      description:      (p.body_html || '').replace(/<[^>]+>/g, '').substring(0, 120),
+      material:         '',
+      sizes:            sizes,
+      colors:           colors,
+      shopifyHandle:    p.handle,
+      shopifyVariants:  (p.variants || []).map(function(v) {
+        return { id: v.id, title: v.title, price: parseFloat(v.price || 0),
+                 option1: v.option1 || '', option2: v.option2 || '', option3: v.option3 || '' };
+      })
+    };
+  });
+}
+
+// Fallback 2: carica da Printful via Apps Script
+function _loadFromPrintful() {
   fetch(SHOP_SCRIPT_URL + '?action=getProducts')
     .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data && data.success && data.products && data.products.length > 0) {
-        // Sovrascrive il catalogo statico con i prodotti reali di Printful
         SHOP_PRODUCTS = data.products;
       }
       shopRenderGrid();
     })
-    .catch(function(err) {
-      console.warn('[shop] Printful fetch fallita, uso catalogo statico:', err);
-      shopRenderGrid();
+    .catch(function() {
+      shopRenderGrid(); // Fallback 3: prodotti statici di shop-products.js
     });
 }
 
@@ -710,9 +793,8 @@ function loadShopProducts() {
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', function() {
-  cartLoad();           // carica carrello salvato
-  loadShopProducts();   // carica prodotti da Printful (con fallback statico)
-  checkStripeReturn();  // gestisce redirect da Stripe Checkout
+  cartLoad();         // carica carrello salvato
+  loadShopProducts(); // carica prodotti: Shopify → Printful → statico
 });
 
 // Controlla se si ritorna dalla pagina di pagamento Stripe

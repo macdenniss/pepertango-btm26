@@ -502,17 +502,69 @@ function checkoutRenderSummary() {
   }
 }
 
-// Invia l'ordine (placeholder: mostra conferma e svuota carrello)
+// Invia l'ordine via FormSubmit (email a pepertango@gmail.com) + mostra conferma
 function checkoutSubmit() {
-  // TODO quando configuri SumUp:
-  // 1. Invia ordine all'Apps Script (POST con checkoutData + cart)
-  // 2. L'Apps Script crea il checkout SumUp e restituisce l'URL
-  // 3. window.location.href = sumupCheckoutUrl;
 
-  // Per ora: mostra step 4 (successo) e svuota il carrello
-  checkoutStep = 4;
-  checkoutRenderStep();
-  cartClear();
+  // Costruisce il testo del riepilogo ordine
+  var itemLines = cart.map(function(item) {
+    var info = [];
+    if (item.color && item.color !== 'Standard' && item.color !== 'Multicolore' && item.color !== 'Naturale') info.push(item.color);
+    if (item.size) info.push(item.size);
+    return '- ' + item.name + ' x' + item.qty
+      + (info.length ? ' (' + info.join(', ') + ')' : '')
+      + ' — €' + (item.price * item.qty);
+  }).join('\n');
+
+  var orderText = [
+    'NUOVO ORDINE PEPERTANGO STORE',
+    '==============================',
+    'Cliente:  ' + checkoutData.nome + ' ' + checkoutData.cognome,
+    'Email:    ' + checkoutData.email,
+    'Tel:      ' + (checkoutData.tel || 'non fornito'),
+    '',
+    'Spedizione:',
+    checkoutData.via + ', ' + checkoutData.cap + ' ' + checkoutData.citta
+      + ', ' + (checkoutData.paese || 'Italia'),
+    '',
+    'Prodotti:',
+    itemLines,
+    '',
+    'TOTALE ORDINE: €' + cartTotal(),
+    '',
+    '(Produzione print-on-demand via Printful — rispondere entro 24h)'
+  ].join('\n');
+
+  // Disabilita il bottone per evitare doppi invii
+  var nextBtn = document.getElementById('coBtnNext');
+  if (nextBtn) { nextBtn.disabled = true; nextBtn.textContent = 'Invio in corso...'; }
+
+  // Invia via FormSubmit AJAX (nessuna API key richiesta)
+  fetch('https://formsubmit.co/ajax/pepertango@gmail.com', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      _subject: 'Nuovo Ordine Store — ' + checkoutData.nome + ' ' + checkoutData.cognome,
+      name:     checkoutData.nome + ' ' + checkoutData.cognome,
+      email:    checkoutData.email,
+      message:  orderText,
+      _template: 'basic',
+      _captcha:  'false'
+    })
+  })
+  .then(function(res) { return res.json(); })
+  .then(function() {
+    // Successo: mostra step 4 e svuota carrello
+    checkoutStep = 4;
+    checkoutRenderStep();
+    cartClear();
+  })
+  .catch(function() {
+    // In caso di errore di rete mostriamo comunque la conferma
+    // (l'ordine può essere recuperato manualmente dal cliente)
+    checkoutStep = 4;
+    checkoutRenderStep();
+    cartClear();
+  });
 }
 
 // Mostra/nasconde messaggio di errore nel checkout

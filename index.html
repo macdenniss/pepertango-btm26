@@ -660,6 +660,35 @@
     .shop-add:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 0 var(--fg); }
     .shop-note { margin-top: 36px; text-align: center; font-family: 'Patrick Hand', cursive; font-size: 13px; color: rgba(45,45,45,.4); }
     .shop-note a { color: var(--accent); text-decoration: underline; }
+    /* Badge "Su ordinazione" sulle card */
+    .shop-pod-pill {
+      position: absolute; bottom: 10px; right: 10px;
+      background: rgba(0,0,0,.55); color: #fff;
+      font-family: 'Patrick Hand', cursive; font-size: 10px;
+      padding: 3px 9px; border-radius: 20px; letter-spacing: .3px;
+    }
+    /* Riga tempi consegna */
+    .shop-delivery {
+      font-family: 'Patrick Hand', cursive; font-size: 11px;
+      color: rgba(45,45,45,.4); margin-bottom: 12px; line-height: 1.4;
+    }
+    /* Guida taglie modal */
+    #sizeGuideModal {
+      display: none; position: fixed; inset: 0; z-index: 1100;
+      background: rgba(0,0,0,.55); align-items: center; justify-content: center;
+    }
+    #sizeGuideModal.open { display: flex; }
+    .sg-box {
+      background: #fff; border: 2px solid var(--fg);
+      border-radius: var(--r-wobbly-md); box-shadow: 6px 6px 0 0 var(--fg);
+      padding: 28px; max-width: 520px; width: 90vw; max-height: 80vh; overflow-y: auto;
+    }
+    .sg-box h3 { font-family: 'Kalam', cursive; font-size: 1.3rem; margin-bottom: 16px; }
+    .sg-table { width: 100%; border-collapse: collapse; font-family: 'Patrick Hand', cursive; font-size: 14px; }
+    .sg-table th { background: var(--fg); color: #fff; padding: 8px 12px; text-align: center; }
+    .sg-table td { border: 1px solid var(--fg); padding: 7px 12px; text-align: center; }
+    .sg-table tr:nth-child(even) td { background: var(--muted); }
+    .sg-close { float: right; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--fg); }
     /* Come funziona (POD) */
     .shop-how { display: flex; align-items: center; justify-content: center; gap: 0; margin: 28px 0 40px; flex-wrap: wrap; }
     .shop-how-step { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.18); border-radius: 14px; padding: 14px 18px; min-width: 150px; }
@@ -2527,6 +2556,13 @@
   <div class="page" id="page-shop">
 
   <!-- SHOP -->
+  <!-- Banner successo pagamento Stripe -->
+  <div id="shopSuccessBanner" style="display:none;position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:9999;background:#2d2d2d;color:#fff;padding:16px 28px;border-radius:14px;box-shadow:4px 4px 0 0 var(--accent);font-family:'Kalam',cursive;font-size:1.05rem;align-items:center;gap:14px;max-width:90vw">
+    <span style="font-size:22px">✅</span>
+    <span>Pagamento completato! Riceverai una conferma via email a breve.</span>
+    <button onclick="this.parentElement.style.display='none'" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:1.2rem;cursor:pointer;margin-left:8px">&times;</button>
+  </div>
+
   <section class="shop-section" id="shop">
     <div class="shop-head">
       <div>
@@ -3251,9 +3287,12 @@
         <div class="pm-colors-list" id="pmColorsList"></div>
       </div>
 
-      <!-- Taglie -->
+      <!-- Taglie / Modello / Formato -->
       <div id="pmSizes">
-        <div class="pm-section-label">Taglia</div>
+        <div class="pm-section-label" style="display:flex;align-items:center;justify-content:space-between">
+          <span id="pmSizeLabel">Taglia</span>
+          <button id="pmSizeGuideBtn" onclick="document.getElementById('sizeGuideModal').classList.add('open')" style="background:none;border:none;font-family:'Patrick Hand',cursive;font-size:12px;color:var(--accent);cursor:pointer;text-decoration:underline">📏 Guida taglie</button>
+        </div>
         <div class="pm-sizes-list" id="pmSizesList"></div>
       </div>
 
@@ -3397,6 +3436,33 @@
         <button class="co-btn-next" id="coBtnNext" onclick="checkoutNext()">Continua</button>
       </div>
 
+    </div>
+  </div>
+
+  <!-- GUIDA TAGLIE -->
+  <div id="sizeGuideModal" role="dialog" aria-modal="true">
+    <div class="sg-box">
+      <button class="sg-close" onclick="document.getElementById('sizeGuideModal').classList.remove('open')">&times;</button>
+      <h3>📏 Guida alle taglie</h3>
+      <p style="font-family:'Patrick Hand',cursive;font-size:13px;color:rgba(45,45,45,.5);margin-bottom:16px">
+        Misure in centimetri. In caso di dubbio, scegli la taglia più grande.
+      </p>
+      <table class="sg-table">
+        <thead>
+          <tr><th>Taglia</th><th>Petto</th><th>Vita</th><th>Fianchi</th><th>Lunghezza</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>XS</td><td>82–87</td><td>63–68</td><td>88–93</td><td>67</td></tr>
+          <tr><td>S</td><td>88–93</td><td>69–74</td><td>94–99</td><td>69</td></tr>
+          <tr><td>M</td><td>94–99</td><td>75–80</td><td>100–105</td><td>71</td></tr>
+          <tr><td>L</td><td>100–105</td><td>81–86</td><td>106–111</td><td>73</td></tr>
+          <tr><td>XL</td><td>106–111</td><td>87–92</td><td>112–117</td><td>75</td></tr>
+          <tr><td>XXL</td><td>112–117</td><td>93–98</td><td>118–123</td><td>77</td></tr>
+        </tbody>
+      </table>
+      <p style="font-family:'Patrick Hand',cursive;font-size:12px;color:rgba(45,45,45,.4);margin-top:14px">
+        Taglie unisex. I capi Printful seguono standard europei.
+      </p>
     </div>
   </div>
 

@@ -295,16 +295,22 @@ function productOpen(productId) {
     }
   }
 
-  // Sezione taglie
+  // Sezione taglie / modello / formato
   var sizeSection = document.getElementById('pmSizes');
   if (sizeSection) {
     if (product.sizes.length > 0) {
       sizeSection.style.display = 'block';
+      // Aggiorna label (Taglia / Modello / Formato)
+      var sizeLabelEl = document.getElementById('pmSizeLabel');
+      if (sizeLabelEl) sizeLabelEl.textContent = product.sizeLabel || 'Taglia';
+      // Nascondi guida taglie se non è abbigliamento
+      var sizeGuideBtn = document.getElementById('pmSizeGuideBtn');
+      if (sizeGuideBtn) sizeGuideBtn.style.display = (product.sizeLabel === 'Taglia') ? 'inline' : 'none';
       var sizesList = document.getElementById('pmSizesList');
       if (sizesList) {
         sizesList.innerHTML = product.sizes.map(function(sz) {
           return '<button class="pm-size' + (sz === selectedSize ? ' active' : '') + '"'
-            + ' onclick="pmSelectSize(\'' + sz + '\',this)">' + sz + '</button>';
+            + ' onclick="pmSelectSize(\'' + sz.replace(/'/g, "\\'") + '\',this)">' + sz + '</button>';
         }).join('');
       }
     } else {
@@ -409,19 +415,20 @@ function checkoutOpen() {
   });
 
   if (parts.length > 0) {
-    // Usa Storefront API per creare un checkout Shopify e ottieni l'URL diretto
-    var lineItems = cart
+    // Usa Storefront Cart API (2024-01+) per creare un checkout Shopify reale
+    // Nota: checkoutCreate è deprecato, si usa cartCreate con merchandiseId
+    var cartLines = cart
       .filter(function(item) { return item.shopifyVariantId; })
       .map(function(item) {
         return {
-          variantId: 'gid://shopify/ProductVariant/' + item.shopifyVariantId,
+          merchandiseId: 'gid://shopify/ProductVariant/' + item.shopifyVariantId,
           quantity: item.qty
         };
       });
 
-    var mutation = 'mutation checkoutCreate($input: CheckoutCreateInput!) {'
-      + '  checkoutCreate(input: $input) {'
-      + '    checkout { webUrl }'
+    var mutation = 'mutation cartCreate($input: CartInput!) {'
+      + '  cartCreate(input: $input) {'
+      + '    cart { checkoutUrl }'
       + '    userErrors { field message }'
       + '  }'
       + '}';
@@ -432,26 +439,23 @@ function checkoutOpen() {
         'Content-Type': 'application/json',
         'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_TOKEN
       },
-      body: JSON.stringify({ query: mutation, variables: { input: { lineItems: lineItems } } })
+      body: JSON.stringify({ query: mutation, variables: { input: { lines: cartLines } } })
     })
     .then(function(r) { return r.json(); })
     .then(function(data) {
-      var checkout = data.data && data.data.checkoutCreate && data.data.checkoutCreate.checkout;
-      if (checkout && checkout.webUrl) {
-        // Svuota carrello locale e vai al checkout Shopify
+      var shopCart = data.data && data.data.cartCreate && data.data.cartCreate.cart;
+      if (shopCart && shopCart.checkoutUrl) {
         cartClear();
-        window.location.href = checkout.webUrl;
+        window.location.href = shopCart.checkoutUrl;
       } else {
-        // Fallback: URL carrello diretto
+        // Fallback: URL carrello diretto (funziona sempre)
         window.location.href = 'https://' + SHOPIFY_STORE + '/cart/' + parts.join(',');
       }
     })
     .catch(function() {
-      // Fallback: URL carrello diretto
       window.location.href = 'https://' + SHOPIFY_STORE + '/cart/' + parts.join(',');
     });
   } else {
-    // Nessun prodotto Shopify nel carrello → vai allo store
     window.location.href = 'https://' + SHOPIFY_STORE;
   }
 }
@@ -694,7 +698,21 @@ function shopRenderGrid(filterCat) {
   }
 
   grid.innerHTML = products.map(function(p) {
-    var palette     = PRODUCT_COLORS[p.id] || { bg: '#f5f5f5', icon: 'rgba(45,45,45,.2)' };
+    // Per prodotti Shopify (id = 'sh-xxx') usa palette da nome; per statici usa id
+    var paletteKey = p.id;
+    if (p.id && p.id.indexOf('sh-') === 0) {
+      var tl = (p.name || '').toLowerCase();
+      if (tl.indexOf('shirt') !== -1 || tl.indexOf('tee') !== -1) paletteKey = 'tshirt';
+      else if (tl.indexOf('hoodie') !== -1) paletteKey = 'hoodie';
+      else if (tl.indexOf('felpa') !== -1) paletteKey = 'felpa';
+      else if (tl.indexOf('cap') !== -1 || tl.indexOf('hat') !== -1) paletteKey = 'cappellino';
+      else if (tl.indexOf('tote') !== -1 || tl.indexOf('bag') !== -1) paletteKey = 'tote';
+      else if (tl.indexOf('mug') !== -1 || tl.indexOf('bottle') !== -1) paletteKey = 'mug';
+      else if (tl.indexOf('poster') !== -1) paletteKey = 'poster';
+      else if (tl.indexOf('sticker') !== -1) paletteKey = 'sticker';
+      else paletteKey = p.category === 'abbigliamento' ? 'tshirt' : 'gadget';
+    }
+    var palette     = PRODUCT_COLORS[paletteKey] || { bg: '#f5f5f5', icon: 'rgba(45,45,45,.2)' };
     var catLabel    = p.category === 'abbigliamento' ? 'Abbigliamento' : 'Gadget';
     var hasSize     = p.sizes && p.sizes.length > 0;
     var hasColor    = p.colors && p.colors.length > 1;
@@ -797,11 +815,34 @@ function _mapShopifyProducts(products) {
     var prices = (p.variants || []).map(function(v) { return parseFloat(v.price || 0); });
     var minPrice = prices.length ? Math.min.apply(null, prices) : 0;
 
+    // Rileva categoria dal tipo prodotto o titolo
+    var titleLow = (p.title || '').toLowerCase();
+    var typeLow  = (p.product_type || '').toLowerCase();
+    var isClothing = typeLow === 'clothing' || typeLow === 'abbigliamento'
+      || titleLow.indexOf('shirt') !== -1 || titleLow.indexOf('tee') !== -1
+      || titleLow.indexOf('bra') !== -1    || titleLow.indexOf('hoodie') !== -1
+      || titleLow.indexOf('felpa') !== -1  || titleLow.indexOf('cap') !== -1
+      || titleLow.indexOf('cappellino') !== -1;
+    var category = isClothing ? 'abbigliamento' : 'gadget';
+
+    // Rileva se l'opzione "size" è in realtà un modello di telefono (es. iPhone 14, Samsung S22)
+    var sizeOptionName = 'Taglia';
+    if (sizes.length > 0) {
+      var firstSize = (sizes[0] || '').toLowerCase();
+      if (firstSize.indexOf('iphone') !== -1 || firstSize.indexOf('samsung') !== -1
+          || firstSize.indexOf('pixel') !== -1 || firstSize.indexOf('galaxy') !== -1) {
+        sizeOptionName = 'Modello';
+      } else if (firstSize.indexOf('oz') !== -1 || firstSize.indexOf('ml') !== -1) {
+        sizeOptionName = 'Formato';
+      }
+    }
+
     return {
       id:               'sh-' + p.id,
       name:             p.title || '',
-      category:         'abbigliamento',
+      category:         category,
       price:            minPrice,
+      sizeLabel:        sizeOptionName,
       thumbnail:        p.images && p.images[0] ? p.images[0].src : '',
       badge:            null,
       description:      (p.body_html || '').replace(/<[^>]+>/g, '').substring(0, 120),

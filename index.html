@@ -1387,6 +1387,11 @@
       display: block;
     }
     .nav-drawer a:active, .nav-drawer a:hover { background: var(--accent); }
+    /* Shop evidenziato nel drawer mobile */
+    .nav-drawer a.drawer-shop {
+      color: var(--accent); font-size: 20px;
+      animation: shopPulse 2s ease-in-out infinite;
+    }
 
     /* ============================================================
        MOBILE RESPONSIVE
@@ -1471,6 +1476,34 @@
 
       /* Sezione Brutia */
       #page-brutia .ev-sub.alt { padding: 40px 4%; }
+
+      /* SHOP */
+      .shop-section { padding: 60px 4% 50px; }
+      .shop-head { grid-template-columns: 1fr; gap: 16px; margin-bottom: 32px; }
+      .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .shop-cats { flex-direction: column; align-items: stretch; gap: 12px; margin-bottom: 24px; }
+      .shop-cats-filters { justify-content: center; }
+      .shop-cat { flex: 1; min-height: 44px; font-size: 14px; }
+      .shop-cart-trigger { justify-content: center; min-height: 48px; font-size: 15px; }
+      .shop-how { margin: 20px 0 28px; }
+      .shop-how-step { width: 100%; }
+      .shop-body { padding: 12px 12px 14px; }
+      .shop-name { font-size: 13px; }
+      .shop-price { font-size: 1.05rem; }
+      .shop-add { padding: 8px 12px; min-height: 38px; }
+      .shop-delivery { display: none; }
+
+      /* PRODUCT MODAL: a tutto schermo dal basso */
+      #productModal { align-items: flex-end; }
+      .pm-box {
+        width: 100%; max-width: 100%;
+        border-radius: 20px 20px 0 0;
+        border-left: none; border-right: none; border-bottom: none;
+        max-height: 88vh; padding: 22px 18px 28px;
+      }
+      .pm-size, .pm-color { min-width: 44px; min-height: 44px; }
+      .pm-qty-btn { width: 44px; height: 44px; }
+      .pm-add-btn { min-height: 52px; font-size: 16px; }
     }
 
     @media (max-width: 480px) {
@@ -1518,6 +1551,14 @@
       /* Spacing improvements */
       .section-tag { font-size: 0.85rem; margin-bottom: 0.5rem; }
       .section-hl { line-height: 1.2; }
+
+      /* SHOP su schermi piccoli */
+      .shop-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .shop-cat-tag { font-size: 10px; }
+      .shop-name { font-size: 12px; }
+      .shop-desc { font-size: 11px; margin-bottom: 8px; }
+      .shop-add { font-size: 12px; padding: 7px 10px; }
+      .shop-note { font-size: 12px; }
     }
     /* ============================================================
        COMPACT FORM LAYOUT
@@ -1847,7 +1888,9 @@
 
     @media (max-width: 600px) {
       .co-row { grid-template-columns: 1fr; }
-      #cartDrawer { width: 100%; border-left: none; border-top: 3px solid var(--fg); }
+      /* right:-100vw evita che il drawer chiuso resti parzialmente visibile */
+      #cartDrawer { width: 100%; right: -100vw; border-left: none; border-top: 3px solid var(--fg); }
+      #cartDrawer.open { right: 0; }
     }
   </style>
 </head>
@@ -1870,10 +1913,11 @@
   </nav>
   <div class="nav-drawer" id="navDrawer">
     <a href="#" onclick="showPage('home');toggleMenu();return false;">Home</a>
-    <a href="#" onclick="showPage('shop');toggleMenu();return false;">Shop</a>
+    <a href="#" onclick="showPage('shop');toggleMenu();return false;" class="drawer-shop">Shop</a>
     <a href="#" onclick="showPage('mtp27');toggleMenu();return false;">Maratona Tango Piccante</a>
     <a href="#" onclick="showPage('brutia');toggleMenu();return false;">Brutia Tango Fest</a>
     <a href="#" onclick="showPage('contatti');toggleMenu();return false;">Contatti</a>
+    <a href="#" onclick="showPage('privacy');toggleMenu();return false;">Privacy</a>
   </div>
 
   <!-- PAGE: HOME -->

@@ -380,15 +380,10 @@ function pmAddToCart() {
     shopifyVariantId = (matched || currentProduct.shopifyVariants[0]).id;
   }
 
-  // Prodotto Shopify → portare direttamente al carrello Shopify (con articolo già aggiunto)
-  if (shopifyVariantId) {
-    productClose();
-    window.location.href = 'https://' + SHOPIFY_STORE + '/cart/' + shopifyVariantId + ':' + selectedQty;
-    return;
-  }
-
-  // Fallback: carrello locale (prodotti Printful senza corrispondenza Shopify)
-  currentProduct._selectedVariantId = null;
+  // Aggiunge al carrello LOCALE del sito (si va su Shopify solo al checkout).
+  // _selectedVariantId viene letto da cartAdd e salvato nell'item:
+  // servirà a checkoutOpen() per costruire l'ordine Shopify.
+  currentProduct._selectedVariantId = shopifyVariantId;
   cartAdd(currentProduct.id, selectedColor, selectedSize, selectedQty);
   delete currentProduct._selectedVariantId;
   productClose();

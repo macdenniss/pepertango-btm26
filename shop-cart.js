@@ -697,6 +697,11 @@ function shopRenderGrid(filterCat) {
     return;
   }
 
+  // Badge automatico sul primo prodotto (se non ne ha già uno)
+  if (products.length > 0 && !products[0].badge) {
+    products[0] = Object.assign({}, products[0], { badge: '⭐ Più amato' });
+  }
+
   grid.innerHTML = products.map(function(p) {
     // Per prodotti Shopify (id = 'sh-xxx') usa palette da nome; per statici usa id
     var paletteKey = p.id;

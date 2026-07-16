@@ -729,6 +729,65 @@
       font-family: 'Kalam', cursive; font-size: 1.1rem; font-weight: 700; color: #fff;
       letter-spacing: 1px;
     }
+    /* Entrata a cascata delle card */
+    @keyframes cardPop {
+      from { opacity: 0; transform: translateY(18px) rotate(0deg); }
+      to   { opacity: 1; }
+    }
+    .shop-grid .shop-card { animation: cardPop .45s var(--ease) backwards; }
+    .shop-grid .shop-card:nth-child(1) { animation-delay: .05s; }
+    .shop-grid .shop-card:nth-child(2) { animation-delay: .12s; }
+    .shop-grid .shop-card:nth-child(3) { animation-delay: .19s; }
+    .shop-grid .shop-card:nth-child(4) { animation-delay: .26s; }
+    .shop-grid .shop-card:nth-child(5) { animation-delay: .33s; }
+    .shop-grid .shop-card:nth-child(6) { animation-delay: .40s; }
+    .shop-grid .shop-card:nth-child(n+7) { animation-delay: .47s; }
+    /* Doodle decorativi del titolo */
+    .shop-doodle {
+      position: absolute; font-size: 1.6rem; opacity: .85;
+      animation: doodleFloat 3.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .shop-doodle.d-star { top: -6px; right: -40px; animation-delay: .6s; }
+    .shop-doodle.d-note { bottom: 4px; right: -74px; font-size: 1.3rem; animation-delay: 1.4s; }
+    @keyframes doodleFloat {
+      0%, 100% { transform: translateY(0) rotate(-8deg); }
+      50%      { transform: translateY(-7px) rotate(8deg); }
+    }
+    /* Barra fiducia pagamenti */
+    .shop-trust {
+      display: flex; align-items: center; justify-content: center; gap: 22px;
+      flex-wrap: wrap; margin-top: 34px;
+      font-family: 'Patrick Hand', cursive; font-size: 13px; color: rgba(45,45,45,.55);
+    }
+    .shop-trust i { font-size: 19px; margin-right: 5px; vertical-align: -2px; color: rgba(45,45,45,.65); }
+    /* Banner CTA finale */
+    .shop-cta {
+      margin-top: 46px; padding: 34px 24px;
+      background: var(--fg); border-radius: var(--r-wobbly-md);
+      border: 2px solid var(--fg); box-shadow: var(--shadow);
+      text-align: center; transform: rotate(-.3deg);
+    }
+    .shop-cta h3 {
+      font-family: 'Kalam', cursive; font-size: clamp(1.4rem, 3.5vw, 2rem);
+      color: #fff; margin-bottom: 8px;
+    }
+    .shop-cta h3 em { color: #3ddc68; font-style: italic; }
+    .shop-cta p { font-family: 'Patrick Hand', cursive; color: rgba(255,255,255,.65); font-size: .95rem; margin-bottom: 18px; }
+    .shop-cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #fff;
+      font-family: 'Kalam', cursive; font-size: 16px; font-weight: 700;
+      padding: 12px 28px; border: 2px solid #fff; border-radius: var(--r-wobbly-sm);
+      box-shadow: 3px 3px 0 0 rgba(255,255,255,.35); cursor: pointer;
+      transition: transform .1s, box-shadow .1s;
+    }
+    .shop-cta-btn:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 0 rgba(255,255,255,.35); }
+    @media (max-width: 768px) {
+      .shop-doodle { display: none; }
+      .shop-cta { padding: 26px 16px; }
+      .shop-trust { gap: 14px; font-size: 12px; }
+    }
     /* Skeleton loader card */
     .shop-skel {
       background: #fff; border: 2px solid rgba(45,45,45,.15);
@@ -2717,7 +2776,10 @@
     <div class="shop-head">
       <div>
         <span class="section-tag" style="color:var(--fire)">PeperTango Store</span>
-        <h2 class="section-hl reveal">IL NOSTRO<br><em>shop</em> <span class="shop-hl-sticker">🌶️</span></h2>
+        <h2 class="section-hl reveal" style="position:relative;display:inline-block">IL NOSTRO<br><em>shop</em> <span class="shop-hl-sticker">🌶️</span>
+          <span class="shop-doodle d-star">✨</span>
+          <span class="shop-doodle d-note">💃</span>
+        </h2>
       </div>
       <p class="shop-head-body reveal d2">
         Abbigliamento e gadget brandizzati PeperTango in edizione limitata.
@@ -2768,10 +2830,25 @@
     </div>
 
     <div id="shopGrid" class="shop-grid reveal d2"></div>
+    <!-- Barra fiducia -->
+    <div class="shop-trust reveal">
+      <span><i class="fa-solid fa-lock"></i> Checkout sicuro Shopify</span>
+      <span><i class="fa-brands fa-cc-visa"></i><i class="fa-brands fa-cc-mastercard" style="margin-left:3px"></i> Carte e wallet</span>
+      <span><i class="fa-solid fa-truck-fast"></i> Spedizione tracciata</span>
+      <span><i class="fa-solid fa-shirt"></i> Qualità Printful</span>
+    </div>
     <p class="shop-note">
       Tutti i prodotti sono realizzati <strong>su ordinazione</strong> tramite Printful (print on demand) — nessun magazzino, ogni articolo viene prodotto dopo l'acquisto.<br>
       Per domande scrivi a <a href="mailto:pepertango@gmail.com">pepertango@gmail.com</a>
     </p>
+    <!-- CTA finale -->
+    <div class="shop-cta reveal">
+      <h3>Indossa il tango, <em>vivi piccante</em> 🌶️</h3>
+      <p>La tua divisa per la prossima milonga ti aspetta — edizione limitata PeperTango.</p>
+      <button class="shop-cta-btn" onclick="document.getElementById('shopGrid').scrollIntoView({behavior:'smooth'})">
+        <i class="fa-solid fa-bag-shopping"></i> Scopri i prodotti
+      </button>
+    </div>
   </section>
 
   </div><!-- /page-shop -->

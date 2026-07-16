@@ -684,8 +684,14 @@ function shopRenderGrid(filterCat) {
   if (!grid) return;
 
   var products = filterCat === 'all'
-    ? SHOP_PRODUCTS
+    ? SHOP_PRODUCTS.slice()
     : SHOP_PRODUCTS.filter(function(p) { return p.category === filterCat; });
+
+  // Ordina: prima Abbigliamento, poi Gadget/accessori (ordine originale a parità)
+  var pesoCategoria = { abbigliamento: 0, gadget: 1 };
+  products.sort(function(a, b) {
+    return (pesoCategoria[a.category] || 9) - (pesoCategoria[b.category] || 9);
+  });
 
   if (products.length === 0) {
     grid.innerHTML = '<p style="font-family:\'Patrick Hand\',cursive;color:rgba(45,45,45,.4);padding:40px 0">Nessun prodotto in questa categoria.</p>';

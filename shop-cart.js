@@ -688,9 +688,12 @@ function shopRenderGrid(filterCat) {
     : SHOP_PRODUCTS.filter(function(p) { return p.category === filterCat; });
 
   // Ordina: prima Abbigliamento, poi Gadget/accessori (ordine originale a parità)
+  // NB: non usare "|| 9" qui — 0 è falsy e verrebbe scartato
   var pesoCategoria = { abbigliamento: 0, gadget: 1 };
   products.sort(function(a, b) {
-    return (pesoCategoria[a.category] || 9) - (pesoCategoria[b.category] || 9);
+    var pa = (a.category in pesoCategoria) ? pesoCategoria[a.category] : 9;
+    var pb = (b.category in pesoCategoria) ? pesoCategoria[b.category] : 9;
+    return pa - pb;
   });
 
   if (products.length === 0) {
@@ -943,10 +946,22 @@ function _mapShopifyProducts(products) {
     var titleLow = (p.title || '').toLowerCase();
     var typeLow  = (p.product_type || '').toLowerCase();
     var isClothing = typeLow === 'clothing' || typeLow === 'abbigliamento'
+      || typeLow.indexOf('shirt') !== -1   || typeLow.indexOf('hoodie') !== -1
       || titleLow.indexOf('shirt') !== -1 || titleLow.indexOf('tee') !== -1
       || titleLow.indexOf('bra') !== -1    || titleLow.indexOf('hoodie') !== -1
       || titleLow.indexOf('felpa') !== -1  || titleLow.indexOf('cap') !== -1
+      || titleLow.indexOf('maglietta') !== -1
       || titleLow.indexOf('cappellino') !== -1;
+    // Euristica extra: se ha taglie da vestiario (S/M/L/XL...) è abbigliamento
+    // anche quando il titolo è una frase (es. prodotti con slogan stampati)
+    if (!isClothing && sizes.length > 0) {
+      var taglieVestiario = ['xs', 's', 'm', 'l', 'xl', 'xxl', '2xl', '3xl', '4xl'];
+      var match = 0;
+      for (var si = 0; si < sizes.length; si++) {
+        if (taglieVestiario.indexOf(String(sizes[si]).toLowerCase().trim()) !== -1) match++;
+      }
+      if (match >= 2) isClothing = true;
+    }
     var category = isClothing ? 'abbigliamento' : 'gadget';
 
     // Rileva se l'opzione "size" è in realtà un modello di telefono (es. iPhone 14, Samsung S22)

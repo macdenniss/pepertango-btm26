@@ -732,10 +732,27 @@ function shopRenderGrid(filterCat) {
     var matText     = (p.material || '').split('—')[0].trim();
     var variantText = variantHints.length ? variantHints.join(' &nbsp;|&nbsp; ') : (matText || '&nbsp;');
 
-    // Contenuto immagine: foto reale Printful o icona fallback
-    var imgContent = p.thumbnail
-      ? '<img src="' + p.thumbnail + '" alt="' + p.name + '" style="width:100%;height:100%;object-fit:contain;padding:10px;box-sizing:border-box">'
-      : '<i class="' + (p.icon || 'fa-solid fa-shirt') + '" style="color:' + palette.icon + ';font-size:4.5rem"></i>';
+    // Contenuto immagine: mini-galleria se ci sono più foto, altrimenti foto singola o icona
+    var imgs = (p.images && p.images.length > 1) ? p.images : (p.thumbnail ? [p.thumbnail] : []);
+    var imgContent;
+    if (imgs.length > 1) {
+      var slides = imgs.map(function(src, k) {
+        return '<div class="shop-img-slide"><img src="' + src + '" alt="' + p.name + ' foto ' + (k + 1)
+          + '" loading="lazy" style="width:100%;height:100%;object-fit:contain;padding:10px;box-sizing:border-box"></div>';
+      }).join('');
+      var dots = imgs.map(function(_, k) {
+        return '<span class="shop-img-dot' + (k === 0 ? ' active' : '') + '"></span>';
+      }).join('');
+      imgContent =
+          '<div class="shop-img-slider" onscroll="shopSliderDots(this)">' + slides + '</div>'
+        + '<button class="shop-img-nav prev" onclick="event.stopPropagation();shopSlide(this,-1)" aria-label="Foto precedente">&lsaquo;</button>'
+        + '<button class="shop-img-nav next" onclick="event.stopPropagation();shopSlide(this,1)" aria-label="Foto successiva">&rsaquo;</button>'
+        + '<div class="shop-img-dots">' + dots + '</div>';
+    } else if (imgs.length === 1) {
+      imgContent = '<img src="' + imgs[0] + '" alt="' + p.name + '" loading="lazy" style="width:100%;height:100%;object-fit:contain;padding:10px;box-sizing:border-box">';
+    } else {
+      imgContent = '<i class="' + (p.icon || 'fa-solid fa-shirt') + '" style="color:' + palette.icon + ';font-size:4.5rem"></i>';
+    }
 
     return '<div class="shop-card" data-cat="' + p.category + '" onclick="productOpen(\'' + p.id + '\')">'
       // — immagine prodotto —
@@ -759,6 +776,23 @@ function shopRenderGrid(filterCat) {
       + '</div>'
       + '</div>';
   }).join('');
+}
+
+// --- Mini-galleria card: frecce e pallini ---
+// Scorre di una foto avanti/indietro (delta = +1 o -1)
+function shopSlide(btn, delta) {
+  var slider = btn.parentElement.querySelector('.shop-img-slider');
+  if (!slider) return;
+  slider.scrollBy({ left: slider.clientWidth * delta, behavior: 'smooth' });
+}
+
+// Aggiorna il pallino attivo in base alla foto visibile
+function shopSliderDots(slider) {
+  var idx = Math.round(slider.scrollLeft / slider.clientWidth);
+  var dots = slider.parentElement.querySelectorAll('.shop-img-dot');
+  for (var i = 0; i < dots.length; i++) {
+    dots[i].classList.toggle('active', i === idx);
+  }
 }
 
 // Override della funzione filterShop definita inline in index.html
@@ -928,6 +962,8 @@ function _mapShopifyProducts(products) {
       price:            minPrice,
       sizeLabel:        sizeOptionName,
       thumbnail:        p.images && p.images[0] ? p.images[0].src : '',
+      // Fino a 4 foto per la mini-galleria delle card
+      images:           (p.images || []).slice(0, 4).map(function(im) { return im.src; }),
       badge:            null,
       description:      _italianizeDesc(p.title || ''),
       material:         '',

@@ -718,8 +718,16 @@ function shopRenderGrid(filterCat) {
     var hasColor    = p.colors && p.colors.length > 1;
 
     // Riga varianti (taglie / colori disponibili)
+    // Se le varianti sono tante (es. 20+ modelli di cover), mostra solo il conteggio
     var variantHints = [];
-    if (hasSize)  variantHints.push(p.sizes.join(' · '));
+    if (hasSize) {
+      if (p.sizes.length > 6) {
+        var vLabel = (p.sizeLabel === 'Modello') ? 'modelli disponibili' : 'varianti disponibili';
+        variantHints.push(p.sizes.length + ' ' + vLabel);
+      } else {
+        variantHints.push(p.sizes.join(' · '));
+      }
+    }
     if (hasColor) variantHints.push(p.colors.length + ' colori');
     var matText     = (p.material || '').split('—')[0].trim();
     var variantText = variantHints.length ? variantHints.join(' &nbsp;|&nbsp; ') : (matText || '&nbsp;');

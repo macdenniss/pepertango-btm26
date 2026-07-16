@@ -766,9 +766,16 @@ function filterShop(btn, cat) {
 // Priorità: 1) Shopify products.json  2) Printful via Apps Script  3) statico
 // ============================================================
 
-var _shopLoaderText = '<p style="font-family:\'Patrick Hand\',cursive;color:rgba(45,45,45,.4);'
-  + 'padding:40px 0;text-align:center"><i class="fa-solid fa-spinner fa-spin" '
-  + 'style="margin-right:8px"></i>Caricamento prodotti…</p>';
+// Skeleton loader: 4 card "fantasma" che pulsano mentre i prodotti arrivano
+var _shopLoaderText = (function () {
+  var card = '<div class="shop-skel">'
+    + '<div class="shop-skel-img"></div>'
+    + '<div class="shop-skel-body">'
+    +   '<div class="shop-skel-line" style="width:70%"></div>'
+    +   '<div class="shop-skel-line" style="width:45%"></div>'
+    + '</div></div>';
+  return card + card + card + card;
+})();
 
 function loadShopProducts() {
   var grid = document.getElementById('shopGrid');

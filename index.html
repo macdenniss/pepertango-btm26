@@ -614,10 +614,39 @@
       background-image: radial-gradient(var(--muted) 1px, transparent 1px);
       background-size: 24px 24px;
     }
-    .shop-head { display: grid; grid-template-columns: 6fr 6fr; gap: 5%; align-items: flex-end; margin-bottom: 50px; }
+    .shop-head { display: grid; grid-template-columns: 6fr 6fr; gap: 5%; align-items: flex-end; margin-bottom: 30px; }
     .shop-head .section-hl { color: var(--fg); }
     .shop-head .section-tag { color: var(--accent); }
     .shop-head-body { font-family: 'Patrick Hand', cursive; font-size: 1rem; line-height: 1.75; color: rgba(45,45,45,.6); }
+    /* Peperoncino sticker accanto al titolo */
+    .shop-hl-sticker {
+      display: inline-block; font-size: .55em;
+      transform: rotate(12deg); animation: stickerWiggle 3s ease-in-out infinite;
+    }
+    @keyframes stickerWiggle {
+      0%, 100% { transform: rotate(12deg) scale(1); }
+      50%      { transform: rotate(-6deg) scale(1.12); }
+    }
+    /* Striscia marquee scorrevole */
+    .shop-marquee {
+      overflow: hidden; margin-bottom: 36px;
+      background: var(--fg); border: 2px solid var(--fg);
+      border-radius: var(--r-wobbly-sm);
+      box-shadow: var(--shadow); transform: rotate(-.4deg);
+    }
+    .shop-marquee-track {
+      display: inline-flex; gap: 28px; white-space: nowrap;
+      padding: 10px 0; animation: marqueeScroll 22s linear infinite;
+      font-family: 'Kalam', cursive; font-size: 15px; font-weight: 700; color: #fff;
+    }
+    .shop-marquee-track span:nth-child(even) { color: var(--accent); }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .shop-marquee-track, .shop-hl-sticker { animation: none; }
+    }
     .shop-cats { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 36px; flex-wrap: wrap; }
     .shop-cats-filters { display: flex; gap: 10px; flex-wrap: wrap; }
     .shop-cart-trigger {
@@ -641,9 +670,14 @@
     .shop-card {
       background: #fff; border: 2px solid var(--fg);
       border-radius: var(--r-wobbly-md); overflow: hidden;
-      box-shadow: var(--shadow); transition: all 0.1s; cursor: pointer;
+      box-shadow: var(--shadow); transition: all 0.15s var(--ease); cursor: pointer;
     }
-    .shop-card:hover { transform: translate(-3px,-3px); box-shadow: var(--shadow-lg); }
+    /* Card leggermente ruotate in modo alternato: effetto sticker/polaroid */
+    .shop-card:nth-child(odd)  { transform: rotate(-.6deg); }
+    .shop-card:nth-child(even) { transform: rotate(.6deg); }
+    .shop-card:hover { transform: rotate(0deg) translate(-3px,-3px) scale(1.02); box-shadow: var(--shadow-lg); z-index: 2; position: relative; }
+    .shop-img img { transition: transform .25s var(--ease); }
+    .shop-card:hover .shop-img img { transform: scale(1.08) rotate(-2deg); }
     .shop-img {
       aspect-ratio: 1; background: var(--muted);
       display: flex; align-items: center; justify-content: center;
@@ -663,7 +697,14 @@
     .shop-name { font-family: 'Kalam', cursive; font-size: 14px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
     .shop-desc { font-family: 'Patrick Hand', cursive; font-size: 12px; color: rgba(45,45,45,.5); margin-bottom: 12px; line-height: 1.5; }
     .shop-footer { display: flex; align-items: center; justify-content: space-between; }
-    .shop-price { font-family: 'Kalam', cursive; font-size: 1.2rem; font-weight: 700; color: var(--fg); }
+    /* Prezzo a cartellino: sfondo giallo, bordo e leggera rotazione */
+    .shop-price {
+      font-family: 'Kalam', cursive; font-size: 1.1rem; font-weight: 700; color: var(--fg);
+      background: var(--yellow); border: 2px solid var(--fg);
+      padding: 2px 10px; border-radius: var(--r-wobbly-sm);
+      box-shadow: 2px 2px 0 0 var(--fg);
+      display: inline-block; transform: rotate(-2deg);
+    }
     .shop-add {
       padding: 7px 14px; border-radius: var(--r-wobbly-sm);
       background: var(--accent); border: 2px solid var(--fg);
@@ -681,6 +722,16 @@
       font-family: 'Kalam', cursive; font-size: 1.1rem; font-weight: 700; color: #fff;
       letter-spacing: 1px;
     }
+    /* Skeleton loader card */
+    .shop-skel {
+      background: #fff; border: 2px solid rgba(45,45,45,.15);
+      border-radius: var(--r-wobbly-md); overflow: hidden;
+      animation: skelPulse 1.4s ease-in-out infinite;
+    }
+    .shop-skel-img { aspect-ratio: 1; background: rgba(45,45,45,.08); }
+    .shop-skel-body { padding: 16px; }
+    .shop-skel-line { height: 12px; border-radius: 6px; background: rgba(45,45,45,.1); margin-bottom: 10px; }
+    @keyframes skelPulse { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
     .shop-note { margin-top: 36px; text-align: center; font-family: 'Patrick Hand', cursive; font-size: 13px; color: rgba(45,45,45,.4); }
     .shop-note a { color: var(--accent); text-decoration: underline; }
     /* Badge "Su ordinazione" sulle card */
@@ -714,11 +765,21 @@
     .sg-close { float: right; background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--fg); }
     /* Come funziona (POD) */
     .shop-how { display: flex; align-items: center; justify-content: center; gap: 0; margin: 28px 0 40px; flex-wrap: wrap; }
-    .shop-how-step { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.18); border-radius: 14px; padding: 14px 18px; min-width: 150px; }
+    .shop-how-step {
+      display: flex; align-items: center; gap: 10px;
+      background: #fff; border: 2px solid var(--fg);
+      border-radius: var(--r-wobbly-sm); box-shadow: var(--shadow-sm);
+      padding: 14px 18px; min-width: 150px;
+      transition: transform .12s, box-shadow .12s;
+    }
+    .shop-how-step:nth-child(1) { transform: rotate(-.8deg); }
+    .shop-how-step:nth-child(3) { transform: rotate(.6deg); }
+    .shop-how-step:nth-child(5) { transform: rotate(-.5deg); }
+    .shop-how-step:hover { transform: rotate(0) translate(-2px,-2px); box-shadow: var(--shadow); }
     .shop-how-icon { font-size: 26px; flex-shrink: 0; }
-    .shop-how-text { font-family: 'Patrick Hand', cursive; color: rgba(255,255,255,.85); font-size: 0.82rem; line-height: 1.35; }
-    .shop-how-text strong { display: block; font-size: 0.88rem; color: #fff; }
-    .shop-how-arrow { color: rgba(255,255,255,.35); font-size: 1.2rem; padding: 0 10px; flex-shrink: 0; }
+    .shop-how-text { font-family: 'Patrick Hand', cursive; color: rgba(45,45,45,.65); font-size: 0.82rem; line-height: 1.35; }
+    .shop-how-text strong { display: block; font-size: 0.92rem; color: var(--fg); font-family: 'Kalam', cursive; }
+    .shop-how-arrow { color: var(--fg); font-size: 1.3rem; padding: 0 12px; flex-shrink: 0; opacity: .45; }
     @media (max-width: 600px) {
       .shop-how { flex-direction: column; gap: 8px; }
       .shop-how-arrow { transform: rotate(90deg); }
@@ -1487,6 +1548,10 @@
       .shop-cart-trigger { justify-content: center; min-height: 48px; font-size: 15px; }
       .shop-how { margin: 20px 0 28px; }
       .shop-how-step { width: 100%; }
+      /* Marquee più compatto su mobile */
+      .shop-marquee-track { font-size: 13px; padding: 8px 0; gap: 18px; }
+      /* niente rotazione card su mobile (griglia stretta) */
+      .shop-card:nth-child(odd), .shop-card:nth-child(even) { transform: none; }
       /* Card compatte: elementi secondari nascosti, prezzo e bottone impilati */
       .shop-body { padding: 10px 10px 12px; }
       .shop-cat-tag { display: none; }
@@ -2645,18 +2710,31 @@
     <div class="shop-head">
       <div>
         <span class="section-tag" style="color:var(--fire)">PeperTango Store</span>
-        <h2 class="section-hl reveal" style="color:#fff">IL NOSTRO<br><em>shop</em></h2>
+        <h2 class="section-hl reveal">IL NOSTRO<br><em>shop</em> <span class="shop-hl-sticker">🌶️</span></h2>
       </div>
       <p class="shop-head-body reveal d2">
         Abbigliamento e gadget brandizzati PeperTango in edizione limitata.
         Ogni acquisto sostiene la nostra passione per il tango.
       </p>
     </div>
+    <!-- Striscia marquee -->
+    <div class="shop-marquee reveal" aria-hidden="true">
+      <div class="shop-marquee-track">
+        <span>🌶️ Edizione limitata</span><span>★</span>
+        <span>👕 Print on demand</span><span>★</span>
+        <span>📦 Spedizione tracciata</span><span>★</span>
+        <span>💃 Ogni acquisto sostiene il tango</span><span>★</span>
+        <span>🌶️ Edizione limitata</span><span>★</span>
+        <span>👕 Print on demand</span><span>★</span>
+        <span>📦 Spedizione tracciata</span><span>★</span>
+        <span>💃 Ogni acquisto sostiene il tango</span><span>★</span>
+      </div>
+    </div>
     <div class="shop-cats reveal">
       <div class="shop-cats-filters">
-        <button class="shop-cat active" onclick="filterShop(this,'all')">Tutto</button>
-        <button class="shop-cat" onclick="filterShop(this,'abbigliamento')">Abbigliamento</button>
-        <button class="shop-cat" onclick="filterShop(this,'gadget')">Gadget</button>
+        <button class="shop-cat active" onclick="filterShop(this,'all')">✨ Tutto</button>
+        <button class="shop-cat" onclick="filterShop(this,'abbigliamento')">👕 Abbigliamento</button>
+        <button class="shop-cat" onclick="filterShop(this,'gadget')">🎁 Gadget</button>
       </div>
       <button class="shop-cart-trigger" onclick="cartOpen()" aria-label="Apri carrello">
         <i class="fa-solid fa-bag-shopping"></i>

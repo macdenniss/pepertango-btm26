@@ -945,13 +945,14 @@ function _mapShopifyProducts(products) {
     // Rileva categoria dal tipo prodotto o titolo
     var titleLow = (p.title || '').toLowerCase();
     var typeLow  = (p.product_type || '').toLowerCase();
+    // Parole corte (tee, bra, cap) con confini di parola: "tee" non deve
+    // matchare dentro "steel", "cap" non deve matchare dentro "escape", ecc.
     var isClothing = typeLow === 'clothing' || typeLow === 'abbigliamento'
       || typeLow.indexOf('shirt') !== -1   || typeLow.indexOf('hoodie') !== -1
-      || titleLow.indexOf('shirt') !== -1 || titleLow.indexOf('tee') !== -1
-      || titleLow.indexOf('bra') !== -1    || titleLow.indexOf('hoodie') !== -1
-      || titleLow.indexOf('felpa') !== -1  || titleLow.indexOf('cap') !== -1
-      || titleLow.indexOf('maglietta') !== -1
-      || titleLow.indexOf('cappellino') !== -1;
+      || titleLow.indexOf('shirt') !== -1  || titleLow.indexOf('hoodie') !== -1
+      || titleLow.indexOf('felpa') !== -1  || titleLow.indexOf('maglietta') !== -1
+      || titleLow.indexOf('cappellino') !== -1
+      || /\b(tee|bra|cap|hat|tank)\b/.test(titleLow);
     // Euristica extra: se ha taglie da vestiario (S/M/L/XL...) è abbigliamento
     // anche quando il titolo è una frase (es. prodotti con slogan stampati)
     if (!isClothing && sizes.length > 0) {

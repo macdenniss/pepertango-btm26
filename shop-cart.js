@@ -687,13 +687,10 @@ function shopRenderGrid(filterCat) {
     ? SHOP_PRODUCTS.slice()
     : SHOP_PRODUCTS.filter(function(p) { return p.category === filterCat; });
 
-  // Ordina: prima Abbigliamento, poi Gadget/accessori (ordine originale a parità)
-  // NB: non usare "|| 9" qui — 0 è falsy e verrebbe scartato
-  var pesoCategoria = { abbigliamento: 0, gadget: 1 };
+  // Ordine fisso di visualizzazione:
+  // magliette → cappelli → sacche → borracce → tazze → custodie → altro
   products.sort(function(a, b) {
-    var pa = (a.category in pesoCategoria) ? pesoCategoria[a.category] : 9;
-    var pb = (b.category in pesoCategoria) ? pesoCategoria[b.category] : 9;
-    return pa - pb;
+    return shopOrderWeight(a) - shopOrderWeight(b);
   });
 
   if (products.length === 0) {
@@ -785,6 +782,22 @@ function shopRenderGrid(filterCat) {
       + '</div>'
       + '</div>';
   }).join('');
+}
+
+// Peso di ordinamento per tipo di prodotto (più basso = mostrato prima).
+// Guarda sia il nome tradotto che quello originale, e per le magliette
+// riconosce anche i prodotti con slogan tramite la categoria abbigliamento.
+function shopOrderWeight(p) {
+  var t = ((p.name || '') + ' ' + (p.id || '')).toLowerCase();
+  if (/shirt|tee\b|maglietta|felpa|hoodie|canotta|tank|\bbra\b/.test(t)) return 0;
+  if (/cap\b|cappell|hat\b|berretto/.test(t))                            return 1;
+  if (/bag|sacca|tote|zaino|borsa/.test(t))                              return 2;
+  if (/bottle|borraccia/.test(t))                                        return 3;
+  if (/mug|tazza/.test(t))                                               return 4;
+  if (/case|cover|custodia/.test(t))                                     return 5;
+  // Abbigliamento non riconosciuto sopra (es. slogan) → con le magliette
+  if (p.category === 'abbigliamento')                                    return 0;
+  return 6;
 }
 
 // --- Mini-galleria card: frecce e pallini ---

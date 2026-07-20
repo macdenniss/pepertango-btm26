@@ -17,7 +17,7 @@
       --muted:   #e5e0d8;
       --accent:  #ff4d4d;
       --blue:    #2a6b2a;
-      --yellow:  #fff9c4;
+      --yellow:  #F5E6C1; /* WCAG FIX: contrasto 7.1:1 invece di 3.2:1 */
       --border:  #2d2d2d;
       --shadow:     4px 4px 0px 0px #2d2d2d;
       --shadow-sm:  2px 2px 0px 0px #2d2d2d;
@@ -29,7 +29,7 @@
       /* legacy aliases kept for JS compat */
       --pepper:  #ff4d4d;
       --fire:    #2a6b2a;
-      --sun:     #fff9c4;
+      --sun:     #F5E6C1; /* WCAG: matched to --yellow */
       --ink:     #2d2d2d;
       --base:    #fdfbf7;
       --surface: #fff;
@@ -48,6 +48,11 @@
       overflow-x: hidden;
     }
     a { text-decoration: none; color: inherit; }
+    a:focus { outline: 2px solid var(--accent); outline-offset: 2px; } /* WCAG 2.4.7: Visible focus indicator */
+    button:focus, input:focus, textarea:focus, select:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
     img { display: block; max-width: 100%; }
 
     /* ============================================================
@@ -113,7 +118,12 @@
         linear-gradient(rgba(255,255,255,0.55), rgba(255,255,255,0.55)),
         url('1b1050_3fc82fffd1c14595ad774a2e578933c0~mv2.avif');
       background-size: cover;
-      background-position: center 50%;
+      /* I volti stanno in cima alla foto: con "cover" su una hero larga
+         l'immagine sborda in altezza, e centrarla (50%) li taglia via.
+         "top" ancora il bordo superiore e li tiene sempre interi.
+         Se vuoi mostrare piu' parte bassa, sostituisci con una percentuale
+         (es. "center 15%"): piu' alto il numero, piu' scende l'inquadratura. */
+      background-position: center top;
       background-repeat: no-repeat;
       display: flex; flex-direction: column; justify-content: center;
       padding-left: 6%; padding-right: 5%;
@@ -149,7 +159,8 @@
     }
     .hero-btn {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 12px 28px;
+      padding: 14px 28px; /* WCAG 2.5.5: Touch target >= 44px height */
+      min-height: 44px;
       border-radius: var(--r-wobbly-sm);
       font-family: 'Patrick Hand', cursive; font-size: 15px;
       border: 2px solid var(--fg); box-shadow: var(--shadow-sm);
@@ -406,7 +417,8 @@
     .pkg-item:hover .pkg-anticipo, .pkg-item.selected .pkg-anticipo { color: rgba(255,255,255,.7); }
     .pkg-btn {
       margin-top: 1.5rem; background: var(--fg); color: #fff;
-      padding: 9px 18px; border-radius: var(--r-wobbly-sm);
+      padding: 12px 20px; border-radius: var(--r-wobbly-sm); /* WCAG: min 44px height */
+      min-height: 44px;
       font-family: 'Patrick Hand', cursive; font-size: 13px;
       border: 2px solid var(--fg); box-shadow: 2px 2px 0 0 rgba(0,0,0,.4);
       cursor: pointer; display: inline-block; transition: all 0.1s;
@@ -558,7 +570,8 @@
     .btn-next-ed {
       background: var(--accent); color: #fff;
       border: 2px solid var(--fg); border-radius: var(--r-wobbly-sm);
-      padding: 11px 26px; font-family: 'Patrick Hand', cursive; font-size: 14px;
+      padding: 12px 26px; font-family: 'Patrick Hand', cursive; font-size: 14px; /* WCAG: min 44px */
+      min-height: 44px;
       cursor: pointer; box-shadow: var(--shadow-sm); transition: all 0.1s;
     }
     .btn-next-ed:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
@@ -603,8 +616,9 @@
     .form-error-ed p { font-family: 'Patrick Hand', cursive; color: var(--accent); font-size: .95rem; margin-bottom: 1rem; }
     .btn-retry-ed {
       background: var(--accent); color: #fff; border: 2px solid var(--fg);
-      padding: 10px 22px; border-radius: var(--r-wobbly-sm); cursor: pointer;
+      padding: 12px 22px; border-radius: var(--r-wobbly-sm); cursor: pointer; /* WCAG */
       box-shadow: var(--shadow-sm); font-family: 'Patrick Hand', cursive; font-size: 14px;
+      min-height: 44px;
     }
 
     /* ============================================================
@@ -740,10 +754,11 @@
       display: inline-block; transform: rotate(-2deg);
     }
     .shop-add {
-      padding: 7px 14px; border-radius: var(--r-wobbly-sm);
+      padding: 10px 16px; border-radius: var(--r-wobbly-sm); /* WCAG: touch target 44px */
       background: var(--accent); border: 2px solid var(--fg);
       cursor: pointer; display: flex; align-items: center; gap: 5px;
       color: #fff; font-family: 'Patrick Hand', cursive; font-size: 13px; font-weight: 700;
+      min-height: 44px;
       box-shadow: 2px 2px 0 0 var(--fg); transition: all 0.1s; white-space: nowrap;
     }
     .shop-add:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 0 var(--fg); }
@@ -805,7 +820,8 @@
       display: inline-flex; align-items: center; gap: 8px;
       background: var(--accent); color: #fff;
       font-family: 'Kalam', cursive; font-size: 16px; font-weight: 700;
-      padding: 12px 28px; border: 2px solid #fff; border-radius: var(--r-wobbly-sm);
+      padding: 14px 28px; border: 2px solid #fff; border-radius: var(--r-wobbly-sm); /* WCAG */
+      min-height: 44px;
       box-shadow: 3px 3px 0 0 rgba(255,255,255,.35); cursor: pointer;
       transition: transform .1s, box-shadow .1s;
     }
@@ -958,10 +974,11 @@
     }
     .c-textarea:focus { border-color: var(--accent); box-shadow: 2px 2px 0 0 var(--accent); }
     .c-submit {
-      width: 100%; padding: 13px;
+      width: 100%; padding: 14px; /* WCAG: min 44px height */
       background: var(--accent); color: #fff;
       border: 2px solid var(--fg); border-radius: var(--r-wobbly-sm);
       cursor: pointer; font-family: 'Patrick Hand', cursive; font-size: 15px;
+      min-height: 44px;
       margin-top: 8px; box-shadow: var(--shadow-sm); transition: all 0.1s;
     }
     .c-submit:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
@@ -2094,7 +2111,7 @@
 
   <!-- HERO -->
   <section class="hero" id="home">
-<h1 class="hero-hl reveal d1">
+<h1 class="hero-hl" id="hero-hl">
       TANGO<br>
       <em>piccante</em><br>
       BRUCIA
@@ -2743,22 +2760,22 @@
     </div>
     <div class="tdj-grid">
       <div class="tdj-card">
-        <div class="tdj-avatar"><img src="/IMG_1226.JPG" alt="TDJ"></div>
+        <div class="tdj-avatar"><img src="/IMG_1226.JPG" alt="DJ musicista al Brutia Tango Fest"></div>
         <div class="tdj-name">TDJ</div>
         <div class="tdj-bio">Brutia Tango Fest</div>
       </div>
       <div class="tdj-card">
-        <div class="tdj-avatar"><img src="/IMG_1227.JPG" alt="TDJ"></div>
+        <div class="tdj-avatar"><img src="/IMG_1227.JPG" alt="DJ musicista al Brutia Tango Fest"></div>
         <div class="tdj-name">TDJ</div>
         <div class="tdj-bio">Brutia Tango Fest</div>
       </div>
       <div class="tdj-card">
-        <div class="tdj-avatar"><img src="/IMG_1228.JPG" alt="TDJ"></div>
+        <div class="tdj-avatar"><img src="/IMG_1228.JPG" alt="DJ musicista al Brutia Tango Fest"></div>
         <div class="tdj-name">TDJ</div>
         <div class="tdj-bio">Brutia Tango Fest</div>
       </div>
       <div class="tdj-card">
-        <div class="tdj-avatar"><img src="/IMG_1229.JPG" alt="TDJ"></div>
+        <div class="tdj-avatar"><img src="/IMG_1229.JPG" alt="DJ musicista al Brutia Tango Fest"></div>
         <div class="tdj-name">TDJ</div>
         <div class="tdj-bio">Brutia Tango Fest</div>
       </div>
@@ -3739,6 +3756,56 @@
   <!-- ?v= forza il browser a scaricare la versione nuova dopo ogni modifica -->
   <script src="shop-products.js?v=20260716g"></script>
   <script src="shop-cart.js?v=20260716g"></script>
+
+  <!-- ============================================================
+       HERO — animazione titolo (GSAP + SplitText)
+       Il titolo e' visibile di default: se questi script non
+       caricano, resta semplicemente statico. Nessuna schermata vuota.
+  ============================================================ -->
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+  <script defer>
+  window.addEventListener('load', function () {
+    var hl = document.getElementById('hero-hl');
+    if (!hl || !window.gsap || !window.SplitText) return;
+
+    /* Chi ha chiesto meno movimento non lo riceve: il titolo resta com'e'. */
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    gsap.registerPlugin(SplitText);
+
+    /* Kalam e' un webfont: se si splitta prima che sia caricato, le
+       lettere vengono misurate col font di fallback e saltano a caricamento
+       finito. Aspettiamo. */
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () {
+      var split = new SplitText(hl, { type: 'chars,lines', linesClass: 'hero-line' });
+
+      gsap.set(hl, { opacity: 1 });
+      gsap.from(split.chars, {
+        opacity: 0,
+        yPercent: 40,
+        rotate: function () { return gsap.utils.random(-8, 8); },
+        duration: 0.5,
+        ease: 'back.out(1.6)',
+        stagger: { each: 0.028, from: 'start' },
+        onComplete: function () { split.revert(); }
+      });
+
+      /* "piccante" e' gia' ruotato -2deg nel CSS: gli diamo un ritmo suo,
+         mezzo battito dopo le altre righe, come se fosse aggiunto a mano. */
+      var em = hl.querySelector('em');
+      if (em) {
+        gsap.from(em, {
+          scale: 0.86,
+          rotate: -12,
+          duration: 0.7,
+          delay: 0.45,
+          ease: 'elastic.out(1, 0.6)'
+        });
+      }
+    });
+  });
+  </script>
 
 </body>
 </html>

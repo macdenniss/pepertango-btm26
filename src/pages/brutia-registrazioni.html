@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brutia Tango Fest 2026 - Registrazioni</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="dns-prefetch" href="https://static.wixstatic.com">
+  <style>
+    :root {
+      --bg:      #ffffff;
+      --fg:      #2d2d2d;
+      --muted:   #e5e0d8;
+      --accent:  #ff4d4d;
+      --blue:    #2a6b2a;
+      --yellow:  #F5E6C1;
+      --border:  #2d2d2d;
+      --shadow:     4px 4px 0px 0px #2d2d2d;
+      --shadow-sm:  2px 2px 0px 0px #2d2d2d;
+      --shadow-lg:  8px 8px 0px 0px #2d2d2d;
+      --r-wobbly:    255px 15px 225px 15px / 15px 225px 15px 255px;
+      --r-wobbly-sm: 8px 60px 8px 60px / 60px 8px 60px 8px;
+      --ease:    cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 112%; }
+    body {
+      font-family: 'Patrick Hand', cursive;
+      background-color: var(--bg);
+      color: var(--fg);
+      overflow-x: hidden;
+      padding-top: 120px;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+
+    h1 {
+      font-family: 'Kalam', cursive;
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin: 40px 0 20px;
+      transform: rotate(-1deg);
+    }
+
+    .event-info {
+      background: var(--yellow);
+      border: 3px solid var(--fg);
+      border-radius: var(--r-wobbly-sm);
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 40px;
+      box-shadow: var(--shadow);
+    }
+
+    .event-info p { font-size: 1.1rem; margin: 8px 0; }
+
+    .form-section {
+      margin-bottom: 50px;
+    }
+
+    .section-title {
+      font-family: 'Kalam', cursive;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid var(--accent);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th {
+      background: var(--blue);
+      color: white;
+      padding: 12px;
+      text-align: left;
+      font-weight: 700;
+      border: 2px solid var(--fg);
+    }
+
+    td {
+      padding: 15px 12px;
+      border: 2px solid var(--muted);
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) {
+      background: rgba(245, 230, 193, 0.3);
+    }
+
+    .package-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+
+    .price {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--blue);
+    }
+
+    select, input[type="text"], input[type="email"] {
+      font-family: 'Patrick Hand', cursive;
+      padding: 8px 12px;
+      border: 2px solid var(--fg);
+      border-radius: 4px;
+      font-size: 1rem;
+      width: 100%;
+      max-width: 250px;
+    }
+
+    select:focus, input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--yellow);
+      border-color: var(--accent);
+    }
+
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    input[type="radio"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    .partner-section {
+      background: rgba(255, 77, 77, 0.05);
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+
+    .partner-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .partner-fields input {
+      max-width: 100%;
+    }
+
+    .form-actions {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 3px solid var(--muted);
+    }
+
+    button {
+      font-family: 'Kalam', cursive;
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding: 15px 40px;
+      background: var(--accent);
+      color: white;
+      border: 3px solid var(--fg);
+      border-radius: var(--r-wobbly-sm);
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: all 0.15s;
+    }
+
+    button:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: #666;
+      font-style: italic;
+      margin-top: 20px;
+      padding: 15px;
+      background: var(--muted);
+      border-left: 4px solid var(--accent);
+      border-radius: 4px;
+    }
+
+    .summary-box {
+      background: var(--yellow);
+      border: 3px solid var(--fg);
+      border-radius: var(--r-wobbly-sm);
+      padding: 20px;
+      margin-top: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--fg);
+    }
+
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+
+    .summary-total {
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 2px solid var(--fg);
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 1.8rem; }
+      .section-title { font-size: 1.3rem; }
+      
+      table {
+        font-size: 0.9rem;
+      }
+
+      th, td {
+        padding: 10px 8px;
+      }
+
+      select, input[type="text"], input[type="email"] {
+        max-width: 100%;
+      }
+
+      .partner-fields {
+        grid-template-columns: 1fr;
+      }
+
+      .event-info {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Brutia Tango Fest 2026</h1>
+
+  <div class="event-info">
+    <p><strong>Rende Hotel Executive</strong></p>
+    <p><strong>19-21 Febbraio 2026</strong></p>
+    <p>Maestri: Giampiero Galdi & Lorena Tarantino</p>
+  </div>
+
+  <form id="brutiaForm">
+
+    <!-- PACCHETTI HOTEL -->
+    <div class="form-section">
+      <div class="section-title">Pacchetti Alberghieri</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Pacchetto</th>
+            <th>Descrizione</th>
+            <th>Ruolo</th>
+            <th>Prezzo</th>
+            <th>Seleziona</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="package-name">Calabria Gold</td>
+            <td>Hotel 3 notti + 6 lezioni + 3 milonghe + Colazione</td>
+            <td>
+              <select name="package_calabria_gold_role">
+                <option value="">Seleziona ruolo</option>
+                <option value="leader">Leader</option>
+                <option value="follower">Follower</option>
+                <option value="both">Entrambi</option>
+              </select>
+            </td>
+            <td class="price">€450</td>
+            <td><input type="checkbox" name="package" value="calabria_gold"></td>
+          </tr>
+          <tr>
+            <td class="package-name">Calabria Silver</td>
+            <td>6 lezioni + 3 milonghe (senza hotel)</td>
+            <td>
+              <select name="package_calabria_silver_role">
+                <option value="">Seleziona ruolo</option>
+                <option value="leader">Leader</option>
+                <option value="follower">Follower</option>
+                <option value="both">Entrambi</option>
+              </select>
+            </td>
+            <td class="price">€300</td>
+            <td><input type="checkbox" name="package" value="calabria_silver"></td>
+          </tr>
+          <tr>
+            <td class="package-name">Calabria Bronze</td>
+            <td>Solo 3 milonghe (19-20-21 febbraio)</td>
+            <td>
+              <select name="package_calabria_bronze_role">
+                <option value="">Seleziona ruolo</option>
+                <option value="leader">Leader</option>
+                <option value="follower">Follower</option>
+                <option value="both">Entrambi</option>
+              </select>
+            </td>
+            <td class="price">€150</td>
+            <td><input type="checkbox" name="package" value="calabria_bronze"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LEZIONI MAGISTRALI -->
+    <div class="form-section">
+      <div class="section-title">Lezioni Magistrali</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Maestri</th>
+            <th>Giorno</th>
+            <th>Ora</th>
+            <th>Stile</th>
+            <th>Prezzo</th>
+            <th>Seleziona</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="package-name">Giampiero & Lorena</td>
+            <td>Venerdì 19</td>
+            <td>15:00-16:15</td>
+            <td>Tango Base</td>
+            <td class="price">€35</td>
+            <td><input type="checkbox" name="lesson" value="galdi_lorena_venerdi"></td>
+          </tr>
+          <tr>
+            <td class="package-name">Giampiero & Lorena</td>
+            <td>Sabato 20</td>
+            <td>15:00-16:15</td>
+            <td>Tango Intermedio</td>
+            <td class="price">€35</td>
+            <td><input type="checkbox" name="lesson" value="galdi_lorena_sabato"></td>
+          </tr>
+          <tr>
+            <td class="package-name">Giampiero & Lorena</td>
+            <td>Domenica 21</td>
+            <td>15:00-16:15</td>
+            <td>Improvvisazione</td>
+            <td class="price">€35</td>
+            <td><input type="checkbox" name="lesson" value="galdi_lorena_domenica"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MILONGHE -->
+    <div class="form-section">
+      <div class="section-title">Milonghe Singole</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Evento</th>
+            <th>Giorno</th>
+            <th>Ora</th>
+            <th>Prezzo</th>
+            <th>Seleziona</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="package-name">Milonga Benvenuto</td>
+            <td>Venerdì 19</td>
+            <td>21:30-02:00</td>
+            <td class="price">€20</td>
+            <td><input type="checkbox" name="milonga" value="milonga_venerdi"></td>
+          </tr>
+          <tr>
+            <td class="package-name">Milonga Principale</td>
+            <td>Sabato 20</td>
+            <td>21:30-04:00</td>
+            <td class="price">€25</td>
+            <td><input type="checkbox" name="milonga" value="milonga_sabato"></td>
+          </tr>
+          <tr>
+            <td class="package-name">Milonga Chiusura</td>
+            <td>Domenica 21</td>
+            <td>21:00-02:00</td>
+            <td class="price">€20</td>
+            <td><input type="checkbox" name="milonga" value="milonga_domenica"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- DATI PERSONALI -->
+    <div class="form-section">
+      <div class="section-title">Tuoi Dati</div>
+      
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Nome *</label>
+        <input type="text" name="nome" required style="max-width: 100%;">
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Cognome *</label>
+        <input type="text" name="cognome" required style="max-width: 100%;">
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Email *</label>
+        <input type="email" name="email" required style="max-width: 100%;">
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Telefono *</label>
+        <input type="text" name="telefono" required style="max-width: 100%;">
+      </div>
+
+      <!-- PARTNER (se applicabile) -->
+      <div class="partner-section">
+        <label style="margin-bottom: 8px; display: block; font-weight: 600;">Hai un partner per lezioni/milonghe?</label>
+        <div style="margin-bottom: 10px;">
+          <input type="radio" name="has_partner" value="yes" id="partner_yes">
+          <label for="partner_yes" style="display: inline; margin-right: 15px;">Sì</label>
+          <input type="radio" name="has_partner" value="no" id="partner_no" checked>
+          <label for="partner_no" style="display: inline;">No</label>
+        </div>
+
+        <div id="partnerFields" style="display: none;">
+          <p style="margin: 10px 0; font-size: 0.9rem;">Se hai un partner, indica i suoi dati:</p>
+          <div class="partner-fields">
+            <input type="text" name="partner_nome" placeholder="Nome partner">
+            <input type="text" name="partner_cognome" placeholder="Cognome partner">
+            <input type="email" name="partner_email" placeholder="Email partner">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIEPILOGO -->
+    <div class="summary-box">
+      <div style="font-weight: 700; font-size: 1.2rem; margin-bottom: 15px;">Riepilogo Iscrizione</div>
+      <div id="summaryItems"></div>
+      <div class="summary-total">
+        Totale: <span id="totalPrice">€0</span>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">Completa Registrazione</button>
+    </div>
+
+    <div class="note">
+      La registrazione sarà confermata via email. Ti contatteremo per i dettagli di pagamento e alloggio.
+    </div>
+  </form>
+</div>
+
+<script>
+document.getElementById('partner_yes').addEventListener('change', function() {
+  document.getElementById('partnerFields').style.display = this.checked ? 'block' : 'none';
+});
+
+document.getElementById('partner_no').addEventListener('change', function() {
+  document.getElementById('partnerFields').style.display = this.checked ? 'none' : 'block';
+});
+
+const prices = {
+  calabria_gold: 450,
+  calabria_silver: 300,
+  calabria_bronze: 150,
+  galdi_lorena_venerdi: 35,
+  galdi_lorena_sabato: 35,
+  galdi_lorena_domenica: 35,
+  milonga_venerdi: 20,
+  milonga_sabato: 25,
+  milonga_domenica: 20
+};
+
+const labels = {
+  calabria_gold: 'Calabria Gold',
+  calabria_silver: 'Calabria Silver',
+  calabria_bronze: 'Calabria Bronze',
+  galdi_lorena_venerdi: 'Lezione Venerdì (Galdi & Lorena)',
+  galdi_lorena_sabato: 'Lezione Sabato (Galdi & Lorena)',
+  galdi_lorena_domenica: 'Lezione Domenica (Galdi & Lorena)',
+  milonga_venerdi: 'Milonga Venerdì',
+  milonga_sabato: 'Milonga Sabato',
+  milonga_domenica: 'Milonga Domenica'
+};
+
+function updateSummary() {
+  const selectedPackages = document.querySelectorAll('input[name="package"]:checked');
+  const selectedLessons = document.querySelectorAll('input[name="lesson"]:checked');
+  const selectedMilongas = document.querySelectorAll('input[name="milonga"]:checked');
+
+  const allSelected = Array.from(selectedPackages).concat(Array.from(selectedLessons)).concat(Array.from(selectedMilongas));
+  
+  let total = 0;
+  let html = '';
+
+  allSelected.forEach(item => {
+    const value = item.value;
+    const price = prices[value];
+    const label = labels[value];
+    
+    if (price) {
+      total += price;
+      html += `<div class="summary-item"><span>${label}</span><span>€${price}</span></div>`;
+    }
+  });
+
+  document.getElementById('summaryItems').innerHTML = html || '<div class="summary-item" style="color: #999;">Nessun articolo selezionato</div>';
+  document.getElementById('totalPrice').textContent = '€' + total;
+}
+
+document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+  checkbox.addEventListener('change', updateSummary);
+});
+
+// Funzione per mostrare notifiche toast
+function showNotification(message, type = 'info') {
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    z-index: 10000;
+    animation: slideIn 0.3s ease-out;
+    font-family: 'Patrick Hand', cursive;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  `;
+
+  if (type === 'success') {
+    notification.style.background = '#2a6b2a';
+    notification.style.color = 'white';
+  } else if (type === 'error') {
+    notification.style.background = '#ff4d4d';
+    notification.style.color = 'white';
+  } else {
+    notification.style.background = '#F5E6C1';
+    notification.style.color = '#2d2d2d';
+    notification.style.border = '2px solid #2d2d2d';
+  }
+
+  notification.textContent = message;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.style.animation = 'slideOut 0.3s ease-in forwards';
+    setTimeout(() => notification.remove(), 300);
+  }, 4000);
+}
+
+// Aggiungi keyframe animations
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideIn {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  @keyframes slideOut {
+    to {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
+
+document.getElementById('brutiaForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const nome = document.querySelector('input[name="nome"]').value.trim();
+  const cognome = document.querySelector('input[name="cognome"]').value.trim();
+  const email = document.querySelector('input[name="email"]').value.trim();
+  const telefono = document.querySelector('input[name="telefono"]').value.trim();
+
+  if (!nome || !cognome || !email || !telefono) {
+    showNotification('Per favore compila tutti i campi obbligatori', 'error');
+    return;
+  }
+
+  // Validazione email
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showNotification('Email non valida', 'error');
+    return;
+  }
+
+  const selectedPackages = Array.from(document.querySelectorAll('input[name="package"]:checked')).map(el => el.value);
+  const selectedLessons = Array.from(document.querySelectorAll('input[name="lesson"]:checked')).map(el => el.value);
+  const selectedMilongas = Array.from(document.querySelectorAll('input[name="milonga"]:checked')).map(el => el.value);
+
+  if (!selectedPackages.length && !selectedLessons.length && !selectedMilongas.length) {
+    showNotification('Per favore seleziona almeno un articolo', 'error');
+    return;
+  }
+
+  // Raccogli dati per l'invio
+  const formData = {
+    action: 'brutia_registrazione',
+    nome: nome,
+    cognome: cognome,
+    email: email,
+    telefono: telefono,
+    packages: selectedPackages,
+    lessons: selectedLessons,
+    milongas: selectedMilongas
+  };
+
+  // Aggiungi dati partner se presente
+  const hasPartner = document.querySelector('input[name="has_partner"]:checked').value === 'yes';
+  if (hasPartner) {
+    formData.partner_nome = document.querySelector('input[name="partner_nome"]').value.trim();
+    formData.partner_cognome = document.querySelector('input[name="partner_cognome"]').value.trim();
+    formData.partner_email = document.querySelector('input[name="partner_email"]').value.trim();
+  }
+
+  // Disabilita il bottone durante l'invio
+  const submitBtn = document.querySelector('button[type="submit"]');
+  const originalText = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Invio in corso...';
+
+  // Invia i dati all'AppsScript
+  fetch('https://script.google.com/macros/s/AKfycbw6pqs5rvySS2_il_VAJLU07ucnIFdZ86RT6OWlhxVzDvb04REbJTt3ZXaziRvmDmTR/exec', {
+    method: 'POST',
+    body: JSON.stringify(formData),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalText;
+
+    if (data.ok) {
+      showNotification('✓ Registrazione confermata! Riceverai un\'email di conferma a breve.', 'success');
+      // Reset form
+      document.getElementById('brutiaForm').reset();
+      document.getElementById('summaryItems').innerHTML = '<div class="summary-item" style="color: #999;">Nessun articolo selezionato</div>';
+      document.getElementById('totalPrice').textContent = '€0';
+      document.getElementById('partnerFields').style.display = 'none';
+    } else {
+      showNotification('❌ Errore: ' + (data.error || 'Si è verificato un errore'), 'error');
+    }
+  })
+  .catch(error => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalText;
+    showNotification('❌ Errore di connessione: ' + error.message, 'error');
+  });
+});
+</script>
+
+</body>
+</html>

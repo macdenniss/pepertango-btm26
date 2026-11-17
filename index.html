@@ -13,7 +13,8 @@
   <meta property="og:url" content="https://www.pepertango.com/">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     /* ============================================================
@@ -1852,139 +1853,188 @@
       #cartDrawer.open { right: 0; }
     }
   </style>
+  <link rel="stylesheet" href="home.css">
 </head>
 <body>
 
+  <a class="pt-skip" href="#contenuto">Vai al contenuto</a>
+
   <!-- NAV -->
-  <nav>
-    <a href="#" onclick="showPage('home');return false;" class="nav-brand"><img src="logo_pepertango.png" alt="PeperTango"></a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home');return false;" data-page="home">Home</a></li>
-      <li><a href="#" onclick="showPage('shop');return false;" data-page="shop">Shop Online</a></li>
-      <li><a href="#" onclick="showPage('mtp27');return false;" data-page="mtp27">Maratona Tango Piccante</a></li>
-      <li><a href="https://brutiatangofest27.pepertango.com/">Brutia Tango Fest</a></li>
-      <li><a href="#" onclick="showPage('contatti');return false;" data-page="contatti">Contatti</a></li>
-      <li><a href="#" onclick="showPage('privacy');return false;" data-page="privacy">Privacy</a></li>
+  <nav class="pt-nav" id="ptNav">
+    <a href="#home" class="pt-brand" onclick="showPage('home');return false;"><img src="logo_pepertango.png" alt="PeperTango — Peper Bruzia ASD" width="256" height="256"></a>
+    <ul class="pt-nav-links">
+      <li><a href="#eventi" onclick="goSection('eventi');return false;">Eventi</a></li>
+      <li><a href="#chi-siamo" onclick="goSection('chi-siamo');return false;">Chi siamo</a></li>
+      <li><a href="#shop" data-page="shop" onclick="showPage('shop');return false;">Shop</a></li>
+      <li><a href="#contatti" data-page="contatti" onclick="showPage('contatti');return false;">Contatti</a></li>
+      <li><a href="#privacy" data-page="privacy" onclick="showPage('privacy');return false;">Privacy</a></li>
     </ul>
-    <button class="nav-hamburger" id="navHamburger" onclick="toggleMenu()" aria-label="Menu">
+    <button class="pt-burger" id="navHamburger" type="button" onclick="toggleMenu()" aria-label="Apri il menu" aria-expanded="false" aria-controls="navDrawer">
       <span></span><span></span><span></span>
     </button>
   </nav>
-  <div class="nav-drawer" id="navDrawer">
-    <a href="#" onclick="showPage('home');toggleMenu();return false;">Home</a>
-    <a href="#" onclick="showPage('shop');toggleMenu();return false;" class="drawer-shop">Shop Online</a>
-    <a href="#" onclick="showPage('mtp27');toggleMenu();return false;">Maratona Tango Piccante</a>
-    <a href="https://brutiatangofest27.pepertango.com/">Brutia Tango Fest</a>
-    <a href="#" onclick="showPage('contatti');toggleMenu();return false;">Contatti</a>
-    <a href="#" onclick="showPage('privacy');toggleMenu();return false;">Privacy</a>
+  <div class="pt-drawer" id="navDrawer">
+    <a href="#eventi" onclick="goSection('eventi');return false;">Eventi</a>
+    <a href="#chi-siamo" onclick="goSection('chi-siamo');return false;">Chi siamo</a>
+    <a href="#shop" data-page="shop" onclick="showPage('shop');return false;">Shop</a>
+    <a href="#contatti" data-page="contatti" onclick="showPage('contatti');return false;">Contatti</a>
+    <a href="#privacy" data-page="privacy" onclick="showPage('privacy');return false;">Privacy</a>
   </div>
 
   <main id="contenuto">
   <!-- PAGE: HOME -->
   <div class="page active" id="page-home">
 
-  <!-- HERO -->
-  <section class="hero" id="home">
-<h1 class="hero-hl" id="hero-hl">
-      TANGO<br>
-      <em>piccante</em><br>
-      BRUCIA
-    </h1>
-    <p class="hero-sub reveal d2">
-      Due location d'eccezione, selezionate per regalarti bellezza e comfort.<br>
-      Due atmosfere uniche, studiate per farti immergere totalmente nella musica.
-    </p>
-    <div class="hero-pills reveal d2">
-      <div class="h-pill" onclick="document.getElementById('mtp27').scrollIntoView({behavior:'smooth'})">
-        <div class="h-pill-num">01 &middot; Festival</div>
-        <div class="h-pill-name">Maratona<br>Tango Piccante</div>
-        <div class="h-pill-date">Giugno 2027 &middot; Maratea</div>
-        <div class="h-pill-arrow">Scopri &rarr;</div>
+  <section class="pt-hero" id="home">
+    <picture class="pt-hero-media">
+      <source media="(max-width: 760px)" srcset="img/web/hero-m.jpg">
+      <img src="img/web/hero.jpg" alt="Coppia in abbraccio durante una milonga, altre coppie ballano in controluce" width="1920" height="1080" fetchpriority="high">
+    </picture>
+    <div class="pt-hero-shade" aria-hidden="true"></div>
+    <div class="pt-hero-inner">
+      <p class="pt-kicker">Peper Bruzia ASD</p>
+      <h1>Il tango<br><em>in Calabria</em></h1>
+      <p class="pt-hero-lead">Due location d'eccezione. Due atmosfere, per immergersi nella musica.</p>
+      <div class="pt-hero-dates">
+        <a class="pt-date" href="#maratona">
+          <span class="pt-date-when">Giugno 2027</span>
+          <span class="pt-date-what">Maratona Tango Piccante</span>
+          <span class="pt-date-where">Maratea</span>
+        </a>
+        <a class="pt-date" href="#brutia">
+          <span class="pt-date-when">19–21 febbraio 2027</span>
+          <span class="pt-date-what">Brutia Tango Fest</span>
+          <span class="pt-date-where">Rende</span>
+        </a>
       </div>
-      <div class="h-pill" onclick="document.getElementById('brutia').scrollIntoView({behavior:'smooth'})">
-        <div class="h-pill-num">02 &middot; Festival</div>
-        <div class="h-pill-name">Brutia<br>Tango Fest</div>
-        <div class="h-pill-date">19–21 febbraio 2027 &middot; Rende</div>
-        <div class="h-pill-arrow">Scopri &rarr;</div>
+      <div class="pt-hero-cta">
+        <a class="pt-btn pt-btn--chili" href="#eventi">Scopri gli eventi</a>
+        <a class="pt-btn pt-btn--ghost" href="https://brutiatangofest27.pepertango.com/">Iscriviti a Brutia</a>
       </div>
     </div>
-    <div class="hero-scroll">Scroll per esplorare</div>
   </section>
 
-  <!-- EVENTS INTRO -->
-  <section class="events-intro" id="events">
-    <div class="events-intro-head">
-      <h2 class="section-hl reveal" style="color:#111111">
-        DUE <em style="color:#2a6b2a">eventi,</em><br>UN CUORE
-      </h2>
-      <p class="events-intro-sub reveal d2">Un'unica passione, due modi di viverla. 🔥 Scopri due eventi esclusivi di tango argentino.</p>
-    </div>
-    <div class="events-grid">
-      <div class="ev-card reveal" onclick="showPage('mtp27')" style="cursor:pointer">
-        <div class="ev-card-num">01 &middot; Giugno 2027 &middot; Maratea</div>
-        <h3 class="ev-card-title">Maratona<br>Tango<br>Piccante</h3>
-        <p class="ev-card-desc">
-          Quattro giorni tra musica, ballo e mare. 120 posti selezionati,
-          4 pacchetti, pensione completa.
-        </p>
-        <span class="ev-card-cta">Scopri e iscriviti &rarr;</span>
+  <section class="pt-events" id="eventi">
+    <div class="pt-wrap">
+      <div class="pt-section-head">
+        <h2>Due eventi,<br><em>un cuore</em></h2>
+        <p class="pt-lead">Un'unica passione, due modi di viverla. Scopri due eventi esclusivi di tango argentino.</p>
       </div>
-      <div class="ev-card" id="brutia">
-        <div class="ev-card-num">02 &middot; 19–21 febbraio 2027 &middot; Rende (CS)</div>
-        <h3 class="ev-card-title">Brutia<br>Tango<br>Fest 2027</h3>
-        <p class="ev-card-desc">
-          BV President Hotel, Rende (CS).<br>
-          Con Gianpiero Galdi &amp; Lorena Tarantino.<br>
-          Early bird fino al 30 novembre 2026.
-        </p>
-        <div class="ev-card-actions">
-          <a class="hero-btn primary" href="https://brutiatangofest27.pepertango.com/">Iscriviti</a>
-          <a class="hero-btn outline" href="https://brutiatangofest27.pepertango.com/">Scopri il festival</a>
+    </div>
+
+    <article class="pt-event" id="maratona">
+      <div class="pt-event-grid">
+        <div class="pt-event-photo">
+          <img src="img/web/maratona.jpg" alt="Tramonto a Maratea, il Cristo Redentore sulla scogliera" width="1600" height="996" loading="lazy">
+        </div>
+        <div class="pt-event-copy">
+          <p class="pt-kicker">01 · Festival</p>
+          <h3>Maratona Tango Piccante</h3>
+          <dl class="pt-facts">
+            <div>
+              <dt>Data</dt>
+              <dd>Giugno 2027</dd>
+            </div>
+            <div>
+              <dt>Luogo</dt>
+              <dd>Maratea</dd>
+            </div>
+          </dl>
+          <p>Quattro giorni tra musica, ballo e mare. 120 posti selezionati, 4 pacchetti, pensione completa.</p>
+          <div class="pt-event-actions">
+            <a class="pt-btn pt-btn--chili" href="#mtp27" onclick="showPage('mtp27');return false;">Scopri e iscriviti</a>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </article>
 
-  <!-- CHI SIAMO -->
-  <section class="chi-siamo" id="chi-siamo">
-    <div class="chi-siamo-grid">
-      <div class="chi-siamo-text">
-        <span class="section-tag" style="color:var(--fire)">Chi siamo</span>
-        <h2 class="chi-siamo-hl">Il tango che<br>parla al <em>cuore</em></h2>
-        <div class="chi-siamo-body">
-          <p>Nel cuore di Cosenza, città affascinante e vivace, nasce l'idea dei PeperTango, un gruppo affiatato di tre amici appassionati di tango argentino. Spesso organizziamo eventi di tango a tema in cui invitiamo altri amanti della danza ad unirsi a noi, creando così una rete di amicizie sempre in crescita.</p>
-          <p>Ciascuno di noi porta con sé un'energia unica e una profonda connessione con questa danza sensuale e coinvolgente. Nel corso del tempo, il tango argentino non solo ha creato una forte connessione tra noi, ma ha anche arricchito le nostre vite, regalandoci momenti di bellezza, passione e amicizia che non avremmo mai immaginato.</p>
-          <p>La nostra storia è un tributo alla bellezza di questa danza e all'importanza delle passioni condivise.</p>
+    <article class="pt-event pt-event--night" id="brutia">
+      <div class="pt-event-grid">
+        <div class="pt-event-copy">
+          <p class="pt-kicker">02 · Festival</p>
+          <h3>Brutia Tango Fest 2027</h3>
+          <dl class="pt-facts">
+            <div>
+              <dt>Data</dt>
+              <dd>19–21 febbraio 2027</dd>
+            </div>
+            <div>
+              <dt>Luogo</dt>
+              <dd>BV President Hotel, Rende</dd>
+            </div>
+          </dl>
+          <p>Con Gianpiero Galdi &amp; Lorena Tarantino.</p>
+          <div class="pt-event-actions">
+            <a class="pt-btn pt-btn--chili" href="https://brutiatangofest27.pepertango.com/">Iscriviti</a>
+            <a class="pt-btn pt-btn--line" href="https://brutiatangofest27.pepertango.com/">Scopri il festival</a>
+          </div>
+          <p class="pt-early">Early bird fino al 30 novembre 2026</p>
+        </div>
+        <div class="pt-event-photo">
+          <img src="img/web/brutia.jpg" alt="Coppie che ballano il tango in una sala illuminata dal sole" width="1600" height="996" loading="lazy">
         </div>
       </div>
-      <div class="chi-siamo-img-wrap reveal">
-        <img src="https://static.wixstatic.com/media/1b1050_3fc82fffd1c14595ad774a2e578933c0~mv2.jpg/v1/fill/w_568,h_431,al_c,lg_1,q_80,enc_avif,quality_auto/1b1050_3fc82fffd1c14595ad774a2e578933c0~mv2.jpg" alt="PeperTango — Chi siamo">
+    </article>
+  </section>
+
+  <section class="pt-gallery" id="gallery">
+    <div class="pt-wrap">
+      <div class="pt-section-head">
+        <div>
+          <p class="pt-kicker">Momenti</p>
+          <h2>I nostri<br><em>scatti</em></h2>
+        </div>
+        <p class="pt-lead">Immagini dai nostri festival. Ogni foto racconta una storia di passione, musica e ballo.</p>
       </div>
+    </div>
+    <div class="pt-gallery-grid">
+      <figure class="pt-g pt-g--1">
+        <img src="img/web/g-abbraccio.jpg" alt="Coppia di schiena che balla il tango, con altre coppie nella sala" width="1000" height="1267" loading="lazy">
+        <figcaption>Maratea</figcaption>
+      </figure>
+      <figure class="pt-g pt-g--2">
+        <img src="img/web/g-tramonto.jpg" alt="Tramonto sul mare di Maratea" width="1100" height="753" loading="lazy">
+        <figcaption>Maratea</figcaption>
+      </figure>
+      <figure class="pt-g pt-g--3">
+        <img src="img/web/g-cristo.jpg" alt="Il Cristo Redentore di Maratea sulla roccia" width="900" height="1600" loading="lazy">
+        <figcaption>Maratea</figcaption>
+      </figure>
+      <figure class="pt-g pt-g--4">
+        <img src="img/web/g-pista.jpg" alt="Pista da ballo in legno con la luce del sole che entra dalle vetrate" width="1200" height="822" loading="lazy">
+        <figcaption>Maratea</figcaption>
+      </figure>
+      <figure class="pt-g pt-g--5">
+        <img src="img/web/g-milonga.jpg" alt="Ballerini di tango sul parquet durante una milonga" width="900" height="1125" loading="lazy">
+        <figcaption>Maratea</figcaption>
+      </figure>
+      <figure class="pt-g pt-g--6">
+        <img src="img/web/g-costa.jpg" alt="Costa e porto di Maratea visti dall'alto" width="1200" height="747" loading="lazy">
+        <figcaption>Maratea</figcaption>
+      </figure>
+      <figure class="pt-g pt-g--7">
+        <img src="img/web/g-mare.jpg" alt="Mare e scogliere della costa di Maratea" width="1100" height="685" loading="lazy">
+        <figcaption>Maratea</figcaption>
+      </figure>
+      <figure class="pt-g pt-g--8">
+        <img src="img/web/g-terrazza.jpg" alt="Terrazza dell'hotel a Maratea, affacciata sul mare" width="1600" height="899" loading="lazy">
+        <figcaption>Maratea</figcaption>
+      </figure>
     </div>
   </section>
 
-  <!-- GALLERY -->
-  <section class="gallery-section" id="gallery">
-    <div class="gallery-head">
-      <div>
-        <span class="section-tag">Momenti</span>
-        <h2 class="section-hl reveal">I NOSTRI<br><em>scatti</em></h2>
+  <section class="pt-about" id="chi-siamo">
+    <div class="pt-about-grid">
+      <div class="pt-about-copy">
+        <p class="pt-kicker">Chi siamo</p>
+        <h2>Il tango che<br>parla al <em>cuore</em></h2>
+        <p>Nel cuore di Cosenza, città affascinante e vivace, nasce l'idea dei PeperTango, un gruppo affiatato di tre amici appassionati di tango argentino. Spesso organizziamo eventi di tango a tema in cui invitiamo altri amanti della danza ad unirsi a noi, creando così una rete di amicizie sempre in crescita.</p>
+        <p>Ciascuno di noi porta con sé un'energia unica e una profonda connessione con questa danza sensuale e coinvolgente. Nel corso del tempo, il tango argentino non solo ha creato una forte connessione tra noi, ma ha anche arricchito le nostre vite, regalandoci momenti di bellezza, passione e amicizia che non avremmo mai immaginato.</p>
+        <p>La nostra storia è un tributo alla bellezza di questa danza e all'importanza delle passioni condivise.</p>
       </div>
-      <p class="gallery-sub reveal d2">Immagini dai nostri festival. Ogni foto racconta una storia di passione, musica e ballo.</p>
-    </div>
-    <div class="gallery-grid">
-      <div class="gallery-item reveal"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_9e83a1fe691447c9a08378d5603847cf~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g1.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d1"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_54c28a8d58b142928686004eeb9ec869~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g2.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d1"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_50b85768f93a415fbb2f195a8c71641d~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g3.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_d3367f399d694a3d981df4110ceaea09~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g4.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d1"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_4c02263fd11c42e0a1b171ba43ac0182~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g5.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_7ee55d97416e46558c29cf5b81e5b79e~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g6.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_9d7afd58ac5a425fb579faf6ee693d76~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g7.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d3"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_0e913f41e3b140d0a9d40e9efe1fbfa4~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g8.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_0881b85bd8494637863d74eb2cc9b70a~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g9.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d3"><div class="gallery-img-wrap"><img src="https://static.wixstatic.com/media/1b1050_bbccff5b719f4f75b9bcad03fd099b4e~mv2.jpg/v1/fill/w_600,h_800,al_c,q_85,enc_avif,quality_auto/g10.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Tango</div></div></div></div>
-      <div class="gallery-item reveal d1"><div class="gallery-img-wrap"><img src="/IMG_0552_SnapseedCopy.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Maratea</div></div></div></div>
-      <div class="gallery-item reveal d2"><div class="gallery-img-wrap"><img src="/IMG_0953_SnapseedCopy.jpg" alt=""><div class="gallery-overlay"><div class="gallery-circle">Evento</div></div></div></div>
+      <div class="pt-about-photo">
+        <img src="img/web/chi-siamo.jpg" alt="Coppie che ballano il tango in una sala con le vetrate sul verde" width="1200" height="947" loading="lazy">
+      </div>
     </div>
   </section>
 
@@ -2417,40 +2467,27 @@
   </main>
 
   <!-- FOOTER -->
-  <footer id="footer">
-    <div class="footer-grid">
+  <footer id="footer" class="pt-footer">
+    <div class="pt-footer-grid">
       <div>
-        <div class="footer-brand">PEPER<span>TANGO</span></div>
-        <p class="footer-mission">
+        <p class="pt-footer-name">Peper Bruzia ASD</p>
+        <p class="pt-footer-mission">
           Esperienze di tango argentino curate per chi ama ballare,
           condividere e vivere il ritmo fino in fondo.
         </p>
       </div>
-      <div class="footer-cols">
-        <div class="fc-col">
-          <div class="fc-title">Festival</div>
-          <a href="#mtp27">Maratona Tango Piccante</a>
-          <a href="https://brutiatangofest27.pepertango.com/">Brutia Tango Fest 2027</a>
-        </div>
-        <div class="fc-col">
-          <div class="fc-title">Pacchetti MTP</div>
-          <a href="#mtp27">Cala Jannita</a>
-          <a href="#mtp27">Fiumicello</a>
-          <a href="#mtp27">Spiaggia Nera</a>
-          <a href="#mtp27">Porto di Maratea</a>
-        </div>
-        <div class="fc-col">
-          <div class="fc-title">Contatti</div>
-          <a href="mailto:pepertango@gmail.com">pepertango@gmail.com</a>
-          <a href="#shop">Shop</a>
-          <a href="#gallery">Gallery</a>
-          <a href="#contatti">Scrivici</a>
-        </div>
+      <div class="pt-footer-contact">
+        <a href="mailto:pepertango@gmail.com">pepertango@gmail.com</a>
+        <nav class="pt-footer-links" aria-label="Link nel piè di pagina">
+          <a href="#eventi" onclick="goSection('eventi');return false;">Eventi</a>
+          <a href="#chi-siamo" onclick="goSection('chi-siamo');return false;">Chi siamo</a>
+          <a href="#shop" onclick="showPage('shop');return false;">Shop</a>
+          <a href="#contatti" onclick="showPage('contatti');return false;">Contatti</a>
+          <a href="#privacy" onclick="showPage('privacy');return false;">Privacy</a>
+        </nav>
       </div>
     </div>
-    <div class="footer-bottom">
-      &copy; 2027 PeperTango &middot; Tutti i diritti riservati
-    </div>
+    <p class="pt-footer-copy">&copy; 2026 Peper Bruzia ASD</p>
   </footer>
 
   <!-- ============================================================
@@ -2461,8 +2498,29 @@
     function toggleMenu() {
       var btn = document.getElementById('navHamburger');
       var drawer = document.getElementById('navDrawer');
-      btn.classList.toggle('open');
-      drawer.classList.toggle('open');
+      var open = !drawer.classList.contains('open');
+      btn.classList.toggle('open', open);
+      drawer.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Chiudi il menu' : 'Apri il menu');
+      document.body.classList.toggle('pt-lock', open);
+    }
+    function closeMenu() {
+      var btn = document.getElementById('navHamburger');
+      var drawer = document.getElementById('navDrawer');
+      if (!btn || !drawer) return;
+      btn.classList.remove('open');
+      drawer.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Apri il menu');
+      document.body.classList.remove('pt-lock');
+    }
+    function updateNav() {
+      var nav = document.getElementById('ptNav');
+      var home = document.getElementById('page-home');
+      if (!nav || !home) return;
+      var onHome = home.classList.contains('active');
+      nav.classList.toggle('is-solid', !onHome || window.scrollY > 24);
     }
 
     /* ---- Helpers (selezione pacchetto Maratona) ---- */
@@ -2518,14 +2576,33 @@
       var target = document.getElementById('page-' + name);
       if (target) { target.classList.add('active'); }
       window.scrollTo(0, 0);
-      /* highlight active nav link */
-      document.querySelectorAll('.nav-links a[data-page]').forEach(function(a) {
-        a.style.background = a.dataset.page === name ? 'var(--accent)' : '';
-        a.style.color = a.dataset.page === name ? '#fff' : '';
+      document.querySelectorAll('[data-page]').forEach(function(a) {
+        var on = a.dataset.page === name;
+        a.classList.toggle('is-current', on);
+        if (on) a.setAttribute('aria-current', 'page');
+        else a.removeAttribute('aria-current');
+      });
+      closeMenu();
+      updateNav();
+    }
+    function goSection(id) {
+      var home = document.getElementById('page-home');
+      var already = home && home.classList.contains('active');
+      if (!already) showPage('home');
+      else closeMenu();
+      var el = document.getElementById(id);
+      if (!el) return;
+      requestAnimationFrame(function() {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
-    /* init: active nav highlight for home */
-    document.addEventListener('DOMContentLoaded', function() { showPage('home'); });
+    document.addEventListener('DOMContentLoaded', function() {
+      showPage('home');
+      window.addEventListener('scroll', updateNav, { passive: true });
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeMenu();
+    });
   </script>
 
   <!-- ============================================================
@@ -2766,50 +2843,5 @@
        Il titolo e' visibile di default: se questi script non
        caricano, resta semplicemente statico. Nessuna schermata vuota.
   ============================================================ -->
-  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
-  <script defer>
-  window.addEventListener('load', function () {
-    var hl = document.getElementById('hero-hl');
-    if (!hl || !window.gsap || !window.SplitText) return;
-
-    /* Chi ha chiesto meno movimento non lo riceve: il titolo resta com'e'. */
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    gsap.registerPlugin(SplitText);
-
-    /* Kalam e' un webfont: se si splitta prima che sia caricato, le
-       lettere vengono misurate col font di fallback e saltano a caricamento
-       finito. Aspettiamo. */
-    (document.fonts ? document.fonts.ready : Promise.resolve()).then(function () {
-      var split = new SplitText(hl, { type: 'chars,lines', linesClass: 'hero-line' });
-
-      gsap.set(hl, { opacity: 1 });
-      gsap.from(split.chars, {
-        opacity: 0,
-        yPercent: 40,
-        rotate: function () { return gsap.utils.random(-8, 8); },
-        duration: 0.5,
-        ease: 'back.out(1.6)',
-        stagger: { each: 0.028, from: 'start' },
-        onComplete: function () { split.revert(); }
-      });
-
-      /* "piccante" e' gia' ruotato -2deg nel CSS: gli diamo un ritmo suo,
-         mezzo battito dopo le altre righe, come se fosse aggiunto a mano. */
-      var em = hl.querySelector('em');
-      if (em) {
-        gsap.from(em, {
-          scale: 0.86,
-          rotate: -12,
-          duration: 0.7,
-          delay: 0.45,
-          ease: 'elastic.out(1, 0.6)'
-        });
-      }
-    });
-  });
-  </script>
-
 </body>
 </html>

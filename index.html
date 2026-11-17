@@ -327,7 +327,10 @@
       display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.6rem;
     }
     .ev-card-actions .hero-btn { justify-content: center; text-align: center; max-width: 100%; }
-    #brutia { scroll-margin-top: 108px; cursor: default; }
+    #brutia { scroll-margin-top: 108px; cursor: default; opacity: 1; }
+    #brutia .ev-card-num { color: var(--accent); opacity: 1; }
+    #brutia .ev-card-title { color: var(--fg); opacity: 1; }
+    #brutia .ev-card-desc { color: rgba(45,45,45,.6); opacity: 1; }
 
     /* ============================================================
        EVENT SECTION (MTP / BRUTIA)
@@ -1926,7 +1929,7 @@
         </p>
         <span class="ev-card-cta">Scopri e iscriviti &rarr;</span>
       </div>
-      <div class="ev-card reveal d2" id="brutia">
+      <div class="ev-card" id="brutia">
         <div class="ev-card-num">02 &middot; 19–21 febbraio 2027 &middot; Rende (CS)</div>
         <h3 class="ev-card-title">Brutia<br>Tango<br>Fest 2027</h3>
         <p class="ev-card-desc">

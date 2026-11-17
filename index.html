@@ -4,6 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PeperTango — Maratona Tango Piccante &amp; Brutia Tango Fest 2027</title>
+  <meta name="description" content="Peper Bruzia ASD organizza Maratona Tango Piccante a Maratea e Brutia Tango Fest 2027 al BV President Hotel di Rende (CS), con Gianpiero Galdi e Lorena Tarantino.">
+  <link rel="canonical" href="https://www.pepertango.com/">
+  <link rel="icon" type="image/png" href="logo_pepertango.png">
+  <meta property="og:title" content="PeperTango — Maratona Tango Piccante &amp; Brutia Tango Fest 2027">
+  <meta property="og:description" content="Peper Bruzia ASD organizza Maratona Tango Piccante a Maratea e Brutia Tango Fest 2027 al BV President Hotel di Rende (CS), con Gianpiero Galdi e Lorena Tarantino.">
+  <meta property="og:image" content="https://www.pepertango.com/og-image.jpg">
+  <meta property="og:url" content="https://www.pepertango.com/">
+  <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -315,6 +323,14 @@
       border-bottom: 2px dashed var(--accent); padding-bottom: 3px;
     }
     .ev-card:hover .ev-card-cta { color: var(--accent); }
+    .ev-card-actions {
+      display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.6rem;
+    }
+    .ev-card-actions .hero-btn { justify-content: center; text-align: center; max-width: 100%; }
+    #brutia { scroll-margin-top: 108px; cursor: default; opacity: 1; }
+    #brutia .ev-card-num { color: var(--accent); opacity: 1; }
+    #brutia .ev-card-title { color: var(--fg); opacity: 1; }
+    #brutia .ev-card-desc { color: rgba(45,45,45,.6); opacity: 1; }
 
     /* ============================================================
        EVENT SECTION (MTP / BRUTIA)
@@ -1170,133 +1186,6 @@
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* ============================================================
-       BRUTIA FORM OVERRIDES — dark neon theme
-    ============================================================ */
-    #bru-form {
-      background: #f0eaff;
-      border-color: #7b2ff7;
-      box-shadow: 0 0 40px rgba(123,47,247,.15), 6px 6px 0 0 #7b2ff7;
-      max-width: 650px;
-      margin: 40px auto 60px;
-      padding: 40px;
-      border-radius: 16px;
-    }
-    #bru-form .bru-prog {
-      background: #e4d8ff;
-      border-bottom: 1px solid rgba(123,47,247,.2);
-    }
-    #bru-form #b_body { padding: 32px 28px; background: #f0eaff; }
-
-    /* dots */
-    #bru-form .bru-dot {
-      background: #d8c8ff; border: 2px solid rgba(123,47,247,.3);
-      color: rgba(80,0,180,.4);
-    }
-    #bru-form .bru-dot-lbl { color: rgba(80,0,180,.5); }
-    #bru-form .bru-pd.active .bru-dot {
-      background: #7b2ff7; border-color: #7b2ff7; color: #fff;
-      box-shadow: 0 0 12px rgba(123,47,247,.5);
-    }
-    #bru-form .bru-pd.active .bru-dot-lbl { color: #5000b4; font-weight: 700; }
-    #bru-form .bru-pd.done .bru-dot { background: #5000b4; border-color: #5000b4; color: #fff; }
-    #bru-form .bru-pd.done .bru-dot-lbl { color: rgba(80,0,180,.5); }
-    #bru-form .bru-line { background: rgba(123,47,247,.2); }
-
-    /* testi */
-    #bru-form .fs-title { color: #2d0060; font-size: 1.6rem; }
-    #bru-form .fs-sub { color: rgba(80,0,180,.55); font-size: 1rem; }
-    #bru-form label, #bru-form .mini-label { color: rgba(45,0,96,.75); font-size: 1rem; }
-    #bru-form details summary { color: rgba(80,0,180,.5); font-size: .95rem; }
-    #bru-form .step-count { color: rgba(80,0,180,.25); }
-    #bru-form .fi-ed { font-size: 1rem; padding: 12px 14px; }
-    #bru-form .room-card-name { font-size: 1rem; }
-    #bru-form .room-card-desc { font-size: .9rem; }
-    #bru-form .pkg-card-name { font-size: 1rem; }
-    #bru-form .pkg-card-info { font-size: .9rem; }
-    #bru-form .pkg-card-letter { font-size: 1.5rem; }
-    #bru-form .bru-dot-lbl { font-size: .85rem; }
-
-    /* input */
-    #bru-form .fi-ed {
-      background: #fff;
-      border-color: rgba(123,47,247,.3);
-      color: #2d0060;
-    }
-    #bru-form .fi-ed::placeholder { color: rgba(80,0,180,.3); }
-    #bru-form .fi-ed:focus { border-color: #7b2ff7; box-shadow: 0 0 0 3px rgba(123,47,247,.2); }
-
-    /* select */
-    #bru-form select.fi-ed { appearance: none; -webkit-appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237b2ff7' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 14px center;
-      padding-right: 36px;
-    }
-    #bru-form select.fi-ed option { background: #fff; color: #2d0060; }
-
-    /* room cards */
-    #bru-form .room-card {
-      background: #fff;
-      border-color: rgba(123,47,247,.25);
-    }
-    #bru-form .room-card-name { color: #2d0060; }
-    #bru-form .room-card-desc { color: rgba(80,0,180,.5); }
-    #bru-form .room-card i { color: rgba(123,47,247,.6); }
-    #bru-form .stanza-opt.selected,
-    #bru-form .room-card.selected {
-      background: #c4a3ff;
-      border-color: #2d0060;
-      border-width: 4px;
-      box-shadow: 6px 6px 0 0 #2d0060;
-    }
-    #bru-form .stanza-opt.selected .room-card-name,
-    #bru-form .room-card.selected .room-card-name { color: #2d0060; font-weight: 700; }
-    #bru-form .stanza-opt.selected .room-card-icon,
-    #bru-form .room-card.selected .room-card-icon { color: #2d0060; font-size: 1.4rem; }
-    #bru-form .stanza-opt:hover { border-color: #7b2ff7; }
-
-    /* pacchetti */
-    #bru-form .pkg-card {
-      background: #fff;
-      border-color: rgba(123,47,247,.25);
-    }
-    #bru-form .pkg-card-letter { color: #7b2ff7; }
-    #bru-form .pkg-card-name { color: #2d0060; }
-    #bru-form .pkg-card-info { color: rgba(80,0,180,.5); }
-    #bru-form .pkg-card.selected {
-      background: #ede0ff;
-      border-color: #7b2ff7;
-      box-shadow: 3px 3px 0 0 #7b2ff7;
-    }
-    #bru-form .pkg-card:hover { border-color: #7b2ff7; }
-    #bru-form .pkg-card.sel { background: #c4a3ff; border-color: #2d0060; border-width: 4px; box-shadow: 6px 6px 0 0 #2d0060; }
-    #bru-form .pkg-card.sel .pkg-card-letter { color: #2d0060; font-weight: 700; font-size: 2.2rem; }
-    #bru-form .pkg-card.sel .pkg-card-name { color: #2d0060; font-weight: 700; }
-
-    /* riepilogo + anticipo */
-    #bru-form .riepilogo-ed { background: #fff; border-color: rgba(123,47,247,.2); color: rgba(45,0,96,.7); }
-    #bru-form .anticipo-box { background: #ede0ff; border-color: rgba(123,47,247,.3); }
-    #bru-form .anticipo-lbl { color: rgba(80,0,180,.6); }
-    #bru-form .anticipo-val { color: #5000b4; }
-    #bru-form .anticipo-note { color: rgba(80,0,180,.45); }
-
-    /* bottoni */
-    #bru-form .btn-next-ed {
-      background: #7b2ff7;
-      box-shadow: 3px 3px 0 0 #4a0099;
-      color: #fff;
-    }
-    #bru-form .btn-next-ed:hover { background: #9240ff; }
-    #bru-form .btn-prev-ed { color: rgba(80,0,180,.5); border-color: rgba(123,47,247,.3); background: transparent; }
-    #bru-form .btn-prev-ed:hover { border-color: #7b2ff7; color: #5000b4; }
-
-    /* stati finali */
-    #bru-form .form-ok-ed h3 { color: #5000b4; }
-    #bru-form .form-ok-ed p { color: rgba(80,0,180,.6); }
-    #bru-form .form-error-ed p { color: #c00070; }
-    #bru-form .btn-retry-ed { border-color: rgba(123,47,247,.3); color: rgba(80,0,180,.6); }
-    #bru-form .compagni-dyn label { color: rgba(45,0,96,.7); }
-
-    /* ============================================================
        MTP — REGISTRAZIONI CHIUSE
     ============================================================ */
     .mtp-closed-banner {
@@ -1374,109 +1263,6 @@
     }
     #page-mtp27 .ev-sub-title { color: #004f70; }
     #page-mtp27 .location-address { color: #00b4d8; }
-
-    /* ============================================================
-       BRUTIA — TEMA BLU SCURO / VIOLA (override scoped a #page-brutia)
-    ============================================================ */
-    #page-brutia .event-section.warm-bg {
-      background-color: #ffffff;
-      background-image: none;
-      border-top: 5px solid #7b2ff7;
-    }
-    #page-brutia .ev-head-hl { color: #0d1b3e; }
-    #page-brutia .ev-head-hl em { color: #7b2ff7; }
-    #page-brutia .ev-head-body { color: rgba(13,27,62,.65); }
-    #page-brutia .section-tag { color: #7b2ff7 !important; }
-    #page-brutia .pkg-label { color: #7b2ff7; }
-
-    /* foto a colori */
-    #page-brutia .ev-photo img { filter: grayscale(0%); }
-
-    /* pacchetti: sfondo bianco con bordi colorati */
-    #page-brutia .pkg-item:nth-child(1) { background: #f3eeff; border-color: #7b2ff7; }
-    #page-brutia .pkg-item:nth-child(2) { background: #eef0ff; border-color: #3f52d4; }
-    #page-brutia .pkg-item:nth-child(3) { background: #f8f0ff; border-color: #9c47ff; }
-    #page-brutia .pkg-big-num { color: rgba(123,47,247,.15); }
-    #page-brutia .pkg-item:nth-child(1) .pkg-big-num { color: rgba(123,47,247,.15); }
-    #page-brutia .pkg-item:nth-child(2) .pkg-big-num { color: rgba(63,82,212,.15); }
-    #page-brutia .pkg-item:nth-child(3) .pkg-big-num { color: rgba(156,71,255,.15); }
-    #page-brutia .pkg-price { color: #7b2ff7; }
-    #page-brutia .pkg-item:hover, #page-brutia .pkg-item.selected {
-      background: #7b2ff7; border-color: #0d1b3e;
-    }
-    #page-brutia .pkg-btn {
-      background: #7b2ff7; color: #fff; border-color: #0d1b3e;
-    }
-    #page-brutia .pkg-btn:hover { background: #9c47ff; }
-
-    /* sub-sezioni */
-    #page-brutia .ev-sub { background: #fff; }
-    #page-brutia .ev-sub.alt {
-      background: #1a0033;
-      padding: 60px 5%;
-    }
-    #page-brutia .ev-sub-event-tag {
-      background: #7b2ff7; color: #fff;
-      padding: 4px 12px; border-radius: 20px;
-    }
-    #page-brutia .ev-sub-title { color: #0d1b3e; }
-    #page-brutia .ev-sub.alt .ev-sub-title {
-      color: #ffff00;
-      text-shadow: 0 0 20px rgba(255,255,0,.4);
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      letter-spacing: .05em;
-    }
-    #page-brutia .ev-sub.alt .ev-sub-event-tag {
-      background: transparent; color: #00e5ff;
-      font-size: 13px; letter-spacing: .15em; text-transform: uppercase;
-      padding: 0;
-    }
-    #page-brutia .location-info h4 { color: #0d1b3e; }
-    #page-brutia .location-address { color: #7b2ff7; }
-
-    /* TDJ GRID festival style */
-    #page-brutia .tdj-grid {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 24px;
-      margin-top: 40px;
-    }
-    #page-brutia .tdj-card {
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      padding: 0;
-      text-align: center;
-    }
-    #page-brutia .tdj-card:hover { transform: translateY(-4px); box-shadow: none; }
-    #page-brutia .tdj-avatar {
-      width: 120px; height: 120px;
-      border-radius: 0;
-      background: #000;
-      border: 3px solid #00e5ff;
-      box-shadow: 0 0 12px rgba(0,229,255,.5), inset 0 0 8px rgba(0,229,255,.1);
-      margin: 0 auto 10px;
-      filter: grayscale(100%) contrast(1.1);
-      transition: filter .3s, border-color .3s;
-    }
-    #page-brutia .tdj-card:nth-child(2) .tdj-avatar { border-color: #ff00cc; box-shadow: 0 0 12px rgba(255,0,204,.5); }
-    #page-brutia .tdj-card:nth-child(3) .tdj-avatar { border-color: #ffff00; box-shadow: 0 0 12px rgba(255,255,0,.5); }
-    #page-brutia .tdj-card:nth-child(4) .tdj-avatar { border-color: #00e5ff; box-shadow: 0 0 12px rgba(0,229,255,.5); }
-    #page-brutia .tdj-card:nth-child(5) .tdj-avatar { border-color: #ff00cc; box-shadow: 0 0 12px rgba(255,0,204,.5); }
-    #page-brutia .tdj-card:nth-child(6) .tdj-avatar { border-color: #ffff00; box-shadow: 0 0 12px rgba(255,255,0,.5); }
-    #page-brutia .tdj-card:hover .tdj-avatar { filter: grayscale(0%) contrast(1); }
-    #page-brutia .tdj-name {
-      color: #00e5ff; font-size: .95rem;
-      text-transform: uppercase; letter-spacing: .1em;
-      text-shadow: 0 0 8px rgba(0,229,255,.6);
-    }
-    #page-brutia .tdj-card:nth-child(2) .tdj-name,
-    #page-brutia .tdj-card:nth-child(5) .tdj-name { color: #ff00cc; text-shadow: 0 0 8px rgba(255,0,204,.6); }
-    #page-brutia .tdj-card:nth-child(3) .tdj-name,
-    #page-brutia .tdj-card:nth-child(6) .tdj-name { color: #ffff00; text-shadow: 0 0 8px rgba(255,255,0,.6); }
-    #page-brutia .tdj-bio {
-      color: rgba(255,255,255,.5); font-size: 12px;
-      text-transform: uppercase; letter-spacing: .08em;
-    }
 
     /* ============================================================
        BRUTIA — CARD STANZA + PACCHETTO
@@ -1586,6 +1372,8 @@
       .hero-hl { font-size: clamp(2.4rem, 10vw, 3.8rem); max-width: 100%; line-height: 1.2; }
       .hero-sub { font-size: 1rem; max-width: 100%; margin-top: 1.5rem; line-height: 1.6; }
       .hero-pills { display: none; }
+      .ev-card-actions { flex-direction: column; align-items: stretch; }
+      .ev-card-actions .hero-btn { padding: 12px 10px; font-size: 15px; white-space: normal; }
       .hero-actions { flex-direction: column; gap: 1rem; margin-top: 2rem; }
       .hero-btn { justify-content: center; padding: 14px 24px; font-size: 16px; }
       .hero-scroll { display: none; }
@@ -1617,8 +1405,6 @@
       .tdj-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
       .tdj-card { padding: 14px 10px; }
       .tdj-avatar { width: 64px; height: 64px; }
-      #page-brutia .tdj-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
-      #page-brutia .tdj-avatar { width: 80px; height: 80px; }
 
       /* GALLERIA */
       .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
@@ -1629,11 +1415,6 @@
       /* FORM */
       .form-section { margin-top: 24px; border-radius: 12px; }
       .form-label { padding: 12px 16px; }
-      #bru-form { margin: 30px 5% 50px; padding: 28px 20px !important; border-radius: 12px; max-width: calc(100% - 20px); }
-      #bru-form .bru-prog { padding: 14px 16px !important; }
-      #bru-form #b_body { padding: 16px 12px !important; }
-      #bru-form .fs-title { font-size: 1.2rem; }
-      #bru-form input, #bru-form select, #bru-form textarea { font-size: 16px !important; }
       .room-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
       .pkg-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
 
@@ -1645,8 +1426,6 @@
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
       .footer-cols { grid-template-columns: 1fr 1fr; gap: 20px; }
 
-      /* Sezione Brutia */
-      #page-brutia .ev-sub.alt { padding: 40px 4%; }
 
       /* SHOP */
       .shop-section { padding: 60px 4% 50px; }
@@ -1722,18 +1501,12 @@
 
       /* Grid systems */
       .tdj-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      #page-brutia .tdj-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
       .room-grid { grid-template-columns: 1fr; }
       .pkg-grid { grid-template-columns: 1fr; }
       .footer-cols { grid-template-columns: 1fr; }
       .gallery-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
 
       /* Forms */
-      #bru-form { margin: 20px 3% 40px; padding: 24px 16px !important; }
-      #bru-form #b_body { padding: 12px 8px !important; }
-      #bru-form .bru-prog { overflow-x: auto; }
-      #bru-form .fs-title { font-size: 1.1rem; }
-      #bru-form input, #bru-form select, #bru-form textarea { font-size: 16px !important; }
 
       /* Spacing improvements */
       .section-tag { font-size: 0.85rem; margin-bottom: 0.5rem; }
@@ -2106,6 +1879,7 @@
     <a href="#" onclick="showPage('privacy');toggleMenu();return false;">Privacy</a>
   </div>
 
+  <main id="contenuto">
   <!-- PAGE: HOME -->
   <div class="page active" id="page-home">
 
@@ -2129,8 +1903,8 @@
       </div>
       <div class="h-pill" onclick="document.getElementById('brutia').scrollIntoView({behavior:'smooth'})">
         <div class="h-pill-num">02 &middot; Festival</div>
-        <div class="h-pill-name">Brutia<br>Tango Festival</div>
-        <div class="h-pill-date">Date TBD &middot; Calabria</div>
+        <div class="h-pill-name">Brutia<br>Tango Fest</div>
+        <div class="h-pill-date">19–21 febbraio 2027 &middot; Rende</div>
         <div class="h-pill-arrow">Scopri &rarr;</div>
       </div>
     </div>
@@ -2155,14 +1929,18 @@
         </p>
         <span class="ev-card-cta">Scopri e iscriviti &rarr;</span>
       </div>
-      <div class="ev-card reveal d2" onclick="window.location.assign('https://brutiatangofest27.pepertango.com/')" style="cursor:pointer">
-        <div class="ev-card-num">02 &middot; TBD &middot; Calabria</div>
-        <h3 class="ev-card-title">Brutia<br>Tango<br>Festival</h3>
+      <div class="ev-card" id="brutia">
+        <div class="ev-card-num">02 &middot; 19–21 febbraio 2027 &middot; Rende (CS)</div>
+        <h3 class="ev-card-title">Brutia<br>Tango<br>Fest 2027</h3>
         <p class="ev-card-desc">
-          Il nuovo festival nella terra di Bruzio. Date e programma in arrivo.
-          Registra il tuo interesse adesso.
+          BV President Hotel, Rende (CS).<br>
+          Con Gianpiero Galdi &amp; Lorena Tarantino.<br>
+          Early bird fino al 30 novembre 2026.
         </p>
-        <span class="ev-card-cta">Scopri e iscriviti &rarr;</span>
+        <div class="ev-card-actions">
+          <a class="hero-btn primary" href="https://brutiatangofest27.pepertango.com/">Iscriviti</a>
+          <a class="hero-btn outline" href="https://brutiatangofest27.pepertango.com/">Scopri il festival</a>
+        </div>
       </div>
     </div>
   </section>
@@ -2406,405 +2184,6 @@
 
   </div><!-- /page-mtp27 -->
 
-  <!-- PAGE: BRUTIA -->
-  <div class="page" id="page-brutia">
-
-  <!-- BRUTIA -->
-  <section class="event-section warm-bg" id="brutia">
-    <div class="ev-head">
-      <h2 class="ev-head-hl reveal">
-        BRUTIA<br>TANGO<br><em>fest 2026</em>
-      </h2>
-      <div class="reveal d2">
-        <p class="ev-head-body">
-          Un evento tango esclusivo con lezioni, milonghe e momenti di condivisione in una cornice suggestiva della Calabria. Quattro giorni immersi nel tango argentino tra musica, danza e paesaggi mozzafiato del Sud Italia.
-        </p>
-      </div>
-    </div>
-
-    <!-- ANTEPRIMA EVENTO -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-bottom:60px;margin-top:60px">
-      <div style="background:#fff;border:2px solid #0d1b3e;border-radius:16px;padding:28px;text-align:center;cursor:pointer;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:none" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 12px 0 0 #0d1b3e';this.style.borderColor='#7b2ff7'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';this.style.borderColor='#0d1b3e'">
-        <div style="font-size:40px;margin-bottom:12px">📅</div>
-        <h3 style="font-family:'Kalam',cursive;font-size:1.2rem;color:#0d1b3e;margin-bottom:8px">Date</h3>
-        <p style="color:rgba(13,27,62,.7);font-size:0.95rem">2027 — 19-21 Febbraio</p>
-        <p style="color:rgba(13,27,62,.5);font-size:0.85rem">Prima edizione</p>
-      </div>
-
-      <div style="background:#fff;border:2px solid #0d1b3e;border-radius:16px;padding:28px;text-align:center;cursor:pointer;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:none" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 12px 0 0 #0d1b3e';this.style.borderColor='#7b2ff7'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';this.style.borderColor='#0d1b3e'">
-        <div style="font-size:40px;margin-bottom:12px">📍</div>
-        <h3 style="font-family:'Kalam',cursive;font-size:1.2rem;color:#0d1b3e;margin-bottom:8px">Luogo</h3>
-        <p style="color:rgba(13,27,62,.7);font-size:0.95rem">Calabria, Sud Italia</p>
-        <p style="color:rgba(13,27,62,.5);font-size:0.85rem">Location in definizione</p>
-      </div>
-
-      <div style="background:#fff;border:2px solid #0d1b3e;border-radius:16px;padding:28px;text-align:center;cursor:pointer;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:none" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 12px 0 0 #0d1b3e';this.style.borderColor='#7b2ff7'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';this.style.borderColor='#0d1b3e'">
-        <div style="font-size:40px;margin-bottom:12px">💃</div>
-        <h3 style="font-family:'Kalam',cursive;font-size:1.2rem;color:#0d1b3e;margin-bottom:8px">Cosa Include</h3>
-        <p style="color:rgba(13,27,62,.7);font-size:0.95rem">Tango H24</p>
-        <p style="color:rgba(13,27,62,.5);font-size:0.85rem">Lezioni + Milonghe continue</p>
-      </div>
-
-      <div style="background:#fff;border:2px solid #0d1b3e;border-radius:16px;padding:28px;text-align:center;cursor:pointer;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:none" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 12px 0 0 #0d1b3e';this.style.borderColor='#7b2ff7'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';this.style.borderColor='#0d1b3e'">
-        <div style="font-size:40px;margin-bottom:12px">🏨</div>
-        <h3 style="font-family:'Kalam',cursive;font-size:1.2rem;color:#0d1b3e;margin-bottom:8px">Alloggio</h3>
-        <p style="color:rgba(13,27,62,.7);font-size:0.95rem">Incluso nel pacchetto</p>
-        <p style="color:rgba(13,27,62,.5);font-size:0.85rem">Singola, doppia, tripla</p>
-      </div>
-
-      <div style="background:#fff;border:2px solid #0d1b3e;border-radius:16px;padding:28px;text-align:center;cursor:pointer;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:none" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 12px 0 0 #0d1b3e';this.style.borderColor='#7b2ff7'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';this.style.borderColor='#0d1b3e'">
-        <div style="font-size:40px;margin-bottom:12px">🍽️</div>
-        <h3 style="font-family:'Kalam',cursive;font-size:1.2rem;color:#0d1b3e;margin-bottom:8px">Vitto</h3>
-        <p style="color:rgba(13,27,62,.7);font-size:0.95rem">Pasti inclusi</p>
-        <p style="color:rgba(13,27,62,.5);font-size:0.85rem">Energia per danzare H24</p>
-      </div>
-
-      <div style="background:#fff;border:2px solid #0d1b3e;border-radius:16px;padding:28px;text-align:center;cursor:pointer;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:none" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 12px 0 0 #0d1b3e';this.style.borderColor='#7b2ff7'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none';this.style.borderColor='#0d1b3e'">
-        <div style="font-size:40px;margin-bottom:12px">🎟️</div>
-        <h3 style="font-family:'Kalam',cursive;font-size:1.2rem;color:#0d1b3e;margin-bottom:8px">Prezzi</h3>
-        <p style="color:rgba(13,27,62,.7);font-size:0.95rem">Da 100€ a 260€</p>
-        <p style="color:rgba(13,27,62,.5);font-size:0.85rem">2-4 notti o pass milonghe</p>
-      </div>
-    </div>
-
-    <!-- BRUTIA · PACCHETTI -->
-    <span class="pkg-label reveal">Scegli il tuo pacchetto</span>
-    <div class="pkg-grid pkg-grid-4">
-      <div class="pkg-item reveal" data-pkg="Pacchetto A" onclick="selectPkg(this,'brutia')">
-        <span class="pkg-big-num">2</span><span class="pkg-notti-lbl">notti</span>
-        <div class="pkg-name">Pacchetto A</div>
-        <div class="pkg-date">Sab &rarr; Lun</div>
-        <div class="pkg-price">&euro;180</div>
-        <div class="pkg-anticipo">2 notti / two nights</div>
-        <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'brutia');scrollToForm('bru-form')">Seleziona</button>
-      </div>
-      <div class="pkg-item reveal d1" data-pkg="Pacchetto B" onclick="selectPkg(this,'brutia')">
-        <span class="pkg-big-num">3</span><span class="pkg-notti-lbl">notti</span>
-        <div class="pkg-name">Pacchetto B</div>
-        <div class="pkg-date">Ven &rarr; Lun</div>
-        <div class="pkg-price">&euro;220</div>
-        <div class="pkg-anticipo">3 notti / three nights</div>
-        <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'brutia');scrollToForm('bru-form')">Seleziona</button>
-      </div>
-      <div class="pkg-item reveal d2" data-pkg="Pacchetto C" onclick="selectPkg(this,'brutia')">
-        <span class="pkg-big-num">4</span><span class="pkg-notti-lbl">notti</span>
-        <div class="pkg-name">Pacchetto C</div>
-        <div class="pkg-date">Gio &rarr; Lun</div>
-        <div class="pkg-price">&euro;260</div>
-        <div class="pkg-anticipo">4 notti / four nights</div>
-        <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'brutia');scrollToForm('bru-form')">Seleziona</button>
-      </div>
-      <div class="pkg-item reveal d3" data-pkg="Milonghe" onclick="selectPkg(this,'brutia')">
-        <span class="pkg-big-num">6</span><span class="pkg-notti-lbl">pass</span>
-        <div class="pkg-name">Milonghe</div>
-        <div class="pkg-date">6 Full pass</div>
-        <div class="pkg-price">&euro;100</div>
-        <div class="pkg-anticipo">Solo milonghe</div>
-        <button class="pkg-btn" onclick="event.stopPropagation();selectPkg(this.closest('.pkg-item'),'brutia');scrollToForm('bru-form')">Seleziona</button>
-      </div>
-    </div>
-
-    <span class="pkg-label reveal">Compila il modulo per iscriverti</span>
-
-    <!-- FORM IN CIMA - CARD BASED DESIGN -->
-    <div class="form-section" id="bru-form" style="margin-top:40px;margin-bottom:60px;max-width:750px;margin-left:auto;margin-right:auto">
-
-      <!-- Header semplice -->
-      <div style="text-align:center;margin-bottom:24px">
-        <h3 style="font-family:'Kalam',cursive;font-size:1.5rem;font-weight:700;color:#2d0060;margin-bottom:4px">Registrazione</h3>
-        <p style="color:rgba(80,0,180,.6);font-size:0.9rem">Compila il modulo per iscriverti</p>
-      </div>
-
-      <!-- Progress hidden for compact view -->
-      <div class="bru-prog" style="display:none"></div>
-
-      <div id="b_body" style="padding:0">
-
-        <!-- ====== STEP 1: Chi sei ====== -->
-        <div class="form-step-ed active" id="b_fs1">
-          <!-- Info Card -->
-          <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
-              <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
-                <i class="fa-solid fa-user"></i>
-              </div>
-              <div>
-                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Parlaci di te</h4>
-                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Informazioni personali</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Form Fields in Card Grid -->
-          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:40px">
-            <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Cognome </b><b>/ </b><i>Surname</i> *</label>
-              <input type="text" class="fi-ed" id="b_cognome" placeholder="Rossi" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
-            </div>
-            <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Nome </b><b>/ </b><i>Name</i> *</label>
-              <input type="text" class="fi-ed" id="b_nome" placeholder="Andrea" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
-            </div>
-            <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px;grid-column:1/-1">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem">Email *</label>
-              <input type="email" class="fi-ed" id="b_email" placeholder="andrea@email.com" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
-            </div>
-            <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Data di nascita </b><b>/ </b><i>Date of birth</i> *</label>
-              <input type="date" class="fi-ed" id="b_nascita" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
-            </div>
-            <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Numero telefono </b><b>/ </b><i>Telephone number</i> *</label>
-              <input type="tel" class="fi-ed" id="b_tel" placeholder="+39 333 000 0000" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
-            </div>
-            <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px;grid-column:1/-1">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Facebook</b><div>Il link del tuo profilo/<i>Your link profile</i></div> *</label>
-              <input type="url" class="fi-ed" id="b_facebook" placeholder="https://facebook.com/tuoprofilo" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
-            </div>
-            <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px;grid-column:1/-1">
-              <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Città in cui vivi </b><b>/</b><b> </b><i>City where you live</i> *</label>
-              <input type="text" class="fi-ed" id="b_citta" placeholder="Roma" style="border-radius:8px;border:1px solid rgba(123,47,247,.3)">
-            </div>
-          </div>
-        </div>
-
-        <!-- ====== STEP 2: Alloggio + Pacchetto ====== -->
-        <div class="form-step-ed" id="b_fs2">
-          <!-- SEZIONE 1: Chi balli? -->
-          <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
-              <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
-                <i class="fa-solid fa-person"></i>
-              </div>
-              <div>
-                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Chi balli? — Dance role</h4>
-                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Il tuo ruolo di ballo</p>
-              </div>
-            </div>
-          </div>
-
-          <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:20px;margin-bottom:48px">
-            <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem"><b>Ruolo di ballo </b><b>/ </b><i>Dance role</i></label>
-            <select class="fi-ed" id="b_ruolo" style="border-radius:8px;border:1px solid rgba(123,47,247,.3);width:100%">
-              <option value="">— Seleziona / Select —</option>
-              <option value="Leader">Leader</option>
-              <option value="Follower">Follower</option>
-              <option value="Entrambi">Entrambi / Both</option>
-            </select>
-          </div>
-
-          <!-- SEZIONE 2: Dove dormi? (Alloggio) -->
-          <!-- Camera Card -->
-          <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
-              <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
-                <i class="fa-solid fa-door-open"></i>
-              </div>
-              <div>
-                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Dove dormi? — Accommodation</h4>
-                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Scegli camera e compagni</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="room-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:20px;margin-bottom:48px">
-            <label class="room-card stanza-opt" onclick="syncStanza(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
-              <input type="radio" name="b_stanza" value="Singola" style="display:none">
-              <div class="room-card-icon" style="font-size:32px;margin-bottom:12px"><i class="fa-solid fa-bed"></i></div>
-              <div class="room-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">Singola</div>
-              <div class="room-card-desc" style="font-size:.85rem;color:rgba(80,0,180,.6)">+€30/notte</div>
-            </label>
-            <label class="room-card stanza-opt" onclick="syncStanza(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
-              <input type="radio" name="b_stanza" value="Doppia" style="display:none">
-              <div class="room-card-icon" style="font-size:32px;margin-bottom:12px"><i class="fa-solid fa-bed"></i><i class="fa-solid fa-bed" style="font-size:.85rem;opacity:1;margin-left:6px"></i></div>
-              <div class="room-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">Doppia</div>
-              <div class="room-card-desc" style="font-size:.85rem;color:rgba(80,0,180,.6)">2 letti</div>
-            </label>
-            <label class="room-card stanza-opt" onclick="syncStanza(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
-              <input type="radio" name="b_stanza" value="Matrimoniale" style="display:none">
-              <div class="room-card-icon" style="font-size:40px;margin-bottom:12px"><i class="fa-solid fa-bed"></i></div>
-              <div class="room-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">Matrimoniale</div>
-              <div class="room-card-desc" style="font-size:.85rem;color:rgba(80,0,180,.6)">Per coppie</div>
-            </label>
-            <label class="room-card stanza-opt" onclick="syncStanza(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
-              <input type="radio" name="b_stanza" value="Tripla" style="display:none">
-              <div class="room-card-icon" style="font-size:32px;margin-bottom:12px"><i class="fa-solid fa-users"></i></div>
-              <div class="room-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">Tripla</div>
-              <div class="room-card-desc" style="font-size:.85rem;color:rgba(80,0,180,.6)">Fino a 3</div>
-            </label>
-          </div>
-
-          <!-- Compagni Card -->
-          <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
-              <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
-                <i class="fa-solid fa-people-group"></i>
-              </div>
-              <div>
-                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Con chi condividi?</h4>
-                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Opzionale / Optional</p>
-              </div>
-            </div>
-          </div>
-
-          <div id="b_compagniContainer" style="margin-bottom:48px;background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:24px">
-            <p style="font-weight:600;color:#2d0060;margin-bottom:16px">Con chi desideri condividere la camera? — Whom would you like to share the room?</p>
-            <p style="font-size:.9rem;color:rgba(80,0,180,.6);margin-bottom:16px">Facoltativo — penseremo noi agli abbinamenti / Optional — we'll arrange matches</p>
-            <div id="b_compagniFields"></div>
-          </div>
-
-          <!-- SEZIONE 3: Quanto paghi? (Pacchetto) -->
-          <!-- Pacchetto Card -->
-          <div style="background:rgba(123,47,247,.08);border:2px solid rgba(123,47,247,.2);border-radius:16px;padding:28px;margin-bottom:40px">
-            <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
-              <div style="width:48px;height:48px;background:#7b2ff7;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px">
-                <i class="fa-solid fa-box"></i>
-              </div>
-              <div>
-                <h4 style="font-family:'Kalam',cursive;font-size:1.2rem;font-weight:700;color:#2d0060;margin:0">Quale pacchetto?</h4>
-                <p style="margin:4px 0 0;color:rgba(80,0,180,.6);font-size:.9rem">Scegli la durata</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="pkg-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;margin-bottom:48px">
-            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
-              <input type="radio" name="b_pkg" value="2 NOTTI/two nights" style="display:none">
-              <div class="pkg-card-letter" style="font-family:'Kalam',cursive;font-size:32px;font-weight:700;color:#7b2ff7;margin-bottom:8px">A</div>
-              <div class="pkg-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">2 NOTTI<br><span style="font-size:0.8rem;font-weight:400">two nights</span></div>
-              <div class="pkg-card-info" style="font-size:.85rem;color:rgba(80,0,180,.6);margin-bottom:8px">Sat 4 - Mon 6 Jan</div>
-              <div class="pkg-card-info" style="font-size:1.1rem;font-weight:700;color:#7b2ff7">180€</div>
-            </label>
-            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
-              <input type="radio" name="b_pkg" value="3 NOTTI/three nights" style="display:none">
-              <div class="pkg-card-letter" style="font-family:'Kalam',cursive;font-size:32px;font-weight:700;color:#7b2ff7;margin-bottom:8px">B</div>
-              <div class="pkg-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">3 NOTTI<br><span style="font-size:0.8rem;font-weight:400">three nights</span></div>
-              <div class="pkg-card-info" style="font-size:.85rem;color:rgba(80,0,180,.6);margin-bottom:8px">Fri 3 - Mon 6 Jan</div>
-              <div class="pkg-card-info" style="font-size:1.1rem;font-weight:700;color:#7b2ff7">220€</div>
-            </label>
-            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
-              <input type="radio" name="b_pkg" value="4 NOTTI/four nights" style="display:none">
-              <div class="pkg-card-letter" style="font-family:'Kalam',cursive;font-size:32px;font-weight:700;color:#7b2ff7;margin-bottom:8px">C</div>
-              <div class="pkg-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">4 NOTTI<br><span style="font-size:0.8rem;font-weight:400">four nights</span></div>
-              <div class="pkg-card-info" style="font-size:.85rem;color:rgba(80,0,180,.6);margin-bottom:8px">Fri 3 - Mon 7 Jun</div>
-              <div class="pkg-card-info" style="font-size:1.1rem;font-weight:700;color:#7b2ff7">260€</div>
-            </label>
-            <label class="pkg-card r-opt-ed" onclick="syncRadio(this,'b_pkg');bruSelPkg(this)" style="border:2px solid #7b2ff7;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s">
-              <input type="radio" name="b_pkg" value="MILONGHE" style="display:none">
-              <div class="pkg-card-letter" style="font-family:'Kalam',cursive;font-size:32px;font-weight:700;color:#7b2ff7;margin-bottom:8px">D</div>
-              <div class="pkg-card-name" style="font-weight:600;color:#2d0060;margin-bottom:4px">MILONGHE</div>
-              <div class="pkg-card-info" style="font-size:.85rem;color:rgba(80,0,180,.6);margin-bottom:8px">6 Full pass</div>
-              <div class="pkg-card-info" style="font-size:1.1rem;font-weight:700;color:#7b2ff7">100€</div>
-            </label>
-          </div>
-
-          <!-- SEZIONE 4: Note speciali -->
-          <div style="background:#fff;border:2px solid #7b2ff7;border-radius:12px;padding:24px;margin-bottom:40px">
-            <label style="display:block;font-weight:600;color:#2d0060;margin-bottom:8px;font-size:.95rem">Note speciali (Facoltativo) / Special notes</label>
-            <textarea class="fi-ed" id="b_note" placeholder="Allergie, esigenze particolari, etc..." style="border-radius:8px;border:1px solid rgba(123,47,247,.3);min-height:100px"></textarea>
-          </div>
-
-          <label style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;cursor:pointer;font-size:.9rem;line-height:1.6;background:rgba(123,47,247,.04);border:2px solid rgba(123,47,247,.1);border-radius:12px;padding:20px">
-            <input type="checkbox" id="b_tc" style="margin-top:4px;accent-color:#7b2ff7;width:18px;height:18px;flex-shrink:0">
-            <span style="color:#2d0060">Ho letto l'<a href="#" onclick="showPage('privacy');return false;" style="color:#7b2ff7;text-decoration:underline;cursor:pointer">informativa sulla privacy</a> e accetto che <b>Pepertango ASD</b> tratti i miei dati personali (nome, cognome, email, telefono, città, data di nascita, profilo Facebook) per l'iscrizione e la gestione dell'evento. I miei dati saranno conservati fino al termine dell'evento e delle relative attività amministrative. Comprendo che ho diritto di accesso, rettifica, cancellazione e portabilità dei miei dati. *</span>
-          </label>
-
-          <label style="display:flex;align-items:flex-start;gap:12px;margin-bottom:40px;cursor:pointer;font-size:.9rem;line-height:1.6;background:rgba(123,47,247,.04);border:2px solid rgba(123,47,247,.1);border-radius:12px;padding:20px">
-            <input type="checkbox" id="b_foto" style="margin-top:4px;accent-color:#7b2ff7;width:18px;height:18px;flex-shrink:0">
-            <span style="color:#2d0060">Autorizzo la pubblicazione di foto e video dell'evento in cui potrei comparire (facoltativo)</span>
-          </label>
-
-          <div class="form-nav-ed" style="gap:16px;justify-content:space-between">
-            <button class="btn-prev-ed" onclick="bru.prev()" style="padding:16px 40px;background:#fff;border:2px solid #7b2ff7;color:#7b2ff7;border-radius:12px;cursor:pointer;font-weight:600">&larr; Indietro</button>
-            <button class="btn-next-ed" style="padding:32px 80px;font-size:22px;background:#7b2ff7;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:600" onclick="bru.next()">Invia &rarr;</button>
-          </div>
-        </div>
-
-        <div class="form-sending-ed" id="b_sending" style="text-align:center;padding:40px"><div class="spinner-ed"></div><p class="sending-lbl">Invio...</p></div>
-        <div class="form-ok-ed" id="b_ok" style="text-align:center;padding:40px">
-          <div style="font-size:48px;margin-bottom:16px">✓</div>
-          <h3 style="font-family:'Kalam',cursive;font-size:1.6rem;font-weight:700;color:#7b2ff7;margin-bottom:16px">Iscrizione confermata!</h3>
-          <p style="color:rgba(80,0,180,.6)">Controlla la tua email per i dettagli.</p>
-        </div>
-        <div class="form-error-ed" id="b_error" style="text-align:center;padding:40px">
-          <p id="b_errMsg" style="color:#ff4d4d;margin-bottom:20px">Si è verificato un errore. Riprova.</p>
-          <button class="btn-retry-ed" onclick="bru.resetError()" style="padding:16px 40px;background:#ff4d4d;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:600">Riprova</button>
-        </div>
-
-      </div>
-    </div>
-
-  </section>
-
-  <!-- BRUTIA · GALLERIA -->
-  <section class="ev-sub" id="brutia-gallery">
-    <div class="ev-sub-header">
-      <span class="ev-sub-event-tag">Brutia Tango Fest</span>
-      <h3 class="ev-sub-title">Galleria</h3>
-    </div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
-      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
-      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
-      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
-      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
-      <div class="gallery-item"><div class="gallery-placeholder"><i class="fa-regular fa-image"></i>Foto in arrivo</div></div>
-    </div>
-  </section>
-
-  <!-- BRUTIA · TDJ -->
-  <section class="ev-sub alt" id="btf26-tdj">
-    <div class="ev-sub-header">
-      <span class="ev-sub-event-tag">Brutia Tango Fest</span>
-      <h3 class="ev-sub-title">I TDJ</h3>
-    </div>
-    <div class="tdj-grid">
-      <div class="tdj-card">
-        <div class="tdj-avatar"><img src="/IMG_1226.JPG" alt="DJ musicista al Brutia Tango Fest"></div>
-        <div class="tdj-name">TDJ</div>
-        <div class="tdj-bio">Brutia Tango Fest</div>
-      </div>
-      <div class="tdj-card">
-        <div class="tdj-avatar"><img src="/IMG_1227.JPG" alt="DJ musicista al Brutia Tango Fest"></div>
-        <div class="tdj-name">TDJ</div>
-        <div class="tdj-bio">Brutia Tango Fest</div>
-      </div>
-      <div class="tdj-card">
-        <div class="tdj-avatar"><img src="/IMG_1228.JPG" alt="DJ musicista al Brutia Tango Fest"></div>
-        <div class="tdj-name">TDJ</div>
-        <div class="tdj-bio">Brutia Tango Fest</div>
-      </div>
-      <div class="tdj-card">
-        <div class="tdj-avatar"><img src="/IMG_1229.JPG" alt="DJ musicista al Brutia Tango Fest"></div>
-        <div class="tdj-name">TDJ</div>
-        <div class="tdj-bio">Brutia Tango Fest</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BRUTIA · LOCATION + MAPPA -->
-  <section class="ev-sub" id="btf26-location">
-    <div class="ev-sub-header">
-      <span class="ev-sub-event-tag">Brutia Tango Fest</span>
-      <h3 class="ev-sub-title">Location &amp; Come raggiungerla</h3>
-    </div>
-    <div class="location-grid">
-      <div class="location-info">
-        <h4>Calabria</h4>
-        <p>La Brutia Tango Fest si svolge in una cornice suggestiva della Calabria. Un'esperienza tango immersa nella bellezza del territorio. Dettagli sulla location in arrivo.</p>
-        <p><strong>Come arrivare:</strong> Informazioni di dettaglio sugli accessi saranno comunicate prossimamente. Per informazioni scrivi a <a href="mailto:pepertango@gmail.com">pepertango@gmail.com</a></p>
-        <a href="https://maps.google.com/?q=Calabria" target="_blank" class="location-address">
-          <i class="fa-solid fa-location-dot"></i> Calabria
-        </a>
-      </div>
-      <div class="map-wrap">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1524543.3886254622!2d16.2!3d38.9!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x13139a23e123456%3A0xabcdef1234567890!2sCalabria!5e0!3m2!1sit!2sit!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
-    </div>
-  </section>
-
-  </div><!-- /page-brutia -->
-
   <!-- PAGE: SHOP -->
   <div class="page" id="page-shop">
 
@@ -2914,15 +2293,6 @@
           <a href="mailto:pepertango@gmail.com" class="contatti-link">
             <i class="fa-solid fa-envelope"></i>pepertango@gmail.com
           </a>
-          <a href="#" class="contatti-link">
-            <i class="fa-brands fa-instagram"></i>@pepertango
-          </a>
-          <a href="#" class="contatti-link">
-            <i class="fa-brands fa-facebook"></i>PeperTango
-          </a>
-          <a href="#" class="contatti-link">
-            <i class="fa-brands fa-whatsapp"></i>Scrivici su WhatsApp
-          </a>
         </div>
       </div>
       <div class="contatti-form-wrap reveal d2">
@@ -2953,7 +2323,8 @@
     <h1 style="font-family:'Kalam',cursive;font-size:2.5rem;font-weight:700;color:#2d0060;margin-bottom:30px">Informativa sulla Privacy</h1>
 
     <div style="font-size:0.95rem;line-height:1.8;color:#333">
-      <p style="margin-bottom:20px"><strong>Titolare del Trattamento:</strong> Pepertango ASD</p>
+      <p style="margin-bottom:20px"><strong>Titolare del Trattamento:</strong> Peper Bruzia ASD<br>
+        <strong>Codice fiscale:</strong> 98138770783</p>
 
       <h3 style="font-family:'Kalam',cursive;font-size:1.4rem;color:#2d0060;margin-top:30px;margin-bottom:15px">1. Dati Personali Trattati</h3>
       <p style="margin-bottom:15px">Nel contesto dell'iscrizione ai nostri eventi, trattiamo i seguenti dati personali:</p>
@@ -3030,18 +2401,20 @@
       <p style="margin-bottom:15px">Per domande su questa informativa o per esercitare i tuoi diritti, contatta:</p>
       <p style="margin-bottom:15px">
         <strong>Email:</strong> <a href="mailto:pepertango@gmail.com" style="color:#7b2ff7">pepertango@gmail.com</a><br>
-        <strong>Organizzazione:</strong> Pepertango ASD
+        <strong>Organizzazione:</strong> Peper Bruzia ASD<br>
+        <strong>Codice fiscale:</strong> 98138770783
       </p>
 
       <h3 style="font-family:'Kalam',cursive;font-size:1.4rem;color:#2d0060;margin-top:30px;margin-bottom:15px">10. Aggiornamenti</h3>
-      <p style="margin-bottom:15px">Questa informativa è stata aggiornata il <strong>19 giugno 2026</strong>. Ci riserviamo il diritto di aggiornare questa pagina in qualsiasi momento per riflettere cambiamenti nelle nostre pratiche di privacy.</p>
+      <p style="margin-bottom:15px">Questa informativa è stata aggiornata il <strong>17 novembre 2026</strong>. Ci riserviamo il diritto di aggiornare questa pagina in qualsiasi momento per riflettere cambiamenti nelle nostre pratiche di privacy.</p>
 
       <p style="margin-top:40px;padding:20px;background:#f0f0f0;border-radius:8px;font-size:0.9rem;color:#555">
-        <em>Ultimo aggiornamento: 19 giugno 2026</em>
+        <em>Ultimo aggiornamento: 17 novembre 2026</em>
       </p>
     </div>
   </section>
   </div><!-- /page-privacy -->
+  </main>
 
   <!-- FOOTER -->
   <footer id="footer">
@@ -3052,11 +2425,6 @@
           Esperienze di tango argentino curate per chi ama ballare,
           condividere e vivere il ritmo fino in fondo.
         </p>
-        <div class="footer-social">
-          <a href="#" class="f-social-btn"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#" class="f-social-btn"><i class="fa-brands fa-facebook"></i></a>
-          <a href="#" class="f-social-btn"><i class="fa-brands fa-whatsapp"></i></a>
-        </div>
       </div>
       <div class="footer-cols">
         <div class="fc-col">
@@ -3097,28 +2465,7 @@
       drawer.classList.toggle('open');
     }
 
-    /* ---- Config ---- */
-    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAP6DIjSnVC65NVfQISYgrTE0xTGNBVW0VTH9A-ZK0fUE-b1NpSwC6zcBk4XFSfeqF/exec';
-
-    var PACCHETTI = {
-      'Cala Jannita':     { prezzo:300, anticipo:150, saldo:150, notti:4 },
-      'Fiumicello':       { prezzo:225, anticipo:150, saldo:75,  notti:3 },
-      'Spiaggia Nera':    { prezzo:225, anticipo:150, saldo:75,  notti:3 },
-      'Porto di Maratea': { prezzo:150, anticipo:150, saldo:0,   notti:2 }
-    };
-    var PACCHETTI_BRU = {
-      'Pacchetto A': { prezzo:0, anticipo:0, saldo:0, notti:3 },
-      'Pacchetto B': { prezzo:0, anticipo:0, saldo:0, notti:2 },
-      'Pacchetto C': { prezzo:0, anticipo:0, saldo:0, notti:1 }
-    };
-
-    /* ---- Helpers ---- */
-    function scrollToForm(id) {
-      setTimeout(function() {
-        document.getElementById(id).scrollIntoView({ behavior:'smooth', block:'start' });
-      }, 100);
-    }
-
+    /* ---- Helpers (selezione pacchetto Maratona) ---- */
     function selectPkg(el, section) {
       document.querySelectorAll('#' + section + ' .pkg-item').forEach(function(c) {
         c.classList.remove('selected');
@@ -3131,14 +2478,6 @@
         if (r.value === pkg) { r.checked = true; label.classList.add('sel'); }
         else { r.checked = false; label.classList.remove('sel'); }
       });
-    }
-
-    function syncRadio(el, name) {
-      document.querySelectorAll('[name="' + name + '"]').forEach(function(r) {
-        r.closest('.r-opt-ed').classList.remove('sel');
-      });
-      el.classList.add('sel');
-      el.querySelector('input').checked = true;
     }
 
     /* ---- Shop ---- */
@@ -3163,341 +2502,6 @@
       document.querySelectorAll('.shop-card').forEach(function(c) {
         c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'block' : 'none';
       });
-    }
-
-    /* ---- FormEngine ---- */
-    function FormEngine(cfg) {
-      var self   = { step:1, TOT:(cfg.tot||4), data:{} };
-      var p      = cfg.p;
-      var ev     = cfg.ev;
-      var pkgMap = cfg.pkg;
-
-      function g(s)  { return document.getElementById(p + '_' + s); }
-
-      self.ui = function() {
-        for (var i = 1; i <= self.TOT; i++) {
-          var fs = g('fs' + i);
-          var ss = g('ss' + i);
-          if (fs) fs.classList.toggle('active', i === self.step);
-          if (ss) {
-            ss.classList.remove('active','done');
-            if (i === self.step) ss.classList.add('active');
-            else if (i < self.step) ss.classList.add('done');
-          }
-        }
-        var prog = g('prog');
-        if (prog) prog.style.width = (self.step / self.TOT * 100) + '%';
-        if (self.step === self.TOT) self.riepilogo();
-      };
-
-      self.next = function() {
-        if (!self.validate(self.step)) return;
-        if (self.step < self.TOT) { self.step++; self.ui(); }
-        else self.send();
-      };
-
-      self.prev = function() {
-        if (self.step > 1) { self.step--; self.ui(); }
-      };
-
-      self.validate = function(s) {
-        if (ev === 'Brutia') {
-          if (s === 1) {
-            var nome    = g('nome') ? g('nome').value.trim() : '';
-            var cognome = g('cognome') ? g('cognome').value.trim() : '';
-            var email   = g('email') ? g('email').value.trim() : '';
-            var nascita  = g('nascita') ? g('nascita').value.trim() : '';
-            var tel      = g('tel') ? g('tel').value.trim() : '';
-            var facebook = g('facebook') ? g('facebook').value.trim() : '';
-            var citta    = g('citta') ? g('citta').value.trim() : '';
-            if (!nome)                          { alert('Inserisci il nome.'); return false; }
-            if (!cognome)                       { alert('Inserisci il cognome.'); return false; }
-            if (!email || !email.includes('@')) { alert('Email non valida.'); return false; }
-            self.data.nome           = nome;
-            self.data.cognome        = cognome;
-            self.data.nome_completo  = nome + ' ' + cognome;
-            self.data.email          = email;
-            self.data.data_nascita   = nascita;
-            self.data.tel            = tel;
-            self.data.facebook       = facebook;
-            self.data.citta          = citta;
-          }
-          if (s === 2) {
-            var ruolo = g('ruolo');
-            if (ruolo) self.data.ruolo = ruolo.value;
-            var st = document.querySelector('[name="b_stanza"]:checked');
-            if (st) self.data.tipologia_stanza = st.value;
-            var maxC2 = { 'Singola':0, 'Doppia':1, 'Matrimoniale':1, 'Tripla':2 };
-            var nComp = maxC2[st ? st.value : ''] || 0;
-            var compagni = [];
-            for (var ci = 1; ci <= nComp; ci++) {
-              var cNome = g('c' + ci + '_nome');
-              var cCogn = g('c' + ci + '_cognome');
-              var nomeV = cNome ? cNome.value.trim() : '';
-              var cognV = cCogn ? cCogn.value.trim() : '';
-              if (nomeV || cognV) compagni.push((nomeV + ' ' + cognV).trim());
-            }
-            self.data.compagni_stanza = compagni.join(', ');
-            var pkg = document.querySelector('[name="b_pkg"]:checked');
-            if (pkg) self.data.pacchetto = pkg.value;
-            var noteEl = g('note');
-            if (noteEl) self.data.note = noteEl.value.trim();
-          }
-          return true;
-        }
-        if (s === 1) {
-          var pkg  = document.querySelector('[name="' + p + '_pkg"]:checked');
-          var ruo  = document.querySelector('[name="' + p + '_ruolo"]:checked');
-          if (!pkg)  { alert('Seleziona un pacchetto.'); return false; }
-          if (!ruo)  { alert('Seleziona il tuo ruolo.'); return false; }
-          self.data.pacchetto = pkg.value;
-          self.data.ruolo     = ruo.value;
-        }
-        if (s === 2) {
-          var nome    = g('nome').value.trim();
-          var cognome = g('cognome').value.trim();
-          var email   = g('email').value.trim();
-          if (!nome)                          { alert('Inserisci il nome.'); return false; }
-          if (!cognome)                       { alert('Inserisci il cognome.'); return false; }
-          if (!email || !email.includes('@')) { alert('Email non valida.'); return false; }
-          self.data.nome           = nome;
-          self.data.cognome        = cognome;
-          self.data.nome_completo  = nome + ' ' + cognome;
-          self.data.email          = email;
-          self.data.tel            = g('tel').value.trim();
-          self.data.citta          = g('citta').value.trim();
-          self.data.compagno_ballo = g('compagno_ballo').value.trim();
-        }
-        if (s === 3) {
-          var st = document.querySelector('[name="' + p + '_stanza"]:checked');
-          if (!st) { alert('Seleziona il tipo di stanza.'); return false; }
-          self.data.tipologia_stanza = st.value;
-          var maxC = { Singola:0, Doppia:1, Tripla:2, Quadrupla:3 };
-          var n = maxC[st.value] || 0;
-          var compagni = [];
-          for (var i = 1; i <= n; i++) {
-            var cf = g('c' + i);
-            if (cf && cf.value.trim()) compagni.push(cf.value.trim());
-          }
-          var noteEl = g('note');
-          if (noteEl) self.data.note = noteEl.value.trim();
-          self.data.compagni_stanza = compagni;
-        }
-        return true;
-      };
-
-      self.updateCompagni = function(n, label) {
-        document.querySelectorAll('#' + p + '_fs3 .stanza-opt').forEach(function(o) {
-          o.classList.remove('sel');
-        });
-        if (label) { label.classList.add('sel'); label.querySelector('input').checked = true; }
-        var cont = g('compagniContainer');
-        var flds = g('compagniFields');
-        if (!cont || !flds) return;
-        if (n === 0) { cont.style.display = 'none'; flds.innerHTML = ''; return; }
-        cont.style.display = 'block';
-        flds.innerHTML = '';
-        for (var i = 1; i <= n; i++) {
-          var d = document.createElement('div');
-          d.className = 'fg-ed';
-          d.innerHTML = '<label>Compagno/a di stanza ' + i + '</label>'
-            + '<input type="text" class="fi-ed" id="' + p + '_c' + i + '" placeholder="Nome e cognome">';
-          flds.appendChild(d);
-        }
-      };
-
-      self.riepilogo = function() {
-        var pkgVal = self.data.pacchetto;
-        if (!pkgVal) {
-          var pkgEl = document.querySelector('[name="' + p + '_pkg"]:checked');
-          if (pkgEl) pkgVal = pkgEl.value;
-        }
-        var info = pkgMap[pkgVal] || {};
-        var evName  = ev === 'MTP27' ? 'Maratona Tango Piccante 2027' : 'Brutia Tango Fest 2027';
-        var prezzoTxt = info.prezzo ? '€' + info.prezzo : 'Da definire';
-        var rows = [
-          ['Evento',         evName],
-          ['Pacchetto',      pkgVal                     || '—'],
-          ['Ruolo',          self.data.ruolo            || '—'],
-          ['Nome',           self.data.nome             || '—'],
-          ['Cognome',        self.data.cognome          || '—'],
-          ['Email',          self.data.email            || '—'],
-          ['Telefono',       self.data.tel              || '—'],
-          ['Città',     self.data.citta            || '—'],
-          ['Compagno ballo', self.data.compagno_ballo   || '—']
-        ];
-        if (self.data.tipologia_stanza) {
-          rows.push(['Tipo stanza', self.data.tipologia_stanza]);
-          if (self.data.tipologia_stanza !== 'Singola') {
-            var compTxt = (self.data.compagni_stanza && self.data.compagni_stanza.length)
-              ? self.data.compagni_stanza.join(', ') : 'da assegnare';
-            rows.push(['Compagni stanza', compTxt]);
-          }
-        }
-        if (self.data.note) rows.push(['Note', self.data.note]);
-        rows.push(['Prezzo totale', prezzoTxt]);
-        var box = g('riepilogo');
-        if (box) box.innerHTML = rows.map(function(r) {
-          var rose = r[0] === 'Prezzo totale' ? ' rose' : '';
-          return '<div class="rr"><span class="rl">' + r[0] + '</span><span class="rv' + rose + '">' + r[1] + '</span></div>';
-        }).join('');
-        var aEl = g('anticipo');
-        if (aEl) aEl.textContent = info.anticipo ? '€' + info.anticipo : 'Da definire';
-      };
-
-      self.send = function() {
-        // Verificha email prima di inviare
-        var email = (self.data.email || '').trim();
-        if (!email) {
-          self.showError('Email è obbligatoria.');
-          return;
-        }
-
-        g('sending').classList.add('active');
-
-        // Chiama API per verificare se email esiste già
-        var verificaUrl = APPS_SCRIPT_URL + '?action=verificaEmail&evento=' + encodeURIComponent(ev) + '&email=' + encodeURIComponent(email);
-        fetch(verificaUrl)
-          .then(function(r) { return r.json(); })
-          .then(function(d) {
-            g('sending').classList.remove('active');
-            if (d.exists === true) {
-              self.showError('⚠️ Questa email è già registrata. Puoi usarne un\'altra o contattaci per modificare i tuoi dati.');
-              return;
-            }
-            // Email non esiste, procedi con invio
-            self._submitForm();
-          })
-          .catch(function(e) {
-            g('sending').classList.remove('active');
-            // Se la verifica fallisce, procedi comunque (il server farà il controllo finale)
-            self._submitForm();
-          });
-      };
-
-      self._submitForm = function() {
-        for (var i = 1; i <= self.TOT; i++) {
-          var fs = g('fs' + i);
-          if (fs) fs.classList.remove('active');
-        }
-        g('sending').classList.add('active');
-        var iname = 'iframe_' + p + '_' + Date.now();
-        var iframe = document.createElement('iframe');
-        iframe.name = iname; iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-        var form = document.createElement('form');
-        form.method = 'POST'; form.action = APPS_SCRIPT_URL;
-        form.target = iname; form.style.display = 'none';
-        var campi = {
-          action:           'nuova_iscrizione',
-          evento:           ev,
-          nome:             self.data.nome_completo      || '',
-          cognome:          self.data.cognome            || '',
-          email:            self.data.email              || '',
-          tel:              self.data.tel                || '',
-          citta:            self.data.citta              || '',
-          ruolo:            self.data.ruolo              || '',
-          pacchetto:        self.data.pacchetto          || '',
-          compagno_ballo:   self.data.compagno_ballo     || '',
-          tipologia_stanza: self.data.tipologia_stanza   || '',
-          compagni_stanza:  (self.data.compagni_stanza || []).join(','),
-          note:             self.data.note               || '',
-          skipEmail:        'false'
-        };
-        Object.keys(campi).forEach(function(k) {
-          var inp = document.createElement('input');
-          inp.type = 'hidden'; inp.name = k; inp.value = campi[k];
-          form.appendChild(inp);
-        });
-        document.body.appendChild(form);
-        var done = false;
-        function cleanup() {
-          setTimeout(function() {
-            if (document.body.contains(form))   document.body.removeChild(form);
-            if (document.body.contains(iframe)) document.body.removeChild(iframe);
-          }, 1000);
-          window.removeEventListener('message', msgHandler);
-        }
-        function msgHandler(e) {
-          if (done) return;
-          var d = e.data;
-          if (!d || typeof d !== 'object' || !('ok' in d)) return;
-          done = true; cleanup();
-          g('sending').classList.remove('active');
-          if (d.ok === false) { self.showError(d.error || 'Si è verificato un errore.'); }
-          else { self.ok(); }
-        }
-        window.addEventListener('message', msgHandler);
-        setTimeout(function() {
-          if (!done) { done = true; cleanup(); self.ok(); }
-        }, 10000);
-        form.submit();
-      };
-
-      self.ok = function() {
-        g('sending').classList.remove('active');
-        g('ok').classList.add('active');
-      };
-
-      self.showError = function(msg) {
-        g('sending').classList.remove('active');
-        var errEl = g('error');
-        var msgEl = g('errMsg');
-        if (msgEl) msgEl.textContent = msg;
-        if (errEl) errEl.classList.add('active');
-      };
-
-      self.resetError = function() {
-        g('error').classList.remove('active');
-        var fs = g('fs' + self.step);
-        if (fs) fs.classList.add('active');
-      };
-
-      return self;
-    }
-
-    var mtp = FormEngine({ p:'m', ev:'MTP27',  pkg: PACCHETTI });
-    var bru = FormEngine({ p:'b', ev:'Brutia', pkg: PACCHETTI_BRU, tot:2 });
-
-    function syncStanza(label) {
-      document.querySelectorAll('#b_fs2 .stanza-opt').forEach(function(o) { o.classList.remove('selected'); });
-      if (label) { label.classList.add('selected'); label.querySelector('input').checked = true; }
-      var val = label ? label.querySelector('input').value : '';
-      var maxC = { 'Singola':0, 'Doppia':1, 'Matrimoniale':1, 'Tripla':2 };
-      var n = maxC[val] !== undefined ? maxC[val] : 0;
-      var cont = document.getElementById('b_compagniContainer');
-      var flds = document.getElementById('b_compagniFields');
-      if (!cont || !flds) return;
-      cont.style.display = 'block';
-      flds.innerHTML = '';
-      for (var i = 1; i <= n; i++) {
-        var d = document.createElement('div');
-        d.className = 'f-row-ed';
-        d.style.marginBottom = '1rem';
-        d.innerHTML = '<div class="fg-ed">'
-          + '<label>Compagno/a ' + i + ' — Nome</label>'
-          + '<input type="text" class="fi-ed" id="b_c' + i + '_nome" placeholder="Mario">'
-          + '</div>'
-          + '<div class="fg-ed">'
-          + '<label>Cognome</label>'
-          + '<input type="text" class="fi-ed" id="b_c' + i + '_cognome" placeholder="Rossi">'
-          + '</div>';
-        flds.appendChild(d);
-      }
-    }
-    function bruUpdateCompagni(n, label) {
-      syncStanza(label);
-    }
-
-    function bruSelPkg(label) {
-      // Remove sel class from all package cards
-      document.querySelectorAll('.pkg-card.r-opt-ed').forEach(function(card) {
-        card.classList.remove('sel');
-      });
-      // Add sel class to selected package
-      if (label) label.classList.add('sel');
-      bru.data.pacchetto = label.querySelector('input').value;
-      bru.riepilogo();
     }
 
     /* ---- Scroll reveal ---- */
